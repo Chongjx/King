@@ -80,11 +80,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Camera2.cpp" />
     <ClCompile Include="Source\KingEngine.cpp" />
+    <ClCompile Include="Source\LoadOBJ.cpp" />
+    <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\MeshBuilder.cpp" />
+    <ClCompile Include="Source\Mouse.cpp" />
+    <ClCompile Include="Source\Scene2D.cpp" />
+    <ClCompile Include="Source\SceneGame.cpp" />
+    <ClCompile Include="Source\shader.cpp" />
+    <ClCompile Include="Source\SpriteAnimation.cpp" />
+    <ClCompile Include="Source\TileMap.cpp" />
+    <ClCompile Include="Source\TileSheet.cpp" />
+    <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\Camera2.h" />
     <ClInclude Include="Source\KingEngine.h" />
+    <ClInclude Include="Source\Light.h" />
+    <ClInclude Include="Source\LoadOBJ.h" />
+    <ClInclude Include="Source\LoadTGA.h" />
+    <ClInclude Include="Source\Material.h" />
+    <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\MeshBuilder.h" />
+    <ClInclude Include="Source\Mouse.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\Scene2D.h" />
+    <ClInclude Include="Source\SceneGame.h" />
+    <ClInclude Include="Source\shader.hpp" />
+    <ClInclude Include="Source\SpriteAnimation.h" />
+    <ClInclude Include="Source\TileMap.h" />
+    <ClInclude Include="Source\TileSheet.h" />
+    <ClInclude Include="Source\Utility.h" />
+    <ClInclude Include="Source\Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

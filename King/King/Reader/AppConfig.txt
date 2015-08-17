@@ -1,0 +1,25 @@
+# App setup #
+# Init default application properties outside of source codes #
+{
+	[NAME] AppConfig
+	{
+		[NAME] SetUp
+		[WindowTitle] King
+		# Screen resolution
+		[WindowWidth] 1920
+		[WindowHeight] 1080
+		[FullScreen] 0
+		[FrameRate] 120
+		[Run] 1
+	}
+
+	[OTHERS]
+	{
+		[NAME] MouseConfig
+		[Directory] Reader\\MouseConfig.txt
+	}
+	{
+		[NAME] SceneConfig
+		[Directory] Reader\\SceneConfig.txt
+	}
+}

@@ -1,0 +1,13 @@
+# Scenesetup #
+# Init all the scene properties outside of source codes #
+{
+	[NAME] SceneConfig
+	{
+		[NAME] Mesh
+		[Directory] Reader\\MeshConfig.txt
+	}
+	{
+		[NAME] Textures
+		[Directory] Reader\\TexturesConfig.txt	
+	}
+}

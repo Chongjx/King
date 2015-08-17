@@ -1,0 +1,31 @@
+# Scenesetup #
+# Init all the meshes #
+{
+	[NAME] MeshConfig
+	{
+		[NAME] GEO_TEXT
+		[Type] Text
+		[Directory] Image\\text.tga
+	}
+	{
+		[NAME] GEO_MENU
+		[Type] 2DMesh
+		[Directory] Image\\menu.tga
+	}
+}
+
+# Types available
+# Axes
+# Quad
+# Cube
+# Ring
+# Circle
+# Sphere
+# DebugQuad
+# DebugCircle
+# Cone
+# Obj
+# Text
+# 2DMesh
+# SpriteAnimation
+# TileSheet

@@ -1,0 +1,10 @@
+# Mouse setup #
+# Init default mosue properties outside of source codes #
+{
+	[NAME] MouseConfig
+	{
+		[NAME] SetUp
+		[currentPos] 0, 0
+		[sensitivity] 1
+	}
+}
