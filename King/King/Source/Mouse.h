@@ -6,6 +6,8 @@
 #include "TextTree.h"
 #include "Vector2.h"
 
+#define DEBUG true
+
 using std::string;
 
 enum MOUSE_KEY

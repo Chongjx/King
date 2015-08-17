@@ -3,29 +3,28 @@
 {
 	[NAME] MeshConfig
 	{
-		[NAME] GEO_TEXT
+		[NAME] Text
 		[Type] Text
-		[Directory] Image\\text.tga
+		[TextRow] 16
+		[TextCol] 16
+		[Texture] Image\\text.tga
 	}
 	{
-		[NAME] GEO_MENU
-		[Type] 2DMesh
-		[Directory] Image\\menu.tga
+		[NAME] Menu
+		[Type] 2D
+		[Texture] Image\\menu.tga
 	}
 }
 
 # Types available
-# Axes
 # Quad
 # Cube
-# Ring
 # Circle
-# Sphere
 # DebugQuad
 # DebugCircle
-# Cone
+# Sphere
 # Obj
 # Text
-# 2DMesh
+# 2D
 # SpriteAnimation
 # TileSheet

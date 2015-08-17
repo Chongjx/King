@@ -6,11 +6,11 @@
 		[NAME] SetUp
 		[WindowTitle] King
 		# Screen resolution
-		[WindowWidth] 1920
-		[WindowHeight] 1080
-		[FullScreen] 0
+		[WindowWidth] 1280
+		[WindowHeight] 720
+		[FullScreen] false
 		[FrameRate] 120
-		[Run] 1
+		[Run] true
 	}
 
 	[OTHERS]

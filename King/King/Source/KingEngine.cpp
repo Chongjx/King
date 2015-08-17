@@ -59,7 +59,10 @@ KEngine::~KEngine()
 
 void KEngine::Config(void)
 {
-	engineBranch.printBranch();
+	if (DEBUG)
+	{
+		engineBranch.printBranch();
+	}
 
 	for (vector<Branch>::iterator branch = engineBranch.childBranches.begin(); branch != engineBranch.childBranches.end(); ++branch)
 	{
@@ -85,7 +88,15 @@ void KEngine::Config(void)
 
 				else if (tempAttri.name == "FullScreen")
 				{
-					this->fullScreen = stoi(tempAttri.value);
+					if (tempAttri.value == "true" || tempAttri.value == "1")
+					{
+						this->fullScreen = true;
+					}
+
+					else
+					{
+						this->fullScreen = false;
+					}
 				}
 
 				else if (tempAttri.name == "FrameRate")
@@ -96,7 +107,15 @@ void KEngine::Config(void)
 
 				else if (tempAttri.name == "Run")
 				{
-					this->run = stoi(tempAttri.value);
+					if (tempAttri.value == "true" || tempAttri.value == "1")
+					{
+						this->run = true;
+					}
+
+					else
+					{
+						this->run = false;
+					}
 				}
 			}
 		}

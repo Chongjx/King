@@ -3,11 +3,14 @@
 {
 	[NAME] SceneConfig
 	{
+		[NAME] Shader
+		[VertexShader] Shader//comg.vertexshader
+		[FragmentShader] Shader//comg.fragmentshader
+	}
+	{
 		[NAME] Mesh
 		[Directory] Reader\\MeshConfig.txt
 	}
 	{
-		[NAME] Textures
-		[Directory] Reader\\TexturesConfig.txt	
 	}
 }

@@ -10,6 +10,7 @@ struct Animation
 {
 	Animation()
 	{
+		this->ID = -1;
 		this->startFrame = 0;
 		this->endFrame = 0;
 		this->playLooped = false;
@@ -20,6 +21,7 @@ struct Animation
 
 	Animation& operator=(Animation &copy)
 	{
+		this->ID = copy.ID;
 		this->startFrame = copy.startFrame;
 		this->endFrame = copy.endFrame;
 		this->playLooped = copy.playLooped;
@@ -30,8 +32,9 @@ struct Animation
 		return *this;
 	}
 
-	void Set(int startFrame, int endFrame, bool playLooped, bool startPaused, float animTime, float currentTime = 0.f)
+	void Set(int ID, int startFrame, int endFrame, bool playLooped, bool startPaused, float animTime, float currentTime = 0.f)
 	{
+		this->ID = ID;
 		this->startFrame = startFrame;
 		this->endFrame = endFrame;
 		this->playLooped = playLooped;
@@ -40,6 +43,7 @@ struct Animation
 		this->currentTime = currentTime;
 	}
 
+	int ID;
 	int startFrame;
 	int endFrame;
 	bool playLooped;
@@ -57,12 +61,14 @@ public:
 
 	SpriteAnimation& operator=(SpriteAnimation &copy);
 
+	void Update(double dt);
 	virtual void Render();
 
 	int m_row;
 	int m_col;
 
 	int m_currentFrame;
+	int currentAni;
 	vector<Animation*> animations;
 };
 

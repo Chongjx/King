@@ -17,7 +17,10 @@ Mouse::~Mouse()
 
 void Mouse::Config(void)
 {
-	mouseBranch.printBranch();
+	if (DEBUG)
+	{
+		mouseBranch.printBranch();
+	}
 
 	for (vector<Branch>::iterator branch = mouseBranch.childBranches.begin(); branch != mouseBranch.childBranches.end(); ++branch)
 	{
@@ -48,7 +51,7 @@ void Mouse::Config(void)
 
 				else if (tempAttri.name == "sensitivity")
 				{
-					this->sensitivity = (float)(stoi(tempAttri.value));
+					this->sensitivity = stof(tempAttri.value);
 				}
 			}
 		}

@@ -56,10 +56,32 @@ void SceneGame::Exit(void)
 
 void SceneGame::Config(void)
 {
-	gameBranch.printBranch();
+	if (DEBUG)
+	{	
+		gameBranch.printBranch();
+	}
 
 	for (vector<Branch>::iterator branch = gameBranch.childBranches.begin(); branch != gameBranch.childBranches.end(); ++branch)
 	{
+		if (branch->branchName == "Shader")
+		{
+			string vertexShader, fragmentShader;
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				if (tempAttri.name == "VertexShader")
+				{
+					vertexShader = tempAttri.value;
+				}
+
+				else if (tempAttri.name == "FragmentShader")
+				{
+					fragmentShader = tempAttri.value;
+				}
+			}
+
+			m_programID = LoadShaders(vertexShader.c_str(), fragmentShader.c_str());
+		}
 		if (branch->branchName == "Mesh")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
@@ -74,34 +96,293 @@ void SceneGame::Config(void)
 	}
 }
 
-void SceneGame::InitShaders(string config)
+void SceneGame::InitShaders(void)
 {
+
 }
 
 void SceneGame::InitMesh(string config)
 {
-	meshList.resize(MAX_GEO);
-
-	for (vector<Mesh*>::iterator mesh = meshList.begin(); mesh != meshList.end(); ++mesh)
-	{
-		Mesh* temp = *mesh;
-		temp = NULL;
-	}
-
 	Branch meshBranch = TextTree::FileToRead(config);
 
 	for (vector<Branch>::iterator branch = meshBranch.childBranches.begin(); branch != meshBranch.childBranches.end(); ++branch)
 	{
+		string meshName = branch->branchName;
+		Color meshColor;
+		unsigned textureID = 0;
+
+		enum MISC_VARIABLE
+		{
+			VAR_LENGTH,
+			VAR_WIDTH,
+			VAR_HEIGHT,
+			VAR_RADIUS,
+			VAR_INNER_RADIUS,
+			VAR_OUTER_RADIUS,
+			VAR_SLICES,
+			VAR_STACKS,
+			VAR_ANIM_TIME,
+			MAX_VAR,
+		};
+
+		float meshVar[MAX_VAR];
+		for (int i = 0; i < MAX_VAR; ++i)
+		{
+			meshVar[i] = 0.0f;
+		}
+
+		string meshVarNames[MAX_VAR] = 
+		{
+			"Length",
+			"Width",
+			"Height",
+			"Radius",
+			"InnerRadius",
+			"OuerRadius",
+			"Slices",
+			"Stacks",
+		};
+
+		// default 2D mesh variables
+		int meshTextRow = 0;
+		int meshTextCol = 0;
+		int meshPosX = 0;
+		int meshPosY = 0;
+
+		// Spirte Animation
+		int meshSpriteRow = 0;
+		int meshSpriteCol = 0;
+		int startFrame = 0;
+		int endFrame = 0;
+		bool alwaysRepeat = false;
+		bool playOnStart = false;
+
+		// Tile sheet
+		int meshTileRow = 0;
+		int meshTileCol = 0;
+
+		string directory = "";
+		string meshType = "";
+
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 		{
 			Attribute tempAttri = *attri;
-			if (tempAttri.name == "Type")
-			{
-				if (tempAttri.value == "Axes")
-				{
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
 
+			if (attriName == "Color")
+			{
+				string red;
+				string green;
+				string blue;
+				int lastContinue = 0;
+
+				for (int numColor = 0; numColor < 3; ++numColor)
+				{
+					for (unsigned j = lastContinue; j < attriValue.size() && j != ','; ++j)
+					{
+						if (numColor == 0)
+						{
+							red += attriValue[j];
+						}
+
+						else if (numColor == 1)
+						{
+							green += attriValue[j];
+						}
+
+						else
+						{
+							blue += attriValue[j];
+						}
+
+						lastContinue = j;
+					}
 				}
-				//meshList[branch->branchName] = MeshBuilder::
+
+				meshColor.Set(stof(red), stof(green), stof(blue));
+			}
+
+			else if (attriName == "Type")
+			{
+				meshType = attriValue;
+			}
+
+			else if (attriName == "Directory")
+			{
+				directory = attriValue;
+			}
+
+			else if (attriName == "SpriteAnimationRow")
+			{
+				meshSpriteRow = stoi(attriValue);
+			}
+
+			else if (attriName == "SpriteAnimationCol")
+			{
+				meshSpriteCol = stoi(attriValue);
+			}
+
+			else if (attriName == "StartFrame")
+			{
+				startFrame = stoi(attriValue);
+			}
+
+			else if (attriName == "EndFrame")
+			{
+				endFrame = stoi(attriValue);
+			}
+
+			else if (attriName == "Repeat")
+			{
+				if (attriValue == "true" || attriValue == "1")
+				{
+					alwaysRepeat = 1;
+				}
+				
+				else
+				{
+					alwaysRepeat= 0;
+				}
+			}
+
+			else if (attriName == "PlayOnStart")
+			{
+				if (attriValue == "true" || attriValue == "1")
+				{
+					playOnStart = 1;
+				}
+				
+				else
+				{
+					playOnStart = 0;
+				}
+			}
+
+			else if (attriName == "TextRow")
+			{
+				meshTextRow = stoi(attriValue);
+			}
+
+			else if (attriName == "TextCol")
+			{
+				meshTextCol = stoi(attriValue);
+			}
+
+			else if (attriName == "PosX")
+			{
+				meshPosX = stoi(attriValue);
+			}
+
+			else if (attriName == "PosY")
+			{
+				meshPosY = stoi(attriValue);
+			}
+
+			else if (attriName == "TileRow")
+			{
+				meshTileRow = stoi(attriValue);
+			}
+
+			else if (attriName == "TileCol")
+			{
+				meshTileCol = stoi(attriValue);
+			}
+
+			else if (attriName == "Texture")
+			{
+				textureID = LoadTGA(attriValue.c_str());
+			}
+
+			else
+			{
+				for (int k = 0; k < MAX_VAR; ++k)
+				{
+					if (attriName == meshVarNames[k])
+					{
+						meshVar[k] = stof(attriValue);
+						break;
+					}
+				}
+			}
+		}
+
+		// process data, generate mesh using meshbuilder
+		Mesh* mesh = NULL;
+
+		if (meshType == "Quad")
+		{
+			mesh = MeshBuilder::GenerateQuad(meshName, meshColor, meshVar[VAR_LENGTH]);
+		}
+
+		else if (meshType == "Cube")
+		{
+			mesh = MeshBuilder::GenerateCube(meshName, meshColor, meshVar[VAR_LENGTH]);
+		}
+
+		else if (meshType == "Circle")
+		{
+			mesh = MeshBuilder::GenerateCircle(meshName, meshColor, (unsigned)meshVar[VAR_SLICES], meshVar[VAR_RADIUS]);
+		}
+
+		else if (meshType == "DebugQuad")
+		{
+			mesh = MeshBuilder::GenerateDebugQuad(meshName, meshColor, meshVar[VAR_LENGTH]);
+		}
+
+		else if (meshType == "DebugCircle")
+		{
+			mesh = MeshBuilder::GenerateDebugCircle(meshName, meshColor, (unsigned)meshVar[VAR_SLICES], meshVar[VAR_RADIUS]);
+		}
+
+		else if (meshType == "Sphere")
+		{
+			mesh = MeshBuilder::GenerateSphere(meshName, meshColor, (unsigned)meshVar[VAR_STACKS], (unsigned)meshVar[VAR_SLICES], meshVar[VAR_RADIUS]);
+		}
+
+		else if (meshType == "Obj")
+		{
+			mesh = MeshBuilder::GenerateOBJ(meshName, directory);
+		}
+
+		else if (meshType == "Text")
+		{
+			mesh = MeshBuilder::GenerateText(meshName, meshTextRow, meshTextCol);
+		}
+
+		else if (meshType == "2D")
+		{
+			mesh = MeshBuilder::Generate2DMesh(meshName, meshColor, (int)meshVar[VAR_WIDTH], (int)meshVar[VAR_HEIGHT]);
+		}
+
+		else if (meshType == "SpriteAnimation")
+		{
+			mesh = MeshBuilder::GenerateSpriteAnimation(meshName, meshSpriteRow, meshSpriteCol);
+
+			SpriteAnimation *sa = dynamic_cast<SpriteAnimation*>(mesh);
+
+			if (sa)
+			{
+				//Animation* anime = new Animation();
+				//anime->Set(startFrame, endFrame, alwaysRepeat, playOnStart, meshVar[VAR_ANIM_TIME]);
+				//sa->animations.push_back(anime);
+				//sa->animations
+			}
+		}
+
+		else if (meshType == "TileSheet")
+		{
+			mesh = MeshBuilder::GenerateTileSheet(meshName, meshTileRow, meshTileCol);
+		}
+
+		// push back mesh
+		if (mesh != NULL)
+		{
+			meshList.push_back(mesh);
+
+			if (textureID != NULL)
+			{
+				mesh->textureID = textureID;
 			}
 		}
 	}

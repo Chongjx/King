@@ -56,6 +56,50 @@ SpriteAnimation& SpriteAnimation::operator=(SpriteAnimation &copy)
 	return *this;
 }
 
+void SpriteAnimation::Update(double dt)
+{
+	if (this->animations[currentAni])
+	{
+		if (!this->animations[currentAni]->paused)
+		{
+			this->animations[currentAni]->currentTime += (float)dt;
+
+			static int numFrame = 0;
+
+			if ((this->animations[currentAni]->endFrame - this->animations[currentAni]->startFrame + 1) < 1)
+			{
+				numFrame = 1;
+			}
+
+			else
+			{
+				numFrame = this->animations[currentAni]->endFrame - this->animations[currentAni]->startFrame + 1;
+			}
+
+			float frameTime = this->animations[currentAni]->animTime / numFrame;
+
+			if ((this->animations[currentAni]->startFrame + this->animations[currentAni]->currentTime / frameTime) < this->animations[currentAni]->endFrame)
+			{
+				this->m_currentFrame = (int)(this->animations[currentAni]->startFrame + this->animations[currentAni]->currentTime / frameTime);
+			}
+
+			else
+			{
+				this->m_currentFrame = this->animations[currentAni]->endFrame;
+			}
+
+			if(this->animations[currentAni]->currentTime > this->animations[currentAni]->animTime)
+			{
+				if (this->animations[currentAni]->playLooped)
+				{
+					this->animations[currentAni]->currentTime = 0;
+					this->m_currentFrame = this->animations[currentAni]->startFrame;
+				}
+			}
+		}
+	}
+}
+
 void SpriteAnimation::Render()
 {
 	glEnableVertexAttribArray(0);

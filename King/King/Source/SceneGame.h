@@ -4,7 +4,7 @@
 #include "Scene2D.h"
 #include "TextTree.h"
 
-#define DEBUG false
+#define DEBUG true
 
 using std::string;
 
@@ -72,7 +72,7 @@ public:
 	void Exit(void);
 
 	void Config(void);
-	void InitShaders(string config);
+	void InitShaders(void);
 	void InitMesh(string config);
 	void InitVariables(string config);
 
