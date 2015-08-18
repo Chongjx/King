@@ -5,6 +5,7 @@
 #include "Utility.h"
 #include "LoadTGA.h"
 
+// Set the m_parameters to match the number uniform type & lights to match the number lights
 SceneGame::SceneGame(void)
 {
 	m_parameters.resize(U_TOTAL);
@@ -15,8 +16,10 @@ SceneGame::~SceneGame(void)
 {
 }
 
+// Init game settings
 void SceneGame::Init(string config)
 {
+	// Call default scene init
 	Scene2D::Init();
 
 	gameBranch = TextTree::FileToRead(config);
@@ -25,13 +28,17 @@ void SceneGame::Init(string config)
 
 }
 
+// Game update
 void SceneGame::Update(double dt)
 {
+	// Call default scene update
 	Scene2D::Update(dt);
 }
 
+// Game render
 void SceneGame::Render(void)
 {
+	// Call default scene render
 	Scene2D::Render();
 	glDisable(GL_DEPTH_TEST);
 
@@ -41,10 +48,13 @@ void SceneGame::Render(void)
 	glEnable(GL_DEPTH_TEST);
 }
 
+// Game clean up
 void SceneGame::Exit(void)
 {
+	// Call default scene exit
 	Scene2D::Exit();
 
+	// clear up all the mesh
 	for (vector<Mesh*>::iterator mesh = meshList.begin(); mesh != meshList.end(); ++mesh)
 	{
 		Mesh* temp = *mesh;
@@ -68,6 +78,7 @@ void SceneGame::Exit(void)
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 }
 
+// Setting up of the game using data from the text files
 void SceneGame::Config(void)
 {
 	if (DEBUG)
@@ -112,6 +123,7 @@ void SceneGame::Config(void)
 	}
 }
 
+// Init scene shaders
 void SceneGame::InitShaders(void)
 {
 	glGenVertexArrays(1, &m_vertexArrayID);
@@ -176,6 +188,7 @@ void SceneGame::InitShaders(void)
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], lights[0].exponent);
 }
 
+// Init all meshes needed in the scene from text file
 void SceneGame::InitMesh(string config)
 {
 	Branch meshBranch = TextTree::FileToRead(config);
@@ -493,6 +506,7 @@ void SceneGame::InitMesh(string config)
 	}
 }
 
+// Init all game variables in the scene from text file
 void SceneGame::InitVariables(string config)
 {
 

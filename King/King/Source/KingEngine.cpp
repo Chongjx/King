@@ -57,6 +57,7 @@ KEngine::~KEngine()
 {
 }
 
+// Setting up of the engine using data from the text files
 void KEngine::Config(void)
 {
 	if (DEBUG)
@@ -135,6 +136,7 @@ void KEngine::Config(void)
 	}
 }
 
+// Init the engine settings
 void KEngine::Init(string config)
 {
 	engineBranch = TextTree::FileToRead(config);
@@ -204,6 +206,7 @@ void KEngine::Init(string config)
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 }
 
+// main game loop
 void KEngine::Run(void)
 {
 	scene = new SceneGame();
@@ -244,6 +247,7 @@ void KEngine::Run(void)
 	delete scene;
 }
 
+// clean up
 void KEngine::Exit(void)
 {
 	if (this->mouse != NULL)

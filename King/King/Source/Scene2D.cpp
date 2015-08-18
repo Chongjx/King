@@ -5,9 +5,9 @@
 #include "Utility.h"
 #include "LoadTGA.h"
 
+// default scene constructor
 Scene2D::Scene2D(void)
 {
-	meshList.resize(0);
 	m_parameters.resize(0);
 	lights.resize(0);
 }
@@ -16,6 +16,7 @@ Scene2D::~Scene2D(void)
 {
 }
 
+// default scene init
 void Scene2D::Init(void)
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -32,12 +33,14 @@ void Scene2D::Init(void)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+// default scene update
 void Scene2D::Update(double dt)
 {
 	fps = (float)(1.f / dt);
 	camera.Update(dt);
 }
 
+// dafault scene render
 void Scene2D::Render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -55,6 +58,7 @@ void Scene2D::Render(void)
 	modelStack.LoadIdentity();
 }
 
+// default scene clean up
 void Scene2D::Exit(void)
 {
 	glDeleteProgram(m_programID);

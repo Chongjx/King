@@ -4,6 +4,7 @@ Mouse::Mouse()
 {
 }
 
+// setting up of the mouse using data from text files
 Mouse::Mouse(string config)
 {
 	Branch mouseBranch = TextTree::FileToRead(config);
@@ -77,6 +78,7 @@ void Mouse::Init(string config)
 	Config();
 }
 
+// update mouse pos and button status
 void Mouse::Update()
 {
 	for (int i = LEFT_BUTTON; i < MAX_BUTTON; ++i)
