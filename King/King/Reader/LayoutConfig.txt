@@ -1,0 +1,25 @@
+# Game layout config #
+# Init all the scene properties outside of source codes #
+{
+	[NAME] LayoutConfig
+	{
+		[NAME] MainRoom
+		[ID] 0
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		[MapWidth] 1024
+		[MapHeight] 800
+		[MapOffsetX] 0
+		[MapOffsetY] 0 
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] true
+		[EnabelYScroll] true
+		[Directory] Image//Map//Main.csv
+	}
+	{
+		[NAME] SubRoom
+	}
+}

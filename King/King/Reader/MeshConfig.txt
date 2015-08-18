@@ -32,6 +32,13 @@
 			[AnimationTime] 1.0
 		}
 	}
+	{
+		[NAME] GEO_TILESHEET
+		[Type] TileSheet
+		[TileRow] 26
+		[TileCol] 41
+		[Texture] Image\\MapSpriteSheet1.tga
+	}
 }
 
 # Types available

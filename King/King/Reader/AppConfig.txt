@@ -6,8 +6,8 @@
 		[NAME] SetUp
 		[WindowTitle] King
 		# Screen resolution
-		[WindowWidth] 1280
-		[WindowHeight] 720
+		[WindowWidth] 1024
+		[WindowHeight] 800
 		[FullScreen] false
 		[FrameRate] 120
 		[Run] true

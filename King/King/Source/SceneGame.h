@@ -8,9 +8,12 @@
 
 using std::string;
 
+#include "Room.h"
+
 class SceneGame : public Scene2D
 {
 	static const int NUM_LIGHTS = 1;
+	static const int TILESIZE = 32;
 	enum UNIFORM_TYPE
 	{
 		U_MVP = 0,
@@ -52,6 +55,11 @@ class SceneGame : public Scene2D
 		GEO_MENU,
 		MAX_GEO,
 	};*/
+	enum AREAS
+	{
+		MAIN_AREA,
+		MAX_AREAS,
+	};
 
 	enum GAME_STATE
 	{
@@ -75,13 +83,25 @@ public:
 	void Config(void);
 	void InitShaders(void);
 	void InitMesh(string config);
+	void InitLevel(string config);
 	void InitVariables(string config);
 
+	void UpdateAI(double dt);
+
+	void RenderLevel(void);
+	void RenderCharacters(void);
+	void RenderHUD(void);
+
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size=1.0f, const float x=0.0f, const float y=0.0f, const bool rotate=false);
+	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size = 1.0f, const float x = 0.0f, const float y = 0.0f, const bool rotate = false);
+
+	Mesh* findMesh(string meshName);
 
 private:
 	Branch gameBranch;
+	vector<Room> layout;
+
+	int currentLocation;
 };
 
 #endif

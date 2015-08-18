@@ -49,6 +49,12 @@
     <Filter Include="Source Files\2D">
       <UniqueIdentifier>{4c097e35-8ecc-42d4-a96a-40fbcbaeb8aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\2D\UI">
+      <UniqueIdentifier>{970c27ee-93af-48df-8506-e632ccb90ca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\UI">
+      <UniqueIdentifier>{6cf66330-10f7-4a7b-ade9-8086d0af354d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -101,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Source\GameObject2D.cpp">
       <Filter>Source Files\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Buttons.cpp">
+      <Filter>Source Files\2D\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +171,12 @@
       <Filter>Header Files\Main\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject2D.h">
+      <Filter>Header Files\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Buttons.h">
+      <Filter>Header Files\2D\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
       <Filter>Header Files\2D</Filter>
     </ClInclude>
   </ItemGroup>

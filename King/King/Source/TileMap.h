@@ -19,11 +19,12 @@ public:
 	TileMap(void);
 	~TileMap(void);
 
-	void Init(const int screenWidth, const int screenHeight, const int mapWidth, const int mapHeight, const int mapOffsetX, const int mapOffsetY, const bool enableXScrolling, const bool enableYScrolling, const int tileSize = 32);
+	void Init(const int ID, const int screenWidth, const int screenHeight, const int mapWidth, const int mapHeight, const int mapOffsetX = 0, const int mapOffsetY = 0, const int mapFineOffsetX = 0, const int mapFineOffsetY = 0,  const bool enableXScrolling = false, const bool enableYScrolling = false, const int tileSize = 32);
 	bool LoadMap(const string mapName);
 
 	void setBackgroundID(int ID);
 
+	int getID(void);
 	int getBackgroundID(void);
 	int getScreenWidth(void);
 	int getScreenHeight(void);
@@ -49,6 +50,7 @@ public:
 
 	vector<vector<int>> screenMap;
 private:
+	int ID;
 	int backgroundID;
 	int screenWidth;
 	int screenHeight;

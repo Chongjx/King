@@ -231,7 +231,7 @@ void KEngine::Run(void)
 		}
 		if (m_dAccumulatedTime_ThreadTwo > 1.0)
 		{
-			//UpdateAI();
+			scene->UpdateAI(m_dElapsedTime);
 			m_dAccumulatedTime_ThreadTwo = 0.0;
 		}
 		// Render the scene

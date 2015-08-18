@@ -9,6 +9,7 @@
 	}
 	{
 		[NAME] Camera
+		# [CameraUp] 
 		
 	}
 	{
@@ -17,5 +18,9 @@
 	{
 		[NAME] Mesh
 		[Directory] Reader\\MeshConfig.txt
+	}
+	{
+		[NAME] Layout
+		[Directory] Reader\\LayoutConfig.txt
 	}
 }

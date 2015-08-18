@@ -1,7 +1,8 @@
 #include "GameObject2D.h"
 
 GameObject2D::GameObject2D(void) :
-	render(false)
+	render(false),
+	mesh(NULL)
 {
 }
 
@@ -17,4 +18,14 @@ void GameObject2D::setRender(bool render)
 bool GameObject2D::getRender(void) const
 {
 	return this->render;
+}
+
+void GameObject2D::setMesh(Mesh* mesh)
+{
+	this->mesh = mesh;
+}
+
+Mesh* GameObject2D::getMesh(void) const
+{
+	return this->mesh;
 }

@@ -10,6 +10,8 @@ SceneGame::SceneGame(void)
 {
 	m_parameters.resize(U_TOTAL);
 	lights.resize(NUM_LIGHTS);
+	layout.resize(MAX_AREAS);
+	currentLocation = MAIN_AREA;
 }
 
 SceneGame::~SceneGame(void)
@@ -43,7 +45,8 @@ void SceneGame::Render(void)
 	glDisable(GL_DEPTH_TEST);
 
 	// Render
-
+	RenderLevel();
+	RenderCharacters();
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -109,7 +112,18 @@ void SceneGame::Config(void)
 
 			InitShaders();
 		}
-		if (branch->branchName == "Mesh")
+
+		else if (branch->branchName == "Camera")
+		{
+
+		}
+
+		else if (branch->branchName == "Lights")
+		{
+
+		}
+
+		else if (branch->branchName == "Mesh")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
@@ -117,6 +131,18 @@ void SceneGame::Config(void)
 				if (tempAttri.name == "Directory")
 				{
 					InitMesh(tempAttri.value);
+				}
+			}
+		}
+
+		else if (branch->branchName == "Layout")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				if (tempAttri.name == "Directory")
+				{
+					InitLevel(tempAttri.value);
 				}
 			}
 		}
@@ -506,10 +532,159 @@ void SceneGame::InitMesh(string config)
 	}
 }
 
+void SceneGame::InitLevel(string config)
+{
+	Branch levelBranch = TextTree::FileToRead(config);
+	
+	if (DEBUG)
+	{
+		levelBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = levelBranch.childBranches.begin(); branch != levelBranch.childBranches.end(); ++branch)
+	{
+		string directory = "";
+		enum MAP_VAR
+		{
+			VAR_ID,
+			VAR_BACKGROUND_ID,
+			VAR_SCREEN_WIDTH,
+			VAR_SCREEN_HEIGHT,
+			VAR_MAP_WIDTH,
+			VAR_MAP_HEIGHT,
+			VAR_MAP_OFFSETX,
+			VAR_MAP_OFFSETY,
+			VAR_MAP_FINE_OFFSETX,
+			VAR_MAP_FINE_OFFSETY,
+			TILE_SIZE,
+			MAX_VAR,
+		};
+
+		int mapVar[MAX_VAR];
+
+		for (int i = 0; i < MAX_VAR; ++i)
+		{
+			mapVar[i] = 0;
+		}
+
+		mapVar[TILE_SIZE] = TILESIZE;
+
+		string mapVarNames[MAX_VAR] = 
+		{
+			"ID",
+			"BackgroundID",
+			"ScreenWidth",
+			"ScreenHeight",
+			"MapWidth",
+			"MapHeight",
+			"MapOffsetX",
+			"MapOffsetY",
+			"MapFineOffsetX",
+			"MapFineOffsetY",
+			"TileSize",
+		};
+
+		bool enableX = false;
+		bool enableY = false;
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			if (attriName == "EnableXScroll")
+			{
+				if (attriValue == "true" || attriValue == "1")
+				{
+					enableX = true;
+				}
+
+				else
+				{
+					enableX = false;
+				}
+			}
+
+			else if (attriName == "EnableYScroll")
+			{
+				if (attriValue == "true" || attriValue == "1")
+				{
+					enableY = true;
+				}
+
+				else
+				{
+					enableY = false;
+				}
+			}
+
+			else if (attriName == "Directory")
+			{
+				directory = attriValue;
+			}
+
+			else
+			{
+				for (int k = 0; k < MAX_VAR; ++k)
+				{
+					if (attriName == mapVarNames[k])
+					{
+						mapVar[k] = stoi(attriValue);
+						break;
+					}
+				}
+			}
+		}
+
+		TileMap tempMap;
+		tempMap.Init(mapVar[VAR_ID], mapVar[VAR_SCREEN_WIDTH], mapVar[VAR_SCREEN_HEIGHT], mapVar[VAR_MAP_WIDTH], mapVar[VAR_MAP_HEIGHT], mapVar[VAR_MAP_OFFSETX], mapVar[VAR_MAP_OFFSETY], mapVar[VAR_MAP_FINE_OFFSETX], mapVar[VAR_MAP_FINE_OFFSETY], enableX, enableY, mapVar[TILE_SIZE]);
+		tempMap.LoadMap(directory);
+
+		layout[layout.size() - 1].ID = mapVar[VAR_ID];
+		layout[layout.size() - 1].roomLayout.push_back(tempMap);
+	}
+}
+
 // Init all game variables in the scene from text file
 void SceneGame::InitVariables(string config)
 {
 
+}
+
+void SceneGame::UpdateAI(double dt)
+{
+}
+
+void SceneGame::RenderLevel(void)
+{
+	// check if player is within the game
+	if ((unsigned)currentLocation < layout.size())
+	{
+		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++ numMaps)
+		{
+			int m = 0;
+			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight(); i++)
+			{
+				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth(); k++)
+				{
+					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+
+					if ((layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k) >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth())
+						break;
+
+					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
+					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[i][m];
+
+					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize(), (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize());
+				}
+			}
+		}
+	}
+}
+
+void SceneGame::RenderCharacters(void)
+{
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
@@ -591,4 +766,21 @@ void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const float siz
 	modelStack.PopMatrix();
 	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
+}
+
+Mesh* SceneGame::findMesh(string meshName)
+{
+	for (vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+	{
+		Mesh* tempMesh = *it;
+
+		if (tempMesh->name == meshName)
+		{
+			return tempMesh;
+		}
+	}
+
+	std::cout << "Unable to find mesh! Check your naming" << std::endl;
+
+	return NULL;
 }

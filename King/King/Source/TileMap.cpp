@@ -18,7 +18,8 @@ screenWidth(0),
 	mapFineOffsetY(0),
 	xScrolling(0),
 	yScrolling(0),
-	backgroundID(0)
+	backgroundID(0),
+	ID(0)
 {
 	screenMap.clear();
 }
@@ -28,17 +29,21 @@ TileMap::~TileMap(void)
 	screenMap.clear();
 }
 
-void TileMap::Init(const int screenWidth, const int screenHeight, const int mapWidth, const int mapHeight, const int mapOffsetX, const int mapOffsetY, const bool enableXScrolling, const bool enableYScrolling, const int tileSize)
+void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, const int mapWidth, const int mapHeight, const int mapOffsetX, const int mapOffsetY, const int mapFineOffsetX, const int mapFineOffsetY, const bool enableXScrolling, const bool enableYScrolling, const int tileSize)
 {
+	this->ID = ID;
 	this->screenWidth = screenWidth;
 	this->screenHeight = screenHeight;
 	this->mapWidth = mapWidth;
 	this->mapHeight = mapHeight;
 	this->mapOffsetX = mapOffsetX;
 	this->mapOffsetY = mapOffsetY;
+	this->mapFineOffsetX = mapFineOffsetX;
+	this->mapFineOffsetY = mapFineOffsetY;
 	this->xScrolling = enableXScrolling;
 	this->yScrolling = enableYScrolling;
 	this->tileSize = tileSize;
+
 	this->numTilesWidth = (int)(screenWidth * (1.f/ tileSize));
 	this->numTilesHeight = (int)(screenHeight * (1.f/tileSize));
 
@@ -102,6 +107,11 @@ bool TileMap::loadFile(const string mapName)
 void TileMap::setBackgroundID(int ID)
 {
 	this->backgroundID = ID;
+}
+
+int TileMap::getID(void)
+{
+	return this->ID;
 }
 
 int TileMap::getBackgroundID(void)
