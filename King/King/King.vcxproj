@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -87,6 +87,10 @@
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\GameObject2D.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
+    <ClCompile Include="Source\Item.cpp" />
+    <ClCompile Include="Source\ItemClothing.cpp" />
+    <ClCompile Include="Source\ItemMisc.cpp" />
+    <ClCompile Include="Source\ItemWeapon.cpp" />
     <ClCompile Include="Source\KingEngine.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
@@ -112,6 +116,10 @@
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\GameObject2D.h" />
     <ClInclude Include="Source\Guards.h" />
+    <ClInclude Include="Source\Item.h" />
+    <ClInclude Include="Source\ItemClothing.h" />
+    <ClInclude Include="Source\ItemMisc.h" />
+    <ClInclude Include="Source\ItemWeapon.h" />
     <ClInclude Include="Source\KingEngine.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />

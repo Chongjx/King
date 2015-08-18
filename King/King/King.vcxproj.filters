@@ -61,6 +61,18 @@
     <Filter Include="Source Files\2D\Character">
       <UniqueIdentifier>{c57d91ab-d541-453f-9dfb-ef1f9692f7df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\2D\Item">
+      <UniqueIdentifier>{55144c34-c590-4d7f-a3ff-2cc2e06868b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Item\Type">
+      <UniqueIdentifier>{fdd37e96-88ad-47d6-bd22-ec5646ca4db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Item">
+      <UniqueIdentifier>{789eeaef-3cda-4f05-99a5-c49240b5a9be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Item\Type">
+      <UniqueIdentifier>{0babeda7-cba3-4f62-b6b1-5f4695967f53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -131,6 +143,18 @@
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
       <Filter>Source Files\2D\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ItemClothing.cpp">
+      <Filter>Source Files\2D\Item\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ItemMisc.cpp">
+      <Filter>Source Files\2D\Item\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ItemWeapon.cpp">
+      <Filter>Source Files\2D\Item\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Item.cpp">
+      <Filter>Source Files\2D\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>Header Files\2D\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item.h">
+      <Filter>Header Files\2D\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemClothing.h">
+      <Filter>Header Files\2D\Item\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemMisc.h">
+      <Filter>Header Files\2D\Item\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemWeapon.h">
+      <Filter>Header Files\2D\Item\Type</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
