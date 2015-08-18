@@ -83,6 +83,7 @@ public:
 	void Config(void);
 	void InitShaders(void);
 	void InitMesh(string config);
+	void InitMenu(string config);
 	void InitLevel(string config);
 	void InitVariables(string config);
 
