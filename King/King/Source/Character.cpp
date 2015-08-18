@@ -16,7 +16,7 @@ void Character::Init()
 
 }
 
-void Character::Update()
+void Character::Update(double dt)
 {
 	Collision();
 }
@@ -39,16 +39,6 @@ void Character::MoveLeft(double dt)
 void Character::MoveRight(double dt)
 {
 	theCharacterPosition.x += (int) (4.0 * dt);
-}
-
-void Character::SetActive(bool active)
-{
-	this->active = active;
-}
-
-bool Character::GetActive()
-{
-	return active;
 }
 
 void Character::SetFOV(int tiles)

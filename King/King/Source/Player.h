@@ -15,7 +15,7 @@ public:
 	// Initialise this class instance
 	void Init(void);
 	// Update the character
-	void Update(void);
+	void Update(double dt);
 
 	// Set to know which map the player is at now
 	void SetMapLocation(int mapLocation);

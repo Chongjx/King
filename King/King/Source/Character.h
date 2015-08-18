@@ -16,7 +16,7 @@ public:
 	// Initialise this class instance
 	void Init(void);
 	// Update the character
-	void Update(void);
+	void Update(double dt);
 
 	// Movement up 
 	void MoveUp(double dt);
@@ -26,11 +26,6 @@ public:
 	void MoveLeft(double dt);
 	// Movement right
 	void MoveRight(double dt);
-
-	// Set activeness of a character
-	void SetActive(bool active);
-	// Get activeness of a character
-	bool GetActive(void);
 
 	// Set field of view of character based on tiles
 	void SetFOV(int tiles);
