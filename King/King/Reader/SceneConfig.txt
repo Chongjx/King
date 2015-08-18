@@ -20,7 +20,12 @@
 		[Directory] Reader\\MeshConfig.txt
 	}
 	{
+		[NAME] Interface
+		[Directory] Reader\\InterfaceConfig.txt
+	}
+	{
 		[NAME] Layout
 		[Directory] Reader\\LayoutConfig.txt
 	}
+	
 }

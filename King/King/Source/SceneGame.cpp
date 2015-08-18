@@ -11,6 +11,7 @@ SceneGame::SceneGame(void)
 	m_parameters.resize(U_TOTAL);
 	lights.resize(NUM_LIGHTS);
 	layout.resize(MAX_AREAS);
+	gameInterfaces.resize(EXIT_STATE);
 	currentLocation = MAIN_AREA;
 }
 
@@ -26,8 +27,6 @@ void SceneGame::Init(string config)
 
 	gameBranch = TextTree::FileToRead(config);
 	Config();
-
-
 }
 
 // Game update
@@ -131,6 +130,18 @@ void SceneGame::Config(void)
 				if (tempAttri.name == "Directory")
 				{
 					InitMesh(tempAttri.value);
+				}
+			}
+		}
+
+		else if (branch->branchName == "Menu")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				if (tempAttri.name == "Directory")
+				{
+					InitMenu(tempAttri.value);
 				}
 			}
 		}
@@ -532,6 +543,11 @@ void SceneGame::InitMesh(string config)
 	}
 }
 
+void SceneGame::InitMenu(string config)
+{
+
+}
+
 void SceneGame::InitLevel(string config)
 {
 	Branch levelBranch = TextTree::FileToRead(config);
@@ -676,7 +692,7 @@ void SceneGame::RenderLevel(void)
 					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[i][m];
 
-					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize(), (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize());
+					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize());
 				}
 			}
 		}

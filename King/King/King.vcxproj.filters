@@ -73,6 +73,12 @@
     <Filter Include="Source Files\2D\Item\Type">
       <UniqueIdentifier>{0babeda7-cba3-4f62-b6b1-5f4695967f53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\2D\Character\AI">
+      <UniqueIdentifier>{b858185a-a3ea-4df3-96c6-637f245133ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Character\AI">
+      <UniqueIdentifier>{dc0fb222-e436-4aeb-9e86-2a8274501d1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -129,16 +135,7 @@
     <ClCompile Include="Source\Buttons.cpp">
       <Filter>Source Files\2D\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Prisoners.cpp">
-      <Filter>Source Files\2D\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\AI.cpp">
-      <Filter>Source Files\2D\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Character.cpp">
-      <Filter>Source Files\2D\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Guards.cpp">
       <Filter>Source Files\2D\Character</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
@@ -155,6 +152,18 @@
     </ClCompile>
     <ClCompile Include="Source\Item.cpp">
       <Filter>Source Files\2D\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI.cpp">
+      <Filter>Source Files\2D\Character\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Guards.cpp">
+      <Filter>Source Files\2D\Character\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Prisoners.cpp">
+      <Filter>Source Files\2D\Character\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Interface.cpp">
+      <Filter>Source Files\2D\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,19 +230,7 @@
     <ClInclude Include="Source\Buttons.h">
       <Filter>Header Files\2D\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Room.h">
-      <Filter>Header Files\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AI.h">
-      <Filter>Header Files\2D\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Prisoners.h">
-      <Filter>Header Files\2D\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Character.h">
-      <Filter>Header Files\2D\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Guards.h">
       <Filter>Header Files\2D\Character</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
@@ -250,6 +247,21 @@
     </ClInclude>
     <ClInclude Include="Source\ItemWeapon.h">
       <Filter>Header Files\2D\Item\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
+      <Filter>Header Files\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI.h">
+      <Filter>Header Files\2D\Character\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Guards.h">
+      <Filter>Header Files\2D\Character\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Prisoners.h">
+      <Filter>Header Files\2D\Character\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Interface.h">
+      <Filter>Header Files\2D\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,15 +9,15 @@
 		# ScreenWidth & ScreenHeight should be same as screen resolution
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
-		[MapWidth] 1024
-		[MapHeight] 800
+		[MapWidth] 8192
+		[MapHeight] 8192
 		[MapOffsetX] 0
 		[MapOffsetY] 0 
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
 		[EnableXScroll] true
 		[EnabelYScroll] true
-		[Directory] Image//Map//Main.csv
+		[Directory] Image\\Map\\layout.csv
 	}
 	{
 		[NAME] SubRoom

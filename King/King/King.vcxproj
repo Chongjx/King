@@ -87,6 +87,7 @@
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\GameObject2D.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
+    <ClCompile Include="Source\Interface.cpp" />
     <ClCompile Include="Source\Item.cpp" />
     <ClCompile Include="Source\ItemClothing.cpp" />
     <ClCompile Include="Source\ItemMisc.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\GameObject2D.h" />
     <ClInclude Include="Source\Guards.h" />
+    <ClInclude Include="Source\Interface.h" />
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\ItemClothing.h" />
     <ClInclude Include="Source\ItemMisc.h" />

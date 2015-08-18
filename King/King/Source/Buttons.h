@@ -28,7 +28,9 @@ public:
 	Buttons(void);
 	~Buttons(void);
 
-	void Init(string name, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status);
+	void Init(string name, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status = BUTTON_PRESSED);
+	void Init(string name, string text, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status = BUTTON_PRESSED);
+
 	void Update(Vector2 mousePos);
 
 	void setName(string name);
@@ -47,7 +49,7 @@ public:
 	BUTTON_TYPE getType(void) const;
 	BUTTON_STATUS getStatus(void) const;
 private:
-	string buttonName;
+	string name;
 	string text;
 	Vector2 pos;
 	Vector2 scale;

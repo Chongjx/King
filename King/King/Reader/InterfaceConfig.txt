@@ -1,0 +1,5 @@
+# Interface Config #
+# Init all buttons here
+{
+	
+}

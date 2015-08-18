@@ -1,7 +1,9 @@
 #include "Buttons.h"
 
+#include "KingEngine.h"
+
 Buttons::Buttons(void)	:
-	buttonName(""),
+	name(""),
 	text(""),
 	rotation(0.f),
 	type(TEXT_BUTTON),
@@ -15,17 +17,48 @@ Buttons::~Buttons(void)
 {
 }
 
-/*void Buttons::Init(void)
+void Buttons::Init(string name, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status)
 {
-}*/
+	this->name = name;
+	this->mesh = mesh;
+	this->pos = pos;
+	this->scale = scale;
+	this->rotation = rotation;
+	this->status = status;
+	this->type = IMAGE_BUTTON;
+}
+
+void Buttons::Init(string name, string text, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status)
+{
+	this->name = name;
+	this->text = text;
+	this->pos = pos;
+	this->scale = scale;
+	this->rotation = rotation;
+	this->status = status;
+	this->type = TEXT_BUTTON;
+}
 
 void Buttons::Update(Vector2 mousePos)
 {
+	// update buttons status based on mouse position
+	if (mousePos.x < this->pos.x + this->scale.x * 0.5f && mousePos.x > this->pos.x - this->scale.x * 0.5f)
+	{
+		if (mousePos.y < this->pos.y + this->scale.y * 0.5f && mousePos.y > this->pos.y - this->scale.y * 0.5f)
+		{
+
+		}
+	}
+
+	else
+	{
+		//this->status = released;
+	}
 }
 
 void Buttons::setName(string name)
 {
-	this->buttonName = name;
+	this->name = name;
 }
 
 void Buttons::setText(string text)
@@ -60,7 +93,7 @@ void Buttons::setStatus(BUTTON_STATUS status)
 
 string Buttons::getName(void) const
 {
-	return this->buttonName;
+	return this->name;
 }
 
 string Buttons::getText(void) const

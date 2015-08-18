@@ -7,7 +7,7 @@
 		[Type] Text
 		[TextRow] 16
 		[TextCol] 16
-		[Texture] Image\\text.tga
+		[Texture] Image\\font.tga
 	}
 	{
 		[NAME] GEO_MENU
@@ -35,9 +35,9 @@
 	{
 		[NAME] GEO_TILESHEET
 		[Type] TileSheet
-		[TileRow] 26
+		[TileRow] 25
 		[TileCol] 41
-		[Texture] Image\\MapSpriteSheet1.tga
+		[Texture] Image\\TileSheet.tga
 	}
 }
 

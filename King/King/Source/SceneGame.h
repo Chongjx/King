@@ -9,6 +9,7 @@
 using std::string;
 
 #include "Room.h"
+#include "Interface.h"
 
 class SceneGame : public Scene2D
 {
@@ -101,6 +102,7 @@ public:
 private:
 	Branch gameBranch;
 	vector<Room> layout;
+	vector<Interface> gameInterfaces;
 
 	int currentLocation;
 };
