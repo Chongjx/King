@@ -9,3 +9,13 @@ Guards::~Guards(void)
 {
 
 }
+
+void Guards::Init()
+{
+
+}
+
+void Guards::Update(double dt)
+{
+
+}

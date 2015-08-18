@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "GameObject2D.h"
 
+
 class Character : public GameObject2D
 {
 
@@ -32,15 +33,16 @@ public:
 	// Get field of view of character based on tiles
 	int GetFOV(void);
 
-	//Collision codes to to ensure every character collides with collidable tiles or object
-	void Collision(void);
+	// Inventory
+	
+
+
 
 private:
 
-	Vector2 theCharacterPosition;
-	bool active;
+	Vector2 characterPosition;
 	int tiles;
-
+	//Inventory inventory
 };
 
 

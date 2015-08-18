@@ -3,7 +3,7 @@
 
 #include "Scene2D.h"
 #include "TextTree.h"
-
+#include <irrKlang.h>
 #define DEBUG true
 
 using std::string;
@@ -46,15 +46,15 @@ class SceneGame : public Scene2D
 
 	/*enum GEOMETRY_TYPE
 	{
-		GEO_LIGHTBALL,
-		GEO_SPHERE,
-		GEO_QUAD,
-		GEO_DEBUGQUAD,
-		GEO_CIRCLE,
-		GEO_DEBUGCIRCLE,
-		GEO_TEXT,
-		GEO_MENU,
-		MAX_GEO,
+	GEO_LIGHTBALL,
+	GEO_SPHERE,
+	GEO_QUAD,
+	GEO_DEBUGQUAD,
+	GEO_CIRCLE,
+	GEO_DEBUGCIRCLE,
+	GEO_TEXT,
+	GEO_MENU,
+	MAX_GEO,
 	};*/
 	enum AREAS
 	{
@@ -87,6 +87,7 @@ public:
 	void InitMenu(string config);
 	void InitLevel(string config);
 	void InitVariables(string config);
+	void InitSound(string config);
 
 	void UpdateAI(double dt);
 

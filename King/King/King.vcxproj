@@ -105,6 +105,7 @@
     <ClCompile Include="Source\SceneGame.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
+    <ClCompile Include="Source\StateMachine.cpp" />
     <ClCompile Include="Source\TileMap.cpp" />
     <ClCompile Include="Source\TileSheet.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Source\SceneGame.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\SpriteAnimation.h" />
+    <ClInclude Include="Source\StateMachine.h" />
     <ClInclude Include="Source\TileMap.h" />
     <ClInclude Include="Source\TileSheet.h" />
     <ClInclude Include="Source\Utility.h" />

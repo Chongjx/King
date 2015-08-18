@@ -3,7 +3,7 @@
 
 CItem::CItem(void)
 	: itemType(ITEM_WEAPON)
-	//, itemPos
+	, itemPos(0, 0)
 	, itemID(0)
 	, itemName("Name")
 	, itemDescription("Description")

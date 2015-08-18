@@ -157,6 +157,17 @@ void SceneGame::Config(void)
 				}
 			}
 		}
+		else if (branch->branchName == "Sound")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				if (tempAttri.name == "Directory")
+				{
+					InitSound(tempAttri.value);
+				}
+			}
+		}
 	}
 }
 
@@ -229,7 +240,7 @@ void SceneGame::InitShaders(void)
 void SceneGame::InitMesh(string config)
 {
 	Branch meshBranch = TextTree::FileToRead(config);
-	
+
 	if (DEBUG)
 	{
 		meshBranch.printBranch();
@@ -493,7 +504,7 @@ void SceneGame::InitMesh(string config)
 
 						else
 						{
-							 repeat = false;
+							repeat = false;
 						}
 					}
 
@@ -506,7 +517,7 @@ void SceneGame::InitMesh(string config)
 
 						else
 						{
-							 play = false;
+							play = false;
 						}
 					}
 
@@ -551,7 +562,7 @@ void SceneGame::InitMenu(string config)
 void SceneGame::InitLevel(string config)
 {
 	Branch levelBranch = TextTree::FileToRead(config);
-	
+
 	if (DEBUG)
 	{
 		levelBranch.printBranch();
@@ -659,6 +670,47 @@ void SceneGame::InitLevel(string config)
 
 		layout[layout.size() - 1].ID = mapVar[VAR_ID];
 		layout[layout.size() - 1].roomLayout.push_back(tempMap);
+	}
+}
+// Init all game variables in the scene from text file
+void SceneGame::InitSound(string config)
+{
+	Branch soundBranch = TextTree::FileToRead(config);
+	irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+	if (DEBUG)
+	{
+		soundBranch.printBranch();
+	}
+	for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
+	{
+		string soundfile="";
+		bool loop=false;
+		float volume=0.0f;
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+			if(attriName=="SoundFile")
+			{
+				soundfile = attriValue;
+			}
+			else if(attriName=="Loop")
+			{
+				if (attriValue == "true" || attriValue == "1")
+				{
+					loop = true;
+				}
+			}
+			else if(attriName=="DefaultVol")
+			{
+				volume = stof(attriValue);
+			}
+		}
+
+		irrklang::ISoundSource* bookSound = Soundengine->addSoundSourceFromFile(soundfile.c_str()); 
+		bookSound->setDefaultVolume(volume);
+		Soundengine->play2D(bookSound,loop);
 	}
 }
 
