@@ -28,10 +28,9 @@ public:
 	Buttons(void);
 	~Buttons(void);
 
-	void Init(string name, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status = BUTTON_PRESSED);
-	void Init(string name, string text, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status = BUTTON_PRESSED);
+	void Init(string name, string text, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_TYPE type, BUTTON_STATUS status = BUTTON_RELEASED);
 
-	void Update(Vector2 mousePos);
+	void Update(bool pressed, Vector2 mousePos);
 
 	void setName(string name);
 	void setText(string text);

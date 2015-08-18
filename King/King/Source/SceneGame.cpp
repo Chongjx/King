@@ -11,8 +11,18 @@ SceneGame::SceneGame(void)
 	m_parameters.resize(U_TOTAL);
 	lights.resize(NUM_LIGHTS);
 	layout.resize(MAX_AREAS);
-	gameInterfaces.resize(EXIT_STATE);
+	gameInterfaces.resize(MAX_STATE);
+
+	for (unsigned i = MENU_STATE; i < MAX_STATE; ++i)
+	{
+		gameInterfaces[i].interfaceType = i;
+	}
+
+	currentState = MENU_STATE;
 	currentLocation = MAIN_AREA;
+
+	fontSize = 100.f;
+	menuFontSize = 200.f;
 }
 
 SceneGame::~SceneGame(void)
@@ -34,6 +44,48 @@ void SceneGame::Update(double dt)
 {
 	// Call default scene update
 	Scene2D::Update(dt);
+
+	switch(currentState)
+	{
+	case MENU_STATE:
+		{
+			break;
+		}
+	case INGAME_STATE:
+		{
+			break;
+		}
+	case INSTRUCTION_STATE:
+		{
+			break;
+		}
+	case HIGHSCORE_STATE:
+		{
+			break;
+		}
+	case OPTIONS_STATE:
+		{
+			break;
+		}
+	case PAUSE_STATE:
+		{
+			break;
+		}
+	case GAMEOVER_STATE:
+		{
+			break;
+		}
+	}
+
+	// Update buttons
+	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		//gameInterfaces[currentState].buttons[i].Update(
+	}
+}
+
+void SceneGame::UpdateAI(double dt)
+{
 }
 
 // Game render
@@ -43,9 +95,46 @@ void SceneGame::Render(void)
 	Scene2D::Render();
 	glDisable(GL_DEPTH_TEST);
 
-	// Render
-	RenderLevel();
-	RenderCharacters();
+	switch(currentState)
+	{
+	case MENU_STATE:
+		{
+			break;
+		}
+	case INGAME_STATE:
+		{
+			RenderLevel();
+			RenderCharacters();
+			break;
+		}
+	case INSTRUCTION_STATE:
+		{
+			break;
+		}
+	case HIGHSCORE_STATE:
+		{
+			break;
+		}
+	case OPTIONS_STATE:
+		{
+			break;
+		}
+	case PAUSE_STATE:
+		{
+			break;
+		}
+	case GAMEOVER_STATE:
+		{
+			break;
+		}
+	}
+
+	RenderInterface();
+
+	std::ostringstream ss;
+	ss.precision(5);
+	ss << "FPS: " << fps;
+	RenderTextOnScreen(findMesh("GEO_TEXT"),  ss.str(), Color(1, 0, 0), fontSize * 0.75f, 0 , GAME_HEIGHT - fontSize);
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -134,14 +223,14 @@ void SceneGame::Config(void)
 			}
 		}
 
-		else if (branch->branchName == "Menu")
+		else if (branch->branchName == "Interface")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
 				if (tempAttri.name == "Directory")
 				{
-					InitMenu(tempAttri.value);
+					InitInterface(tempAttri.value);
 				}
 			}
 		}
@@ -317,7 +406,7 @@ void SceneGame::InitMesh(string config)
 
 				for (int numColor = 0; numColor < 3; ++numColor)
 				{
-					for (unsigned j = lastContinue; j < attriValue.size() && j != ','; ++j)
+					for (unsigned j = lastContinue; j < attriValue.size() && attriValue[j] != ','; ++j)
 					{
 						if (numColor == 0)
 						{
@@ -334,7 +423,7 @@ void SceneGame::InitMesh(string config)
 							blue += attriValue[j];
 						}
 
-						lastContinue = j;
+						lastContinue = j + 2;
 					}
 				}
 
@@ -554,9 +643,131 @@ void SceneGame::InitMesh(string config)
 	}
 }
 
-void SceneGame::InitMenu(string config)
+void SceneGame::InitInterface(string config)
 {
+	Branch interfaceBranch = TextTree::FileToRead(config);
 
+	if (DEBUG)
+	{
+		interfaceBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = interfaceBranch.childBranches.begin(); branch != interfaceBranch.childBranches.end(); ++branch)
+	{
+		string name = "";
+		string text = "";
+		Buttons::BUTTON_TYPE type = Buttons::TEXT_BUTTON;
+		Vector2 pos;
+		float rotation = 0.f;
+		Vector2 scale;
+		Mesh* mesh;
+
+		int storagePos = -1;
+
+		string gameStateName[MAX_STATE] = 
+		{
+			"Menu",
+			"Ingame",
+			"Instruction",
+			"HighScore",
+			"Options",
+			"Pause",
+			"GameOver",
+		};
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			name = branch->branchName;
+
+			if (attriName == "Type")
+			{
+				if (attriValue == "Text")
+				{
+					type = Buttons::TEXT_BUTTON;
+				}
+
+				else
+				{
+					type = Buttons::IMAGE_BUTTON;
+				}
+			}
+
+			else if (attriName == "Text")
+			{
+				text = attriValue;
+			}
+
+			else if (attriName == "Pos")
+			{
+				string xCoord;
+				string yCoord;
+				int lastContinue = 0;
+				for (unsigned j = 0; j < attriValue.size() &&  attriValue[j] != ','; ++j)
+				{
+					xCoord += attriValue[j];
+					lastContinue = j + 2;
+				}
+
+				for (unsigned j = lastContinue; j < attriValue.size(); ++j)
+				{
+					yCoord += attriValue[j];
+				}
+
+				pos.x = stof(xCoord);
+				pos.y = stof(yCoord);
+			}
+
+			else if (attriName == "Rotation")
+			{
+				rotation = stof(attriValue);
+			}
+
+			else if (attriName == "Scale")
+			{
+				string xCoord;
+				string yCoord;
+				int lastContinue = 0;
+				for (unsigned j = 0; j < attriValue.size() && attriValue[j] != ','; ++j)
+				{
+					xCoord += attriValue[j];
+					lastContinue = j + 2;
+				}
+
+				for (unsigned j = lastContinue; j < attriValue.size(); ++j)
+				{
+					yCoord += attriValue[j];
+				}
+
+				scale.x = stof(xCoord);
+				scale.y = stof(yCoord);
+			}
+
+			else if (attriName == "Mesh")
+			{
+				mesh = findMesh(attriValue);
+			}
+
+			else if (attriName == "GameState")
+			{
+				for (unsigned i = 0; i < MAX_STATE; ++i)
+				{
+					if (attriValue == gameStateName[i])
+					{
+						storagePos = i;
+					}
+				}
+			}
+		}
+
+		Buttons tempButton;
+		tempButton.Init(name, text, mesh, pos, scale, rotation, type);
+
+		gameInterfaces[storagePos].buttons.push_back(tempButton);
+	}
 }
 
 void SceneGame::InitLevel(string config)
@@ -672,11 +883,19 @@ void SceneGame::InitLevel(string config)
 		layout[layout.size() - 1].roomLayout.push_back(tempMap);
 	}
 }
+
+// Init all game variables in the scene from text file
+void SceneGame::InitVariables(string config)
+{
+
+}
+
 // Init all game variables in the scene from text file
 void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
 	irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+
 	if (DEBUG)
 	{
 		soundBranch.printBranch();
@@ -714,14 +933,29 @@ void SceneGame::InitSound(string config)
 	}
 }
 
-// Init all game variables in the scene from text file
-void SceneGame::InitVariables(string config)
+void SceneGame::UpdateMenu(void)
 {
 
 }
 
-void SceneGame::UpdateAI(double dt)
+void SceneGame::UpdateInGame(double dt)
 {
+}
+
+void SceneGame::RenderInterface(void)
+{
+	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::TEXT_BUTTON)
+		{
+			RenderTextOnScreen(gameInterfaces[currentState].buttons[i].getMesh(), gameInterfaces[currentState].buttons[i].getText(), Color(1, 1, 1), fontSize, gameInterfaces[currentState].buttons[i].getPos().x, gameInterfaces[currentState].buttons[i].getPos().y);
+		}
+
+		else
+		{
+			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale().x, gameInterfaces[currentState].buttons[i].getPos().x, gameInterfaces[currentState].buttons[i].getPos().y);
+		}
+	}
 }
 
 void SceneGame::RenderLevel(void)
@@ -762,7 +996,7 @@ void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 1024, 0, 800, -10, 10);
+	ortho.SetToOrtho(0, 1600, 0, 1200, -10, 10);
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 	viewStack.PushMatrix();

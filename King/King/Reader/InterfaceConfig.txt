@@ -1,5 +1,133 @@
 # Interface Config #
 # Init all buttons here
 {
-	
+	[NAME] InterfaceConfig
+	# Menu interface
+	# Ortho set to (0, 800, 0, 600)
+	{
+		[NAME] PlayButton
+		[GameState] Menu
+		[Type] Text
+		[Text] Play
+		[Pos] 300, 400
+		[Rotation] 0
+		[Scale] 10, 10
+		[Mesh] GEO_TEXT
+	}
+	{
+		[NAME] Instruction
+		[GameState] Menu
+		[Type] Text
+		[Text] Instruction
+		[Pos] 50, 350
+		[Rotation] 0.f
+		[Scale] 10, 10
+		[Mesh] GEO_TEXT
+	}
+	{
+		[NAME] HighScore
+		[GameState] Menu
+		[Type] Text
+		[Text] Score
+		[Pos] 250, 300
+		[Rotation] 0.f
+		[Scale] 10, 10
+		[Mesh] GEO_TEXT
+	}
+	{
+		[NAME] Options
+		[GameState] Menu
+		[Type] Text
+		[Text] Options
+		[Pos] 250, 250
+		[Rotation] 0.f
+		[Scale] 10, 10
+		[Mesh] GEO_TEXT
+	}
+	{
+		[NAME] Exit
+		[GameState] Menu
+		[Type] Text
+		[Text] Exit
+		[Pos] 300, 200
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+	# instruction interface
+	{
+		[NAME] Return
+		[GameState] Instruction
+		[Type] Text
+		[Text] Back
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+	# highscore interface
+	{
+		[NAME] Return
+		[GameState] HighScore
+		[Type] Text
+		[Text] Back
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+	# options interface
+	{
+		[NAME] Return
+		[GameState] Options
+		[Type] Text
+		[Text] Back
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+	# in game interface
+	{
+		[NAME] Pause
+		[GameState] Ingame
+		[Type] Text
+		[Text] Pause
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+
+	# pause interface
+	{
+		[NAME] Resume
+		[GameState] Pause
+		[Type] Text
+		[Text] Resume
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+	{
+		[NAME] Options
+		[GameState] Pause
+		[Type] Text
+		[Text] Options
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
+	{
+		[NAME] Exit
+		[GameState] Pause
+		[Type] Text
+		[Text] Exit
+		[Pos] 0.f, 0.f
+		[Rotation] 0.f
+		[Scale] 1.f, 1.f
+		[Mesh] GEO_TEXT
+	}
 }

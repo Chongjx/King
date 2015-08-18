@@ -19,7 +19,7 @@ Scene2D::~Scene2D(void)
 // default scene init
 void Scene2D::Init(void)
 {
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one

@@ -17,42 +17,40 @@ Buttons::~Buttons(void)
 {
 }
 
-void Buttons::Init(string name, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status)
+void Buttons::Init(string name, string text, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_TYPE type, BUTTON_STATUS status)
 {
 	this->name = name;
+	this->text = text;
 	this->mesh = mesh;
 	this->pos = pos;
 	this->scale = scale;
 	this->rotation = rotation;
+	this->type = type;
 	this->status = status;
-	this->type = IMAGE_BUTTON;
 }
 
-void Buttons::Init(string name, string text, Vector2 pos, Vector2 scale, float rotation, BUTTON_STATUS status)
-{
-	this->name = name;
-	this->text = text;
-	this->pos = pos;
-	this->scale = scale;
-	this->rotation = rotation;
-	this->status = status;
-	this->type = TEXT_BUTTON;
-}
-
-void Buttons::Update(Vector2 mousePos)
+void Buttons::Update(bool pressed, Vector2 mousePos)
 {
 	// update buttons status based on mouse position
 	if (mousePos.x < this->pos.x + this->scale.x * 0.5f && mousePos.x > this->pos.x - this->scale.x * 0.5f)
 	{
 		if (mousePos.y < this->pos.y + this->scale.y * 0.5f && mousePos.y > this->pos.y - this->scale.y * 0.5f)
 		{
+			if (pressed)
+			{
+				this->status = BUTTON_PRESSED;
+			}
 
+			else
+			{
+				this->status = BUTTON_HOVER;
+			}
 		}
 	}
 
 	else
 	{
-		//this->status = released;
+		this->status = BUTTON_RELEASED;
 	}
 }
 

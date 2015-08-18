@@ -37,10 +37,10 @@ void Mouse::Config(void)
 					string xCoord;
 					string yCoord;
 					int lastContinue = 0;
-					for (unsigned j = 0; j < attriValue.size() && j != ','; ++j)
+					for (unsigned j = 0; j < attriValue.size() && attriValue[j] != ','; ++j)
 					{
 						xCoord += attriValue[j];
-						lastContinue = j;
+						lastContinue = j + 2;
 					}
 
 					for (unsigned j = lastContinue; j < attriValue.size(); ++j)

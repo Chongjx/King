@@ -3,7 +3,7 @@
 Interface::Interface(void) :
 	interfaceType(-1)
 {
-	buttons.resize(0);
+	buttons.clear();
 }
 
 Interface::~Interface(void)

@@ -4,6 +4,7 @@
 #include "Scene2D.h"
 #include "TextTree.h"
 #include <irrKlang.h>
+
 #define DEBUG true
 
 using std::string;
@@ -15,6 +16,8 @@ class SceneGame : public Scene2D
 {
 	static const int NUM_LIGHTS = 1;
 	static const int TILESIZE = 32;
+	static const int GAME_WIDTH = 1024;
+	static const int GAME_HEIGHT = 800;
 	enum UNIFORM_TYPE
 	{
 		U_MVP = 0,
@@ -44,18 +47,6 @@ class SceneGame : public Scene2D
 		U_TOTAL,
 	};
 
-	/*enum GEOMETRY_TYPE
-	{
-	GEO_LIGHTBALL,
-	GEO_SPHERE,
-	GEO_QUAD,
-	GEO_DEBUGQUAD,
-	GEO_CIRCLE,
-	GEO_DEBUGCIRCLE,
-	GEO_TEXT,
-	GEO_MENU,
-	MAX_GEO,
-	};*/
 	enum AREAS
 	{
 		MAIN_AREA,
@@ -65,12 +56,13 @@ class SceneGame : public Scene2D
 	enum GAME_STATE
 	{
 		MENU_STATE,
+		INGAME_STATE,
 		INSTRUCTION_STATE,
 		HIGHSCORE_STATE,
 		OPTIONS_STATE,
 		PAUSE_STATE,
 		GAMEOVER_STATE,
-		EXIT_STATE,
+		MAX_STATE,
 	};
 public:
 	SceneGame(void);
@@ -78,19 +70,22 @@ public:
 
 	void Init(string config);
 	void Update(double dt);
+	void UpdateAI(double dt);
 	void Render(void);
 	void Exit(void);
 
 	void Config(void);
 	void InitShaders(void);
 	void InitMesh(string config);
-	void InitMenu(string config);
+	void InitInterface(string config);
 	void InitLevel(string config);
 	void InitVariables(string config);
 	void InitSound(string config);
 
-	void UpdateAI(double dt);
-
+	void UpdateMenu(void);
+	void UpdateInGame(double dt);
+	
+	void RenderInterface(void);
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
@@ -105,6 +100,11 @@ private:
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
 
+	GAME_STATE currentState;
+	float menuFontSize;
+	float fontSize;
+	float gameSpeed;
+	float gameVolume;
 	int currentLocation;
 };
 
