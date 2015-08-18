@@ -23,4 +23,8 @@
 		[NAME] Layout
 		[Directory] Reader\\LayoutConfig.txt
 	}
+	{
+		[NAME] Sound
+		[Directory] Reader\\SoundConfig.txt
+	}
 }
