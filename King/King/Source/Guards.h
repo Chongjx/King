@@ -12,6 +12,11 @@ public:
 	Guards(void);
 	~Guards(void);
 
+	// Initialise this class instance
+	void Init(void);
+	// Update the character
+	void Update(double dt);
+
 private:
 
 };

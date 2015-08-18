@@ -9,3 +9,13 @@ Prisoners::~Prisoners(void)
 {
 
 }
+
+void Prisoners::Init()
+{
+
+}
+
+void Prisoners::Update(double dt)
+{
+
+}
