@@ -10,6 +10,7 @@ using std::string;
 
 class SceneGame : public Scene2D
 {
+	static const int NUM_LIGHTS = 1;
 	enum UNIFORM_TYPE
 	{
 		U_MVP = 0,
@@ -39,7 +40,7 @@ class SceneGame : public Scene2D
 		U_TOTAL,
 	};
 
-	enum GEOMETRY_TYPE
+	/*enum GEOMETRY_TYPE
 	{
 		GEO_LIGHTBALL,
 		GEO_SPHERE,
@@ -50,7 +51,7 @@ class SceneGame : public Scene2D
 		GEO_TEXT,
 		GEO_MENU,
 		MAX_GEO,
-	};
+	};*/
 
 	enum GAME_STATE
 	{

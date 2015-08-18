@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "King", "King\King.vcxproj", "{E61F554B-6B3B-48F8-8B48-4DC56E0E5B23}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B594FE34-E00B-4E94-AD04-D1FF100AA5DC} = {B594FE34-E00B-4E94-AD04-D1FF100AA5DC}
+		{1EC42650-08A3-4965-9BB8-B6AD65E11A35} = {1EC42650-08A3-4965-9BB8-B6AD65E11A35}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reader", "Reader\Reader.vcxproj", "{1EC42650-08A3-4965-9BB8-B6AD65E11A35}"
 EndProject
