@@ -12,7 +12,7 @@ using std::string;
 
 enum MOUSE_KEY
 {
-	LEFT_BUTTON = 1,
+	LEFT_BUTTON,
 	RIGHT_BUTTON,
 	MIDDLE_BUTTON,
 	MAX_BUTTON,

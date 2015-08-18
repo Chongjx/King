@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Main\Scene">
       <UniqueIdentifier>{42a494f8-e389-4e9d-8416-25637c3df728}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\2D">
+      <UniqueIdentifier>{f7e7ba7f-5ba5-41ae-aa29-aff4736faf3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D">
+      <UniqueIdentifier>{4c097e35-8ecc-42d4-a96a-40fbcbaeb8aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -92,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="Source\SceneGame.cpp">
       <Filter>Source Files\Main\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject2D.cpp">
+      <Filter>Source Files\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D.h">
       <Filter>Header Files\Main\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject2D.h">
+      <Filter>Header Files\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

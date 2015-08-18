@@ -8,9 +8,14 @@
 		[FragmentShader] Shader//comg.fragmentshader
 	}
 	{
-		[NAME] Mesh
-		[Directory] Reader\\MeshConfig.txt
+		[NAME] Camera
+		
 	}
 	{
+		[NAME] Lights
+	}
+	{
+		[NAME] Mesh
+		[Directory] Reader\\MeshConfig.txt
 	}
 }

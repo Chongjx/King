@@ -29,29 +29,31 @@ void Mouse::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "currentPos")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "currentPos")
 				{
 					string xCoord;
 					string yCoord;
 					int lastContinue = 0;
-					for (unsigned j = 0; j < tempAttri.value.size() && j != ','; ++j)
+					for (unsigned j = 0; j < attriValue.size() && j != ','; ++j)
 					{
-						xCoord += tempAttri.value[j];
+						xCoord += attriValue[j];
 						lastContinue = j;
 					}
 
-					for (unsigned j = lastContinue; j < tempAttri.value.size(); ++j)
+					for (unsigned j = lastContinue; j < attriValue.size(); ++j)
 					{
-						yCoord += tempAttri.value[j];
+						yCoord += attriValue[j];
 					}
 
 					this->currentPosX = stoi(xCoord);
 					this->currentPosY = stoi(yCoord);
 				}
 
-				else if (tempAttri.name == "sensitivity")
+				else if (attriName == "sensitivity")
 				{
-					this->sensitivity = stof(tempAttri.value);
+					this->sensitivity = stof(attriValue);
 				}
 			}
 		}

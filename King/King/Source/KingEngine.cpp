@@ -71,24 +71,26 @@ void KEngine::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "WindowTitle")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "WindowTitle")
 				{
-					this->windowTitle = tempAttri.value;
+					this->windowTitle = attriValue;
 				}
 
-				else if (tempAttri.name == "WindowWidth")
+				else if (attriName == "WindowWidth")
 				{
-					this->m_window_width = stoi(tempAttri.value);
+					this->m_window_width = stoi(attriValue);
 				}
 
-				else if (tempAttri.name == "WindowHeight")
+				else if (attriName == "WindowHeight")
 				{
-					this->m_window_height = stoi(tempAttri.value);
+					this->m_window_height = stoi(attriValue);
 				}
 
-				else if (tempAttri.name == "FullScreen")
+				else if (attriName == "FullScreen")
 				{
-					if (tempAttri.value == "true" || tempAttri.value == "1")
+					if (attriValue == "true" || attriValue == "1")
 					{
 						this->fullScreen = true;
 					}
@@ -99,15 +101,15 @@ void KEngine::Config(void)
 					}
 				}
 
-				else if (tempAttri.name == "FrameRate")
+				else if (attriName == "FrameRate")
 				{
-					this->FPS = stoi(tempAttri.value);
+					this->FPS = stoi(attriValue);
 					this->frameTime = 1000 / FPS;
 				}
 
-				else if (tempAttri.name == "Run")
+				else if (attriName == "Run")
 				{
-					if (tempAttri.value == "true" || tempAttri.value == "1")
+					if (attriValue == "true" || attriValue == "1")
 					{
 						this->run = true;
 					}

@@ -3,16 +3,34 @@
 {
 	[NAME] MeshConfig
 	{
-		[NAME] Text
+		[NAME] GEO_TEXT
 		[Type] Text
 		[TextRow] 16
 		[TextCol] 16
 		[Texture] Image\\text.tga
 	}
 	{
-		[NAME] Menu
+		[NAME] GEO_MENU
 		[Type] 2D
 		[Texture] Image\\menu.tga
+	}
+	{
+		[NAME] GEO_CHARACTER
+		[Type] SpriteAnimation
+		[SpriteRow] 16
+		[SpriteCol] 16
+		[Texture] Image\\characterSprite.tga
+		
+		# Init all animations in the sprite 
+		{
+			[NAME] WALK
+			[ID] 0
+			[StartFrame] 0
+			[EndFrame] 1
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
 	}
 }
 

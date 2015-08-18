@@ -44,7 +44,17 @@ void SceneGame::Exit(void)
 	for (vector<Mesh*>::iterator mesh = meshList.begin(); mesh != meshList.end(); ++mesh)
 	{
 		Mesh* temp = *mesh;
-		if (temp != NULL)
+
+		// handle spriteAnimation
+		SpriteAnimation* checkSprite = dynamic_cast<SpriteAnimation*>(temp);
+
+		if (checkSprite != NULL)
+		{
+			checkSprite->~SpriteAnimation();
+			checkSprite = NULL;
+		}
+
+		else
 		{
 			delete temp;
 			temp = NULL;
@@ -104,6 +114,11 @@ void SceneGame::InitShaders(void)
 void SceneGame::InitMesh(string config)
 {
 	Branch meshBranch = TextTree::FileToRead(config);
+	
+	if (DEBUG)
+	{
+		meshBranch.printBranch();
+	}
 
 	for (vector<Branch>::iterator branch = meshBranch.childBranches.begin(); branch != meshBranch.childBranches.end(); ++branch)
 	{
@@ -144,18 +159,15 @@ void SceneGame::InitMesh(string config)
 		};
 
 		// default 2D mesh variables
-		int meshTextRow = 0;
-		int meshTextCol = 0;
 		int meshPosX = 0;
 		int meshPosY = 0;
+
+		int meshTextRow = 0;
+		int meshTextCol = 0;
 
 		// Spirte Animation
 		int meshSpriteRow = 0;
 		int meshSpriteCol = 0;
-		int startFrame = 0;
-		int endFrame = 0;
-		bool alwaysRepeat = false;
-		bool playOnStart = false;
 
 		// Tile sheet
 		int meshTileRow = 0;
@@ -213,50 +225,14 @@ void SceneGame::InitMesh(string config)
 				directory = attriValue;
 			}
 
-			else if (attriName == "SpriteAnimationRow")
+			else if (attriName == "SpriteRow")
 			{
 				meshSpriteRow = stoi(attriValue);
 			}
 
-			else if (attriName == "SpriteAnimationCol")
+			else if (attriName == "SpriteCol")
 			{
 				meshSpriteCol = stoi(attriValue);
-			}
-
-			else if (attriName == "StartFrame")
-			{
-				startFrame = stoi(attriValue);
-			}
-
-			else if (attriName == "EndFrame")
-			{
-				endFrame = stoi(attriValue);
-			}
-
-			else if (attriName == "Repeat")
-			{
-				if (attriValue == "true" || attriValue == "1")
-				{
-					alwaysRepeat = 1;
-				}
-				
-				else
-				{
-					alwaysRepeat= 0;
-				}
-			}
-
-			else if (attriName == "PlayOnStart")
-			{
-				if (attriValue == "true" || attriValue == "1")
-				{
-					playOnStart = 1;
-				}
-				
-				else
-				{
-					playOnStart = 0;
-				}
 			}
 
 			else if (attriName == "TextRow")
@@ -361,12 +337,76 @@ void SceneGame::InitMesh(string config)
 
 			SpriteAnimation *sa = dynamic_cast<SpriteAnimation*>(mesh);
 
-			if (sa)
+			Branch tempBranch = *branch;
+			// handle animations variables
+			for (vector<Branch>::iterator childbranch = tempBranch.childBranches.begin(); childbranch != tempBranch.childBranches.end(); ++childbranch)
 			{
-				//Animation* anime = new Animation();
-				//anime->Set(startFrame, endFrame, alwaysRepeat, playOnStart, meshVar[VAR_ANIM_TIME]);
-				//sa->animations.push_back(anime);
-				//sa->animations
+				int id = 0;
+				int startFrame = 0;
+				int endFrame = 0;
+				bool repeat = false;
+				bool play = false;
+				float animationTime = 0.f;
+
+				for (vector<Attribute>::iterator childAttri = childbranch->attributes.begin(); childAttri != childbranch->attributes.end(); ++childAttri)
+				{
+					Attribute tempAttri = *childAttri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "ID")
+					{
+						id = stoi(attriValue);
+					}
+
+					else if (attriName == "StartFrame")
+					{
+						startFrame = stoi(attriValue);
+					}
+
+					else if (attriName == "EndFrame")
+					{
+						endFrame = stoi(attriValue);
+					}
+
+					else if (attriName == "Repeat")
+					{
+						if (attriValue == "true" || attriValue == "1")
+						{
+							repeat = true;
+						}
+
+						else
+						{
+							 repeat = false;
+						}
+					}
+
+					else if (attriName == "Play")
+					{
+						if (attriValue == "true" || attriValue == "1")
+						{
+							play = true;
+						}
+
+						else
+						{
+							 play = false;
+						}
+					}
+
+					else if (attriName == "AnimationTime")
+					{
+						animationTime = stof(attriValue);
+					}
+				}
+
+				if (sa)
+				{
+					Animation* anime = new Animation();
+					anime->Set(id, startFrame, endFrame, repeat, play, animationTime);
+					sa->animations.push_back(anime);
+				}
 			}
 		}
 

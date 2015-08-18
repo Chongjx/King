@@ -394,7 +394,7 @@ Mesh* MeshBuilder::GenerateCircle(const std::string &meshName, Color color, unsi
 		vertex_buffer_data.push_back(v);
 	}
 
-	for (int i = 1; i < vertex_buffer_data.size(); i++)
+	for (unsigned i = 1; i < vertex_buffer_data.size(); i++)
 	{
 		index_buffer_data.push_back(0);
 		index_buffer_data.push_back(i);
@@ -437,7 +437,7 @@ Mesh* MeshBuilder::GenerateDebugCircle(const std::string &meshName, Color color,
 		vertex_buffer_data.push_back(v);
 	}
 
-	for (int i = 1; i < vertex_buffer_data.size(); i++)
+	for (unsigned i = 1; i < vertex_buffer_data.size(); i++)
 	{
 		index_buffer_data.push_back(0);
 		index_buffer_data.push_back(i);
