@@ -54,6 +54,23 @@
     </Filter>
     <Filter Include="Source Files\2D\UI">
       <UniqueIdentifier>{6cf66330-10f7-4a7b-ade9-8086d0af354d}</UniqueIdentifier>
+    <Filter Include="Header Files\2D\Character">
+      <UniqueIdentifier>{fc3adf57-54bf-44cb-85ca-280cdf000046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Character">
+      <UniqueIdentifier>{d992983a-d9f9-4266-9262-4cd28c50d7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Character\Player">
+      <UniqueIdentifier>{91a61ff6-fc99-4593-976d-f2b202d066d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Character\AI">
+      <UniqueIdentifier>{c75158db-b139-45b5-8cad-c1b2bbae54d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Character\AI">
+      <UniqueIdentifier>{cb16d8c0-15bf-411d-aade-bc13066664fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Character\Player">
+      <UniqueIdentifier>{b9c07c6e-901f-4ea2-80bf-c7274b5ec11f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +127,20 @@
     </ClCompile>
     <ClCompile Include="Source\Buttons.cpp">
       <Filter>Source Files\2D\UI</Filter>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Source Files\2D\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source Files\2D\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI.cpp">
+      <Filter>Source Files\2D\Character\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Guards.cpp">
+      <Filter>Source Files\2D\Character\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Prisoners.cpp">
+      <Filter>Source Files\2D\Character\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +209,20 @@
     </ClInclude>
     <ClInclude Include="Source\Room.h">
       <Filter>Header Files\2D</Filter>
+    <ClInclude Include="Source\Character.h">
+      <Filter>Header Files\2D\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Header Files\2D\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI.h">
+      <Filter>Header Files\2D\Character\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Guards.h">
+      <Filter>Header Files\2D\Character\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Prisoners.h">
+      <Filter>Header Files\2D\Character\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
