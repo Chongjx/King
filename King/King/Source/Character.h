@@ -2,8 +2,9 @@
 #define CHATACTER_H
 
 #include "Vector2.h"
+#include "GameObject2D.h"
 
-class Character
+class Character : public GameObject2D
 {
 
 public:

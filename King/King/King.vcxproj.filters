@@ -55,6 +55,12 @@
     <Filter Include="Source Files\2D\UI">
       <UniqueIdentifier>{6cf66330-10f7-4a7b-ade9-8086d0af354d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\2D\Character">
+      <UniqueIdentifier>{6316a63c-eb42-4023-a5a3-52e97bea18d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Character">
+      <UniqueIdentifier>{c57d91ab-d541-453f-9dfb-ef1f9692f7df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -111,8 +117,20 @@
     <ClCompile Include="Source\Buttons.cpp">
       <Filter>Source Files\2D\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMenu.cpp">
-      <Filter>Source Files\2D\UI</Filter>
+    <ClCompile Include="Source\Prisoners.cpp">
+      <Filter>Source Files\2D\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI.cpp">
+      <Filter>Source Files\2D\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Source Files\2D\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Guards.cpp">
+      <Filter>Source Files\2D\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source Files\2D\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,8 +200,20 @@
     <ClInclude Include="Source\Room.h">
       <Filter>Header Files\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMenu.h">
-      <Filter>Header Files\2D\UI</Filter>
+    <ClInclude Include="Source\AI.h">
+      <Filter>Header Files\2D\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Prisoners.h">
+      <Filter>Header Files\2D\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character.h">
+      <Filter>Header Files\2D\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Guards.h">
+      <Filter>Header Files\2D\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Header Files\2D\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
