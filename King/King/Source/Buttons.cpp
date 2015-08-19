@@ -65,8 +65,6 @@ void Buttons::Update(bool pressed, double mouseX, double mouseY)
 	}
 
 	prevStatus = status;
-
-	std::cout << status << std::endl;
 }
 
 void Buttons::setName(string name)
