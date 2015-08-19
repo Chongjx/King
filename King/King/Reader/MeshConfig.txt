@@ -370,13 +370,13 @@
 		[Type] TileSheet
 		[TileRow] 25
 		[TileCol] 41
-		[Texture] Image\\TileSheet.tga
+		[Texture] Image\\Prison.tga
 	}
 	{
 		[NAME] GEO_DEBUGQUAD
 		[Type] DebugQuad
 		[Length] 1
-		[Color] 1, 0, 0
+		[Color] 1, 0.5, 0.7
 	}
 	{
 		[NAME] GEO_DEBUGCIRCLE
