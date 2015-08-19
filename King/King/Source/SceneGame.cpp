@@ -130,7 +130,6 @@ void SceneGame::Render(void)
 	}
 
 	RenderInterface();
-
 	std::ostringstream ss;
 	ss.precision(5);
 	ss << "FPS: " << fps;
@@ -651,6 +650,7 @@ void SceneGame::InitInterface(string config)
 	{
 		interfaceBranch.printBranch();
 	}
+		
 
 	for (vector<Branch>::iterator branch = interfaceBranch.childBranches.begin(); branch != interfaceBranch.childBranches.end(); ++branch)
 	{
@@ -765,7 +765,7 @@ void SceneGame::InitInterface(string config)
 
 		Buttons tempButton;
 		tempButton.Init(name, text, mesh, pos, scale, rotation, type);
-
+	
 		gameInterfaces[storagePos].buttons.push_back(tempButton);
 	}
 }
@@ -894,7 +894,11 @@ void SceneGame::InitVariables(string config)
 void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
-	irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+	
+		std::string soundName;
+	std::string soundFile;
+	float volume;
+	bool loop;
 
 	if (DEBUG)
 	{
@@ -902,17 +906,18 @@ void SceneGame::InitSound(string config)
 	}
 	for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
 	{
-		string soundfile="";
-		bool loop=false;
-		float volume=0.0f;
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 		{
 			Attribute tempAttri = *attri;
 			string attriName = tempAttri.name;
 			string attriValue = tempAttri.value;
+			if(attriName=="SoundName")
+			{
+				soundName = attriValue;
+			}
 			if(attriName=="SoundFile")
 			{
-				soundfile = attriValue;
+				soundFile = attriValue;
 			}
 			else if(attriName=="Loop")
 			{
@@ -920,16 +925,19 @@ void SceneGame::InitSound(string config)
 				{
 					loop = true;
 				}
+				else
+				{
+					loop = false;
+				}
 			}
 			else if(attriName=="DefaultVol")
 			{
 				volume = stof(attriValue);
 			}
 		}
-
-		irrklang::ISoundSource* bookSound = Soundengine->addSoundSourceFromFile(soundfile.c_str()); 
-		bookSound->setDefaultVolume(volume);
-		Soundengine->play2D(bookSound,loop);
+		Sound tempSound;
+		tempSound.Init(soundName,soundFile,volume,loop);
+		sound.sounds.push_back(tempSound);
 	}
 }
 
@@ -944,6 +952,7 @@ void SceneGame::UpdateInGame(double dt)
 
 void SceneGame::RenderInterface(void)
 {
+	
 	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
 		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::TEXT_BUTTON)

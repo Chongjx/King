@@ -3,7 +3,7 @@
 
 #include "Scene2D.h"
 #include "TextTree.h"
-#include <irrKlang.h>
+
 
 #define DEBUG true
 
@@ -11,6 +11,7 @@ using std::string;
 
 #include "Room.h"
 #include "Interface.h"
+#include "Sound.h"
 
 class SceneGame : public Scene2D
 {
@@ -106,6 +107,7 @@ private:
 	float gameSpeed;
 	float gameVolume;
 	int currentLocation;
+	Sound sound;
 };
 
 #endif
