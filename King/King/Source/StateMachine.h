@@ -8,11 +8,12 @@ public:
 
 	enum State
 	{
+		ALERT,
+		DEAD,
 		IDLE,
-		WALK,
 		RUN,
-
-
+		SLEEP,
+		WALK,
 	};
 
 private:

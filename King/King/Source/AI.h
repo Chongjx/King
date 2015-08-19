@@ -15,12 +15,12 @@ public:
 	// Initialise this class instance
 	void Init(void);
 	// Update the character
-	void Update(double dt);
+	void Update(double dt, bool updating);
+
+
 
 private:
 
 };
 
 #endif
-
-/*update AI using bool*/

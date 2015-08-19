@@ -996,6 +996,7 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
+
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
