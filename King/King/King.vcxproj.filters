@@ -61,23 +61,29 @@
     <Filter Include="Source Files\2D\Character">
       <UniqueIdentifier>{c57d91ab-d541-453f-9dfb-ef1f9692f7df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\2D\Item">
-      <UniqueIdentifier>{55144c34-c590-4d7f-a3ff-2cc2e06868b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\2D\Item\Type">
-      <UniqueIdentifier>{fdd37e96-88ad-47d6-bd22-ec5646ca4db2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\2D\Item">
-      <UniqueIdentifier>{789eeaef-3cda-4f05-99a5-c49240b5a9be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\2D\Item\Type">
-      <UniqueIdentifier>{0babeda7-cba3-4f62-b6b1-5f4695967f53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\2D\Character\AI">
       <UniqueIdentifier>{b858185a-a3ea-4df3-96c6-637f245133ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\2D\Character\AI">
       <UniqueIdentifier>{dc0fb222-e436-4aeb-9e86-2a8274501d1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Inventory">
+      <UniqueIdentifier>{92bc9bcf-0a71-49f6-a309-76c3b41d8ef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Inventory\Item">
+      <UniqueIdentifier>{55144c34-c590-4d7f-a3ff-2cc2e06868b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\2D\Inventory\Item\Type">
+      <UniqueIdentifier>{fdd37e96-88ad-47d6-bd22-ec5646ca4db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Inventory">
+      <UniqueIdentifier>{c2a99c08-9f06-497f-8049-4fd092039408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Inventory\Item">
+      <UniqueIdentifier>{789eeaef-3cda-4f05-99a5-c49240b5a9be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\Inventory\Item\Type">
+      <UniqueIdentifier>{0babeda7-cba3-4f62-b6b1-5f4695967f53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,16 +148,16 @@
       <Filter>Source Files\2D\Character</Filter>
     </ClCompile>
     <ClCompile Include="Source\ItemClothing.cpp">
-      <Filter>Source Files\2D\Item\Type</Filter>
+      <Filter>Source Files\2D\Inventory\Item\Type</Filter>
     </ClCompile>
     <ClCompile Include="Source\ItemMisc.cpp">
-      <Filter>Source Files\2D\Item\Type</Filter>
+      <Filter>Source Files\2D\Inventory\Item\Type</Filter>
     </ClCompile>
     <ClCompile Include="Source\ItemWeapon.cpp">
-      <Filter>Source Files\2D\Item\Type</Filter>
+      <Filter>Source Files\2D\Inventory\Item\Type</Filter>
     </ClCompile>
     <ClCompile Include="Source\Item.cpp">
-      <Filter>Source Files\2D\Item</Filter>
+      <Filter>Source Files\2D\Inventory\Item</Filter>
     </ClCompile>
     <ClCompile Include="Source\AI.cpp">
       <Filter>Source Files\2D\Character\AI</Filter>
@@ -170,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="Source\Sound.cpp">
       <Filter>Source Files\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inventory.cpp">
+      <Filter>Source Files\2D\Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,16 +252,16 @@
       <Filter>Header Files\2D\Character</Filter>
     </ClInclude>
     <ClInclude Include="Source\Item.h">
-      <Filter>Header Files\2D\Item</Filter>
+      <Filter>Header Files\2D\Inventory\Item</Filter>
     </ClInclude>
     <ClInclude Include="Source\ItemClothing.h">
-      <Filter>Header Files\2D\Item\Type</Filter>
+      <Filter>Header Files\2D\Inventory\Item\Type</Filter>
     </ClInclude>
     <ClInclude Include="Source\ItemMisc.h">
-      <Filter>Header Files\2D\Item\Type</Filter>
+      <Filter>Header Files\2D\Inventory\Item\Type</Filter>
     </ClInclude>
     <ClInclude Include="Source\ItemWeapon.h">
-      <Filter>Header Files\2D\Item\Type</Filter>
+      <Filter>Header Files\2D\Inventory\Item\Type</Filter>
     </ClInclude>
     <ClInclude Include="Source\Room.h">
       <Filter>Header Files\2D</Filter>
@@ -274,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Source\Sound.h">
       <Filter>Header Files\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inventory.h">
+      <Filter>Header Files\2D\Inventory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
