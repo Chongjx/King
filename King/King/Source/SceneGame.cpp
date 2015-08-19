@@ -138,7 +138,6 @@ void SceneGame::Render(void)
 	}
 
 	RenderInterface();
-
 	std::ostringstream ss;
 	ss.precision(5);
 	ss << "FPS: " << fps;
@@ -740,6 +739,7 @@ void SceneGame::InitInterface(string config)
 	{
 		interfaceBranch.printBranch();
 	}
+		
 
 	for (vector<Branch>::iterator branch = interfaceBranch.childBranches.begin(); branch != interfaceBranch.childBranches.end(); ++branch)
 	{
@@ -835,7 +835,6 @@ void SceneGame::InitInterface(string config)
 
 		Buttons tempButton;
 		tempButton.Init(name, text, mesh, pos, scale, rotation, tempColor, type);
-
 		gameInterfaces[storagePos].buttons.push_back(tempButton);
 	}
 }
@@ -950,6 +949,11 @@ void SceneGame::InitSound(string config)
 	Branch soundBranch = TextTree::FileToRead(config);
 
 	/*irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+	
+	std::string soundName;
+	std::string soundFile;
+	float volume;
+	bool loop;
 
 	if (DEBUG)
 	{
@@ -957,23 +961,28 @@ void SceneGame::InitSound(string config)
 	}
 	for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
 	{
-		string soundfile="";
-		bool loop=false;
-		float volume=0.0f;
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 		{
 			Attribute tempAttri = *attri;
 			string attriName = tempAttri.name;
 			string attriValue = tempAttri.value;
+			if(attriName=="SoundName")
+			{
+				soundName = attriValue;
+			}
 			if(attriName=="SoundFile")
 			{
-				soundfile = attriValue;
+				soundFile = attriValue;
 			}
 			else if(attriName=="Loop")
 			{
 				if (attriValue == "true" || attriValue == "1")
 				{
 					loop = true;
+				}
+				else
+				{
+					loop = false;
 				}
 			}
 			else if(attriName=="DefaultVol")
@@ -1113,6 +1122,10 @@ void SceneGame::UpdateState(void)
 
 			updated = true;
 		}
+
+		/*Sound tempSound;
+		tempSound.Init(soundName,soundFile,volume,loop);
+		sound.sounds.push_back(tempSound);*/
 	}
 }
 
@@ -1150,6 +1163,7 @@ void SceneGame::changeScene(GAME_STATE nextState)
 
 void SceneGame::RenderInterface(void)
 {
+	
 	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
 		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::TEXT_BUTTON)
@@ -1198,6 +1212,7 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
+
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)

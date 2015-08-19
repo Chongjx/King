@@ -3,6 +3,7 @@
 
 #include "Character.h"
 
+
 class Player: public Character
 {
 
@@ -13,7 +14,7 @@ public:
 	~Player(void);
 
 	// Initialise this class instance
-	void Init(void);
+	void Init(Vector2 pos, int tiles, int mapLocation);
 	// Update the character
 	void Update(double dt);
 
@@ -22,13 +23,22 @@ public:
 	// Get to know which map the player is at now
 	int GetMapLocation(void);
 
+	// Get the player's energy
+	double GetEnergy(void);
+	// Updates the player's energy
+	void UpdateEnergy(double dt);
+
 	// To contrain player at certain point of map
 	void ConstrainPlayer(void); /* parameters to be added */
 
 private:
 
+	// variable to know which map the player is at
 	int mapLocation;
 
+	// Energy data
+	double energy;
+	const double MAX_ENERGY;
 };
 
 #endif

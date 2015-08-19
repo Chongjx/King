@@ -3,7 +3,7 @@
 
 #include "Scene2D.h"
 #include "TextTree.h"
-#include <irrKlang.h>
+
 
 #define DEBUG true
 
@@ -11,6 +11,7 @@ using std::string;
 
 #include "Room.h"
 #include "Interface.h"
+#include "Sound.h"
 
 class SceneGame : public Scene2D
 {
@@ -121,6 +122,7 @@ private:
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
 	void stringToBool(string text, bool &boo);
+	Sound sound;
 };
 
 #endif

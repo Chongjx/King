@@ -15,7 +15,13 @@ void AI::Init()
 
 }
 
-void AI::Update(double dt)
+void AI::Update(double dt, bool updating)
 {
+	if (updating == true)
+	{
 
+	}
+	else
+	{
+	}
 }

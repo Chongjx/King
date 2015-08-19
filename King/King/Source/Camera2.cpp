@@ -23,7 +23,7 @@ void Camera2::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 
 void Camera2::Update(double dt)
 {
-	static const float CAMERA_SPEED = 50.f;
+	/*static const float CAMERA_SPEED = 50.f;
 	if(KEngine::isKeyPressed(VK_LEFT) || KEngine::isKeyPressed('A'))
 	{
 		float yaw = (float)(-CAMERA_SPEED * dt);
@@ -81,7 +81,7 @@ void Camera2::Update(double dt)
 	if(KEngine::isKeyPressed('R'))
 	{
 		Reset();
-	}
+	}*/
 }
 
 void Camera2::Reset()

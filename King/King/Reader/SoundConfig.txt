@@ -1,0 +1,18 @@
+# Soundsetup #
+# Init all the Sounds #
+{
+	[NAME] SoundConfig
+	{
+		[SoundName] Sound_Footstep
+		[SoundFile] Sound\\Footstep.ogg
+		[Loop] false
+		[DefaultVol] 1.0f	
+	}
+	{
+		[NAME] Sound_Bookflip
+		[SoundFile] Sound\\bookFlip.ogg
+		[Loop] false
+		[DefaultVol] 0.1f	
+	}
+}
+#Volume range 1.0f - 0.1f#

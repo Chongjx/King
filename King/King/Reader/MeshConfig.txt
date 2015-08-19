@@ -15,18 +15,351 @@
 		[Texture] Image\\menu.tga
 	}
 	{
-		[NAME] GEO_CHARACTER
+		[NAME] GEO_PLAYER
 		[Type] SpriteAnimation
-		[SpriteRow] 16
-		[SpriteCol] 16
-		[Texture] Image\\characterSprite.tga
+		[SpriteRow] 4
+		[SpriteCol] 6
+		[Texture] Image\\playerSprite.tga
 		
 		# Init all animations in the sprite 
 		{
-			[NAME] WALK
+			[NAME] WALK_UP
 			[ID] 0
+			[StartFrame] 3
+			[EndFrame] 5
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_DOWN
+			[ID] 1
 			[StartFrame] 0
+			[EndFrame] 2
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_LEFT
+			[ID] 2
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_RIGHT
+			[ID] 3
+			[StartFrame] 15
+			[EndFrame] 17
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_UP
+			[ID] 4
+			[StartFrame] 9
+			[EndFrame] 11
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_DOWN
+			[ID] 5
+			[StartFrame] 6
+			[EndFrame] 8
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_LEFT
+			[ID] 6
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_RIGHT
+			[ID] 7
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_UP
+			[ID] 8
+			[StartFrame] 4
+			[EndFrame] 4
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_DOWN
+			[ID] 9
+			[StartFrame] 1
 			[EndFrame] 1
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_LEFT
+			[ID] 10
+			[StartFrame] 13
+			[EndFrame] 13
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_RIGHT
+			[ID] 11
+			[StartFrame] 16
+			[EndFrame] 16
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+	}
+	{
+		[NAME] GEO_PRISONER
+		[Type] SpriteAnimation
+		[SpriteRow] 4
+		[SpriteCol] 6
+		[Texture] Image\\prisonerSprite.tga
+		
+		# Init all animations in the sprite 
+		{
+			[NAME] WALK_UP
+			[ID] 0
+			[StartFrame] 3
+			[EndFrame] 5
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_DOWN
+			[ID] 1
+			[StartFrame] 0
+			[EndFrame] 2
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_LEFT
+			[ID] 2
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_RIGHT
+			[ID] 3
+			[StartFrame] 15
+			[EndFrame] 17
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_UP
+			[ID] 4
+			[StartFrame] 9
+			[EndFrame] 11
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_DOWN
+			[ID] 5
+			[StartFrame] 6
+			[EndFrame] 8
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_LEFT
+			[ID] 6
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_RIGHT
+			[ID] 7
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_UP
+			[ID] 8
+			[StartFrame] 4
+			[EndFrame] 4
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_DOWN
+			[ID] 9
+			[StartFrame] 1
+			[EndFrame] 1
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_LEFT
+			[ID] 10
+			[StartFrame] 13
+			[EndFrame] 13
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_RIGHT
+			[ID] 11
+			[StartFrame] 16
+			[EndFrame] 16
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+	}
+	{
+		[NAME] GEO_GUARD
+		[Type] SpriteAnimation
+		[SpriteRow] 4
+		[SpriteCol] 6
+		[Texture] Image\\guardSprite.tga
+		
+		# Init all animations in the sprite 
+		{
+			[NAME] WALK_UP
+			[ID] 0
+			[StartFrame] 3
+			[EndFrame] 5
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_DOWN
+			[ID] 1
+			[StartFrame] 0
+			[EndFrame] 2
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_LEFT
+			[ID] 2
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] WALK_RIGHT
+			[ID] 3
+			[StartFrame] 15
+			[EndFrame] 17
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_UP
+			[ID] 4
+			[StartFrame] 9
+			[EndFrame] 11
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_DOWN
+			[ID] 5
+			[StartFrame] 6
+			[EndFrame] 8
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_LEFT
+			[ID] 6
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] RUN_RIGHT
+			[ID] 7
+			[StartFrame] 12
+			[EndFrame] 14
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_UP
+			[ID] 8
+			[StartFrame] 4
+			[EndFrame] 4
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_DOWN
+			[ID] 9
+			[StartFrame] 1
+			[EndFrame] 1
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_LEFT
+			[ID] 10
+			[StartFrame] 13
+			[EndFrame] 13
+			[Repeat] true
+			[Play] true
+			[AnimationTime] 1.0
+		}
+		{
+			[NAME] IDLE_RIGHT
+			[ID] 11
+			[StartFrame] 16
+			[EndFrame] 16
 			[Repeat] true
 			[Play] true
 			[AnimationTime] 1.0
