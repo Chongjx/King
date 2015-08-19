@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Material.h"
+#include "Vertex.h"
 
 class Mesh
 {

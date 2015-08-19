@@ -30,13 +30,17 @@ public:
 	void Run(void);
 	void Exit(void);
 
-	Mouse* getMouse(void);
+	static Mouse* getMouse(void);
 	
 	bool getKeyboardUpdate(void);
 	bool getMouseUpdate(void);
-	bool getRun(void);
+	static void setRun(bool brun);
+	static bool getRun(void);
 	
 	static bool isKeyPressed(unsigned short key);
+
+	static int getWindowWidth(void);
+	static int getWindowHeight(void);
 private:
 	KEngine();
 	~KEngine();
@@ -50,13 +54,13 @@ private:
 	double m_dAccumulatedTime_ThreadTwo;
 
 	Branch engineBranch;
-	Mouse* mouse;
+	static Mouse* mouse;
 	unsigned char FPS;
 	unsigned int frameTime;
-	int m_window_width;
-	int m_window_height;
+	static int windowWidth;
+	static int windowHeight;
 	string windowTitle;
-	bool run;
+	static bool run;
 	bool fullScreen;
 
 	// The handler for the scene

@@ -16,8 +16,6 @@ class SceneGame : public Scene2D
 {
 	static const int NUM_LIGHTS = 1;
 	static const int TILESIZE = 32;
-	static const int GAME_WIDTH = 1024;
-	static const int GAME_HEIGHT = 800;
 	enum UNIFORM_TYPE
 	{
 		U_MVP = 0,
@@ -61,7 +59,7 @@ class SceneGame : public Scene2D
 		HIGHSCORE_STATE,
 		OPTIONS_STATE,
 		PAUSE_STATE,
-		GAMEOVER_STATE,
+		EXIT_STATE,
 		MAX_STATE,
 	};
 public:
@@ -76,36 +74,53 @@ public:
 
 	void Config(void);
 	void InitShaders(void);
+	void InitSettings(string config);
 	void InitMesh(string config);
 	void InitInterface(string config);
 	void InitLevel(string config);
 	void InitVariables(string config);
 	void InitSound(string config);
 
+	void UpdateOpengl(void);
+	void UpdateMouse(void);
+	void UpdateState(void);
+	void UpdateEffect(void);
 	void UpdateMenu(void);
 	void UpdateInGame(double dt);
+
+	void changeScene(GAME_STATE nextState);
 	
 	void RenderInterface(void);
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
 
-	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size = 1.0f, const float x = 0.0f, const float y = 0.0f, const bool rotate = false);
+	void Render3DMesh(Mesh *mesh, bool enableLight);
+	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
+	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size = 1.0f, const float x = 0.0f, const float y = 0.0f, const float rotation = 0.f);
+	void Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 size, const Vector2 pos, const float rotation = 0.f);
 
 	Mesh* findMesh(string meshName);
 
 private:
+	float sceneWidth;
+	float sceneHeight;
+
 	Branch gameBranch;
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
+	Vector2 mousePos;
 
 	GAME_STATE currentState;
-	float menuFontSize;
-	float fontSize;
+	float defaultFontSize;
+	float specialFontSize;
 	float gameSpeed;
 	float gameVolume;
 	int currentLocation;
+
+	void stringToVector(string text, Vector2 &vec);
+	void stringToVector(string text, Vector3 &vec);
+	void stringToBool(string text, bool &boo);
 };
 
 #endif

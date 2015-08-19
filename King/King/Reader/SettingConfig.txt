@@ -1,0 +1,29 @@
+# Scene setting #
+# Resolution, camera, gameSpeed everything here
+{
+	[NAME] SceneSetting
+	{
+		[NAME] Resolution
+		[SceneWidth] 1024
+		[SceneHeight] 800
+	}
+	{
+		[NAME] Camera
+		[CameraPos] 0, 0, 10
+		[CameraTarget] 0, 0, 0
+		[CameraUp] 0, 1, 0
+	}
+	{
+		[NAME] Font
+		[Default] 75
+		[Special] 50
+	}
+	{
+		[NAME] GameSpeed
+		[Speed] 1
+	}
+	{
+		[NAME] GameVolume
+		[Volume] 1
+	}
+}

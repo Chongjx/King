@@ -19,7 +19,4 @@
 		[EnabelYScroll] true
 		[Directory] Image\\Map\\layout.csv
 	}
-	{
-		[NAME] SubRoom
-	}
 }

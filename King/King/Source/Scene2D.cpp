@@ -37,7 +37,6 @@ void Scene2D::Init(void)
 void Scene2D::Update(double dt)
 {
 	fps = (float)(1.f / dt);
-	camera.Update(dt);
 }
 
 // dafault scene render

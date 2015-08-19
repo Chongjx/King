@@ -1,7 +1,5 @@
-
 #include "Mesh.h"
 #include "GL\glew.h"
-#include "Vertex.h"
 
 Mesh::Mesh() :
 	name(""),

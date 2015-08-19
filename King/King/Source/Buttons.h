@@ -22,21 +22,23 @@ public:
 		BUTTON_PRESSED,
 		BUTTON_RELEASED,
 		BUTTON_HOVER,
+		BUTTON_IDLE,
 		MAX_STATUS,
 	};
 
 	Buttons(void);
 	~Buttons(void);
 
-	void Init(string name, string text, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, BUTTON_TYPE type, BUTTON_STATUS status = BUTTON_RELEASED);
+	void Init(string name, string text, Mesh* mesh, Vector2 pos, Vector2 scale, float rotation, Color textColor, BUTTON_TYPE type, BUTTON_STATUS status = BUTTON_IDLE);
 
-	void Update(bool pressed, Vector2 mousePos);
+	void Update(bool pressed, double mousePosX, double mousePosY);
 
 	void setName(string name);
 	void setText(string text);
 	void setPos(Vector2 pos);
 	void setScale(Vector2 scale);
 	void setRotation(float rotation);
+	void setColor(Color col);
 	void setType(BUTTON_TYPE type);
 	void setStatus(BUTTON_STATUS status);
 
@@ -45,6 +47,7 @@ public:
 	Vector2 getPos(void) const;
 	Vector2 getScale(void) const;
 	float getRotation(void) const;
+	Color getColor(void) const;
 	BUTTON_TYPE getType(void) const;
 	BUTTON_STATUS getStatus(void) const;
 private:
@@ -53,7 +56,9 @@ private:
 	Vector2 pos;
 	Vector2 scale;
 	float rotation;
+	Color textCol;
 	BUTTON_TYPE type;
+	BUTTON_STATUS prevStatus;
 	BUTTON_STATUS status;
 };
 

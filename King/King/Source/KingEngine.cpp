@@ -1,5 +1,10 @@
 #include "KingEngine.h"
 
+Mouse* KEngine::mouse = NULL;
+int KEngine::windowWidth = 1;
+int KEngine::windowHeight = 1;
+bool KEngine::run = true;
+
 // opengl stuff
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -22,12 +27,17 @@ void resize_callback(GLFWwindow* window, int w, int h)
 
 Mouse* KEngine::getMouse(void)
 {
-	return this->mouse;
+	return mouse;
+}
+
+void KEngine::setRun(bool brun)
+{
+	run = brun;
 }
 
 bool KEngine::getRun(void)
 {
-	return this->run;
+	return run;
 }
 
 bool KEngine::isKeyPressed(unsigned short key)
@@ -45,6 +55,16 @@ bool KEngine::getMouseUpdate(void)
 	this->mouse->Update();
 
 	return true;
+}
+
+int KEngine::getWindowWidth(void)
+{
+	return windowWidth;
+}
+
+int KEngine::getWindowHeight(void)
+{
+	return windowHeight;
 }
 
 // KEngine class
@@ -81,12 +101,12 @@ void KEngine::Config(void)
 
 				else if (attriName == "WindowWidth")
 				{
-					this->m_window_width = stoi(attriValue);
+					this->windowWidth = stoi(attriValue);
 				}
 
 				else if (attriName == "WindowHeight")
 				{
-					this->m_window_height = stoi(attriValue);
+					this->windowHeight = stoi(attriValue);
 				}
 
 				else if (attriName == "FullScreen")
@@ -163,11 +183,11 @@ void KEngine::Init(string config)
 	
 	if (fullScreen)
 	{
-		m_window = glfwCreateWindow(m_window_width, m_window_height, title, glfwGetPrimaryMonitor(), NULL);
+		m_window = glfwCreateWindow(windowWidth, windowHeight, title, glfwGetPrimaryMonitor(), NULL);
 	}
 	else
 	{
-		m_window = glfwCreateWindow(m_window_width, m_window_height, title, NULL, NULL);
+		m_window = glfwCreateWindow(windowWidth, windowHeight, title, NULL, NULL);
 	}
 	this->mouse->m_window = m_window;
 

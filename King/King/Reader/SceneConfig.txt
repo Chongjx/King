@@ -8,12 +8,8 @@
 		[FragmentShader] Shader//comg.fragmentshader
 	}
 	{
-		[NAME] Camera
-		# [CameraUp] 
-		
-	}
-	{
-		[NAME] Lights
+		[NAME] Settings
+		[Directory] Reader\\SettingConfig.txt
 	}
 	{
 		[NAME] Mesh

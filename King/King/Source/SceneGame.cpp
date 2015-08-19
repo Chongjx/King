@@ -1,7 +1,7 @@
 #include "SceneGame.h"
-
 #include "GL\glew.h"
 #include "shader.hpp"
+#include "KingEngine.h"
 #include "Utility.h"
 #include "LoadTGA.h"
 
@@ -21,8 +21,10 @@ SceneGame::SceneGame(void)
 	currentState = MENU_STATE;
 	currentLocation = MAIN_AREA;
 
-	fontSize = 100.f;
-	menuFontSize = 200.f;
+	sceneWidth = 0.f;
+	sceneHeight = 0.f;
+	specialFontSize = 0.f;
+	defaultFontSize = 0.f;
 }
 
 SceneGame::~SceneGame(void)
@@ -45,10 +47,21 @@ void SceneGame::Update(double dt)
 	// Call default scene update
 	Scene2D::Update(dt);
 
+	UpdateOpengl();
+	UpdateMouse();
+	camera.Update(dt);
+
+	// Update buttons
+	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		gameInterfaces[currentState].buttons[i].Update(KEngine::getMouse()->mouseButtonStatus[LEFT_BUTTON], mousePos.x, mousePos.y);
+	}
+
 	switch(currentState)
 	{
 	case MENU_STATE:
 		{
+			UpdateMenu();
 			break;
 		}
 	case INGAME_STATE:
@@ -71,16 +84,11 @@ void SceneGame::Update(double dt)
 		{
 			break;
 		}
-	case GAMEOVER_STATE:
+	case EXIT_STATE:
 		{
+			KEngine::setRun(false);
 			break;
 		}
-	}
-
-	// Update buttons
-	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
-	{
-		//gameInterfaces[currentState].buttons[i].Update(
 	}
 }
 
@@ -123,7 +131,7 @@ void SceneGame::Render(void)
 		{
 			break;
 		}
-	case GAMEOVER_STATE:
+	case EXIT_STATE:
 		{
 			break;
 		}
@@ -134,7 +142,7 @@ void SceneGame::Render(void)
 	std::ostringstream ss;
 	ss.precision(5);
 	ss << "FPS: " << fps;
-	RenderTextOnScreen(findMesh("GEO_TEXT"),  ss.str(), Color(1, 0, 0), fontSize * 0.75f, 0 , GAME_HEIGHT - fontSize);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), Color(1, 0, 0), specialFontSize, 0, sceneHeight - specialFontSize);
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -185,14 +193,16 @@ void SceneGame::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "VertexShader")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "VertexShader")
 				{
-					vertexShader = tempAttri.value;
+					vertexShader = attriValue;
 				}
 
-				else if (tempAttri.name == "FragmentShader")
+				else if (attriName == "FragmentShader")
 				{
-					fragmentShader = tempAttri.value;
+					fragmentShader = attriValue;
 				}
 			}
 
@@ -201,14 +211,18 @@ void SceneGame::Config(void)
 			InitShaders();
 		}
 
-		else if (branch->branchName == "Camera")
+		else if (branch->branchName == "Settings")
 		{
-
-		}
-
-		else if (branch->branchName == "Lights")
-		{
-
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitSettings(attriValue);
+				}
+			}
 		}
 
 		else if (branch->branchName == "Mesh")
@@ -216,9 +230,11 @@ void SceneGame::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "Directory")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
 				{
-					InitMesh(tempAttri.value);
+					InitMesh(attriValue);
 				}
 			}
 		}
@@ -228,9 +244,11 @@ void SceneGame::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "Directory")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
 				{
-					InitInterface(tempAttri.value);
+					InitInterface(attriValue);
 				}
 			}
 		}
@@ -240,9 +258,11 @@ void SceneGame::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "Directory")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
 				{
-					InitLevel(tempAttri.value);
+					InitLevel(attriValue);
 				}
 			}
 		}
@@ -251,9 +271,11 @@ void SceneGame::Config(void)
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
-				if (tempAttri.name == "Directory")
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
 				{
-					InitSound(tempAttri.value);
+					InitSound(attriValue);
 				}
 			}
 		}
@@ -325,6 +347,113 @@ void SceneGame::InitShaders(void)
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], lights[0].exponent);
 }
 
+void SceneGame::InitSettings(string config)
+{
+	Branch settingBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		settingBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = settingBranch.childBranches.begin(); branch != settingBranch.childBranches.end(); ++branch)
+	{
+		if (branch->branchName == "Resolution")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "SceneWidth")
+				{
+					sceneWidth = stof(attriValue);
+				}
+
+				else if (attriName == "SceneHeight")
+				{
+					sceneHeight = stof(attriValue);
+				}
+			}
+		}
+
+		else if (branch->branchName == "Camera")
+		{
+			Vector3 tempPos, tempTarget, tempUp;
+
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "CameraPos")
+				{
+					stringToVector(attriValue, tempPos);
+				}
+
+				else if (attriName == "CameraTarget")
+				{
+					stringToVector(attriValue, tempTarget);
+				}
+				
+				else if (attriName == "CameraUp")
+				{
+					stringToVector(attriValue, tempUp);
+				}
+			}
+			camera.Init(tempPos, tempTarget, tempUp);
+		}
+
+		else if (branch->branchName == "Font")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+
+				if (attriName == "Default")
+				{
+					defaultFontSize = stof(attriValue);
+				}
+
+				else if (attriName == "Special")
+				{
+					specialFontSize = stof(attriValue);
+				}
+			}
+		}
+
+		else if (branch->branchName == "GameSpeed")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Speed")
+				{
+					gameSpeed = stof(attriValue);
+				}
+			}
+		}
+
+		else if (branch->branchName == "GameVolume")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Volume")
+				{
+					gameVolume = stof(attriValue);
+				}
+			}
+		}
+	}
+}
+
 // Init all meshes needed in the scene from text file
 void SceneGame::InitMesh(string config)
 {
@@ -358,7 +487,7 @@ void SceneGame::InitMesh(string config)
 		float meshVar[MAX_VAR];
 		for (int i = 0; i < MAX_VAR; ++i)
 		{
-			meshVar[i] = 0.0f;
+			meshVar[i] = 1.0f;
 		}
 
 		string meshVarNames[MAX_VAR] = 
@@ -399,35 +528,11 @@ void SceneGame::InitMesh(string config)
 
 			if (attriName == "Color")
 			{
-				string red;
-				string green;
-				string blue;
-				int lastContinue = 0;
+				Vector3 tempColor;
 
-				for (int numColor = 0; numColor < 3; ++numColor)
-				{
-					for (unsigned j = lastContinue; j < attriValue.size() && attriValue[j] != ','; ++j)
-					{
-						if (numColor == 0)
-						{
-							red += attriValue[j];
-						}
+				stringToVector(attriValue, tempColor);
 
-						else if (numColor == 1)
-						{
-							green += attriValue[j];
-						}
-
-						else
-						{
-							blue += attriValue[j];
-						}
-
-						lastContinue = j + 2;
-					}
-				}
-
-				meshColor.Set(stof(red), stof(green), stof(blue));
+				meshColor.Set(tempColor.x, tempColor.y, tempColor.z);
 			}
 
 			else if (attriName == "Type")
@@ -503,7 +608,7 @@ void SceneGame::InitMesh(string config)
 
 		if (meshType == "Quad")
 		{
-			mesh = MeshBuilder::GenerateQuad(meshName, meshColor, meshVar[VAR_LENGTH]);
+			mesh = MeshBuilder::GenerateQuad(meshName, meshColor, meshVar[VAR_LENGTH], meshVar[VAR_WIDTH]);
 		}
 
 		else if (meshType == "Cube")
@@ -586,28 +691,12 @@ void SceneGame::InitMesh(string config)
 
 					else if (attriName == "Repeat")
 					{
-						if (attriValue == "true" || attriValue == "1")
-						{
-							repeat = true;
-						}
-
-						else
-						{
-							repeat = false;
-						}
+						stringToBool(attriValue, repeat);
 					}
 
 					else if (attriName == "Play")
 					{
-						if (attriValue == "true" || attriValue == "1")
-						{
-							play = true;
-						}
-
-						else
-						{
-							play = false;
-						}
+						stringToBool(attriValue, play);
 					}
 
 					else if (attriName == "AnimationTime")
@@ -659,6 +748,8 @@ void SceneGame::InitInterface(string config)
 		Buttons::BUTTON_TYPE type = Buttons::TEXT_BUTTON;
 		Vector2 pos;
 		float rotation = 0.f;
+		Color tempColor;
+		tempColor.Set(1, 1, 1);
 		Vector2 scale;
 		Mesh* mesh;
 
@@ -703,22 +794,12 @@ void SceneGame::InitInterface(string config)
 
 			else if (attriName == "Pos")
 			{
-				string xCoord;
-				string yCoord;
-				int lastContinue = 0;
-				for (unsigned j = 0; j < attriValue.size() &&  attriValue[j] != ','; ++j)
-				{
-					xCoord += attriValue[j];
-					lastContinue = j + 2;
-				}
+				stringToVector(attriValue, pos);
+			}
 
-				for (unsigned j = lastContinue; j < attriValue.size(); ++j)
-				{
-					yCoord += attriValue[j];
-				}
-
-				pos.x = stof(xCoord);
-				pos.y = stof(yCoord);
+			else if (attriName == "Scale")
+			{
+				stringToVector(attriValue, scale);
 			}
 
 			else if (attriName == "Rotation")
@@ -726,24 +807,13 @@ void SceneGame::InitInterface(string config)
 				rotation = stof(attriValue);
 			}
 
-			else if (attriName == "Scale")
+			else if (attriName == "Color")
 			{
-				string xCoord;
-				string yCoord;
-				int lastContinue = 0;
-				for (unsigned j = 0; j < attriValue.size() && attriValue[j] != ','; ++j)
-				{
-					xCoord += attriValue[j];
-					lastContinue = j + 2;
-				}
+				Vector3 tempCol;
 
-				for (unsigned j = lastContinue; j < attriValue.size(); ++j)
-				{
-					yCoord += attriValue[j];
-				}
+				stringToVector(attriValue, tempCol);
 
-				scale.x = stof(xCoord);
-				scale.y = stof(yCoord);
+				tempColor.Set(tempCol.x, tempCol.y, tempCol.z);
 			}
 
 			else if (attriName == "Mesh")
@@ -764,7 +834,7 @@ void SceneGame::InitInterface(string config)
 		}
 
 		Buttons tempButton;
-		tempButton.Init(name, text, mesh, pos, scale, rotation, type);
+		tempButton.Init(name, text, mesh, pos, scale, rotation, tempColor, type);
 
 		gameInterfaces[storagePos].buttons.push_back(tempButton);
 	}
@@ -833,28 +903,12 @@ void SceneGame::InitLevel(string config)
 
 			if (attriName == "EnableXScroll")
 			{
-				if (attriValue == "true" || attriValue == "1")
-				{
-					enableX = true;
-				}
-
-				else
-				{
-					enableX = false;
-				}
+				stringToBool(attriValue, enableX);
 			}
 
 			else if (attriName == "EnableYScroll")
 			{
-				if (attriValue == "true" || attriValue == "1")
-				{
-					enableY = true;
-				}
-
-				else
-				{
-					enableY = false;
-				}
+				stringToBool(attriValue, enableY);
 			}
 
 			else if (attriName == "Directory")
@@ -894,7 +948,8 @@ void SceneGame::InitVariables(string config)
 void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
-	irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+
+	/*irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
 
 	if (DEBUG)
 	{
@@ -930,16 +985,167 @@ void SceneGame::InitSound(string config)
 		irrklang::ISoundSource* bookSound = Soundengine->addSoundSourceFromFile(soundfile.c_str()); 
 		bookSound->setDefaultVolume(volume);
 		Soundengine->play2D(bookSound,loop);
+	}*/
+}
+
+void SceneGame::UpdateOpengl(void)
+{
+	if(KEngine::isKeyPressed('1'))
+		glEnable(GL_CULL_FACE);
+
+	if(KEngine::isKeyPressed('2'))
+		glDisable(GL_CULL_FACE);
+
+	if(KEngine::isKeyPressed('3'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	if(KEngine::isKeyPressed('4'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void SceneGame::UpdateMouse(void)
+{
+	double x, y;
+	x = KEngine::getMouse()->getCurrentPosX();
+	y = KEngine::getMouse()->getCurrentPosY();
+
+	int w = KEngine::getWindowWidth();
+	int h = KEngine::getWindowHeight();
+
+	mousePos.Set((float)x * sceneWidth / w, (h - (float)y) * sceneHeight / h);
+
+	UpdateState();
+	UpdateEffect();
+}
+
+void SceneGame::UpdateState(void)
+{
+	bool updated = false;
+	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size() && !updated; ++i)
+	{
+		if (gameInterfaces[currentState].buttons[i].getStatus() == Buttons::BUTTON_RELEASED)
+		{
+			switch(currentState)
+			{
+			case MENU_STATE:
+				{
+					if (gameInterfaces[currentState].buttons[i].getName() == "Play")
+					{
+						changeScene(INGAME_STATE);
+					}
+
+					else if (gameInterfaces[currentState].buttons[i].getName() == "Instruction")
+					{
+						changeScene(INSTRUCTION_STATE);
+					}
+
+					else if (gameInterfaces[currentState].buttons[i].getName() == "HighScore")
+					{
+						changeScene(HIGHSCORE_STATE);
+					}
+
+					else if (gameInterfaces[currentState].buttons[i].getName() == "Options")
+					{
+						changeScene(OPTIONS_STATE);
+					}
+
+					else if (gameInterfaces[currentState].buttons[i].getName() == "Exit")
+					{
+						changeScene(EXIT_STATE);
+					}
+					break;
+				}
+			case INGAME_STATE:
+				{
+					if (gameInterfaces[currentState].buttons[i].getName() == "Pause")
+					{
+						changeScene(PAUSE_STATE);
+					}
+
+					else if (gameInterfaces[currentState].buttons[i].getName() == "Instruction")
+					{
+						changeScene(INSTRUCTION_STATE);
+					}
+					break;
+				}
+			case INSTRUCTION_STATE:
+				{
+					if (gameInterfaces[currentState].buttons[i].getName() == "Return")
+					{
+						changeScene(MENU_STATE);
+					}
+					break;
+				}
+			case HIGHSCORE_STATE:
+				{
+					if (gameInterfaces[currentState].buttons[i].getName() == "Return")
+					{
+						changeScene(MENU_STATE);
+					}
+					break;
+				}
+			case OPTIONS_STATE:
+				{
+					if (gameInterfaces[currentState].buttons[i].getName() == "Return")
+					{
+						changeScene(MENU_STATE);
+					}
+					break;
+				}
+			case PAUSE_STATE:
+				{
+					if (gameInterfaces[currentState].buttons[i].getName() == "Resume")
+					{
+						changeScene(INGAME_STATE);
+					}
+
+					else if (gameInterfaces[currentState].buttons[i].getName() == "Exit")
+					{
+						changeScene(MENU_STATE);
+					}
+					break;
+				}
+			case EXIT_STATE:
+				{
+					break;
+				}
+			}
+
+			updated = true;
+		}
+	}
+}
+
+void SceneGame::UpdateEffect(void)
+{
+	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		if (gameInterfaces[currentState].buttons[i].getStatus() == Buttons::BUTTON_HOVER)
+		{
+			gameInterfaces[currentState].buttons[i].setColor(Color(1, 0.7f, 0.8f));
+			gameInterfaces[currentState].buttons[i].setRotation(3.f);
+		}
+
+		else
+		{
+			gameInterfaces[currentState].buttons[i].setColor(Color(1, 1, 1));
+			gameInterfaces[currentState].buttons[i].setRotation(1.f);
+		}
 	}
 }
 
 void SceneGame::UpdateMenu(void)
 {
-
 }
 
 void SceneGame::UpdateInGame(double dt)
 {
+
+}
+
+void SceneGame::changeScene(GAME_STATE nextState)
+{
+	this->currentState = nextState;
 }
 
 void SceneGame::RenderInterface(void)
@@ -948,12 +1154,17 @@ void SceneGame::RenderInterface(void)
 	{
 		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::TEXT_BUTTON)
 		{
-			RenderTextOnScreen(gameInterfaces[currentState].buttons[i].getMesh(), gameInterfaces[currentState].buttons[i].getText(), Color(1, 1, 1), fontSize, gameInterfaces[currentState].buttons[i].getPos().x, gameInterfaces[currentState].buttons[i].getPos().y);
+			RenderTextOnScreen(gameInterfaces[currentState].buttons[i].getMesh(), gameInterfaces[currentState].buttons[i].getText(), gameInterfaces[currentState].buttons[i].getColor(), defaultFontSize, gameInterfaces[currentState].buttons[i].getPos().x, gameInterfaces[currentState].buttons[i].getPos().y, gameInterfaces[currentState].buttons[i].getRotation());
 		}
 
 		else
 		{
-			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale().x, gameInterfaces[currentState].buttons[i].getPos().x, gameInterfaces[currentState].buttons[i].getPos().y);
+			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), gameInterfaces[currentState].buttons[i].getPos(), gameInterfaces[currentState].buttons[i].getRotation());
+		}
+
+		if (DEBUG)
+		{
+			Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
 		}
 	}
 }
@@ -989,14 +1200,14 @@ void SceneGame::RenderCharacters(void)
 {
 }
 
-void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
 {
 	if(!mesh || mesh->textureID <= 0)
 		return;
 
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 1600, 0, 1200, -10, 10);
+	ortho.SetToOrtho(0, double(sceneWidth), 0, double(sceneHeight), -10, 10);
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 	viewStack.PushMatrix();
@@ -1004,6 +1215,10 @@ void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity();
 	modelStack.Translate(x, y, 0);
+	if (rotation != 0.f)
+	{
+		modelStack.Rotate(rotation, 0, 0, 1);
+	}
 	modelStack.Scale(size, size, size);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
@@ -1029,26 +1244,35 @@ void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	glEnable(GL_DEPTH_TEST);
 }
 
-void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const float size, const float x, const float y, const bool rotate)
+void SceneGame::Render3DMesh(Mesh* mesh, bool enableLight)
 {
-	Mtx44 ortho;
-	ortho.SetToOrtho(0, 1024, 0, 800, -100, 100);
-	projectionStack.PushMatrix();
-	projectionStack.LoadMatrix(ortho);
-	viewStack.PushMatrix();
-	viewStack.LoadIdentity();
-	modelStack.PushMatrix();
-	modelStack.LoadIdentity();
-	modelStack.Translate(x, y, 0);
-	modelStack.Scale(size, size, size);
-	if (rotate)
-		modelStack.Rotate(90, 0, 0, 1);
-
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-	if(mesh->textureID > 0)
+
+	modelView = viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
+
+	if (enableLight && bLightEnabled)
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
+		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
+		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
+
+		//load material
+		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);
+		glUniform3fv(m_parameters[U_MATERIAL_DIFFUSE], 1, &mesh->material.kDiffuse.r);
+		glUniform3fv(m_parameters[U_MATERIAL_SPECULAR], 1, &mesh->material.kSpecular.r);
+		glUniform1f(m_parameters[U_MATERIAL_SHININESS], mesh->material.kShininess);
+	}
+
+	else
+	{	
+		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	}
+
+	if(mesh->textureID != NULL)
 	{
 		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
 		glActiveTexture(GL_TEXTURE0);
@@ -1060,6 +1284,82 @@ void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const float siz
 		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
 	}
 	mesh->Render();
+}
+
+void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const float size, const float x, const float y, const float rotation)
+{
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, double(sceneWidth), 0, double(sceneHeight), -100, 100);
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+	modelStack.Translate(x, y, 0);
+	modelStack.Scale(size, size, size);
+	if (rotation != 0.f)
+		modelStack.Rotate(rotation, 0, 0, 1);
+
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	if(mesh->textureID != NULL)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
+	}
+	mesh->Render();
+
+	if(mesh->textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	modelStack.PopMatrix();
+	viewStack.PopMatrix();
+	projectionStack.PopMatrix();
+}
+
+void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 scale , const Vector2 pos, const float rotation)
+{
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, double(sceneWidth), 0, double(sceneHeight), -100, 100);
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+	modelStack.Translate(pos.x, pos.y, 0);
+	modelStack.Scale(scale.x, scale.y, 1);
+	if (rotation != 0.f)
+		modelStack.Rotate(rotation, 0, 0, 1);
+
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	if(mesh->textureID != NULL)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
+	}
+	mesh->Render();
+
 	if(mesh->textureID > 0)
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -1085,4 +1385,77 @@ Mesh* SceneGame::findMesh(string meshName)
 	std::cout << "Unable to find mesh! Check your naming" << std::endl;
 
 	return NULL;
+}
+
+void SceneGame::stringToVector(string text, Vector2 &vec)
+{
+	int lastContinue = 0;
+	string xValue;
+	string yValue;
+
+	for (int position = 0; position < 2; ++position)
+	{
+		for (unsigned j = lastContinue; j < text.size() && text[j] != ','; ++j)
+		{
+			if (position == 0)
+			{
+				xValue += text[j];
+			}
+
+			else if (position == 1)
+			{
+				yValue += text[j];
+			}
+
+			lastContinue = j + 2;
+		}
+	}
+
+	vec.Set(stof(xValue), stof(yValue));
+}
+
+void SceneGame::stringToVector(string text, Vector3 &vec)
+{
+	int lastContinue = 0;
+	string xValue;
+	string yValue;
+	string zValue;
+
+	for (int position = 0; position < 3; ++position)
+	{
+		for (unsigned j = lastContinue; j < text.size() && text[j] != ','; ++j)
+		{
+			if (position == 0)
+			{
+				xValue += text[j];
+			}
+
+			else if (position == 1)
+			{
+				yValue += text[j];
+			}
+
+			else
+			{
+				zValue += text[j];
+			}
+
+			lastContinue = j + 2;
+		}
+	}
+
+	vec.Set(stof(xValue), stof(yValue), stof(zValue));
+}
+
+void SceneGame::stringToBool(string text, bool &boo)
+{
+	if (text == "True" || text == "1" || text == "true")
+	{
+		boo = true;
+	}
+
+	else
+	{
+		boo = false;
+	}
 }

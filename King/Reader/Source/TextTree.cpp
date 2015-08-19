@@ -203,17 +203,20 @@ Branch TextTree::ProcessFile(vector<string> branch)
 void TextTree::WriteFile(ofstream& file, Branch branch)
 {
 	// start with '{'
-	static int numLine;
+	static int numLine = 0;
+	string branchIndent = Indent(numLine);
+	string attributeIndent = Indent(numLine + 1);
 
+	++numLine;
 
-	file << BRANCH_START << "\n";
+	file << branchIndent << BRANCH_START << "\n";
 
 	// write subsequent branch attributes
-	file << ATTRIBUTE_START << "NAME" << ATTRIBUTE_END << " " << branch.branchName << "\n";
+	file << attributeIndent << ATTRIBUTE_START << "NAME" << ATTRIBUTE_END << " " << branch.branchName << "\n";
 
 	for (vector<Attribute>::iterator branchAtt = branch.attributes.begin(); branchAtt != branch.attributes.end(); ++branchAtt)
 	{
-		file << ATTRIBUTE_START << branchAtt->name << ATTRIBUTE_END << " " << branchAtt->value << "\n";
+		file << attributeIndent << ATTRIBUTE_START << branchAtt->name << ATTRIBUTE_END << " " << branchAtt->value << "\n";
 	}
 
 	file << "\n";
@@ -225,7 +228,9 @@ void TextTree::WriteFile(ofstream& file, Branch branch)
 	}
 	
 	// end with '{'
-	file << BRANCH_END << "\n";
+	file << branchIndent << BRANCH_END << "\n";
+
+	--numLine;
 }
 
 // Remove spaces and tab from the string
