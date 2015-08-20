@@ -263,9 +263,6 @@
     <ClInclude Include="Source\ItemWeapon.h">
       <Filter>Header Files\2D\Inventory\Item\Type</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Room.h">
-      <Filter>Header Files\2D</Filter>
-    </ClInclude>
     <ClInclude Include="Source\AI.h">
       <Filter>Header Files\2D\Character\AI</Filter>
     </ClInclude>
@@ -286,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Source\Inventory.h">
       <Filter>Header Files\2D\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
+      <Filter>Header Files\2D\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,14 +14,11 @@ bool CInventory::addItem(CItem* itemToAdd)
 {
 	if (myInventory.size() < myInventory.max_size())
 	{
-		//add item to inventory
 		myInventory.push_back(itemToAdd);
 		return true;
 	}
 	else
 	{
-		//reject adding of item
-		//tell player inventory is full
 		return false;
 	}
 	return false;

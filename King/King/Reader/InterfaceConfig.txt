@@ -98,7 +98,56 @@
 		[Scale] 350, 55
 		[Mesh] GEO_TEXT
 	}
-
+	{
+		
+		[NAME] Inventory Button 1
+		[GameState] Ingame
+		[Type] Image
+		[Pos] 350, 0
+		[Rotation] 0
+		[Scale] 75, 75
+		[Mesh] Inventory_Box
+	}
+	{
+		
+		[NAME] Inventory Button 2
+		[GameState] Ingame
+		[Type] Image
+		[Pos] 425, 0
+		[Rotation] 0
+		[Scale] 75, 75
+		[Mesh] Inventory_Box
+	}
+	{
+		
+		[NAME] Inventory Button 3
+		[GameState] Ingame
+		[Type] Image
+		[Pos] 500, 0
+		[Rotation] 0
+		[Scale] 75, 75
+		[Mesh] Inventory_Box
+	}
+	{
+		
+		[NAME] Inventory Button 4
+		[GameState] Ingame
+		[Type] Image
+		[Pos] 575, 0
+		[Rotation] 0
+		[Scale] 75, 75
+		[Mesh] Inventory_Box
+	}
+	{
+		
+		[NAME] Inventory Button 5
+		[GameState] Ingame
+		[Type] Image
+		[Pos] 650, 0
+		[Rotation] 0
+		[Scale] 75, 75
+		[Mesh] Inventory_Box
+	}
 	# pause interface
 	{
 		[NAME] Resume

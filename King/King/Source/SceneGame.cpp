@@ -1070,7 +1070,7 @@ void SceneGame::UpdateState(void)
 					{
 						changeScene(PAUSE_STATE);
 					}
-
+					
 					else if (gameInterfaces[currentState].buttons[i].getName() == "Instruction")
 					{
 						changeScene(INSTRUCTION_STATE);
@@ -1173,7 +1173,8 @@ void SceneGame::RenderInterface(void)
 
 		else
 		{
-			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), gameInterfaces[currentState].buttons[i].getPos(), gameInterfaces[currentState].buttons[i].getRotation());
+			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
+			//Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), gameInterfaces[currentState].buttons[i].getPos(), gameInterfaces[currentState].buttons[i].getRotation());
 		}
 
 		if (DEBUG)
