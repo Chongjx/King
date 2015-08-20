@@ -90,7 +90,7 @@ public:
 	void UpdateInGame(double dt);
 
 	void changeScene(GAME_STATE nextState);
-	
+
 	void RenderInterface(void);
 	void RenderLevel(void);
 	void RenderCharacters(void);
@@ -113,6 +113,7 @@ private:
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
 	Vector2 mousePos;
+	Sound sound;
 
 	GAME_STATE currentState;
 	float defaultFontSize;
@@ -125,7 +126,7 @@ private:
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
 	void stringToBool(string text, bool &boo);
-	Sound sound;
+
 };
 
 #endif

@@ -9,10 +9,10 @@
 		[DefaultVol] 1.0f	
 	}
 	{
-		[NAME] Sound_Bookflip
+		[SoundName] Sound_Bookflip
 		[SoundFile] Sound\\bookFlip.ogg
 		[Loop] false
-		[DefaultVol] 0.1f	
+		[DefaultVol] 1.0f	
 	}
 }
 #Volume range 1.0f - 0.1f#
