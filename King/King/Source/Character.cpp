@@ -4,20 +4,30 @@ Character::Character()
 	: pos(0,0)
 	, vel(0,0)
 	, dir(0,0)
+	, targetPos(0, 0)
 	, tiles(0)
 	, speed(0)
 	, MAX_WALK_SPEED(3.0)
 	, MAX_RUN_SPEED(5.0)
 {
+	this->sprite = new SpriteAnimation;
+	this->state.SetState(StateMachine::IDLE);
 }
 
 Character::~Character()
 {
-
+	if (this->sprite != NULL)
+	{
+		delete sprite;
+		sprite = NULL;
+	}
 }
 
-void Character::Init()
+void Character::Init(Vector2 pos, Vector2 dir, Vector2 vel, SpriteAnimation* sa)
 {
+	this->pos = pos;
+	this->dir = dir;
+	this->vel = vel;
 
 }
 
@@ -39,7 +49,7 @@ void Character::Update(double dt)
 	only one speed per character 
 */
 
-void Character::MoveUp(double dt)
+/*void Character::MoveUp(double dt)
 {
 	// Walk
 	if(speed < MAX_WALK_SPEED)
@@ -54,9 +64,9 @@ void Character::MoveUp(double dt)
 		vel.y += (int) (speed * dt);
 		pos.y += vel.y * static_cast<float>(dt);
 	}*/
-}
+//}
 
-void Character::MoveDown(double dt)
+/*void Character::MoveDown(double dt)
 {
 	// Walk
 	if(speed < MAX_WALK_SPEED)
@@ -71,9 +81,9 @@ void Character::MoveDown(double dt)
 		vel.y -= (int) (speed * dt);
 		pos.y -= vel.y * static_cast<float>(dt);
 	}*/
-}
+//}
 
-void Character::MoveLeft(double dt)
+/*void Character::MoveLeft(double dt)
 {
 	// Walk
 	if(speed < MAX_WALK_SPEED)
@@ -88,9 +98,9 @@ void Character::MoveLeft(double dt)
 		vel.x -= (int) (speed * dt);
 		pos.x -= vel.x * static_cast<float>(dt);
 	}*/
-}
+//}
 
-void Character::MoveRight(double dt)
+/*void Character::MoveRight(double dt)
 {
 	// Walk
 	if(speed < MAX_WALK_SPEED)
@@ -105,7 +115,7 @@ void Character::MoveRight(double dt)
 		vel.x += (int) (speed * dt);
 		pos.x += vel.x * static_cast<float>(dt);
 	}*/
-}
+//}
 
 void Character::SetFOV(int tiles)
 {

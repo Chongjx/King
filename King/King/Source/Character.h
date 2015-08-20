@@ -15,7 +15,7 @@ public:
 	~Character(void);
 
 	// Initialise this class instance
-	void Init(void);
+	virtual void Init(Vector2 pos, Vector2 dir, Vector2 vel, SpriteAnimation* sa);
 	// Update the character
 	virtual void Update(double dt);
 
@@ -48,19 +48,20 @@ public:
 	void setVel(Vector2 vel);
 	void setSize(Vector2 size);
 	void setTargetPos(Vector2 targetPos);
-	void setState(StateMachine::STATE unitState);
+	void setState(StateMachine unitState);
 	void setSprite(SpriteAnimation *sa);
-	void setAnimation(StateMachine::STATE currentAni);
 
 	Vector2 getPos(void) const;
 	Vector2 getDir(void) const;
 	Vector2 getVel(void) const;
 	Vector2 getSize(void) const;
 	Vector2 getTargetPos(void) const;
+	StateMachine::STATE getState(void) const;
+	SpriteAnimation* getSprite(void) const;
 
 	bool moveTo(Vector2 destination);
 
-	void changeAni(STATE unitState);
+	void changeAni(StateMachine unitState);
 	// Inventory
 	
 	// Interactions
