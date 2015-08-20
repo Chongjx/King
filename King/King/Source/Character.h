@@ -21,14 +21,14 @@ public:
 
 	/*Movement contains both walk and run*/
 
-	// Movement up 
-	void walkUp(double dt);
-	// Movement down
-	void walkDown(double dt);
-	// Movement left
-	void walkLeft(double dt);
-	// Movement right
-	void walkRight(double dt);
+	//// Movement up 
+	//void walkUp(double dt);
+	//// Movement down
+	//void walkDown(double dt);
+	//// Movement left
+	//void walkLeft(double dt);
+	//// Movement right
+	//void walkRight(double dt);
 
 	void runUp(double dt);
 	void runDown(double dt);
@@ -60,7 +60,7 @@ public:
 
 	bool moveTo(Vector2 destination);
 
-	void changeAni(STATE unitState);
+	/*void changeAni(STATE unitState);*/
 	// Inventory
 	
 	// Interactions

@@ -96,6 +96,7 @@ public:
 	void UpdateState(void);
 	void UpdateEffect(void);
 	void UpdateInGame(double dt);
+	void UpdateDay(double dt);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -104,6 +105,7 @@ public:
 	void RenderCharacters(void);
 	void RenderHUD(void);
 	void RenderGUI(void);
+	void RenderTime(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
