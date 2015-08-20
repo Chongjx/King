@@ -9,6 +9,7 @@ using std::string;
 class CItem : public GameObject2D
 {
 public:
+	//type of item
 	enum ITEM_TYPE
 	{
 		ITEM_WEAPON = 0,
@@ -17,7 +18,18 @@ public:
 		NUM_ITEM,
 	};
 
+	enum ITEM_STATUS
+	{
+		//Active status
+		ITEM_ONGROUND,
+		ITEM_ININVENTORY,
+		//Inactive status
+		ITEM_INACTIVE,
+		NUM_STATUS,
+	};
 private:
+	//status of item
+	ITEM_STATUS itemStatus;
 	//type of item
 	ITEM_TYPE itemType;
 	//position of item
@@ -28,12 +40,20 @@ private:
 	string itemName;
 	//description of item
 	string itemDescription;
-	//does the player currently have the item
-	bool playerAcquired;
 
 public:
 	CItem(void);
 	~CItem(void);
+
+	//Initialise item
+	void Init(ITEM_STATUS status, ITEM_TYPE type, Vector2 position, int id, string name, string description);
+	//Update item
+	void Update();
+
+	//set item status
+	void setItemStatus(ITEM_STATUS status);
+	//get status of item
+	CItem::ITEM_STATUS getItemStatus(void);
 
 	//set type of item
 	void setItemType(ITEM_TYPE type);
@@ -58,10 +78,5 @@ public:
 	void setItemDescription(string description);
 	//get description of item
 	string getItemDescription(void);
-
-	//set if player has the item
-	void setPlayerAcquired(bool acquired);
-	//check if player has the item
-	bool getPlayerAcquired(void);
 };
 

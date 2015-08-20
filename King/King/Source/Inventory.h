@@ -13,6 +13,7 @@ public:
 	CInventory(void);
 	~CInventory(void);
 
+	//Inventory functions
 	bool addItem(CItem* itemToAdd);
 	void removeItem(int itemID);
 	void swapItem(int item1ID, int item2ID);

@@ -56,5 +56,11 @@
 		[Loop] false
 		[DefaultVol] 1.0f	
 	}
+	{
+		[SoundName] Sound_Background
+		[SoundFile] Sound\\SlowSteady.mp3
+		[Loop] false
+		[DefaultVol] 0.5f	
+	}
 }
 #Volume range 1.0f - 0.1f#

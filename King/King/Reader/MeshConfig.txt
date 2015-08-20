@@ -383,6 +383,13 @@
 		[Type] DebugCircle
 		[Slices] 36
 	}
+	
+	# Player's Inventory (UI)
+	{
+		[NAME] Inventory_Box
+		[Type] Quad
+		[Texture] Image\\ui_inventory_box.tga
+	}
 }
 
 # Types available

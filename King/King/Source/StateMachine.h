@@ -3,6 +3,9 @@
 
 class StateMachine
 {
+	
+public:
+
 	// An enum of generic states
 	enum STATE
 	{
@@ -15,8 +18,6 @@ class StateMachine
 		MAX_STATE,
 	};
 
-public:
-
 	// Initialise this class instance
 	StateMachine(void);
 	~StateMachine(void);
@@ -25,12 +26,14 @@ public:
 	void Update(double dt);
 
 	// Sets state with the enum as parameter
-	void SetState(StateMachine::STATE);
+	void SetState(STATE NewState);
+	// Return the current state
+	StateMachine::STATE GetState(void);
 
 private:
 
 	// state enum object
-	StateMachine::STATE state;
+	STATE state;
 };
 
 
