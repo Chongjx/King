@@ -58,7 +58,7 @@ void SceneGame::Update(double dt)
 	{
 		gameInterfaces[currentState].buttons[i].Update(getKey("Select"), mousePos.x, mousePos.y);
 	}
-
+		
 	UpdateState();
 	UpdateEffect();
 
@@ -1041,7 +1041,6 @@ void SceneGame::InitSound(string config)
 	Branch soundBranch = TextTree::FileToRead(config);
 	{
 		irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
-
 		std::string soundName = "";
 		std::string soundFile= "";
 		float volume=0.f;
@@ -1220,9 +1219,6 @@ void SceneGame::UpdateState(void)
 			updated = true;
 		}
 
-		/*Sound tempSound;
-		tempSound.Init(soundName,soundFile,volume,loop);
-		sound.sounds.push_back(tempSound);*/
 	}
 }
 
@@ -1273,7 +1269,7 @@ void SceneGame::UpdateInGame(double dt)
 void SceneGame::changeScene(GAME_STATE nextState)
 {
 	this->currentState = nextState;
-	//sound.Play("Sound_Bookflip");
+	sound.Play("Sound_Bookflip");
 }
 
 void SceneGame::RenderInterface(void)

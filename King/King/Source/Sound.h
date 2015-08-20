@@ -28,6 +28,7 @@ public:
 	void VolumeDown (void);
 
 	void Play(string soundName);
+	void Stop(void);
 private:
 	std::string soundName;
 	std::string soundFile;
