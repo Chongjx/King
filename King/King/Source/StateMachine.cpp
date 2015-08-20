@@ -10,7 +10,12 @@ StateMachine::~StateMachine()
 
 }
 
-void StateMachine::SetState(StateMachine::STATE)
+void StateMachine::SetState(STATE NewState)
 {
+	state = NewState;
+}
 
+StateMachine::STATE StateMachine::GetState(void)
+{
+	return state;
 }
