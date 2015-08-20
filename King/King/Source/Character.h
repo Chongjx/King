@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "GameObject2D.h"
 #include "SpriteAnimation.h"
+#include "StateMachine.h"
 
 class Character : public GameObject2D
 {
@@ -38,8 +39,8 @@ public:
 	int GetFOV(void);
 
 	//Get character's current position 
-	int GetPositionX(void);
-	int GetPositionY(void);
+	float GetPositionX(void);
+	float GetPositionY(void);
 
 	// Inventory
 	
@@ -60,6 +61,9 @@ protected:
 
 	// FOV tile range
 	int tiles;
+
+	//StateMachine object
+	StateMachine state;
 
 	// Inventory inventory
 
