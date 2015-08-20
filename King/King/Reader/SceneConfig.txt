@@ -31,4 +31,8 @@
 		[NAME] Sound
 		[Directory] Reader\\SoundConfig.txt
 	}
+	{
+		[NAME] Player
+		[Directory] Reader\\PlayerConfig.txt
+	}
 }

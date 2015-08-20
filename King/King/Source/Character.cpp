@@ -5,7 +5,7 @@ Character::Character()
 	, vel(0,0)
 	, dir(0,0)
 	, tiles(0)
-	, speed(0)
+	, speed(1)
 	, MAX_WALK_SPEED(3.0)
 	, MAX_RUN_SPEED(5.0)
 {
@@ -116,4 +116,14 @@ void Character::SetFOV(int tiles)
 int Character::GetFOV()
 {
 	return tiles;
+}
+
+int Character::GetPositionX(void)
+{
+	return pos.x;
+}
+
+int Character::GetPositionY(void)
+{
+	return pos.y;
 }

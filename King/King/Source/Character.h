@@ -37,10 +37,14 @@ public:
 	// Get field of view of character based on tiles
 	int GetFOV(void);
 
+	//Get character's current position 
+	int GetPositionX(void);
+	int GetPositionY(void);
+
 	// Inventory
 	
 	// Interactions
-
+	
 
 protected:
 

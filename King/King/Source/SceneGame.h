@@ -11,6 +11,7 @@ using std::string;
 #include "Room.h"
 #include "Interface.h"
 #include "Sound.h"
+#include "Player.h"
 
 class SceneGame : public Scene2D
 {
@@ -81,6 +82,7 @@ public:
 	void InitLevel(string config);
 	void InitVariables(string config);
 	void InitSound(string config);
+	void InitPlayer(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -113,7 +115,6 @@ private:
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
 	Vector2 mousePos;
-	Sound sound;
 
 	GAME_STATE currentState;
 	float defaultFontSize;
@@ -126,6 +127,10 @@ private:
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
 	void stringToBool(string text, bool &boo);
+
+	Sound sound;
+	Player* player;
+
 
 };
 

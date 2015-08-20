@@ -26,6 +26,8 @@ SceneGame::SceneGame(void)
 	specialFontSize = 0.f;
 	defaultFontSize = 0.f;
 	paused = false;
+
+	player = new Player();
 }
 
 SceneGame::~SceneGame(void)
@@ -184,6 +186,12 @@ void SceneGame::Exit(void)
 		}
 	}
 
+	if(player)
+	{
+		delete player;
+		player = NULL;
+	}
+
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 }
 
@@ -300,6 +308,19 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitSound(attriValue);
+				}
+			}
+		}
+		else if (branch->branchName == "Player")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitPlayer(attriValue);
 				}
 			}
 		}
@@ -1088,6 +1109,45 @@ void SceneGame::InitSound(string config)
 	}
 }
 
+void SceneGame::InitPlayer(string config)
+{
+	Branch playerBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		playerBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
+	{
+		Vector2 pos;
+		int tiles = 0;
+		int mapLocation = 0;
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			if (attriName == "Pos")
+			{
+				stringToVector(attriValue, pos);
+			}
+			else if (attriName == "Tiles")
+			{
+				tiles = stoi(attriValue);
+			}
+			else if (attriName == "MapLocation")
+			{
+				mapLocation = stoi(attriValue);
+			}
+		}
+
+		player->Init(pos,tiles,mapLocation);
+	}
+}
+
 void SceneGame::UpdateOpengl(void)
 {
 	if(KEngine::getKeyboard()->getKey('1'))
@@ -1245,22 +1305,28 @@ void SceneGame::UpdateInGame(double dt)
 	if (getKey("Up"))
 	{
 		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
+		//player->MoveUp(dt);
+		//std::cout << player->GetPositionX() << " , " << player->GetPositionY() << "\n"; 
 	}
 
 	if (getKey("Down"))
 	{
 		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 1000 * dt);
+		//player->MoveDown(dt);
 	}
 
 	if (getKey("Left"))
 	{
 		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt);
+		//player->MoveLeft(dt);
 	}
 
 	if (getKey("Right"))
 	{
+
 		//if (
 		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
+		//player->MoveRight(dt);
 	}
 
 	this->layout[currentLocation].roomLayout[0].Update();
