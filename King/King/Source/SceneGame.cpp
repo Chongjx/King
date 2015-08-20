@@ -1248,23 +1248,50 @@ void SceneGame::UpdateInGame(double dt)
 {
 	if (getKey("Up"))
 	{
-		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
+		if (getKey("ToggleShift"))
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 2000 * dt);
+		}
+		else
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
+		}
 	}
 
 	if (getKey("Down"))
 	{
-		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 1000 * dt);
+		if (getKey("ToggleShift"))
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt);
+		}
+		else
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt);
+		}
 	}
 
 	if (getKey("Left"))
 	{
-		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt);
+		if (getKey("ToggleShift"))
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 2000 * dt);
+		}
+		else
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt);
+		}
 	}
 
 	if (getKey("Right"))
 	{
-		if (
-		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
+		if (getKey("ToggleShift"))
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 2000 * dt);
+		}
+		else
+		{
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
+		}
 	}
 
 	this->layout[currentLocation].roomLayout[0].Update();

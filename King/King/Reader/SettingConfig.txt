@@ -53,5 +53,15 @@
 			[Key] 0x44
 			# [Key] VK_D
 		}
+		{
+			[NAME] ToggleShift
+			[Key] 0xA0
+			# [Key] VK_LSHIFT
+		}
+		{
+			[NAME] Enter
+			[Key] 0x0D
+			# [Key] VK_RETURN
+		}
 	}
 }
