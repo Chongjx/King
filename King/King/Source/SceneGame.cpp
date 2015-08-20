@@ -54,15 +54,14 @@ void SceneGame::Update(double dt)
 	UpdateInput();
 	UpdateMouse();
 	camera.Update(dt);
+	UpdateState();
+	UpdateEffect();
 
 	// Update buttons
 	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
 		gameInterfaces[currentState].buttons[i].Update(getKey("Select"), mousePos.x, mousePos.y);
 	}
-
-	UpdateState();
-	UpdateEffect();
 
 	switch(currentState)
 	{
@@ -1345,19 +1344,40 @@ void SceneGame::UpdateState(void)
 }
 
 void SceneGame::UpdateEffect(void)
-{
+{	
+	static bool played = false;
 	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
 		if (gameInterfaces[currentState].buttons[i].getStatus() == Buttons::BUTTON_HOVER)
 		{
 			gameInterfaces[currentState].buttons[i].setColor(findColor("White"));
 			gameInterfaces[currentState].buttons[i].setRotation(3.f);
+
+			if (!played)
+			{
+				sound.Play("Sound_Bookflip2");
+				played = true;
+			}
 		}
 
 		else
 		{
 			gameInterfaces[currentState].buttons[i].setColor(findColor("LightGrey"));
 			gameInterfaces[currentState].buttons[i].setRotation(1.f);
+		}
+	}
+
+	unsigned numStatus = 0;
+	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		if (gameInterfaces[currentState].buttons[i].getStatus() == Buttons::BUTTON_IDLE)
+		{
+			++numStatus;
+		}
+
+		if (numStatus == gameInterfaces[currentState].buttons.size())
+		{
+			played = false;
 		}
 	}
 }
@@ -1441,12 +1461,12 @@ void SceneGame::changeScene(GAME_STATE nextState)
 	if(nextState==INGAME_STATE)
 	{
 		sound.Play("Sound_Background");	
-			sound.Play("Sound_Bookflip");
+			sound.Play("Sound_Bookflip2");
 	}
 	else
 	{
 		sound.Stop("Sound_Background");	
-		sound.Play("Sound_Bookflip");
+		sound.Play("Sound_Bookflip2");
 	}
 }
 

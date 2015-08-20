@@ -44,12 +44,48 @@ double Player::GetEnergy()
 
 void Player::UpdateEnergy(double dt)
 {
-	/*	 
-	if energy is full and not running, do nothing 
-	if running, decrease energy with dt.
-	if running and no energy, become walking
-	if energy is not max and is not running, add energy with dt 
-	*/
+	if (Character::state.GetState() == StateMachine::RUN)
+	{
+		if ( energy > 0 )
+		{
+			//decrease energy
+			energy -= 10 * dt;
+		}
+		else 
+		{
+			energy = 0;
+			Character::state.SetState(StateMachine::WALK);
+		}
+	}
+
+	else if (Character::state.GetState() == StateMachine::WALK)
+	{
+		if ( energy < MAX_ENERGY )
+		{
+			//recover energy
+			energy += 5 * dt;
+			//cap energy at max energy
+			if (energy > MAX_ENERGY)
+			{
+				energy = MAX_ENERGY;
+			}
+		}
+	}
+
+	else if (Character::state.GetState() == StateMachine::IDLE)
+	{
+		if ( energy < MAX_ENERGY )
+		{
+			//recover energy a littleeee bit faster than walk
+			energy += 7.5 * dt;
+			//cap energy at max energy
+			if (energy > MAX_ENERGY)
+			{
+				energy = MAX_ENERGY;
+			}
+		}
+	}
+
 }
 
 void Player::ConstrainPlayer() /* parameters to be added */

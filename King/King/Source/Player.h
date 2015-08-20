@@ -29,7 +29,7 @@ public:
 	void UpdateEnergy(double dt);
 
 	// To contrain player at certain point of map
-	void ConstrainPlayer(void); /* parameters to be added */
+	void ConstrainPlayer();
 
 private:
 

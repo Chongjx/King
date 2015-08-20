@@ -49,6 +49,7 @@ public:
 	float getRotation(void) const;
 	Color getColor(void) const;
 	BUTTON_TYPE getType(void) const;
+	BUTTON_STATUS getPrevStatus(void) const;
 	BUTTON_STATUS getStatus(void) const;
 private:
 	string name;

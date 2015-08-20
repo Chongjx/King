@@ -142,7 +142,10 @@ Buttons::BUTTON_TYPE Buttons::getType(void) const
 {
 	return this->type;
 }
-
+Buttons::BUTTON_STATUS Buttons::getPrevStatus(void) const
+{
+	return this->prevStatus;
+}
 Buttons::BUTTON_STATUS Buttons::getStatus(void) const
 {
 	return this->status;

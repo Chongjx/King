@@ -8,6 +8,13 @@ class Guards: public AI
 	
 public:
 
+	enum GUARD_STATE
+	{
+		CHASE = StateMachine::MAX_STATE + 1,
+
+		GUARD_MAX_STATE,
+	};
+
 	// Default constructor and destructor
 	Guards(void);
 	~Guards(void);

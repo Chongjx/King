@@ -17,9 +17,14 @@ public:
 	// Update the character
 	void Update(double dt, bool updating);
 
-
+	// Set destination for AI
+	void SetDestination(float x, float y);
+	// Get destination for AI
+	Vector2 GetDestination(void);
 
 private:
+
+	Vector2 destination;
 
 };
 
