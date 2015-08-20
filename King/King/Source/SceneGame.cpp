@@ -1259,7 +1259,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	if (getKey("Right"))
 	{
-		if (
+		//if (
 		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
 	}
 
