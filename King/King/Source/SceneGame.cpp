@@ -1418,8 +1418,17 @@ void SceneGame::UpdateInGame(double dt)
 
 void SceneGame::changeScene(GAME_STATE nextState)
 {
-	this->currentState = nextState;
-	sound.Play("Sound_Bookflip");
+	this->currentState = nextState;	
+	if(nextState==INGAME_STATE)
+	{
+		sound.Play("Sound_Background");	
+			sound.Play("Sound_Bookflip");
+	}
+	else
+	{
+		sound.Stop("Sound_Background");	
+		sound.Play("Sound_Bookflip");
+	}
 }
 
 void SceneGame::RenderInterface(void)
