@@ -12,6 +12,10 @@
 		[Directory] Reader\\SettingConfig.txt
 	}
 	{
+		[NAME] Variables
+		[Directory] Reader\\VariableConfig.txt
+	}
+	{
 		[NAME] Color
 		[Directory] Reader\\ColorConfig.txt
 	}
