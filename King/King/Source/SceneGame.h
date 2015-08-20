@@ -63,6 +63,12 @@ class SceneGame : public Scene2D
 		EXIT_STATE,
 		MAX_STATE,
 	};
+
+	struct Time
+	{
+		int hour;
+		float min;
+	};
 public:
 	SceneGame(void);
 	~SceneGame(void);
@@ -97,6 +103,7 @@ public:
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
+	void RenderGUI(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -123,6 +130,8 @@ private:
 	float gameVolume;
 	int currentLocation;
 	bool paused;
+	float difficulty;
+	Time currentTime;
 
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);

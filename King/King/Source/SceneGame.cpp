@@ -60,7 +60,7 @@ void SceneGame::Update(double dt)
 	{
 		gameInterfaces[currentState].buttons[i].Update(getKey("Select"), mousePos.x, mousePos.y);
 	}
-		
+
 	UpdateState();
 	UpdateEffect();
 
@@ -243,6 +243,20 @@ void SceneGame::Config(void)
 			}
 		}
 
+		else if (branch->branchName == "Variables")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitVariables(attriValue);
+				}
+			}
+		}
+
 		else if (branch->branchName == "Mesh")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
@@ -367,7 +381,7 @@ void SceneGame::InitShaders(void)
 	glUseProgram(m_programID);
 
 	lights[0].type = Light::LIGHT_DIRECTIONAL;
-	lights[0].position.Set(0, 20, 0);
+	lights[0].position.Set(0, 0, 10);
 	lights[0].color.Set(1, 1, 1);
 	lights[0].power = 1;
 	lights[0].kC = 1.f;
@@ -376,7 +390,7 @@ void SceneGame::InitShaders(void)
 	lights[0].cosCutoff = cos(Math::DegreeToRadian(45));
 	lights[0].cosInner = cos(Math::DegreeToRadian(30));
 	lights[0].exponent = 3.f;
-	lights[0].spotDirection.Set(0.f, 1.f, 0.f);
+	lights[0].spotDirection.Set(0.f, 0.f, 1.f);
 
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
@@ -1053,7 +1067,37 @@ void SceneGame::InitLevel(string config)
 // Init all game variables in the scene from text file
 void SceneGame::InitVariables(string config)
 {
+	Branch VariablesBranch = TextTree::FileToRead(config);
 
+	if (DEBUG)
+	{
+		VariablesBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
+	{
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+
+			if (attriName == "HOUR")
+			{
+				currentTime.hour = stoi(attriValue);
+			}
+			if(attriName == "MIN")
+			{
+				currentTime.min = stof(attriValue);
+			}
+			if(attriName == "DIFFICULTY")
+			{
+				difficulty = stof(attriValue);
+			}
+		}
+	}
 }
 
 // Init all game variables in the scene from text file
@@ -1330,6 +1374,20 @@ void SceneGame::UpdateInGame(double dt)
 	}
 
 	this->layout[currentLocation].roomLayout[0].Update();
+
+	currentTime.min += dt * gameSpeed * difficulty;
+	std::cout << currentTime.min << std::endl;
+	std::cout << currentTime.hour << std::endl;
+	if(currentTime.min > 60.0f)
+	{
+		currentTime.min = 0;
+		currentTime.hour += 1;
+	}
+	if(currentTime.hour == 24)
+	{
+		currentTime.min = 0;
+		currentTime.hour = 0;
+	}
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
@@ -1384,7 +1442,7 @@ void SceneGame::RenderLevel(void)
 					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+					Render2DMesh(findMesh("GEO_TILESHEET"), true, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 				}
 			}
 		}
