@@ -1348,14 +1348,13 @@ void SceneGame::UpdateInGame(double dt)
 {
 	if (getKey("Up"))
 	{
-<<<<<<< HEAD
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 2000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() + 2000 * dt));
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt));
 		}
 		//player->MoveUp(dt);
 		//std::cout << player->GetPositionX() << " , " << player->GetPositionY() << "\n"; 
@@ -1365,11 +1364,11 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt));
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt));
 		}
 		//player->MoveDown(dt);
 	}
@@ -1378,11 +1377,11 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 2000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() - 2000 * dt));
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt));
 		}
 		//player->MoveLeft(dt);
 	}
@@ -1391,18 +1390,18 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 2000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() + 2000 * dt));
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
+			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt));
 		}
 		//player->MoveRight(dt);
 	}
 
 	this->layout[currentLocation].roomLayout[0].Update();
 
-	currentTime.min += dt * gameSpeed * difficulty;
+	currentTime.min += (float)dt * gameSpeed * difficulty;
 	std::cout << currentTime.min << std::endl;
 	std::cout << currentTime.hour << std::endl;
 	if(currentTime.min > 60.0f)
