@@ -1,0 +1,11 @@
+# Variable setting #
+# Time everything here
+{
+	[NAME] TimeSetting
+	{
+		[NAME] StartTime
+		[HOUR] 06
+		[MIN] 00
+		[DIFFICULTY] 10
+	}
+}

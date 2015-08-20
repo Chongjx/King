@@ -31,17 +31,16 @@ void Character::Update(double dt)
 	}
 }
 
-void Character::MoveUp(double dt)
-{
-
-	/*
+/*
 	if character is walking, acelerate speed to walking speed 
 	if stop walking, decelerate speed to zero
 	if character is running, acelerate speed to running speed 
 	if stop running, decelerate speed to zero
 	only one speed per character 
-	*/
+*/
 
+void Character::MoveUp(double dt)
+{
 	// Walk
 	if(speed < MAX_WALK_SPEED)
 	{
@@ -50,11 +49,11 @@ void Character::MoveUp(double dt)
 	}
 
 	// Run
-	if(speed < MAX_RUN_SPEED)
+	/*if(speed < MAX_RUN_SPEED)
 	{
 		vel.y += (int) (speed * dt);
 		pos.y += vel.y * static_cast<float>(dt);
-	}
+	}*/
 }
 
 void Character::MoveDown(double dt)
@@ -67,11 +66,11 @@ void Character::MoveDown(double dt)
 	}
 
 	// Run
-	if(speed < MAX_RUN_SPEED)
+	/*if(speed < MAX_RUN_SPEED)
 	{
 		vel.y -= (int) (speed * dt);
 		pos.y -= vel.y * static_cast<float>(dt);
-	}
+	}*/
 }
 
 void Character::MoveLeft(double dt)
@@ -84,11 +83,11 @@ void Character::MoveLeft(double dt)
 	}
 
 	// Run
-	if(speed < MAX_RUN_SPEED)
+	/*if(speed < MAX_RUN_SPEED)
 	{
 		vel.x -= (int) (speed * dt);
 		pos.x -= vel.x * static_cast<float>(dt);
-	}
+	}*/
 }
 
 void Character::MoveRight(double dt)
@@ -101,11 +100,11 @@ void Character::MoveRight(double dt)
 	}
 
 	// Run
-	if(speed < MAX_RUN_SPEED)
+	/*if(speed < MAX_RUN_SPEED)
 	{
 		vel.x += (int) (speed * dt);
 		pos.x += vel.x * static_cast<float>(dt);
-	}
+	}*/
 }
 
 void Character::SetFOV(int tiles)
@@ -116,4 +115,14 @@ void Character::SetFOV(int tiles)
 int Character::GetFOV()
 {
 	return tiles;
+}
+
+float Character::GetPositionX(void)
+{
+	return pos.x;
+}
+
+float Character::GetPositionY(void)
+{
+	return pos.y;
 }

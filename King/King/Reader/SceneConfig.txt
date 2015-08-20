@@ -12,6 +12,10 @@
 		[Directory] Reader\\SettingConfig.txt
 	}
 	{
+		[NAME] Variables
+		[Directory] Reader\\VariableConfig.txt
+	}
+	{
 		[NAME] Color
 		[Directory] Reader\\ColorConfig.txt
 	}
@@ -30,5 +34,9 @@
 	{
 		[NAME] Sound
 		[Directory] Reader\\SoundConfig.txt
+	}
+	{
+		[NAME] Player
+		[Directory] Reader\\PlayerConfig.txt
 	}
 }

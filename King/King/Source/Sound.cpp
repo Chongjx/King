@@ -63,8 +63,11 @@ void Sound::Play(string Name)
 	{
 		if(itr->getSoundName().c_str() == Name)
 		{
+			if(!Soundengine->isCurrentlyPlaying(itr->getSoundFile().c_str()))
+			{
 			Soundengine->setSoundVolume(itr->volume);
 			Soundengine->play2D(itr->getSoundFile().c_str(),itr->loop);
+			}
 		}
 	}
 }
@@ -84,4 +87,9 @@ void Sound::VolumeDown (void)
 			Soundengine->setSoundVolume(itr->volume - 0.1f);
 		
 	}
+}
+
+void Sound::Stop(void)
+{
+	Soundengine->stopAllSounds();
 }

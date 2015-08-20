@@ -26,6 +26,8 @@ SceneGame::SceneGame(void)
 	specialFontSize = 0.f;
 	defaultFontSize = 0.f;
 	paused = false;
+
+	player = new Player();
 }
 
 SceneGame::~SceneGame(void)
@@ -184,6 +186,12 @@ void SceneGame::Exit(void)
 		}
 	}
 
+	if(player)
+	{
+		delete player;
+		player = NULL;
+	}
+
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 }
 
@@ -231,6 +239,20 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitSettings(attriValue);
+				}
+			}
+		}
+
+		else if (branch->branchName == "Variables")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitVariables(attriValue);
 				}
 			}
 		}
@@ -303,6 +325,19 @@ void SceneGame::Config(void)
 				}
 			}
 		}
+		else if (branch->branchName == "Player")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitPlayer(attriValue);
+				}
+			}
+		}
 	}
 }
 
@@ -346,7 +381,7 @@ void SceneGame::InitShaders(void)
 	glUseProgram(m_programID);
 
 	lights[0].type = Light::LIGHT_DIRECTIONAL;
-	lights[0].position.Set(0, 20, 0);
+	lights[0].position.Set(0, 0, 10);
 	lights[0].color.Set(1, 1, 1);
 	lights[0].power = 1;
 	lights[0].kC = 1.f;
@@ -355,7 +390,7 @@ void SceneGame::InitShaders(void)
 	lights[0].cosCutoff = cos(Math::DegreeToRadian(45));
 	lights[0].cosInner = cos(Math::DegreeToRadian(30));
 	lights[0].exponent = 3.f;
-	lights[0].spotDirection.Set(0.f, 1.f, 0.f);
+	lights[0].spotDirection.Set(0.f, 0.f, 1.f);
 
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
@@ -1032,7 +1067,37 @@ void SceneGame::InitLevel(string config)
 // Init all game variables in the scene from text file
 void SceneGame::InitVariables(string config)
 {
+	Branch VariablesBranch = TextTree::FileToRead(config);
 
+	if (DEBUG)
+	{
+		VariablesBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
+	{
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+
+			if (attriName == "HOUR")
+			{
+				currentTime.hour = stoi(attriValue);
+			}
+			if(attriName == "MIN")
+			{
+				currentTime.min = stof(attriValue);
+			}
+			if(attriName == "DIFFICULTY")
+			{
+				difficulty = stof(attriValue);
+			}
+		}
+	}
 }
 
 // Init all game variables in the scene from text file
@@ -1041,7 +1106,6 @@ void SceneGame::InitSound(string config)
 	Branch soundBranch = TextTree::FileToRead(config);
 	{
 		irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
-
 		std::string soundName = "";
 		std::string soundFile= "";
 		float volume=0.f;
@@ -1086,6 +1150,45 @@ void SceneGame::InitSound(string config)
 			tempSound.Init(soundName,soundFile,volume,loop);
 			sound.sounds.push_back(tempSound);
 		}
+	}
+}
+
+void SceneGame::InitPlayer(string config)
+{
+	Branch playerBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		playerBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
+	{
+		Vector2 pos;
+		int tiles = 0;
+		int mapLocation = 0;
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			if (attriName == "Pos")
+			{
+				stringToVector(attriValue, pos);
+			}
+			else if (attriName == "Tiles")
+			{
+				tiles = stoi(attriValue);
+			}
+			else if (attriName == "MapLocation")
+			{
+				mapLocation = stoi(attriValue);
+			}
+		}
+
+		player->Init(pos,tiles,mapLocation);
 	}
 }
 
@@ -1220,9 +1323,6 @@ void SceneGame::UpdateState(void)
 			updated = true;
 		}
 
-		/*Sound tempSound;
-		tempSound.Init(soundName,soundFile,volume,loop);
-		sound.sounds.push_back(tempSound);*/
 	}
 }
 
@@ -1248,6 +1348,7 @@ void SceneGame::UpdateInGame(double dt)
 {
 	if (getKey("Up"))
 	{
+<<<<<<< HEAD
 		if (getKey("ToggleShift"))
 		{
 			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 2000 * dt);
@@ -1256,6 +1357,8 @@ void SceneGame::UpdateInGame(double dt)
 		{
 			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
 		}
+		//player->MoveUp(dt);
+		//std::cout << player->GetPositionX() << " , " << player->GetPositionY() << "\n"; 
 	}
 
 	if (getKey("Down"))
@@ -1268,6 +1371,7 @@ void SceneGame::UpdateInGame(double dt)
 		{
 			this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt);
 		}
+		//player->MoveDown(dt);
 	}
 
 	if (getKey("Left"))
@@ -1280,6 +1384,7 @@ void SceneGame::UpdateInGame(double dt)
 		{
 			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt);
 		}
+		//player->MoveLeft(dt);
 	}
 
 	if (getKey("Right"))
@@ -1292,15 +1397,30 @@ void SceneGame::UpdateInGame(double dt)
 		{
 			this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
 		}
+		//player->MoveRight(dt);
 	}
 
 	this->layout[currentLocation].roomLayout[0].Update();
+
+	currentTime.min += dt * gameSpeed * difficulty;
+	std::cout << currentTime.min << std::endl;
+	std::cout << currentTime.hour << std::endl;
+	if(currentTime.min > 60.0f)
+	{
+		currentTime.min = 0;
+		currentTime.hour += 1;
+	}
+	if(currentTime.hour == 24)
+	{
+		currentTime.min = 0;
+		currentTime.hour = 0;
+	}
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
 {
 	this->currentState = nextState;
-	//sound.Play("Sound_Bookflip");
+	sound.Play("Sound_Bookflip");
 }
 
 void SceneGame::RenderInterface(void)
@@ -1349,7 +1469,7 @@ void SceneGame::RenderLevel(void)
 					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+					Render2DMesh(findMesh("GEO_TILESHEET"), true, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 				}
 			}
 		}

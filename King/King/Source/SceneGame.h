@@ -11,6 +11,7 @@ using std::string;
 #include "Room.h"
 #include "Interface.h"
 #include "Sound.h"
+#include "Player.h"
 
 class SceneGame : public Scene2D
 {
@@ -62,6 +63,12 @@ class SceneGame : public Scene2D
 		EXIT_STATE,
 		MAX_STATE,
 	};
+
+	struct Time
+	{
+		int hour;
+		float min;
+	};
 public:
 	SceneGame(void);
 	~SceneGame(void);
@@ -81,6 +88,7 @@ public:
 	void InitLevel(string config);
 	void InitVariables(string config);
 	void InitSound(string config);
+	void InitPlayer(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -95,6 +103,7 @@ public:
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
+	void RenderGUI(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -113,7 +122,6 @@ private:
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
 	Vector2 mousePos;
-	Sound sound;
 
 	GAME_STATE currentState;
 	float defaultFontSize;
@@ -122,10 +130,16 @@ private:
 	float gameVolume;
 	int currentLocation;
 	bool paused;
+	float difficulty;
+	Time currentTime;
 
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
 	void stringToBool(string text, bool &boo);
+
+	Sound sound;
+	Player* player;
+
 
 };
 
