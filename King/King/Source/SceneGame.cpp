@@ -1307,7 +1307,7 @@ void SceneGame::RenderLevel(void)
 			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 			{
 				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
-				std::cout << layout[currentLocation].roomLayout[numMaps].getTileOffsetY() << std::endl;
+
 				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 				{
 					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
@@ -1546,6 +1546,8 @@ bool SceneGame::getKey(string keyName)
 			return interactionKeys[i].pressed;
 		}
 	}
+
+	return false;
 }
 
 void SceneGame::stringToVector(string text, Vector2 &vec)
