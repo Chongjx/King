@@ -102,6 +102,23 @@ void SceneGame::Update(double dt)
 	}
 }
 
+void SceneGame::UpdateDay(double dt)
+{
+	currentTime.min += dt * gameSpeed * difficulty;
+	std::cout << currentTime.min << std::endl;
+	std::cout << currentTime.hour << std::endl;
+	if(currentTime.min > 60.0f)
+	{
+		currentTime.min = 0;
+		currentTime.hour += 1;
+	}
+	if(currentTime.hour == 24)
+	{
+		currentTime.min = 0;
+		currentTime.hour = 0;
+	}
+}
+
 void SceneGame::UpdateAI(double dt)
 {
 }
@@ -122,6 +139,7 @@ void SceneGame::Render(void)
 	case INGAME_STATE:
 		{
 			RenderLevel();
+			RenderTime();
 			RenderCharacters();
 			break;
 		}
@@ -140,6 +158,7 @@ void SceneGame::Render(void)
 	case PAUSE_STATE:
 		{
 			RenderLevel();
+			RenderTime();
 			RenderCharacters();
 			break;
 		}
@@ -151,10 +170,10 @@ void SceneGame::Render(void)
 
 	RenderInterface();
 
-	std::ostringstream ss;
+	/*std::ostringstream ss;
 	ss.precision(5);
 	ss << "FPS: " << fps;
-	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -1322,7 +1341,6 @@ void SceneGame::UpdateState(void)
 
 			updated = true;
 		}
-
 	}
 }
 
@@ -1414,6 +1432,7 @@ void SceneGame::UpdateInGame(double dt)
 		currentTime.min = 0;
 		currentTime.hour = 0;
 	}
+	UpdateDay(dt);
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
@@ -1478,7 +1497,7 @@ void SceneGame::RenderLevel(void)
 					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-					Render2DMesh(findMesh("GEO_TILESHEET"), true, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 				}
 			}
 		}
@@ -1488,6 +1507,28 @@ void SceneGame::RenderLevel(void)
 void SceneGame::RenderCharacters(void)
 {
 
+}
+
+void SceneGame::RenderTime(void)
+{
+	if(currentTime.hour >= 18 || currentTime.hour >= 0 && currentTime.hour <6)
+	{
+		std::ostringstream ss;
+		ss.precision(2);
+		ss << currentTime.hour << ":" << currentTime.min ;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
+
+		Render2DMesh(findMesh("GEO_MOON"),false, 64, 16, sceneHeight - 64);
+	}
+	if(currentTime.hour >= 6 && currentTime.hour <18)
+	{
+		std::ostringstream ss;
+		ss.precision(2);
+		ss << currentTime.hour << ":" << currentTime.min ;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
+
+		Render2DMesh(findMesh("GEO_SUN"),false, 64, 16, sceneHeight - 64);
+	}
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
@@ -1597,27 +1638,6 @@ void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const float siz
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
-	modelView = viewStack.Top() * modelStack.Top();
-	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
-
-	if (enableLight && bLightEnabled)
-	{
-		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
-		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
-		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
-
-		//load material
-		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);
-		glUniform3fv(m_parameters[U_MATERIAL_DIFFUSE], 1, &mesh->material.kDiffuse.r);
-		glUniform3fv(m_parameters[U_MATERIAL_SPECULAR], 1, &mesh->material.kSpecular.r);
-		glUniform1f(m_parameters[U_MATERIAL_SHININESS], mesh->material.kShininess);
-	}
-
-	else
-	{	
-		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
-	}
-
 	if(mesh->textureID != NULL)
 	{
 		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
@@ -1660,27 +1680,6 @@ void SceneGame::Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 s
 
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-
-	modelView = viewStack.Top() * modelStack.Top();
-	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
-
-	if (enableLight && bLightEnabled)
-	{
-		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
-		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
-		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
-
-		//load material
-		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);
-		glUniform3fv(m_parameters[U_MATERIAL_DIFFUSE], 1, &mesh->material.kDiffuse.r);
-		glUniform3fv(m_parameters[U_MATERIAL_SPECULAR], 1, &mesh->material.kSpecular.r);
-		glUniform1f(m_parameters[U_MATERIAL_SHININESS], mesh->material.kShininess);
-	}
-
-	else
-	{	
-		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
-	}
 
 	if(mesh->textureID != NULL)
 	{

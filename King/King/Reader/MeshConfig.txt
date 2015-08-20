@@ -373,6 +373,16 @@
 		[Texture] Image\\Prison.tga
 	}
 	{
+		[NAME] GEO_MOON
+		[Type] Quad
+		[Texture] Image\\Moon.tga
+	}
+	{
+		[NAME] GEO_SUN
+		[Type] Quad
+		[Texture] Image\\Sun.tga
+	}
+	{
 		[NAME] GEO_DEBUGQUAD
 		[Type] DebugQuad
 		[Length] 1

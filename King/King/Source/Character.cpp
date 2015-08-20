@@ -115,7 +115,7 @@ void Character::Update(double dt)
 		vel.x += (int) (speed * dt);
 		pos.x += vel.x * static_cast<float>(dt);
 	}*/
-//}
+}
 
 void Character::SetFOV(int tiles)
 {
