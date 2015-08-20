@@ -1,8 +1,8 @@
 #include "AI.h"
 
 AI::AI(void)
+	: destination(0,0)
 {
-
 }
 
 AI::~AI(void)
@@ -23,5 +23,17 @@ void AI::Update(double dt, bool updating)
 	}
 	else
 	{
+
 	}
+}
+
+void AI::SetDestination(float x, float y)
+{
+	this->destination.x = x;
+	this->destination.y = y;
+}
+	
+Vector2 AI::GetDestination(void)
+{
+	return destination;
 }

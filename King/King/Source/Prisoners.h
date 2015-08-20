@@ -7,6 +7,11 @@ class Prisoners: public AI
 {
 	
 public:
+	
+	enum PRISONER_STATE
+	{
+		test = StateMachine::MAX_STATE + 1,
+	};
 
 	// Default constructor and destructor
 	Prisoners(void);
@@ -16,6 +21,7 @@ public:
 	void Init(void);
 	// Update the character
 	void Update(double dt);
+
 
 
 

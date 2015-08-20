@@ -22,9 +22,6 @@ public:
 	StateMachine(void);
 	~StateMachine(void);
 
-	// Update the state machine
-	void Update(double dt);
-
 	// Sets state with the enum as parameter
 	void SetState(STATE NewState);
 	// Return the current state
