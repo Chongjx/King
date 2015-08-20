@@ -194,6 +194,16 @@ int TileMap::getMapFineOffsetY(void)
 	return this->mapFineOffsetY;
 }
 
+void TileMap::setMapOffsetX(int mapOffsetX)
+{
+	this->mapOffsetX = mapOffsetX;
+}
+
+void TileMap::setMapOffsetY(int mapOffsetY)
+{
+	this->mapOffsetY = mapOffsetY;
+}
+
 void TileMap::setXScroll(bool enabled)
 {
 	this->xScrolling = enabled;

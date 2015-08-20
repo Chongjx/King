@@ -25,6 +25,7 @@ SceneGame::SceneGame(void)
 	sceneHeight = 0.f;
 	specialFontSize = 0.f;
 	defaultFontSize = 0.f;
+	paused = false;
 }
 
 SceneGame::~SceneGame(void)
@@ -48,24 +49,31 @@ void SceneGame::Update(double dt)
 	Scene2D::Update(dt);
 
 	UpdateOpengl();
+	UpdateInput();
 	UpdateMouse();
 	camera.Update(dt);
 
 	// Update buttons
 	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
-		gameInterfaces[currentState].buttons[i].Update(KEngine::getMouse()->mouseButtonStatus[LEFT_BUTTON], mousePos.x, mousePos.y);
+		gameInterfaces[currentState].buttons[i].Update(getKey("Select"), mousePos.x, mousePos.y);
 	}
+
+	UpdateState();
+	UpdateEffect();
 
 	switch(currentState)
 	{
 	case MENU_STATE:
 		{
-			UpdateMenu();
 			break;
 		}
 	case INGAME_STATE:
 		{
+			if (!paused)
+			{
+				UpdateInGame(dt);
+			}
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -129,6 +137,8 @@ void SceneGame::Render(void)
 		}
 	case PAUSE_STATE:
 		{
+			RenderLevel();
+			RenderCharacters();
 			break;
 		}
 	case EXIT_STATE:
@@ -138,10 +148,11 @@ void SceneGame::Render(void)
 	}
 
 	RenderInterface();
+
 	std::ostringstream ss;
 	ss.precision(5);
 	ss << "FPS: " << fps;
-	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), Color(1, 0, 0), specialFontSize, 0, sceneHeight - specialFontSize);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -234,6 +245,20 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitMesh(attriValue);
+				}
+			}
+		}
+
+		else if (branch->branchName == "Color")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitColor(attriValue);
 				}
 			}
 		}
@@ -450,6 +475,39 @@ void SceneGame::InitSettings(string config)
 				}
 			}
 		}
+
+		else if (branch->branchName == "Controls")
+		{
+			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
+			{
+				Branch tempChildBranch = *childbranch;
+				KEYS tempKey;
+				tempKey.name = "";
+				tempKey.value;
+
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					tempKey.name = tempChildBranch.branchName;
+
+					if (attriName == "Key")
+					{
+						tempKey.value = stol(attriValue, NULL, 16);
+					}
+				}
+
+				interactionKeys.push_back(tempKey);
+			}
+
+			for (vector<KEYS>::iterator key = interactionKeys.begin(); key != interactionKeys.end(); ++key)
+			{
+				KEYS tempKey = *key;
+				tempKey.pressed = false;
+			}
+		}
 	}
 }
 
@@ -525,13 +583,18 @@ void SceneGame::InitMesh(string config)
 			string attriName = tempAttri.name;
 			string attriValue = tempAttri.value;
 
-			if (attriName == "Color")
+			if (attriName == "ColorValue")
 			{
 				Vector3 tempColor;
 
 				stringToVector(attriValue, tempColor);
 
 				meshColor.Set(tempColor.x, tempColor.y, tempColor.z);
+			}
+
+			if (attriName == "ColorName")
+			{
+				meshColor = findColor(attriValue);
 			}
 
 			else if (attriName == "Type")
@@ -727,6 +790,35 @@ void SceneGame::InitMesh(string config)
 			{
 				mesh->textureID = textureID;
 			}
+		}
+	}
+}
+
+void SceneGame::InitColor(string config)
+{
+	Branch colorBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		colorBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = colorBranch.childBranches.begin(); branch != colorBranch.childBranches.end(); ++branch)
+	{
+		Color tempColor;
+		Vector3 colorValue;
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			stringToVector(attriValue, colorValue);
+
+			tempColor.Set(colorValue.x, colorValue.y, colorValue.z, branch->branchName);
+
+			colorList.push_back(tempColor);
 		}
 	}
 }
@@ -999,17 +1091,25 @@ void SceneGame::InitSound(string config)
 
 void SceneGame::UpdateOpengl(void)
 {
-	if(KEngine::isKeyPressed('1'))
+	if(KEngine::getKeyboard()->getKey('1'))
 		glEnable(GL_CULL_FACE);
 
-	if(KEngine::isKeyPressed('2'))
+	if(KEngine::getKeyboard()->getKey('2'))
 		glDisable(GL_CULL_FACE);
 
-	if(KEngine::isKeyPressed('3'))
+	if(KEngine::getKeyboard()->getKey('3'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	if(KEngine::isKeyPressed('4'))
+	if(KEngine::getKeyboard()->getKey('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void SceneGame::UpdateInput(void)
+{
+	for (unsigned i = 0; i < interactionKeys.size(); ++i)
+	{
+		interactionKeys[i].pressed = KEngine::getKeyboard()->getKey(interactionKeys[i].value);
+	}
 }
 
 void SceneGame::UpdateMouse(void)
@@ -1022,9 +1122,6 @@ void SceneGame::UpdateMouse(void)
 	int h = KEngine::getWindowHeight();
 
 	mousePos.Set((float)x * sceneWidth / w, (h - (float)y) * sceneHeight / h);
-
-	UpdateState();
-	UpdateEffect();
 }
 
 void SceneGame::UpdateState(void)
@@ -1135,25 +1232,41 @@ void SceneGame::UpdateEffect(void)
 	{
 		if (gameInterfaces[currentState].buttons[i].getStatus() == Buttons::BUTTON_HOVER)
 		{
-			gameInterfaces[currentState].buttons[i].setColor(Color(1, 0.7f, 0.8f));
+			gameInterfaces[currentState].buttons[i].setColor(findColor("White"));
 			gameInterfaces[currentState].buttons[i].setRotation(3.f);
 		}
 
 		else
 		{
-			gameInterfaces[currentState].buttons[i].setColor(Color(1, 1, 1));
+			gameInterfaces[currentState].buttons[i].setColor(findColor("LightGrey"));
 			gameInterfaces[currentState].buttons[i].setRotation(1.f);
 		}
 	}
 }
 
-void SceneGame::UpdateMenu(void)
-{
-}
-
 void SceneGame::UpdateInGame(double dt)
 {
+	this->layout[currentLocation].roomLayout[0].Update();
 
+	if (getKey("Up"))
+	{
+		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
+	}
+
+	if (getKey("Down"))
+	{
+		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() - 1000 * dt);
+	}
+
+	if (getKey("Left"))
+	{
+		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt);
+	}
+
+	if (getKey("Right"))
+	{
+		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
+	}
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
@@ -1163,7 +1276,6 @@ void SceneGame::changeScene(GAME_STATE nextState)
 
 void SceneGame::RenderInterface(void)
 {
-	
 	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
 		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::TEXT_BUTTON)
@@ -1191,19 +1303,24 @@ void SceneGame::RenderLevel(void)
 		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++ numMaps)
 		{
 			int m = 0;
-			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight(); i++)
+			int n = 0;
+			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 			{
-				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth(); k++)
+				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+				std::cout << layout[currentLocation].roomLayout[numMaps].getTileOffsetY() << std::endl;
+				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 				{
 					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
 
-					if ((layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k) >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth())
+					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+						break;
+					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
 						break;
 
 					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
-					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[i][m];
+					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize());
+					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 				}
 			}
 		}
@@ -1235,6 +1352,7 @@ void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 		modelStack.Rotate(rotation, 0, 0, 1);
 	}
 	modelStack.Scale(size, size, size);
+	
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
@@ -1400,6 +1518,34 @@ Mesh* SceneGame::findMesh(string meshName)
 	std::cout << "Unable to find mesh! Check your naming" << std::endl;
 
 	return NULL;
+}
+
+Color SceneGame::findColor(string colorName)
+{
+	for (vector<Color>::iterator it = colorList.begin(); it != colorList.end(); ++it)
+	{
+		Color tempColor = *it;
+
+		if (tempColor.name == colorName)
+		{
+			return tempColor;
+		}
+	}
+
+	std::cout << "Unable to find color! Check your naming" << std::endl;
+
+	return Color(1, 1, 1);
+}
+
+bool SceneGame::getKey(string keyName)
+{
+	for (unsigned i = 0; i < interactionKeys.size(); ++i)
+	{
+		if (keyName == interactionKeys[i].name)
+		{
+			return interactionKeys[i].pressed;
+		}
+	}
 }
 
 void SceneGame::stringToVector(string text, Vector2 &vec)

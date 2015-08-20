@@ -4,7 +4,6 @@
 #include "Scene2D.h"
 #include "TextTree.h"
 
-
 #define DEBUG true
 
 using std::string;
@@ -77,16 +76,17 @@ public:
 	void InitShaders(void);
 	void InitSettings(string config);
 	void InitMesh(string config);
+	void InitColor(string config);
 	void InitInterface(string config);
 	void InitLevel(string config);
 	void InitVariables(string config);
 	void InitSound(string config);
 
 	void UpdateOpengl(void);
+	void UpdateInput(void);
 	void UpdateMouse(void);
 	void UpdateState(void);
 	void UpdateEffect(void);
-	void UpdateMenu(void);
 	void UpdateInGame(double dt);
 
 	void changeScene(GAME_STATE nextState);
@@ -102,12 +102,14 @@ public:
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 size, const Vector2 pos, const float rotation = 0.f);
 
 	Mesh* findMesh(string meshName);
-
+	Color findColor(string colorName);
+	bool getKey(string keyName);
 private:
 	float sceneWidth;
 	float sceneHeight;
 
 	Branch gameBranch;
+	vector<KEYS> interactionKeys;
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
 	Vector2 mousePos;
@@ -118,6 +120,7 @@ private:
 	float gameSpeed;
 	float gameVolume;
 	int currentLocation;
+	bool paused;
 
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);

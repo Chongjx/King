@@ -26,4 +26,32 @@
 		[NAME] GameVolume
 		[Volume] 1
 	}
+	{
+		[NAME] Controls
+		{
+			[NAME] Select
+			[Key] 0x01
+			# [Key] VK_LBUTTON
+		}
+		{
+			[NAME] Up
+			[Key] 0x57
+			# [Key] VK_W
+		}
+		{
+			[NAME] Down
+			[Key] 0x53
+			# [Key] VK_S
+		}
+		{
+			[NAME] Left
+			[Key] 0x41
+			# [Key] VK_A
+		}
+		{
+			[NAME] Right
+			[Key] 0x44
+			# [Key] VK_D
+		}
+	}
 }

@@ -92,6 +92,7 @@
     <ClCompile Include="Source\ItemClothing.cpp" />
     <ClCompile Include="Source\ItemMisc.cpp" />
     <ClCompile Include="Source\ItemWeapon.cpp" />
+    <ClCompile Include="Source\Keyboard.cpp" />
     <ClCompile Include="Source\KingEngine.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Source\ItemClothing.h" />
     <ClInclude Include="Source\ItemMisc.h" />
     <ClInclude Include="Source\ItemWeapon.h" />
+    <ClInclude Include="Source\Keyboard.h" />
     <ClInclude Include="Source\KingEngine.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />

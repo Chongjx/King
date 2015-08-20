@@ -12,6 +12,10 @@
 		[Directory] Reader\\SettingConfig.txt
 	}
 	{
+		[NAME] Color
+		[Directory] Reader\\ColorConfig.txt
+	}
+	{
 		[NAME] Mesh
 		[Directory] Reader\\MeshConfig.txt
 	}

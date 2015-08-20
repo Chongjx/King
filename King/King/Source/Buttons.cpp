@@ -33,6 +33,7 @@ void Buttons::Init(string name, string text, Mesh* mesh, Vector2 pos, Vector2 sc
 void Buttons::Update(bool pressed, double mouseX, double mouseY)
 {
 	// update buttons status based on mouse position
+
 	if (mouseX < this->pos.x + this->scale.x && mouseX > this->pos.x)
 	{
 		if (mouseY < this->pos.y + this->scale.y && mouseY > this->pos.y)

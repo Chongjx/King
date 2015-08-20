@@ -4,14 +4,6 @@ Mouse::Mouse()
 {
 }
 
-// setting up of the mouse using data from text files
-Mouse::Mouse(string config)
-{
-	Branch mouseBranch = TextTree::FileToRead(config);
-
-	Config();
-}
-
 Mouse::~Mouse()
 {
 }

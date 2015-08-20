@@ -1,6 +1,7 @@
 #include "KingEngine.h"
 
 Mouse* KEngine::mouse = NULL;
+Keyboard* KEngine::keyboard = NULL;
 int KEngine::windowWidth = 1;
 int KEngine::windowHeight = 1;
 bool KEngine::run = true;
@@ -23,11 +24,18 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 void resize_callback(GLFWwindow* window, int w, int h)
 {
 	glViewport(0, 0, w, h);
+	KEngine::setWindowWidth(w);
+	KEngine::setWindowHeight(h);
 }
 
 Mouse* KEngine::getMouse(void)
 {
 	return mouse;
+}
+
+Keyboard* KEngine::getKeyboard(void)
+{
+	return keyboard;
 }
 
 void KEngine::setRun(bool brun)
@@ -40,13 +48,10 @@ bool KEngine::getRun(void)
 	return run;
 }
 
-bool KEngine::isKeyPressed(unsigned short key)
-{
-    return ((GetAsyncKeyState(key) & 0x8001) != 0);
-}
-
 bool KEngine::getKeyboardUpdate(void)
 {
+	this->keyboard->Update();
+
 	return true;
 }
 
@@ -55,6 +60,16 @@ bool KEngine::getMouseUpdate(void)
 	this->mouse->Update();
 
 	return true;
+}
+
+void KEngine::setWindowWidth(int width)
+{
+	windowWidth = width;
+}
+
+void KEngine::setWindowHeight(int height)
+{
+	windowHeight = height;
 }
 
 int KEngine::getWindowWidth(void)
@@ -71,10 +86,21 @@ int KEngine::getWindowHeight(void)
 KEngine::KEngine()
 {
 	this->mouse = new Mouse();
+	this->keyboard = new Keyboard();
 }
 
 KEngine::~KEngine()
 {
+	if (this->mouse != NULL)
+	{
+		delete mouse;
+		mouse = NULL;
+	}
+	if (this->keyboard != NULL)
+	{
+		delete keyboard;
+		mouse = NULL;
+	}
 }
 
 // Setting up of the engine using data from the text files
@@ -236,7 +262,7 @@ void KEngine::Run(void)
 
 	m_timer.startTimer();	// Start timer to calculate how long it takes to render this frame
 
-	while (!glfwWindowShouldClose(m_window) && !isKeyPressed(VK_ESCAPE) && run)
+	while (!glfwWindowShouldClose(m_window) && !keyboard->getKey(VK_ESCAPE) && run)
 	{
 		// Get the elapsed time
 		m_dElapsedTime = m_timer.getElapsedTime();
@@ -274,6 +300,11 @@ void KEngine::Exit(void)
 	{
 		delete this->mouse;
 		this->mouse = NULL;
+	}
+	if (this->keyboard != NULL)
+	{
+		delete this->keyboard;
+		this->keyboard = NULL;
 	}
 	//Close OpenGL window and terminate GLFW
 	glfwDestroyWindow(m_window);

@@ -93,7 +93,7 @@
 		[GameState] Ingame
 		[Type] Text
 		[Text] Pause
-		[Pos] 650, 750
+		[Pos] 650, 725
 		[Rotation] 0
 		[Scale] 350, 55
 		[Mesh] GEO_TEXT
