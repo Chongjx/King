@@ -419,7 +419,7 @@ void SceneGame::InitSettings(string config)
 				{
 					stringToVector(attriValue, tempTarget);
 				}
-				
+
 				else if (attriName == "CameraUp")
 				{
 					stringToVector(attriValue, tempUp);
@@ -831,7 +831,7 @@ void SceneGame::InitInterface(string config)
 	{
 		interfaceBranch.printBranch();
 	}
-		
+
 
 	for (vector<Branch>::iterator branch = interfaceBranch.childBranches.begin(); branch != interfaceBranch.childBranches.end(); ++branch)
 	{
@@ -1039,54 +1039,54 @@ void SceneGame::InitVariables(string config)
 void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
-
-	/*irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
-	
-	std::string soundName;
-	std::string soundFile;
-	float volume;
-	bool loop;
-
-	if (DEBUG)
 	{
-		soundBranch.printBranch();
-	}
-	for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
-	{
-		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+
+		std::string soundName = "";
+		std::string soundFile= "";
+		float volume=0.f;
+		bool loop=false;
+
+		if (DEBUG)
 		{
-			Attribute tempAttri = *attri;
-			string attriName = tempAttri.name;
-			string attriValue = tempAttri.value;
-			if(attriName=="SoundName")
-			{
-				soundName = attriValue;
-			}
-			if(attriName=="SoundFile")
-			{
-				soundFile = attriValue;
-			}
-			else if(attriName=="Loop")
-			{
-				if (attriValue == "true" || attriValue == "1")
-				{
-					loop = true;
-				}
-				else
-				{
-					loop = false;
-				}
-			}
-			else if(attriName=="DefaultVol")
-			{
-				volume = stof(attriValue);
-			}
+			soundBranch.printBranch();
 		}
-
-		irrklang::ISoundSource* bookSound = Soundengine->addSoundSourceFromFile(soundfile.c_str()); 
-		bookSound->setDefaultVolume(volume);
-		Soundengine->play2D(bookSound,loop);
-	}*/
+		for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if(attriName=="SoundName")
+				{
+					soundName = attriValue;
+				}
+				if(attriName=="SoundFile")
+				{
+					soundFile = attriValue;
+				}
+				else if(attriName=="Loop")
+				{
+					if (attriValue == "true" || attriValue == "1")
+					{
+						loop = true;
+					}
+					else
+					{
+						loop = false;
+					}
+				}
+				else if(attriName=="DefaultVol")
+				{
+					volume = stof(attriValue);
+				}
+			}
+			Sound tempSound;
+			tempSound.Init(soundName,soundFile,volume,loop);
+			sound.sounds.push_back(tempSound);
+		}
+	}
 }
 
 void SceneGame::UpdateOpengl(void)
@@ -1272,6 +1272,7 @@ void SceneGame::UpdateInGame(double dt)
 void SceneGame::changeScene(GAME_STATE nextState)
 {
 	this->currentState = nextState;
+	//sound.Play("Sound_Bookflip");
 }
 
 void SceneGame::RenderInterface(void)
@@ -1352,7 +1353,7 @@ void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 		modelStack.Rotate(rotation, 0, 0, 1);
 	}
 	modelStack.Scale(size, size, size);
-	
+
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
