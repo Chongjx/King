@@ -2,6 +2,9 @@
 #define VERTEX_H
 
 #include "Vector3.h"
+#include <string>
+
+using std::string;
 
 struct Position
 {
@@ -13,8 +16,9 @@ struct Position
 struct Color
 {
 	float r, g, b;
+	string name;
 	Color(float r = 1, float g = 1, float b = 1) {Set(r, g, b);}
-	void Set(float r, float g, float b) {this->r = r; this->g = g; this->b = b;}
+	void Set(float r, float g, float b, string name = "") {this->r = r; this->g = g; this->b = b; this->name = name;}
 };
 
 struct TexCoord

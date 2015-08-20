@@ -30,7 +30,6 @@ private:
 	void Config(void);
 public:
 	Mouse();
-	Mouse(string config);
 	~Mouse();
 
 	Branch mouseBranch;

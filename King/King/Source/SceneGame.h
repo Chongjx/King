@@ -4,7 +4,6 @@
 #include "Scene2D.h"
 #include "TextTree.h"
 
-
 #define DEBUG true
 
 using std::string;
@@ -12,6 +11,7 @@ using std::string;
 #include "Room.h"
 #include "Interface.h"
 #include "Sound.h"
+#include "Player.h"
 
 class SceneGame : public Scene2D
 {
@@ -63,6 +63,12 @@ class SceneGame : public Scene2D
 		EXIT_STATE,
 		MAX_STATE,
 	};
+
+	struct Time
+	{
+		int hour;
+		float min;
+	};
 public:
 	SceneGame(void);
 	~SceneGame(void);
@@ -77,24 +83,27 @@ public:
 	void InitShaders(void);
 	void InitSettings(string config);
 	void InitMesh(string config);
+	void InitColor(string config);
 	void InitInterface(string config);
 	void InitLevel(string config);
 	void InitVariables(string config);
 	void InitSound(string config);
+	void InitPlayer(string config);
 
 	void UpdateOpengl(void);
+	void UpdateInput(void);
 	void UpdateMouse(void);
 	void UpdateState(void);
 	void UpdateEffect(void);
-	void UpdateMenu(void);
 	void UpdateInGame(double dt);
 
 	void changeScene(GAME_STATE nextState);
-	
+
 	void RenderInterface(void);
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
+	void RenderGUI(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -102,12 +111,14 @@ public:
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 size, const Vector2 pos, const float rotation = 0.f);
 
 	Mesh* findMesh(string meshName);
-
+	Color findColor(string colorName);
+	bool getKey(string keyName);
 private:
 	float sceneWidth;
 	float sceneHeight;
 
 	Branch gameBranch;
+	vector<KEYS> interactionKeys;
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
 	Vector2 mousePos;
@@ -118,11 +129,18 @@ private:
 	float gameSpeed;
 	float gameVolume;
 	int currentLocation;
+	bool paused;
+	float difficulty;
+	Time currentTime;
 
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
 	void stringToBool(string text, bool &boo);
+
 	Sound sound;
+	Player* player;
+
+
 };
 
 #endif

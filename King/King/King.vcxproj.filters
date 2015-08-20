@@ -177,6 +177,9 @@
     <ClCompile Include="Source\Sound.cpp">
       <Filter>Source Files\2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Keyboard.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files\2D\Inventory</Filter>
     </ClCompile>
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Source\Sound.h">
       <Filter>Header Files\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Keyboard.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Inventory.h">
       <Filter>Header Files\2D\Inventory</Filter>

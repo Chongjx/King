@@ -43,6 +43,8 @@ public:
 	int getMapFineOffsetX(void);
 	int getMapFineOffsetY(void);
 
+	void setMapOffsetX(int mapOffsetX);
+	void setMapOffsetY(int mapOffsetY);
 	void setXScroll(bool enabled);
 	void setYScroll(bool enabled);
 

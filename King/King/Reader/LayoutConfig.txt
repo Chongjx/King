@@ -11,12 +11,13 @@
 		[ScreenHeight] 800
 		[MapWidth] 8192
 		[MapHeight] 5120
-		[MapOffsetX] 0
-		[MapOffsetY] 0 
+		[MapOffsetX] 2880
+		[MapOffsetY] -3936
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
 		[EnableXScroll] true
-		[EnabelYScroll] true
+		[EnableYScroll] true
+		[TileSize] 32
 		[Directory] Image\\Map\\Prison.csv
 	}
 }

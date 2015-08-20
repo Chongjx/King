@@ -1,5 +1,5 @@
 # Mouse setup #
-# Init default mosue properties outside of source codes #
+# Init default mouse properties outside of source codes #
 {
 	[NAME] MouseConfig
 	{

@@ -11,6 +11,7 @@
 
 #include "timer.h"
 #include "Mouse.h"
+#include "Keyboard.h"
 #include "SceneGame.h"
 
 #define FIRST 0
@@ -31,13 +32,16 @@ public:
 	void Exit(void);
 
 	static Mouse* getMouse(void);
+	static Keyboard* getKeyboard(void);
 	
 	bool getKeyboardUpdate(void);
 	bool getMouseUpdate(void);
+
 	static void setRun(bool brun);
 	static bool getRun(void);
-	
-	static bool isKeyPressed(unsigned short key);
+
+	static void setWindowWidth(int width);
+	static void setWindowHeight(int height);
 
 	static int getWindowWidth(void);
 	static int getWindowHeight(void);
@@ -54,7 +58,10 @@ private:
 	double m_dAccumulatedTime_ThreadTwo;
 
 	Branch engineBranch;
+
 	static Mouse* mouse;
+	static Keyboard* keyboard;
+
 	unsigned char FPS;
 	unsigned int frameTime;
 	static int windowWidth;

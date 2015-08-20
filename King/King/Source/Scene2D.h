@@ -9,6 +9,13 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
+struct KEYS
+{
+	std::string name;
+	int value;
+	bool pressed;
+};
+
 class Scene2D : public Scene
 {
 public:
@@ -22,6 +29,7 @@ public:
 protected:
 	unsigned m_vertexArrayID;
 	vector<Mesh*> meshList;
+	vector<Color> colorList;
 	unsigned m_programID;
 	vector<unsigned> m_parameters;
 

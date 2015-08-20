@@ -28,19 +28,19 @@ void Camera::Reset()
 void Camera::Update(double dt)
 {
 	static const float CAMERA_SPEED = 20.f;
-	if(KEngine::isKeyPressed(VK_LEFT) || KEngine::isKeyPressed('A'))
+	if(KEngine::getKeyboard()->getKey(VK_LEFT) || KEngine::getKeyboard()->getKey('A'))
 	{
 		position.x -= (float)(CAMERA_SPEED * 0.2 * dt);
 	}
-	if(KEngine::isKeyPressed(VK_RIGHT) || KEngine::isKeyPressed('D'))
+	if(KEngine::getKeyboard()->getKey(VK_RIGHT) || KEngine::getKeyboard()->getKey('D'))
 	{
 		position.x += (float)(CAMERA_SPEED * 0.2 * dt);
 	}
-	if(KEngine::isKeyPressed(VK_UP) || KEngine::isKeyPressed('W'))
+	if(KEngine::getKeyboard()->getKey(VK_UP) || KEngine::getKeyboard()->getKey('W'))
 	{
 		position.y += (float)(CAMERA_SPEED * 0.2 * dt);
 	}
-	if(KEngine::isKeyPressed(VK_DOWN) || KEngine::isKeyPressed('S'))
+	if(KEngine::getKeyboard()->getKey(VK_DOWN) || KEngine::getKeyboard()->getKey('S'))
 	{
 		position.y -= (float)(CAMERA_SPEED * 0.2 * dt);
 	}

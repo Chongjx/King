@@ -376,7 +376,7 @@
 		[NAME] GEO_DEBUGQUAD
 		[Type] DebugQuad
 		[Length] 1
-		[Color] 1, 0.5, 0.7
+		[ColorName] Red
 	}
 	{
 		[NAME] GEO_DEBUGCIRCLE
