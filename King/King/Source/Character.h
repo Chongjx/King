@@ -60,7 +60,7 @@ public:
 
 	bool moveTo(Vector2 destination);
 
-	/*void changeAni(STATE unitState);*/
+//void changeAni(STATE unitState);
 	// Inventory
 	
 	// Interactions
