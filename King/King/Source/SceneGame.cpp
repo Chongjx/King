@@ -1246,8 +1246,6 @@ void SceneGame::UpdateEffect(void)
 
 void SceneGame::UpdateInGame(double dt)
 {
-	this->layout[currentLocation].roomLayout[0].Update();
-
 	if (getKey("Up"))
 	{
 		this->layout[currentLocation].roomLayout[0].setMapOffsetY(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt);
@@ -1265,8 +1263,11 @@ void SceneGame::UpdateInGame(double dt)
 
 	if (getKey("Right"))
 	{
+		if (
 		this->layout[currentLocation].roomLayout[0].setMapOffsetX(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt);
 	}
+
+	this->layout[currentLocation].roomLayout[0].Update();
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
