@@ -117,7 +117,7 @@ int Character::GetFOV()
 	return tiles;
 }
 
-float Character::GetPositionX(void)
+/*float Character::GetPositionX(void)
 {
 	return pos.x;
 }
@@ -125,4 +125,4 @@ float Character::GetPositionX(void)
 float Character::GetPositionY(void)
 {
 	return pos.y;
-}
+}*/

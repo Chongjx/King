@@ -10,6 +10,7 @@ Scene2D::Scene2D(void)
 {
 	m_parameters.resize(0);
 	lights.resize(0);
+	bLightEnabled = true;
 }
 
 Scene2D::~Scene2D(void)

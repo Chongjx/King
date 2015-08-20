@@ -10,7 +10,6 @@ class Character : public GameObject2D
 {
 
 public:
-
 	// Default constructor and destructor
 	Character(void);
 	~Character(void);
@@ -18,18 +17,23 @@ public:
 	// Initialise this class instance
 	void Init(void);
 	// Update the character
-	void Update(double dt);
+	virtual void Update(double dt);
 
 	/*Movement contains both walk and run*/
 
 	// Movement up 
-	void MoveUp(double dt);
+	void walkUp(double dt);
 	// Movement down
-	void MoveDown(double dt);
+	void walkDown(double dt);
 	// Movement left
-	void MoveLeft(double dt);
+	void walkLeft(double dt);
 	// Movement right
-	void MoveRight(double dt);
+	void walkRight(double dt);
+
+	void runUp(double dt);
+	void runDown(double dt);
+	void runLeft(double dt);
+	void runRight(double dt);
 
 	/*************************************/
 
@@ -38,10 +42,25 @@ public:
 	// Get field of view of character based on tiles
 	int GetFOV(void);
 
-	//Get character's current position 
-	float GetPositionX(void);
-	float GetPositionY(void);
+	//Get character's current position
+	void setPos(Vector2 pos);
+	void setDir(Vector2 dir);
+	void setVel(Vector2 vel);
+	void setSize(Vector2 size);
+	void setTargetPos(Vector2 targetPos);
+	void setState(StateMachine::STATE unitState);
+	void setSprite(SpriteAnimation *sa);
+	void setAnimation(StateMachine::STATE currentAni);
 
+	Vector2 getPos(void) const;
+	Vector2 getDir(void) const;
+	Vector2 getVel(void) const;
+	Vector2 getSize(void) const;
+	Vector2 getTargetPos(void) const;
+
+	bool moveTo(Vector2 destination);
+
+	void changeAni(STATE unitState);
 	// Inventory
 	
 	// Interactions
@@ -58,6 +77,11 @@ protected:
 	Vector2 pos;
 	Vector2 dir;
 	Vector2 vel;
+
+	Vector2 size;
+	Vector2 targetPos;
+
+	SpriteAnimation *sprite;
 
 	// FOV tile range
 	int tiles;
