@@ -24,6 +24,9 @@ public:
 	float getVolume(void)const;
 	bool getLoop(void)const;
 
+	void VolumeUp (void);
+	void VolumeDown (void);
+
 	void Play(string soundName);
 private:
 	std::string soundName;
