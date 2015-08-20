@@ -15,6 +15,13 @@
 		[DefaultVol] 1.0f	
 	}
 	{
+		[SoundName] Sound_Bookflip2
+		[SoundFile] Sound\\bookFlip2.ogg
+		[Loop] false
+		[DefaultVol] 1.0f	
+	}
+
+	{
 		[SoundName] Sound_Alarm
 		[SoundFile] Sound\\Alarm.mp3
 		[Loop] false
