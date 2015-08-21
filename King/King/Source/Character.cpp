@@ -6,10 +6,10 @@ Character::Character()
 	, dir(0,0)
 	, targetPos(0, 0)
 	, tiles(0)
-	, walkSpeed(50.f)
-	, runSpeed (100.f)
-	, MAX_WALK_SPEED(100.0)
-	, MAX_RUN_SPEED(200.0)
+	, walkSpeed(5.f)
+	, runSpeed (50.f)
+	, MAX_WALK_SPEED(25.0)
+	, MAX_RUN_SPEED(20.0)
 {
 	this->sprite = new SpriteAnimation;
 	this->stateMachine.SetState(StateMachine::IDLE_STATE);
@@ -77,10 +77,7 @@ void Character::moveUp(bool walk, double dt)
 	if (walk)
 	{
 		this->changeAni(StateMachine::WALK_STATE);
-		if(vel.y < MAX_WALK_SPEED)
-		{
-			vel.y += walkSpeed * (float)dt;
-		}
+		vel.y = walkSpeed;
 	}
 	// run
 	else
@@ -92,7 +89,8 @@ void Character::moveUp(bool walk, double dt)
 		}
 	}
 
-	pos.y += vel.y * (float)(dt);
+	vel.x = 0;
+	pos.y += vel.y;
 }
 
 void Character::moveDown(bool walk, double dt)
@@ -102,10 +100,7 @@ void Character::moveDown(bool walk, double dt)
 	if (walk)
 	{
 		this->changeAni(StateMachine::WALK_STATE);
-		if(Math::FAbs(vel.y) < MAX_WALK_SPEED)
-		{
-			vel.y -= walkSpeed * (float)dt;
-		}
+		vel.y = -walkSpeed;
 	}
 	// run
 	else
@@ -117,7 +112,8 @@ void Character::moveDown(bool walk, double dt)
 		}
 	}
 
-	pos.y -= vel.y * (float)(dt);
+	vel.x = 0;
+	pos.y += vel.y;
 }
 
 void Character::moveLeft(bool walk, double dt)
@@ -127,10 +123,7 @@ void Character::moveLeft(bool walk, double dt)
 	if (walk)
 	{
 		this->changeAni(StateMachine::WALK_STATE);
-		if(Math::FAbs(vel.x) < MAX_WALK_SPEED)
-		{
-			vel.x -= walkSpeed * (float)dt;
-		}
+		vel.x = -walkSpeed;
 	}
 	// run
 	else
@@ -142,7 +135,8 @@ void Character::moveLeft(bool walk, double dt)
 		}
 	}
 
-	pos.x -= vel.x * (float)(dt);
+	vel.y = 0;
+	pos.x += vel.x;
 }
 
 void Character::moveRight(bool walk, double dt)
@@ -152,10 +146,7 @@ void Character::moveRight(bool walk, double dt)
 	if (walk)
 	{
 		this->changeAni(StateMachine::WALK_STATE);
-		if(vel.x < MAX_WALK_SPEED)
-		{
-			vel.x += walkSpeed * (float)dt;
-		}
+		vel.x = walkSpeed;
 	}
 	// run
 	else
@@ -167,7 +158,8 @@ void Character::moveRight(bool walk, double dt)
 		}
 	}
 
-	pos.x += vel.x * (float)(dt);
+	vel.y = 0;
+	pos.x += vel.x;
 }
 
 void Character::SetFOV(int tiles)
@@ -255,6 +247,21 @@ SpriteAnimation* Character::getSprite(void) const
 
 }*/
 
+void Character::SetMapLocation(int mapLocation)
+{
+	this->mapLocation = mapLocation;
+}
+
+int Character::GetMapLocation()
+{
+	return mapLocation;
+}
+
+void Character::setRoom(Room &room)
+{
+	this->currentRoom = room;
+}
+
 CInventory Character::getInventory(void) const
 {
 	return this->inventory;
@@ -289,6 +296,8 @@ void Character::changeAni(StateMachine::STATE unitState)
 				{
 					this->currentAni = IDLE_DOWN;
 				}
+
+				this->vel.SetZero();
 				break;
 			}
 

@@ -58,7 +58,7 @@ SpriteAnimation& SpriteAnimation::operator=(SpriteAnimation &copy)
 
 void SpriteAnimation::Update(double dt)
 {
-	static float animationSpeed = 2;
+	static float animationSpeed = 10;
 	if (this->animations[currentAni])
 	{
 		if (!this->animations[currentAni]->paused)

@@ -58,6 +58,7 @@ void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, 
 	}
 
 	this->backgroundID = 0;
+	this->mapType = TYPE_VISUAL;
 }
 
 bool TileMap::LoadMap(const string mapName)
@@ -194,6 +195,11 @@ int TileMap::getMapFineOffsetY(void)
 	return this->mapFineOffsetY;
 }
 
+TileMap::MAP_TYPE TileMap::getMapType(void)
+{
+	return this->mapType;
+}
+
 void TileMap::setMapOffsetX(int mapOffsetX)
 {
 	this->mapOffsetX = mapOffsetX;
@@ -212,6 +218,11 @@ void TileMap::setXScroll(bool enabled)
 void TileMap::setYScroll(bool enabled)
 {
 	this->yScrolling = enabled;
+}
+
+void TileMap::setMapType(TileMap::MAP_TYPE mapType)
+{
+	this->mapType = mapType;
 }
 
 void TileMap::Update(void)

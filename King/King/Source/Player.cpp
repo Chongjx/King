@@ -1,8 +1,7 @@
 #include "Player.h"
 
-Player::Player()
-	: mapLocation(0)
-	, energy(0)
+Player::Player() :
+	energy(0)
 	, MAX_ENERGY(100)
 {
 }
@@ -26,16 +25,6 @@ void Player::Update(double dt)
 {
 	Character::Update(dt);
 	UpdateEnergy(dt);
-}
-
-void Player::SetMapLocation(int mapLocation)
-{
-	this->mapLocation = mapLocation;
-}
-
-int Player::GetMapLocation()
-{
-	return mapLocation;
 }
 
 double Player::GetEnergy()
@@ -86,7 +75,6 @@ void Player::UpdateEnergy(double dt)
 			}
 		}
 	}
-	
 }
 
 void Player::ConstrainPlayer() /* parameters to be added */

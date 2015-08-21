@@ -50,7 +50,14 @@ class SceneGame : public Scene2D
 
 	enum AREAS
 	{
-		MAIN_AREA,
+		CELL_AREA,
+		EXERCISE_AREA,
+		CANTEEN_AREA,
+		SHOWER_AREA,
+		MEETING_AREA,
+		GAURDROOM_AREA,
+		CAMERAROOM_AREA,
+		COURTYARD_AREA,
 		MAX_AREAS,
 	};
 
@@ -143,8 +150,6 @@ private:
 
 	Sound sound;
 	Player* player;
-
-
 };
 
 #endif

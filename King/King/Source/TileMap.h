@@ -16,6 +16,14 @@ using std::istringstream;
 class TileMap
 {
 public:
+	enum MAP_TYPE
+	{
+		TYPE_BACKGROUND,
+		TYPE_COLLISION,
+		TYPE_VISUAL,
+		MAX_TYPE,
+	};
+
 	TileMap(void);
 	~TileMap(void);
 
@@ -42,11 +50,13 @@ public:
 	int getTileOffsetY(void);
 	int getMapFineOffsetX(void);
 	int getMapFineOffsetY(void);
+	MAP_TYPE getMapType(void);
 
 	void setMapOffsetX(int mapOffsetX);
 	void setMapOffsetY(int mapOffsetY);
 	void setXScroll(bool enabled);
 	void setYScroll(bool enabled);
+	void setMapType(MAP_TYPE mapType);
 
 	void Update(void);
 
@@ -73,6 +83,8 @@ private:
 	
 	bool xScrolling;
 	bool yScrolling;
+
+	MAP_TYPE mapType;
 
 	bool loadFile(const string mapName);
 };

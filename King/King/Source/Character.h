@@ -40,7 +40,7 @@ public:
 
 	/*Movement contains both walk and run*/
 
-	// Movement up 
+	// Movement up
 	void moveUp(bool walk, double dt);
 	// Movement down
 	void moveDown(bool walk, double dt);
@@ -74,13 +74,18 @@ public:
 
 	bool moveTo(Vector2 destination);
 
+	// Set to know which map the player is at now
+	void SetMapLocation(int mapLocation);
+	// Get to know which map the player is at now
+	int GetMapLocation(void);
+
 	// Inventory
 	CInventory getInventory(void) const;
+	void setRoom(Room &currentRoom);
 
 	virtual void changeAni(StateMachine::STATE unitState);
 
 protected:
-
 	// Movement data
 	const double MAX_WALK_SPEED;
 	const double MAX_RUN_SPEED;
@@ -108,6 +113,10 @@ protected:
 
 	vector<Animation*> animationList;
 	SPRITE_ANI currentAni;
+
+	Room currentRoom;
+	// variable to know which map the player is at
+	int mapLocation;
 };
 
 #endif

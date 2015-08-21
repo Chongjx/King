@@ -4,15 +4,18 @@
 	[NAME] LayoutConfig
 	{
 		[NAME] MainRoom
+		[Type] Visual
 		[ID] 0
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
-		[MapWidth] 8192
+		# 32 * 256
+		[MapWidth] 8192 
+		# 32 * 160		
 		[MapHeight] 5120
-		[MapOffsetX] 2880
-		[MapOffsetY] -3936
+		[MapOffsetX] 0
+		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
 		[EnableXScroll] true

@@ -4,7 +4,8 @@
 	[NAME] PlayerConfig
 	{
 		[NAME] Player1
-		[Pos] 2880, -3936
+		# [Pos] 2880, -3936
+		[Pos] 0, 0
 		[Dir] 0, -1
 		[Mesh] GEO_PLAYER
 		[Tiles] 1
