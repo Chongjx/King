@@ -25,7 +25,7 @@ public:
 	bool GetRecovering(void);
 
 	// To contrain player at certain point of map
-	void ConstrainPlayer();
+	void ConstrainPlayer(bool constrain);
 
 private:
 	// Energy data

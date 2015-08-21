@@ -12,6 +12,7 @@ SceneGame::SceneGame(void)
 	lights.resize(NUM_LIGHTS);
 	layout.resize(MAX_AREAS);
 	gameInterfaces.resize(MAX_STATE);
+	interactionList.resize(MAX_INTERACTIONS);
 
 	for (unsigned i = MENU_STATE; i < MAX_STATE; ++i)
 	{
@@ -28,6 +29,8 @@ SceneGame::SceneGame(void)
 	paused = false;
 
 	player = new Player();
+	guardList.clear();
+	prisonerList.clear();
 }
 
 SceneGame::~SceneGame(void)
@@ -102,9 +105,18 @@ void SceneGame::Update(double dt)
 }
 
 
-
 void SceneGame::UpdateAI(double dt)
 {
+	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
+	{
+		Prisoners* tempPrisoner = *prisoner;
+		tempPrisoner->Update(dt);
+	}
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuard = *guard;
+		tempGuard->Update(dt);
+	}
 }
 
 // Game render
@@ -190,10 +202,33 @@ void SceneGame::Exit(void)
 		}
 	}
 
+	// Clear player
 	if(player)
 	{
 		delete player;
 		player = NULL;
+	}
+
+	// Clear guards in guardList
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuard = *guard;
+		if(tempGuard != NULL)
+		{
+			delete tempGuard;
+			tempGuard = NULL;
+		}
+	}
+
+	//Clear prisoners in prisonerList
+	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
+	{
+		Prisoners* tempPrisoner = *prisoner;
+		if(tempPrisoner != NULL)
+		{
+			delete tempPrisoner;
+			tempPrisoner = NULL;
+		}
 	}
 
 	glDeleteVertexArrays(1, &m_vertexArrayID);
@@ -339,6 +374,19 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitPlayer(attriValue);
+				}
+			}
+		}
+		else if (branch->branchName == "AI")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitAI(attriValue);
 				}
 			}
 		}
@@ -1199,7 +1247,7 @@ void SceneGame::InitVariables(string config)
 						mesh = attriValue;
 					}
 				}
-				day.Initicons(name,size,pos.x,pos.y ,mesh);
+				day.Initicons(name,size,pos,mesh);
 			}
 		}
 	}
@@ -1258,6 +1306,112 @@ void SceneGame::InitSound(string config)
 	}
 }
 
+void SceneGame::InitAI(string config)
+{
+	Branch AIBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		AIBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = AIBranch.childBranches.begin(); branch != AIBranch.childBranches.end(); ++branch)
+	{
+		for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
+		{
+			if (branch->branchName == "Guard")
+			{
+				Vector2 pos;
+				Vector2 dir;
+				string spriteName;
+				int tiles = 0;
+				int mapLocation = 0;
+
+				for (vector<Attribute>::iterator childattri = childbranch->attributes.begin(); childattri != childbranch->attributes.end(); ++childattri)
+				{
+					Attribute tempAttri = *childattri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "Pos")
+					{
+						stringToVector(attriValue, pos);
+					}
+
+					else if (attriName == "Dir")
+					{
+						stringToVector(attriValue, dir);
+					}
+
+					else if (attriName == "Tiles")
+					{
+						tiles = stoi(attriValue);
+					}
+					else if (attriName == "MapLocation")
+					{
+						mapLocation = stoi(attriValue);
+					}
+
+					else if (attriName == "Mesh")
+					{
+						spriteName = attriValue;
+					}
+				}
+
+				Guards* guard = new Guards;
+				guard->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
+				guard->setRoom(layout[mapLocation]);
+				guardList.push_back(guard);
+			}
+
+			else if (branch->branchName == "Prisoner")
+			{
+				Vector2 pos;
+				Vector2 dir;
+				string spriteName;
+				int tiles = 0;
+				int mapLocation = 0;
+
+				for (vector<Attribute>::iterator childattri = childbranch->attributes.begin(); childattri != childbranch->attributes.end(); ++childattri)
+				{
+					Attribute tempAttri = *childattri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "Pos")
+					{
+						stringToVector(attriValue, pos);
+					}
+
+					else if (attriName == "Dir")
+					{
+						stringToVector(attriValue, dir);
+					}
+
+					else if (attriName == "Tiles")
+					{
+						tiles = stoi(attriValue);
+					}
+					else if (attriName == "MapLocation")
+					{
+						mapLocation = stoi(attriValue);
+					}
+
+					else if (attriName == "Mesh")
+					{
+						spriteName = attriValue;
+					}
+				}
+
+				Prisoners* prisoner = new Prisoners;
+				prisoner->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
+				prisoner->setRoom(layout[mapLocation]);
+				prisonerList.push_back(prisoner);
+			}
+		}
+	}
+}
+
 void SceneGame::InitPlayer(string config)
 {
 	Branch playerBranch = TextTree::FileToRead(config);
@@ -1309,6 +1463,11 @@ void SceneGame::InitPlayer(string config)
 		player->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
 		player->setRoom(layout[mapLocation]);
 	}
+}
+
+void SceneGame::InitInteractions(string config)
+{
+
 }
 
 void SceneGame::UpdateOpengl(void)
@@ -1460,7 +1619,6 @@ void SceneGame::UpdateEffect(void)
 				played = true;
 			}
 		}
-
 		else
 		{
 			gameInterfaces[currentState].buttons[i].setColor(findColor("LightGrey"));
@@ -1568,6 +1726,31 @@ void SceneGame::UpdateInGame(double dt)
 	day.UpdateDay(dt,gameSpeed);
 }
 
+void SceneGame::UpdateInteractions(void)
+{
+	switch (currentInteraction)
+	{
+	case PICKUP_ITEM:;
+		break;
+	case DROP_ITEM:;
+		break;
+	case TALK_WITH_PRISONERS:;
+		break;
+	case TALK_WITH_GUARDS:;
+		break;
+	case OPEN_DOOR:;
+		break;
+	case CLOSE_DOOR:;
+		break;
+	case RUNNING_ON_THREADMILL:;
+		break;
+	case ATTACK:;
+		break;
+	default:;
+		break;
+	}
+}
+
 void SceneGame::changeScene(GAME_STATE nextState)
 {
 	this->currentState = nextState;	
@@ -1648,6 +1831,18 @@ void SceneGame::RenderCharacters(void)
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, TILESIZE * 1.5f, player->getPos().x, player->getPos().y);
+
+	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
+	{
+		Prisoners* tempPrisoner = *prisoner;
+		Render2DMesh(tempPrisoner->getSprite(), false, TILESIZE * 1.5f, tempPrisoner->getPos().x, tempPrisoner->getPos().y);
+	}
+
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuards = *guard;
+		Render2DMesh(tempGuards->getSprite(), false, TILESIZE * 1.5f, tempGuards->getPos().x, tempGuards->getPos().y);
+	}
 }
 
 void SceneGame::RenderTime(void)
@@ -1659,7 +1854,8 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos_x,  day.moon.pos_y);
+		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
+		//16, 736 original position
 	}
 	if(day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
 	{
@@ -1668,7 +1864,7 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos_x, day.sun.pos_y);
+		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 	}
 }
 

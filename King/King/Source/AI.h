@@ -7,8 +7,6 @@ class AI: public Character
 {
 public:
 
-
-
 	// Default constructor and destructor
 	AI(void);
 	~AI(void);
@@ -16,7 +14,7 @@ public:
 	// Initialise this class instance
 	void Init(void);
 	// Update the character
-	void Update(double dt, bool updating);
+	void Update(double dt);
 
 	// Set destination for AI
 	void SetDestination(float x, float y);
@@ -25,9 +23,15 @@ public:
 
 	void changeAni(StateMachine::STATE unitState);
 
+	// Set update status
+	void SetUpdate(bool updating);
+	// Get update status
+	bool GetUpdate(void);
+
 private:
 
 	Vector2 destination;
+	bool updating;
 
 };
 

@@ -14,13 +14,13 @@
 		{
 			[Name]Sun
 			[Size] 64
-			[Pos] 16, 736
+			[Pos] 500, 750
 			[Mesh] GEO_SUN
 		}
 		{
 			[Name]Moon
 			[Size] 64
-			[Pos] 16, 736
+			[Pos] 500, 750
 			[Mesh] GEO_MOON
 		}
 

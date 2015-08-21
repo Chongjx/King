@@ -39,4 +39,8 @@
 		[NAME] Player
 		[Directory] Reader\\PlayerConfig.txt
 	}
+	{	
+		[NAME] AI
+		[Directory] Reader\\AIConfig.txt
+	}
 }

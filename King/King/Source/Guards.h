@@ -12,7 +12,8 @@ public:
 	{
 		CHASE_STATE = StateMachine::MAX_STATE,
 		PATROL_STATE,
-		
+		RETURN_STATE,
+
 
 		GUARD_MAX_STATE,
 	};
@@ -22,9 +23,12 @@ public:
 	~Guards(void);
 
 	// Initialise this class instance
-	void Init(void);
+	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, int mapLocation);
 	// Update the character
 	void Update(double dt);
+
+	// Sets patrol area
+
 
 	void changeAni(StateMachine::STATE unitState);
 

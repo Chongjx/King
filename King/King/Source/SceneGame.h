@@ -13,6 +13,7 @@
 #include "Sound.h"
 #include "Level.h"
 #include "Day.h"
+#include "Interactions.h"
 
 using std::string;
 
@@ -74,6 +75,19 @@ class SceneGame : public Scene2D
 		MAX_STATE,
 	};
 
+	enum INTERACTIONS
+	{
+		PICKUP_ITEM,
+		DROP_ITEM,
+		TALK_WITH_PRISONERS,
+		TALK_WITH_GUARDS,
+		OPEN_DOOR,
+		CLOSE_DOOR,
+		RUNNING_ON_THREADMILL,
+		ATTACK,
+		MAX_INTERACTIONS
+	};
+
 public:
 	SceneGame(void);
 	~SceneGame(void);
@@ -94,6 +108,8 @@ public:
 	void InitVariables(string config);
 	void InitSound(string config);
 	void InitPlayer(string config);
+	void InitInteractions(string config);
+	void InitAI(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -101,6 +117,7 @@ public:
 	void UpdateState(void);
 	void UpdateEffect(void);
 	void UpdateInGame(double dt);
+	void UpdateInteractions(void);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -127,17 +144,19 @@ private:
 	vector<KEYS> interactionKeys;
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
+	vector<Prisoners*> prisonerList;
+	vector<Guards*> guardList;
 	Vector2 mousePos;
+	vector<Interactions> interactionList;
 
 	GAME_STATE currentState;
+	INTERACTIONS currentInteraction;
 	float defaultFontSize;
 	float specialFontSize;
 	float gameVolume;
 	float gameSpeed;
 	int currentLocation;
 	bool paused;
-
-
 
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
