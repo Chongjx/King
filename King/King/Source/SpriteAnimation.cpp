@@ -38,10 +38,10 @@ SpriteAnimation& SpriteAnimation::operator=(SpriteAnimation &copy)
 
 	this->animations.resize(copy.animations.size());
 
-	for (vector<Animation*>::iterator it = this->animations.begin(); it != animations.end(); ++it)
+	for (unsigned numAnimations = 0; numAnimations < animations.size(); ++numAnimations)
 	{
-		Animation* ani = new Animation;
-		ani = *it;
+		this->animations[numAnimations] = new Animation();
+		*(this->animations[numAnimations]) = *(copy.animations[numAnimations]);
 	}
 
 	/*for (int i = 0; i < MAX_SPRITE; ++i)
@@ -58,11 +58,12 @@ SpriteAnimation& SpriteAnimation::operator=(SpriteAnimation &copy)
 
 void SpriteAnimation::Update(double dt)
 {
+	static float animationSpeed = 2;
 	if (this->animations[currentAni])
 	{
 		if (!this->animations[currentAni]->paused)
 		{
-			this->animations[currentAni]->currentTime += (float)dt;
+			this->animations[currentAni]->currentTime += animationSpeed * (float)dt;
 
 			static int numFrame = 0;
 

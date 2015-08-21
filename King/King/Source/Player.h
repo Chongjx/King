@@ -3,18 +3,15 @@
 
 #include "Character.h"
 
-
 class Player: public Character
 {
-
 public:
-
 	// Default constructor and destructor
 	Player(void);
 	~Player(void);
 
 	// Initialise this class instance
-	void Init(Vector2 pos, int tiles, int mapLocation);
+	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, int mapLocation);
 	// Update the character
 	void Update(double dt);
 

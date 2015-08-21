@@ -3,18 +3,16 @@
 
 class StateMachine
 {
-	
 public:
 
 	// An enum of generic states
 	enum STATE
 	{
-		ALERT,
-		DEAD,
-		IDLE,
-		RUN,
-		SLEEP,
-		WALK,
+		IDLE_STATE,
+		WALK_STATE,
+		RUN_STATE,
+		TALK_STATE,
+		SLEEP_STATE,
 		MAX_STATE,
 	};
 
@@ -25,14 +23,12 @@ public:
 	// Sets state with the enum as parameter
 	void SetState(STATE NewState);
 	// Return the current state
-	StateMachine::STATE GetState(void);
+	STATE GetState(void) const;
 
 private:
-
 	// state enum object
 	STATE state;
 };
-
 
 
 #endif

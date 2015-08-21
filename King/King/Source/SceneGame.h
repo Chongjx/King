@@ -6,12 +6,13 @@
 
 #define DEBUG true
 
-using std::string;
-
-#include "Room.h"
+#include "Player.h"
+#include "Prisoners.h"
+#include "Guards.h"
 #include "Interface.h"
 #include "Sound.h"
-#include "Player.h"
+
+using std::string;
 
 class SceneGame : public Scene2D
 {

@@ -15,7 +15,7 @@ void StateMachine::SetState(STATE NewState)
 	state = NewState;
 }
 
-StateMachine::STATE StateMachine::GetState(void)
+StateMachine::STATE StateMachine::GetState(void) const
 {
 	return state;
 }

@@ -9,16 +9,17 @@ Player::Player()
 
 Player::~Player()
 {
-
 }
 
-void Player::Init(Vector2 pos, int tiles, int mapLocation)
+void Player::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, int mapLocation)
 {
 	this->pos = pos;
+	this->dir = dir;
+	*(this->sprite) = *(sa);
 	this->tiles = tiles;
 	this->mapLocation = mapLocation;
-	this->speed = 0;
 	this->energy = MAX_ENERGY;
+	this->changeAni(StateMachine::IDLE_STATE);
 }
 
 void Player::Update(double dt)
@@ -44,7 +45,7 @@ double Player::GetEnergy()
 
 void Player::UpdateEnergy(double dt)
 {
-	if (Character::state.GetState() == StateMachine::RUN)
+	if (Character::stateMachine.GetState() == StateMachine::RUN_STATE)
 	{
 		if ( energy > 0 )
 		{
@@ -54,11 +55,11 @@ void Player::UpdateEnergy(double dt)
 		else 
 		{
 			energy = 0;
-			Character::state.SetState(StateMachine::WALK);
+			Character::stateMachine.SetState(StateMachine::WALK_STATE);
 		}
 	}
 
-	else if (Character::state.GetState() == StateMachine::WALK)
+	else if (Character::stateMachine.GetState() == StateMachine::WALK_STATE)
 	{
 		if ( energy < MAX_ENERGY )
 		{
@@ -72,7 +73,7 @@ void Player::UpdateEnergy(double dt)
 		}
 	}
 
-	else if (Character::state.GetState() == StateMachine::IDLE)
+	else if (Character::stateMachine.GetState() == StateMachine::IDLE_STATE)
 	{
 		if ( energy < MAX_ENERGY )
 		{

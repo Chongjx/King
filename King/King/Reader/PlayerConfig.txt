@@ -5,6 +5,8 @@
 	{
 		[NAME] Player1
 		[Pos] 2880, -3936
+		[Dir] 0, -1
+		[Mesh] GEO_PLAYER
 		[Tiles] 1
 		[MapLocation] 0	
 	}

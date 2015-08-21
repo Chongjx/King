@@ -3,9 +3,8 @@
 
 #include "Character.h"
 
-class AI: public Character
+class AI//: public Character
 {
-
 public:
 
 	// Default constructor and destructor
@@ -21,6 +20,8 @@ public:
 	void SetDestination(float x, float y);
 	// Get destination for AI
 	Vector2 GetDestination(void);
+
+	void changeAni(StateMachine::STATE unitState);
 
 private:
 

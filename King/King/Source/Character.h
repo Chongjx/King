@@ -1,42 +1,55 @@
 #ifndef CHARACTER_H
-#define CHATACTER_H
+#define CHARACTER_H
 
 #include "Vector2.h"
 #include "GameObject2D.h"
 #include "SpriteAnimation.h"
 #include "StateMachine.h"
+#include "Inventory.h"
+#include "Room.h"
 
 class Character : public GameObject2D
 {
-
 public:
+	enum SPRITE_ANI
+	{
+		IDLE_UP,
+		IDLE_DOWN,
+		IDLE_LEFT,
+		IDLE_RIGHT,
+		WALK_UP,
+		WALK_DOWN,
+		WALK_LEFT,
+		WALK_RIGHT,
+		RUN_UP,
+		RUN_DOWN,
+		RUN_LEFT,
+		RUN_RIGHT,
+		MAX_ANI,
+	};
+
 	// Default constructor and destructor
 	Character(void);
 	~Character(void);
 
 	// Initialise this class instance
 	virtual void Init(Vector2 pos, Vector2 dir, Vector2 vel, SpriteAnimation* sa);
+	virtual void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa);
 	// Update the character
 	virtual void Update(double dt);
 
 	/*Movement contains both walk and run*/
 
-	//// Movement up 
-	//void walkUp(double dt);
-	//// Movement down
-	//void walkDown(double dt);
-	//// Movement left
-	//void walkLeft(double dt);
-	//// Movement right
-	//void walkRight(double dt);
-
-	void runUp(double dt);
-	void runDown(double dt);
-	void runLeft(double dt);
-	void runRight(double dt);
+	// Movement up 
+	void moveUp(bool walk, double dt);
+	// Movement down
+	void moveDown(bool walk, double dt);
+	// Movement left
+	void moveLeft(bool walk, double dt);
+	// Movement right
+	void moveRight(bool walk, double dt);
 
 	/*************************************/
-
 	// Set field of view of character based on tiles
 	void SetFOV(int tiles);
 	// Get field of view of character based on tiles
@@ -48,7 +61,7 @@ public:
 	void setVel(Vector2 vel);
 	void setSize(Vector2 size);
 	void setTargetPos(Vector2 targetPos);
-	void setState(StateMachine unitState);
+	void setState(StateMachine::STATE unitState);
 	void setSprite(SpriteAnimation *sa);
 
 	Vector2 getPos(void) const;
@@ -61,18 +74,17 @@ public:
 
 	bool moveTo(Vector2 destination);
 
-	void changeAni(StateMachine unitState);
 	// Inventory
-	
-	// Interactions
-	
+	CInventory getInventory(void) const;
 
+	virtual void changeAni(StateMachine::STATE unitState);
 protected:
 
 	// Movement data
 	const double MAX_WALK_SPEED;
 	const double MAX_RUN_SPEED;
-	double speed;
+	float walkSpeed;
+	float runSpeed;
 
 	//character attributes
 	Vector2 pos;
@@ -88,11 +100,13 @@ protected:
 	int tiles;
 
 	//StateMachine object
-	StateMachine state;
+	StateMachine stateMachine;
 
 	// Inventory inventory
+	CInventory inventory;
 
+	vector<Animation*> animationList;
+	SPRITE_ANI currentAni;
 };
-
 
 #endif

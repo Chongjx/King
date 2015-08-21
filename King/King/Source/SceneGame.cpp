@@ -103,9 +103,8 @@ void SceneGame::Update(double dt)
 
 void SceneGame::UpdateDay(double dt)
 {
-	currentTime.min += dt * gameSpeed * difficulty;
-	std::cout << currentTime.min << std::endl;
-	std::cout << currentTime.hour << std::endl;
+	currentTime.min += (float)dt * gameSpeed * difficulty;
+
 	if(currentTime.min > 60.0f)
 	{
 		currentTime.min = 0;
@@ -173,6 +172,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
+	std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -780,7 +780,7 @@ void SceneGame::InitMesh(string config)
 				int startFrame = 0;
 				int endFrame = 0;
 				bool repeat = false;
-				bool play = false;
+				bool pause = false;
 				float animationTime = 0.f;
 
 				for (vector<Attribute>::iterator childAttri = childbranch->attributes.begin(); childAttri != childbranch->attributes.end(); ++childAttri)
@@ -809,9 +809,9 @@ void SceneGame::InitMesh(string config)
 						stringToBool(attriValue, repeat);
 					}
 
-					else if (attriName == "Play")
+					else if (attriName == "Pause")
 					{
-						stringToBool(attriValue, play);
+						stringToBool(attriValue, pause);
 					}
 
 					else if (attriName == "AnimationTime")
@@ -823,10 +823,12 @@ void SceneGame::InitMesh(string config)
 				if (sa)
 				{
 					Animation* anime = new Animation();
-					anime->Set(id, startFrame, endFrame, repeat, play, animationTime);
+					anime->Set(id, startFrame, endFrame, repeat, pause, animationTime);
 					sa->animations.push_back(anime);
 				}
 			}
+
+			//sort (sa->animations.begin(), sa->animations.end());
 		}
 
 		else if (meshType == "TileSheet")
@@ -1183,6 +1185,8 @@ void SceneGame::InitPlayer(string config)
 	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
 	{
 		Vector2 pos;
+		Vector2 dir;
+		string spriteName;
 		int tiles = 0;
 		int mapLocation = 0;
 
@@ -1196,6 +1200,12 @@ void SceneGame::InitPlayer(string config)
 			{
 				stringToVector(attriValue, pos);
 			}
+
+			else if (attriName == "Dir")
+			{
+				stringToVector(attriValue, dir);
+			}
+
 			else if (attriName == "Tiles")
 			{
 				tiles = stoi(attriValue);
@@ -1204,9 +1214,14 @@ void SceneGame::InitPlayer(string config)
 			{
 				mapLocation = stoi(attriValue);
 			}
+
+			else if (attriName == "Mesh")
+			{
+				spriteName = attriValue;
+			}
 		}
 
-		player->Init(pos,tiles,mapLocation);
+		player->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
 	}
 }
 
@@ -1388,70 +1403,62 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() + 2000 * dt));
+			player->moveUp(false, dt);
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() + 1000 * dt));
+			player->moveUp(true, dt);
 		}
-		//player->MoveUp(dt);
-		//std::cout << player->GetPositionX() << " , " << player->GetPositionY() << "\n"; 
 	}
 
-	if (getKey("Down"))
+	else if (getKey("Down"))
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt));
+			player->moveDown(false, dt);
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetY((int)(layout[currentLocation].roomLayout[0].getMapOffsetY() - 2000 * dt));
+			player->moveDown(true, dt);
 		}
-		//player->MoveDown(dt);
 	}
 
-	if (getKey("Left"))
+	else if (getKey("Left"))
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() - 2000 * dt));
+			player->moveLeft(false, dt);
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() - 1000 * dt));
+			player->moveLeft(true, dt);
 		}
-		//player->MoveLeft(dt);
 	}
 
-	if (getKey("Right"))
+	else if (getKey("Right"))
 	{
 		if (getKey("ToggleShift"))
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() + 2000 * dt));
+			player->moveRight(false, dt);
 		}
 		else
 		{
-			this->layout[currentLocation].roomLayout[0].setMapOffsetX((int)(layout[currentLocation].roomLayout[0].getMapOffsetX() + 1000 * dt));
+			player->moveRight(true, dt);
 		}
-		//player->MoveRight(dt);
 	}
+
+	else
+	{
+		player->setState(StateMachine::IDLE_STATE);
+	}
+
+	//std::cout << player->getDir() << std::endl;
+	//std::cout << player->getPos() << std::endl;
+
+	player->Update(dt);
 
 	this->layout[currentLocation].roomLayout[0].Update();
 
-	currentTime.min += (float)dt * gameSpeed * difficulty;
-	std::cout << currentTime.min << std::endl;
-	std::cout << currentTime.hour << std::endl;
-	if(currentTime.min > 60.0f)
-	{
-		currentTime.min = 0;
-		currentTime.hour += 1;
-	}
-	if(currentTime.hour == 24)
-	{
-		currentTime.min = 0;
-		currentTime.hour = 0;
-	}
 	UpdateDay(dt);
 }
 
@@ -1526,7 +1533,9 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
-
+	// Render player
+	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
+	Render2DMesh(player->getSprite(), false, TILESIZE * 2, 400, 400);
 }
 
 void SceneGame::RenderTime(void)

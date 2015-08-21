@@ -10,7 +10,7 @@ public:
 	
 	enum PRISONER_STATE
 	{
-		test = StateMachine::MAX_STATE + 1,
+		test = StateMachine::MAX_STATE,
 	};
 
 	// Default constructor and destructor
@@ -21,10 +21,6 @@ public:
 	void Init(void);
 	// Update the character
 	void Update(double dt);
-
-
-
-
 private:
 
 };
