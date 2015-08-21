@@ -37,3 +37,8 @@ Vector2 AI::GetDestination(void)
 {
 	return destination;
 }
+
+void AI::changeAni(StateMachine::STATE unitState)
+{
+
+}

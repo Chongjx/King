@@ -19,3 +19,8 @@ void Guards::Update(double dt)
 {
 
 }
+
+void Guards::changeAni(StateMachine::STATE unitState)
+{
+
+}
