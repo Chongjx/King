@@ -19,7 +19,7 @@ SceneGame::SceneGame(void)
 	}
 
 	currentState = MENU_STATE;
-	currentLocation = MAIN_AREA;
+	currentLocation = CELL_AREA;
 
 	sceneWidth = 0.f;
 	sceneHeight = 0.f;
@@ -158,7 +158,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
-	std::cout << fps << std::endl;
+	//std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -984,6 +984,9 @@ void SceneGame::InitLevel(string config)
 	for (vector<Branch>::iterator branch = levelBranch.childBranches.begin(); branch != levelBranch.childBranches.end(); ++branch)
 	{
 		string directory = "";
+		TileMap::MAP_TYPE tempType;
+		tempType = TileMap::MAX_TYPE;
+
 		enum MAP_VAR
 		{
 			VAR_ID,
@@ -1048,6 +1051,24 @@ void SceneGame::InitLevel(string config)
 				directory = attriValue;
 			}
 
+			else if (attriName == "Type")
+			{
+				if (attriValue == "Visual")
+				{
+					tempType = TileMap::TYPE_VISUAL;
+				}
+
+				else if (attriValue == "Background")
+				{
+					tempType = TileMap::TYPE_BACKGROUND;
+				}
+
+				else if (attriValue == "Collision")
+				{
+					tempType = TileMap::TYPE_COLLISION;
+				}
+			}
+
 			else
 			{
 				for (int k = 0; k < MAX_VAR; ++k)
@@ -1064,9 +1085,10 @@ void SceneGame::InitLevel(string config)
 		TileMap tempMap;
 		tempMap.Init(mapVar[VAR_ID], mapVar[VAR_SCREEN_WIDTH], mapVar[VAR_SCREEN_HEIGHT], mapVar[VAR_MAP_WIDTH], mapVar[VAR_MAP_HEIGHT], mapVar[VAR_MAP_OFFSETX], mapVar[VAR_MAP_OFFSETY], mapVar[VAR_MAP_FINE_OFFSETX], mapVar[VAR_MAP_FINE_OFFSETY], enableX, enableY, mapVar[TILE_SIZE]);
 		tempMap.LoadMap(directory);
+		tempMap.setMapType(tempType);
 
-		layout[layout.size() - 1].ID = mapVar[VAR_ID];
-		layout[layout.size() - 1].roomLayout.push_back(tempMap);
+		layout[VAR_ID].ID = mapVar[VAR_ID];
+		layout[VAR_ID].roomLayout.push_back(tempMap);
 	}
 }
 
@@ -1212,6 +1234,7 @@ void SceneGame::InitPlayer(string config)
 		}
 
 		player->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
+		player->setRoom(layout[mapLocation]);
 	}
 }
 
@@ -1391,7 +1414,7 @@ void SceneGame::UpdateInGame(double dt)
 {
 	if (getKey("Up"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveUp(false, dt);
 		}
@@ -1403,7 +1426,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Down"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveDown(false, dt);
 		}
@@ -1415,7 +1438,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Left"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveLeft(false, dt);
 		}
@@ -1427,7 +1450,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Right"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveRight(false, dt);
 		}
@@ -1442,8 +1465,9 @@ void SceneGame::UpdateInGame(double dt)
 		player->setState(StateMachine::IDLE_STATE);
 	}
 
-	//std::cout << player->getDir() << std::endl;
 	//std::cout << player->getPos() << std::endl;
+	//std::cout << player->getDir() << std::endl;
+	std::cout << player->getVel() << std::endl;
 
 	player->Update(dt);
 
@@ -1525,7 +1549,7 @@ void SceneGame::RenderCharacters(void)
 {
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
-	Render2DMesh(player->getSprite(), false, TILESIZE * 2, 400, 400);
+	Render2DMesh(player->getSprite(), false, TILESIZE * 1.5f, player->getPos().x, player->getPos().y);
 }
 
 void SceneGame::RenderTime(void)

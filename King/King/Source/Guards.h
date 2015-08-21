@@ -10,7 +10,9 @@ public:
 
 	enum GUARD_STATE
 	{
-		CHASE = StateMachine::MAX_STATE + 1,
+		CHASE_STATE = StateMachine::MAX_STATE,
+		PATROL_STATE,
+		
 
 		GUARD_MAX_STATE,
 	};

@@ -7,6 +7,8 @@ class AI: public Character
 {
 public:
 
+
+
 	// Default constructor and destructor
 	AI(void);
 	~AI(void);
