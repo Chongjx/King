@@ -2,6 +2,9 @@
 #define DAY_H
 
 #include "Level.h"
+#include <string>
+
+using std::string;
 
 class Day
 {
@@ -9,6 +12,13 @@ class Day
 	{
 		int hour;
 		float min;
+	};
+	struct Icon
+	{
+		int size;
+		int pos_x;
+		int pos_y;
+		string mesh;
 	};
 
 public:
@@ -28,6 +38,9 @@ public:
 
 	vector<Level> levels;
 
+	void Initicons(string name,int size,int pos_x,int pos_y ,string mesh);
+	Icon sun;
+	Icon moon;
 private:
 	Time currentTime;
 	float difficulty;

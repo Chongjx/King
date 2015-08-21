@@ -8,4 +8,21 @@
 		[MIN] 00
 		[DIFFICULTY] 10
 	}
+
+	{
+		[NAME] IconSprites
+		{
+			[Name]Sun
+			[Size] 64
+			[Pos] 16, 736
+			[Mesh] GEO_SUN
+		}
+		{
+			[Name]Moon
+			[Size] 64
+			[Pos] 16, 736
+			[Mesh] GEO_MOON
+		}
+
+	}
 }

@@ -1128,9 +1128,6 @@ void SceneGame::InitVariables(string config)
 {
 	Branch VariablesBranch = TextTree::FileToRead(config);
 
-	int tempHr = 0;
-	int tempMin = 0;
-
 	if (DEBUG)
 	{
 		VariablesBranch.printBranch();
@@ -1138,27 +1135,73 @@ void SceneGame::InitVariables(string config)
 
 	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
 	{
-
-		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		if (branch->branchName == "StartTime")
 		{
-			Attribute tempAttri = *attri;
-			string attriName = tempAttri.name;
-			string attriValue = tempAttri.value;
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				int tempHr;
+				int tempMin;
 
-			if (attriName == "HOUR")
-			{
-				tempHr = stoi(attriValue);
-			}
-			if(attriName == "MIN")
-			{
-				tempMin = stoi(attriValue);
-			}
-			if(attriName == "DIFFICULTY")
-			{
-				day.setdifficulty(stof(attriValue));
+				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+					if (attriName == "HOUR")
+					{
+						tempHr = stoi(attriValue);
+					}
+					else if(attriName == "MIN")
+					{
+						tempMin = stof(attriValue);
+					}
+					else if(attriName == "DIFFICULTY")
+					{
+						day.setdifficulty(stof(attriValue));
+					}
+				}
+				day.setCurrentTime(tempHr,tempMin);
 			}
 		}
-	day.setCurrentTime(tempHr,tempMin);
+		else if (branch->branchName == "IconSprites")
+		{
+			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
+			{
+				Branch tempChildBranch = *childbranch;
+				string name;
+				int size;
+				Vector2 pos;
+				string mesh;
+
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "Name")
+					{
+						name = attriValue;
+					}
+					else if (attriName == "Size")
+					{
+						size =stoi(attriValue);
+					}
+					else if (attriName == "Pos")
+					{
+						stringToVector(attriValue, pos);
+					}
+					else if (attriName == "Mesh")
+					{
+						mesh = attriValue;
+					}
+				}
+				day.Initicons(name,size,pos.x,pos.y ,mesh);
+			}
+		}
 	}
 }
 
@@ -1346,7 +1389,7 @@ void SceneGame::UpdateState(void)
 					{
 						changeScene(PAUSE_STATE);
 					}
-					
+
 					else if (gameInterfaces[currentState].buttons[i].getName() == "Instruction")
 					{
 						changeScene(INSTRUCTION_STATE);
@@ -1531,7 +1574,7 @@ void SceneGame::changeScene(GAME_STATE nextState)
 	if(nextState==INGAME_STATE)
 	{
 		sound.Play("Sound_Background");	
-			sound.Play("Sound_Bookflip2");
+		sound.Play("Sound_Bookflip2");
 	}
 	else
 	{
@@ -1616,7 +1659,7 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh("GEO_MOON"),false, 64, 16, sceneHeight - 64);
+		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos_x,  day.moon.pos_y);
 	}
 	if(day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
 	{
@@ -1625,7 +1668,7 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh("GEO_SUN"),false, 64, 16, sceneHeight - 64);
+		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos_x, day.sun.pos_y);
 	}
 }
 
