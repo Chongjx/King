@@ -3,7 +3,7 @@
 
 #include "Character.h"
 
-class AI//: public Character
+class AI: public Character
 {
 public:
 
