@@ -85,6 +85,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera2.cpp" />
     <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\Day.cpp" />
     <ClCompile Include="Source\GameObject2D.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
     <ClCompile Include="Source\Interface.cpp" />
@@ -95,12 +96,14 @@
     <ClCompile Include="Source\ItemWeapon.cpp" />
     <ClCompile Include="Source\Keyboard.cpp" />
     <ClCompile Include="Source\KingEngine.cpp" />
+    <ClCompile Include="Source\Level.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
+    <ClCompile Include="Source\Objctive.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Prisoners.cpp" />
     <ClCompile Include="Source\Scene2D.cpp" />
@@ -119,6 +122,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera2.h" />
     <ClInclude Include="Source\Character.h" />
+    <ClInclude Include="Source\Day.h" />
     <ClInclude Include="Source\GameObject2D.h" />
     <ClInclude Include="Source\Guards.h" />
     <ClInclude Include="Source\Interface.h" />
@@ -129,6 +133,7 @@
     <ClInclude Include="Source\ItemWeapon.h" />
     <ClInclude Include="Source\Keyboard.h" />
     <ClInclude Include="Source\KingEngine.h" />
+    <ClInclude Include="Source\Level.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
@@ -136,6 +141,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Mouse.h" />
+    <ClInclude Include="Source\Objctive.h" />
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Prisoners.h" />

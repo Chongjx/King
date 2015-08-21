@@ -51,5 +51,5 @@ void Day::setdifficulty(float difficulty)
 
 void Day::setCurrentDay(int currentDay)
 {
-	this->currentDay = currentDay
+	this->currentDay = currentDay;
 }
