@@ -1199,7 +1199,7 @@ void SceneGame::InitVariables(string config)
 						mesh = attriValue;
 					}
 				}
-				day.Initicons(name,size,pos.x,pos.y ,mesh);
+				day.Initicons(name,size,pos,mesh);
 			}
 		}
 	}
@@ -1465,7 +1465,6 @@ void SceneGame::UpdateEffect(void)
 				played = true;
 			}
 		}
-
 		else
 		{
 			gameInterfaces[currentState].buttons[i].setColor(findColor("LightGrey"));
@@ -1689,7 +1688,8 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos_x,  day.moon.pos_y);
+		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
+		//16, 736 original position
 	}
 	if(day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
 	{
@@ -1698,7 +1698,7 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos_x, day.sun.pos_y);
+		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 	}
 }
 

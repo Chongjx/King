@@ -6,8 +6,6 @@ currentDay(1)
 {
 }
 
-
-
 Day::~Day(void)
 {
 }
@@ -39,6 +37,12 @@ int Day::getCurrentDay(void)
 	return currentDay;
 }
 
+int Day::getCurrentLevel(void)
+{
+	return currentLevel;
+}
+
+
 void Day::setCurrentTime(int Hr,int Min)
 {
 	currentTime.min = (float)Min;
@@ -54,20 +58,23 @@ void Day::setCurrentDay(int currentDay)
 	this->currentDay = currentDay;
 }
 
-void Day::Initicons(string name,int size,int pos_x,int pos_y ,string mesh)
+void Day::setCurrentLevel(int level)
+{
+currentLevel = level;
+}
+
+void Day::Initicons(string name,int size,Vector2 pos ,string mesh)
 {
 	if (name == "Sun")
 	{
 		sun.size = size;
-		sun.pos_x = pos_x;
-		sun.pos_y = pos_y;
+		sun.pos = pos;
 		sun.mesh = mesh;
 	}
 	else if(name=="Moon")
 	{
 		moon.size = size;
-		moon.pos_x = pos_x;
-		moon.pos_y = pos_y;
+		moon.pos = pos;
 		moon.mesh = mesh;
 	}
 }
