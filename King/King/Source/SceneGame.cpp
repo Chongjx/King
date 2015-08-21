@@ -158,7 +158,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
-	std::cout << fps << std::endl;
+	//std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -1391,7 +1391,7 @@ void SceneGame::UpdateInGame(double dt)
 {
 	if (getKey("Up"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveUp(false, dt);
 		}
@@ -1403,7 +1403,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Down"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveDown(false, dt);
 		}
@@ -1415,7 +1415,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Left"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveLeft(false, dt);
 		}
@@ -1427,7 +1427,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Right"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveRight(false, dt);
 		}

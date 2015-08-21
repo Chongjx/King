@@ -3,7 +3,12 @@
 Player::Player()
 	: mapLocation(0)
 	, energy(0)
+	, recovering(false)
 	, MAX_ENERGY(100)
+	, ENERGY_TO_RUN(30.0)
+	, DEGENERATE_RUN(10)
+	, REGENERATE_WALK(5)
+	, REGENERATE_IDLE(7.5) 
 {
 }
 
@@ -19,6 +24,7 @@ void Player::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, int 
 	this->tiles = tiles;
 	this->mapLocation = mapLocation;
 	this->energy = MAX_ENERGY;
+	this->recovering = false;
 	this->changeAni(StateMachine::IDLE_STATE);
 }
 
@@ -50,12 +56,12 @@ void Player::UpdateEnergy(double dt)
 		if ( energy > 0 )
 		{
 			//decrease energy
-			energy -= 10 * dt;
+			energy -= DEGENERATE_RUN * dt;
 		}
-		else 
+		else
 		{
 			energy = 0;
-			Character::stateMachine.SetState(StateMachine::WALK_STATE);
+			Recovering();
 		}
 	}
 
@@ -64,7 +70,7 @@ void Player::UpdateEnergy(double dt)
 		if ( energy < MAX_ENERGY )
 		{
 			//recover energy
-			energy += 5 * dt;
+			energy += REGENERATE_WALK * dt;
 			//cap energy at max energy
 			if (energy > MAX_ENERGY)
 			{
@@ -78,7 +84,7 @@ void Player::UpdateEnergy(double dt)
 		if ( energy < MAX_ENERGY )
 		{
 			//recover energy a littleeee bit faster than walk
-			energy += 7.5 * dt;
+			energy += REGENERATE_IDLE * dt;
 			//cap energy at max energy
 			if (energy > MAX_ENERGY)
 			{
@@ -86,7 +92,25 @@ void Player::UpdateEnergy(double dt)
 			}
 		}
 	}
-	
+
+	if ( recovering == true )
+	{
+		if(energy > ENERGY_TO_RUN)
+		{
+			recovering = false;
+		}
+	}
+}
+
+void Player::Recovering()
+{
+	changeAni(StateMachine::WALK_STATE);
+	recovering = true;
+}
+
+bool Player::GetRecovering(void)
+{
+	return recovering;
 }
 
 void Player::ConstrainPlayer() /* parameters to be added */
