@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Interactions.cpp" />
     <ClCompile Include="Source\Buttons.cpp" />
     <ClCompile Include="Source\AI.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Interactions.h" />
     <ClInclude Include="Source\Buttons.h" />
     <ClInclude Include="Source\AI.h" />
     <ClInclude Include="Source\Camera.h" />
