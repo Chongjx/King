@@ -1089,6 +1089,32 @@ void SceneGame::InitLevel(string config)
 
 		layout[VAR_ID].ID = mapVar[VAR_ID];
 		layout[VAR_ID].roomLayout.push_back(tempMap);
+
+		// Misc special tiles
+		if (branch->childBranches.size() != 0)
+		{
+			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
+			{
+				Branch tempChildBranch = *childbranch;
+
+				if (tempChildBranch.branchName == "SpecialTiles")
+				{
+					SpecialTiles tiles;
+
+					for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+					{
+						Attribute tempAttri = *attri;
+						string attriName = tempAttri.name;
+						string attriValue = tempAttri.value;
+
+						tiles.TileName = attriName;
+						tiles.TileID = stoi(attriValue);
+
+						layout[VAR_ID].specialTiles.push_back(tiles);
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -1098,7 +1124,7 @@ void SceneGame::InitVariables(string config)
 	Branch VariablesBranch = TextTree::FileToRead(config);
 
 	int tempHr = 0;
-	int tempMin=0;
+	int tempMin = 0;
 
 	if (DEBUG)
 	{
@@ -1120,7 +1146,7 @@ void SceneGame::InitVariables(string config)
 			}
 			if(attriName == "MIN")
 			{
-				tempMin = stof(attriValue);
+				tempMin = stoi(attriValue);
 			}
 			if(attriName == "DIFFICULTY")
 			{
@@ -1129,7 +1155,6 @@ void SceneGame::InitVariables(string config)
 		}
 	day.setCurrentTime(tempHr,tempMin);
 	}
-
 }
 
 // Init all game variables in the scene from text file
@@ -1467,7 +1492,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	//std::cout << player->getPos() << std::endl;
 	//std::cout << player->getDir() << std::endl;
-	std::cout << player->getVel() << std::endl;
+	std::cout << player->getDir() << std::endl;
 
 	player->Update(dt);
 
@@ -1518,27 +1543,30 @@ void SceneGame::RenderLevel(void)
 	// check if player is within the game
 	if ((unsigned)currentLocation < layout.size())
 	{
-		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++ numMaps)
+		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
 		{
-			int m = 0;
-			int n = 0;
-			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
+			if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
 			{
-				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
-
-				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+				int m = 0;
+				int n = 0;
+				for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight(); i++)
 				{
-					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+					n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
 
-					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
-						break;
-					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
-						break;
+					for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+					{
+						m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
 
-					TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
-					tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+						if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+							break;
+						if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
+							break;
 
-					Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
+						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+
+						Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+					}
 				}
 			}
 		}

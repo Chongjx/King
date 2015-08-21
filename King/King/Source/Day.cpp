@@ -41,7 +41,7 @@ int Day::getCurrentDay(void)
 
 void Day::setCurrentTime(int Hr,int Min)
 {
-	currentTime.min = Min;
+	currentTime.min = (float)Min;
 	currentTime.hour = Hr;
 }
 void Day::setdifficulty(float difficulty)

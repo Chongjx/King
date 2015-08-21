@@ -22,5 +22,37 @@
 		[EnableYScroll] true
 		[TileSize] 32
 		[Directory] Image\\Map\\Prison.csv
+		{
+			[NAME] SpecialTiles
+			[Wall] 640
+			[PrisonDoorClosed] 266
+			[PrisonDoorOpened] 267
+			[CellDoorLeftClosed] 478
+			[CellDoorRightClosed] 479
+			[CellDoorLeftOpened] 474
+			[CellDoorRightOpened] 475
+			[Threadmill] 184
+		}
+	}
+	{
+		[NAME] MainRoom
+		[Type] Collision
+		[ID] 0
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 8192 
+		# 32 * 160		
+		[MapHeight] 5120
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] true
+		[EnableYScroll] true
+		[TileSize] 32
+		[Directory] Image\\Map\\CollisionMap.csv
 	}
 }

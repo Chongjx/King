@@ -1,8 +1,7 @@
 #include "Player.h"
 
 Player::Player() :
-	: mapLocation(0)
-	, energy(0)
+	energy(0)
 	, recovering(false)
 	, MAX_ENERGY(100)
 	, ENERGY_TO_RUN(30.0)
