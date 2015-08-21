@@ -85,6 +85,12 @@
     <Filter Include="Source Files\2D\Inventory\Item\Type">
       <UniqueIdentifier>{0babeda7-cba3-4f62-b6b1-5f4695967f53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Day System">
+      <UniqueIdentifier>{ea23c7c0-dd95-4f41-ab84-8037cd876277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Day System">
+      <UniqueIdentifier>{7de4e7a8-e914-4311-abdc-c8eca1c0ed4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -182,6 +188,15 @@
     </ClCompile>
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files\2D\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objctive.cpp">
+      <Filter>Source Files\Day System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Day.cpp">
+      <Filter>Source Files\Day System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Level.cpp">
+      <Filter>Source Files\Day System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +307,15 @@
     </ClInclude>
     <ClInclude Include="Source\Room.h">
       <Filter>Header Files\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objctive.h">
+      <Filter>Header Files\Day System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Day.h">
+      <Filter>Header Files\Day System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Level.h">
+      <Filter>Header Files\Day System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

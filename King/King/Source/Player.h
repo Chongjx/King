@@ -19,6 +19,10 @@ public:
 	double GetEnergy(void);
 	// Updates the player's energy
 	void UpdateEnergy(double dt);
+	// Replenishing player's energy
+	void Recovering();
+	// get state
+	bool GetRecovering(void);
 
 	// To contrain player at certain point of map
 	void ConstrainPlayer();
@@ -26,7 +30,9 @@ public:
 private:
 	// Energy data
 	double energy;
-	const double MAX_ENERGY;
+	bool recovering;
+	const double MAX_ENERGY, ENERGY_TO_RUN, DEGENERATE_RUN, REGENERATE_WALK, REGENERATE_IDLE; 
+
 };
 
 #endif

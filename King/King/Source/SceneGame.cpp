@@ -101,21 +101,7 @@ void SceneGame::Update(double dt)
 	}
 }
 
-void SceneGame::UpdateDay(double dt)
-{
-	currentTime.min += (float)dt * gameSpeed * difficulty;
 
-	if(currentTime.min > 60.0f)
-	{
-		currentTime.min = 0;
-		currentTime.hour += 1;
-	}
-	if(currentTime.hour == 24)
-	{
-		currentTime.min = 0;
-		currentTime.hour = 0;
-	}
-}
 
 void SceneGame::UpdateAI(double dt)
 {
@@ -1111,6 +1097,9 @@ void SceneGame::InitVariables(string config)
 {
 	Branch VariablesBranch = TextTree::FileToRead(config);
 
+	int tempHr = 0;
+	int tempMin=0;
+
 	if (DEBUG)
 	{
 		VariablesBranch.printBranch();
@@ -1125,21 +1114,22 @@ void SceneGame::InitVariables(string config)
 			string attriName = tempAttri.name;
 			string attriValue = tempAttri.value;
 
-
 			if (attriName == "HOUR")
 			{
-				currentTime.hour = stoi(attriValue);
+				tempHr = stoi(attriValue);
 			}
 			if(attriName == "MIN")
 			{
-				currentTime.min = stof(attriValue);
+				tempMin = stof(attriValue);
 			}
 			if(attriName == "DIFFICULTY")
 			{
-				difficulty = stof(attriValue);
+				day.setdifficulty(stof(attriValue));
 			}
 		}
+	day.setCurrentTime(tempHr,tempMin);
 	}
+
 }
 
 // Init all game variables in the scene from text file
@@ -1424,7 +1414,7 @@ void SceneGame::UpdateInGame(double dt)
 {
 	if (getKey("Up"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveUp(false, dt);
 		}
@@ -1436,7 +1426,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Down"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveDown(false, dt);
 		}
@@ -1448,7 +1438,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Left"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveLeft(false, dt);
 		}
@@ -1460,7 +1450,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	else if (getKey("Right"))
 	{
-		if (getKey("ToggleShift"))
+		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
 			player->moveRight(false, dt);
 		}
@@ -1483,7 +1473,7 @@ void SceneGame::UpdateInGame(double dt)
 
 	this->layout[currentLocation].roomLayout[0].Update();
 
-	UpdateDay(dt);
+	day.UpdateDay(dt,gameSpeed);
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
@@ -1564,20 +1554,20 @@ void SceneGame::RenderCharacters(void)
 
 void SceneGame::RenderTime(void)
 {
-	if(currentTime.hour >= 18 || currentTime.hour >= 0 && currentTime.hour <6)
+	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)
 	{
 		std::ostringstream ss;
 		ss.precision(2);
-		ss << currentTime.hour << ":" << currentTime.min ;
+		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
 
 		Render2DMesh(findMesh("GEO_MOON"),false, 64, 16, sceneHeight - 64);
 	}
-	if(currentTime.hour >= 6 && currentTime.hour <18)
+	if(day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
 	{
 		std::ostringstream ss;
 		ss.precision(2);
-		ss << currentTime.hour << ":" << currentTime.min ;
+		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
 		Render2DMesh(findMesh("GEO_SUN"),false, 64, 16, sceneHeight - 64);

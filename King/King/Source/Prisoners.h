@@ -10,7 +10,7 @@ public:
 	
 	enum PRISONER_STATE
 	{
-		test = StateMachine::MAX_STATE,
+		LEPAK_STATE = StateMachine::MAX_STATE,
 	};
 
 	// Default constructor and destructor
