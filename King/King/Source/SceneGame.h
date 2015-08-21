@@ -13,6 +13,7 @@
 #include "Sound.h"
 #include "Level.h"
 #include "Day.h"
+#include "Interactions.h"
 
 using std::string;
 
