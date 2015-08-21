@@ -41,7 +41,7 @@ int Day::getCurrentDay(void)
 
 void Day::setCurrentTime(int Hr,int Min)
 {
-	currentTime.min = (float)Min;
+	currentTime.min = Min;
 	currentTime.hour = Hr;
 }
 void Day::setdifficulty(float difficulty)
@@ -52,4 +52,22 @@ void Day::setdifficulty(float difficulty)
 void Day::setCurrentDay(int currentDay)
 {
 	this->currentDay = currentDay;
+}
+
+void Day::Initicons(string name,int size,int pos_x,int pos_y ,string mesh)
+{
+	if (name == "Sun")
+	{
+		sun.size = size;
+		sun.pos_x = pos_x;
+		sun.pos_y = pos_y;
+		sun.mesh = mesh;
+	}
+	else if(name=="Moon")
+	{
+		moon.size = size;
+		moon.pos_x = pos_x;
+		moon.pos_y = pos_y;
+		moon.mesh = mesh;
+	}
 }
