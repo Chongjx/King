@@ -11,6 +11,7 @@
 #include "Guards.h"
 #include "Interface.h"
 #include "Sound.h"
+#include "Level.h"
 
 using std::string;
 

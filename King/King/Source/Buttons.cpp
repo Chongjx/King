@@ -1,5 +1,4 @@
 #include "Buttons.h"
-
 #include "KingEngine.h"
 
 Buttons::Buttons(void)	:
