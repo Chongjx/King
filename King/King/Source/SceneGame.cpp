@@ -12,6 +12,7 @@ SceneGame::SceneGame(void)
 	lights.resize(NUM_LIGHTS);
 	layout.resize(MAX_AREAS);
 	gameInterfaces.resize(MAX_STATE);
+	interactionList.resize(Interactions::MAX_INTERACTIONS);
 
 	for (unsigned i = MENU_STATE; i < MAX_STATE; ++i)
 	{
@@ -100,7 +101,6 @@ void SceneGame::Update(double dt)
 		}
 	}
 }
-
 
 
 void SceneGame::UpdateAI(double dt)
@@ -1311,6 +1311,11 @@ void SceneGame::InitPlayer(string config)
 	}
 }
 
+void SceneGame::InitInteractions(string config)
+{
+
+}
+
 void SceneGame::UpdateOpengl(void)
 {
 	if(KEngine::getKeyboard()->getKey('1'))
@@ -1566,6 +1571,31 @@ void SceneGame::UpdateInGame(double dt)
 	}
 
 	day.UpdateDay(dt,gameSpeed);
+}
+
+void SceneGame::UpdateInteractions(void)
+{
+	switch (currentInteraction)
+	{
+	case PICKUP_ITEM:;
+		break;
+	case DROP_ITEM:;
+		break;
+	case TALK_WITH_PRISONERS:;
+		break;
+	case TALK_WITH_GUARDS:;
+		break;
+	case OPEN_DOOR:;
+		break;
+	case CLOSE_DOOR:;
+		break;
+	case RUNNING_ON_THREADMILL:;
+		break;
+	case ATTACK:;
+		break;
+	default:;
+		break;
+	}
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)

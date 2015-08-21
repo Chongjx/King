@@ -23,13 +23,11 @@ public:
 	Interactions(void);
 	~Interactions(void);
 
-	void Update();
-
 	void setInteractionStatus(InteractionStatus);
 	void setName(string name);
 
-	int getInteractionStatus();
-	string getName();
+	int getInteractionStatus(void);
+	string getName(void);
 
 private:
 

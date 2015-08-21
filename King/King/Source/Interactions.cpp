@@ -20,12 +20,12 @@ void Interactions::setName(string name)
 	this->name = name;
 }
 
-int Interactions::getInteractionStatus()
+int Interactions::getInteractionStatus(void)
 {
 	return currentStatus;
 }
 
-string Interactions::getName()
+string Interactions::getName(void)
 {
 	return name;
 }
