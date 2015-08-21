@@ -143,6 +143,8 @@ private:
 	vector<KEYS> interactionKeys;
 	vector<Room> layout;
 	vector<Interface> gameInterfaces;
+	vector<Prisoners*> prisonerList;
+	vector<Guards*> guardList;
 	Vector2 mousePos;
 	vector<Interactions> interactionList;
 
@@ -160,7 +162,9 @@ private:
 	void stringToBool(string text, bool &boo);
 
 	Sound sound;
+	Guards* guard;
 	Player* player;
+	Prisoners* prisoner;
 	Day day;
 };
 

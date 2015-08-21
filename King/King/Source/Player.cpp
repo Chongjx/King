@@ -102,7 +102,7 @@ bool Player::GetRecovering(void)
 	return recovering;
 }
 
-void Player::ConstrainPlayer() /* parameters to be added */
+void Player::ConstrainPlayer(bool constrain) /* parameters to be added */
 {
 
 }

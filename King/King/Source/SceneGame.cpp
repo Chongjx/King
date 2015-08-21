@@ -196,6 +196,18 @@ void SceneGame::Exit(void)
 		player = NULL;
 	}
 
+	if(guard)
+	{
+		delete guard;
+		guard = NULL;
+	}
+
+	if(prisoner)
+	{
+		delete prisoner;
+		guard = NULL;
+	}
+
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 }
 
