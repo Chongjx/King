@@ -1,0 +1,4 @@
+640 - Collision Wall
+266 - Open/Close Prison Door
+478,479 - Open/Close Cell Door
+184 - Threadmill
