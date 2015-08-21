@@ -1535,7 +1535,7 @@ void SceneGame::RenderCharacters(void)
 {
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
-	Render2DMesh(player->getSprite(), false, TILESIZE * 1.5f , 400, 400);
+	Render2DMesh(player->getSprite(), false, TILESIZE * 1.5f , player->getPos().x, 400);
 }
 
 void SceneGame::RenderTime(void)

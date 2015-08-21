@@ -291,7 +291,7 @@
       <Filter>Header Files\2D\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="Source\Room.h">
-      <Filter>Header Files\2D\UI</Filter>
+      <Filter>Header Files\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
