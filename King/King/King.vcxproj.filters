@@ -189,13 +189,13 @@
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files\2D\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Objctive.cpp">
-      <Filter>Source Files\Day System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Day.cpp">
       <Filter>Source Files\Day System</Filter>
     </ClCompile>
     <ClCompile Include="Source\Level.cpp">
+      <Filter>Source Files\Day System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objective.cpp">
       <Filter>Source Files\Day System</Filter>
     </ClCompile>
   </ItemGroup>
@@ -308,13 +308,13 @@
     <ClInclude Include="Source\Room.h">
       <Filter>Header Files\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Objctive.h">
-      <Filter>Header Files\Day System</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Day.h">
       <Filter>Header Files\Day System</Filter>
     </ClInclude>
     <ClInclude Include="Source\Level.h">
+      <Filter>Header Files\Day System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objective.h">
       <Filter>Header Files\Day System</Filter>
     </ClInclude>
   </ItemGroup>

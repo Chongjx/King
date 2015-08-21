@@ -1,7 +1,7 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-#include "Objctive.h"
+#include "Objective.h"
 #include <vector>
 
 using std::vector;
@@ -12,7 +12,7 @@ public:
 	Level(void);
 	~Level(void);
 
-	vector<Objctive> objectives;
+	vector<Objective> objectives;
 };
 
 #endif

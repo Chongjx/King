@@ -103,7 +103,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
-    <ClCompile Include="Source\Objctive.cpp" />
+    <ClCompile Include="Source\Objective.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Prisoners.cpp" />
     <ClCompile Include="Source\Scene2D.cpp" />
@@ -141,7 +141,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Mouse.h" />
-    <ClInclude Include="Source\Objctive.h" />
+    <ClInclude Include="Source\Objective.h" />
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Prisoners.h" />

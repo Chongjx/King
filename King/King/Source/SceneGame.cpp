@@ -1156,7 +1156,7 @@ void SceneGame::InitVariables(string config)
 					}
 					else if(attriName == "MIN")
 					{
-						tempMin = stof(attriValue);
+						tempMin = stoi(attriValue);
 					}
 					else if(attriName == "DIFFICULTY")
 					{

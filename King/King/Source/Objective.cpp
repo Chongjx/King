@@ -1,4 +1,4 @@
-#include "Objctive.h"
+#include "Objective.h"
 
 Objective::Objective(void) :
 difficulty(1),

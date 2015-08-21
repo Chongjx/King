@@ -4,7 +4,7 @@
 class Objective
 {
 public:
-	enum OBJECTIVE_STATE:
+	enum OBJECTIVE_STATE
 	{
 		STATE_UNASSIGNED,
 		STATE_ASSIGNED,
