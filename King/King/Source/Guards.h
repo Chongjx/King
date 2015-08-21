@@ -24,6 +24,8 @@ public:
 	// Update the character
 	void Update(double dt);
 
+	void changeAni(StateMachine::STATE unitState);
+
 private:
 
 };

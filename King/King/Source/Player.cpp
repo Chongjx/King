@@ -86,7 +86,7 @@ void Player::UpdateEnergy(double dt)
 			}
 		}
 	}
-
+	
 }
 
 void Player::ConstrainPlayer() /* parameters to be added */

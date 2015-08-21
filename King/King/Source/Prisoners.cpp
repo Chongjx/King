@@ -19,3 +19,8 @@ void Prisoners::Update(double dt)
 {
 
 }
+
+void Prisoners::changeAni(StateMachine::STATE unitState)
+{
+
+}

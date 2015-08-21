@@ -78,6 +78,7 @@ public:
 	CInventory getInventory(void) const;
 
 	virtual void changeAni(StateMachine::STATE unitState);
+
 protected:
 
 	// Movement data
