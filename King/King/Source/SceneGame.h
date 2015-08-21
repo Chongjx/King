@@ -109,6 +109,7 @@ public:
 	void InitSound(string config);
 	void InitPlayer(string config);
 	void InitInteractions(string config);
+	void InitAI(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -162,9 +163,7 @@ private:
 	void stringToBool(string text, bool &boo);
 
 	Sound sound;
-	Guards* guard;
 	Player* player;
-	Prisoners* prisoner;
 	Day day;
 };
 

@@ -29,6 +29,7 @@ public:
 
 	// Sets patrol area
 
+
 	void changeAni(StateMachine::STATE unitState);
 
 private:

@@ -1,0 +1,37 @@
+# AI setup #
+# Init default AIproperties outside of source codes 
+{
+	[NAME] AI
+	{
+		[NAME] Prisoner
+	
+		{
+			[NAME] John
+			[Pos] 100, 300
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0			
+		}
+		{
+			[NAME] James
+			[Pos] 100, 200
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0		
+		}
+	}
+	{
+		[NAME] Guard
+
+		{
+			[NAME] Banana
+			[Pos] 100, 450
+		        [Dir] 0, -1
+		        [Mesh] GEO_GUARD
+		        [Tiles] 1
+		        [MapLocation] 0	
+		}
+	}
+}

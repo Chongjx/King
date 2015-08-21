@@ -198,7 +198,7 @@
     <ClCompile Include="Source\Objective.cpp">
       <Filter>Source Files\Day System</Filter>
     </ClCompile>
-    <ClCompile Include="Interactions.cpp">
+    <ClCompile Include="Source\Interactions.cpp">
       <Filter>Source Files\2D</Filter>
     </ClCompile>
   </ItemGroup>
@@ -320,7 +320,7 @@
     <ClInclude Include="Source\Objective.h">
       <Filter>Header Files\Day System</Filter>
     </ClInclude>
-    <ClInclude Include="Interactions.h">
+    <ClInclude Include="Source\Interactions.h">
       <Filter>Header Files\2D</Filter>
     </ClInclude>
   </ItemGroup>

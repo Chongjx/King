@@ -2,6 +2,7 @@
 
 AI::AI(void)
 	: destination(0,0)
+	, updating(true)
 {
 }
 
@@ -15,16 +16,19 @@ void AI::Init()
 
 }
 
-void AI::Update(double dt, bool updating)
+void AI::Update(double dt)
 {
-	if (updating == true)
-	{
+	Character::Update(dt);
+}
 
-	}
-	else
-	{
+void AI::SetUpdate(bool updating)
+{
+	this->updating = updating;
+}
 
-	}
+bool AI::GetUpdate(void)
+{
+	return updating;
 }
 
 void AI::SetDestination(float x, float y)
