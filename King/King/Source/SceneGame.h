@@ -12,6 +12,7 @@
 #include "Interface.h"
 #include "Sound.h"
 #include "Level.h"
+#include "Day.h"
 
 using std::string;
 
@@ -66,11 +67,6 @@ class SceneGame : public Scene2D
 		MAX_STATE,
 	};
 
-	struct Time
-	{
-		int hour;
-		float min;
-	};
 public:
 	SceneGame(void);
 	~SceneGame(void);
@@ -98,7 +94,6 @@ public:
 	void UpdateState(void);
 	void UpdateEffect(void);
 	void UpdateInGame(double dt);
-	void UpdateDay(double dt);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -130,12 +125,12 @@ private:
 	GAME_STATE currentState;
 	float defaultFontSize;
 	float specialFontSize;
-	float gameSpeed;
 	float gameVolume;
+	float gameSpeed;
 	int currentLocation;
 	bool paused;
-	float difficulty;
-	Time currentTime;
+
+
 
 	void stringToVector(string text, Vector2 &vec);
 	void stringToVector(string text, Vector3 &vec);
@@ -143,6 +138,7 @@ private:
 
 	Sound sound;
 	Player* player;
+	Day day;
 
 
 };
