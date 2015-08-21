@@ -1,7 +1,8 @@
 #ifndef DAY_H
 #define DAY_H
+
 #include "Level.h"
-#pragma once
+
 class Day
 {
 	struct Time

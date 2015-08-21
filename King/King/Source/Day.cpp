@@ -25,7 +25,7 @@ void Day::UpdateDay(double dt,float gameSpeed)
 	{
 		currentTime.min = 0;
 		currentTime.hour = 0;
-		currentDay++;
+		++currentDay;
 	}
 }
 

@@ -158,7 +158,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
-	//std::cout << fps << std::endl;
+	std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -1116,6 +1116,11 @@ void SceneGame::InitLevel(string config)
 			}
 		}
 	}
+
+	for (unsigned i = 0; i < layout.size(); ++i)
+	{
+		layout[i].rearrange();
+	}
 }
 
 // Init all game variables in the scene from text file
@@ -1441,11 +1446,15 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
-			player->moveUp(false, dt);
+			//player->moveUp(false, dt);
+			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			{
+				this->layout[currentLocation].roomLayout[i].setMapOffsetY(this->layout[currentLocation].roomLayout[i].getMapOffsetY() + 1000 * dt);
+			}
 		}
 		else
 		{
-			player->moveUp(true, dt);
+			//player->moveUp(true, dt);
 		}
 	}
 
@@ -1453,11 +1462,15 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
-			player->moveDown(false, dt);
+			//player->moveDown(false, dt);
+			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			{
+				this->layout[currentLocation].roomLayout[i].setMapOffsetY(this->layout[currentLocation].roomLayout[i].getMapOffsetY() - 1000 * dt);
+			}
 		}
 		else
 		{
-			player->moveDown(true, dt);
+			//player->moveDown(true, dt);
 		}
 	}
 
@@ -1465,11 +1478,15 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
-			player->moveLeft(false, dt);
+			//player->moveLeft(false, dt);
+			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			{
+				this->layout[currentLocation].roomLayout[i].setMapOffsetX(this->layout[currentLocation].roomLayout[i].getMapOffsetX() - 1000 * dt);
+			}
 		}
 		else
 		{
-			player->moveLeft(true, dt);
+			//player->moveLeft(true, dt);
 		}
 	}
 
@@ -1477,11 +1494,15 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
-			player->moveRight(false, dt);
+			//player->moveRight(false, dt);
+			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			{
+				this->layout[currentLocation].roomLayout[i].setMapOffsetX(this->layout[currentLocation].roomLayout[i].getMapOffsetX() + 1000 * dt);
+			}
 		}
 		else
 		{
-			player->moveRight(true, dt);
+			//player->moveRight(true, dt);
 		}
 	}
 
@@ -1491,12 +1512,15 @@ void SceneGame::UpdateInGame(double dt)
 	}
 
 	//std::cout << player->getPos() << std::endl;
+	//std::cout << player->getVel() << std::endl;
 	//std::cout << player->getDir() << std::endl;
-	std::cout << player->getDir() << std::endl;
 
 	player->Update(dt);
 
-	this->layout[currentLocation].roomLayout[0].Update();
+	for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+	{
+		this->layout[currentLocation].roomLayout[i].Update();
+	}
 
 	day.UpdateDay(dt,gameSpeed);
 }
@@ -1549,7 +1573,7 @@ void SceneGame::RenderLevel(void)
 			{
 				int m = 0;
 				int n = 0;
-				for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight(); i++)
+				for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 				{
 					n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
 
@@ -1565,7 +1589,10 @@ void SceneGame::RenderLevel(void)
 						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-						Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						if (tilesheet->m_currentTile != 0)
+						{
+							Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}
 					}
 				}
 			}
