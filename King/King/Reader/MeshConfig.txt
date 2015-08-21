@@ -15,6 +15,16 @@
 		[Texture] Image\\menu.tga
 	}
 	{
+		[NAME] GEO_CURSOR
+		[Type] Quad
+		[Texture] Image\\cursorDefault.tga
+	}
+	{
+		[NAME] GEO_CURSOR_HIGHLIGHT
+		[Type] Quad
+		[Texture] Image\\cursorHighlight.tga
+	}
+	{
 		[NAME] GEO_PLAYER
 		[Type] SpriteAnimation
 		[SpriteRow] 4

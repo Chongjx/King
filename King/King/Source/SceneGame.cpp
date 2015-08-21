@@ -1497,7 +1497,7 @@ void SceneGame::UpdateInGame(double dt)
 		}
 		else
 		{
-			//player->moveUp(true, dt);
+			player->moveUp(true, dt);
 		}
 	}
 
@@ -1513,7 +1513,7 @@ void SceneGame::UpdateInGame(double dt)
 		}
 		else
 		{
-			//player->moveDown(true, dt);
+			player->moveDown(true, dt);
 		}
 	}
 
@@ -1521,7 +1521,7 @@ void SceneGame::UpdateInGame(double dt)
 	{
 		if (getKey("ToggleShift") && !player->GetRecovering())
 		{
-			//player->moveLeft(false, dt);
+			player->moveLeft(false, dt);
 			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
 			{
 				this->layout[currentLocation].roomLayout[i].setMapOffsetX(this->layout[currentLocation].roomLayout[i].getMapOffsetX() - 1000 * dt);
@@ -1529,7 +1529,7 @@ void SceneGame::UpdateInGame(double dt)
 		}
 		else
 		{
-			//player->moveLeft(true, dt);
+			player->moveLeft(true, dt);
 		}
 	}
 
@@ -1545,7 +1545,7 @@ void SceneGame::UpdateInGame(double dt)
 		}
 		else
 		{
-			//player->moveRight(true, dt);
+			player->moveRight(true, dt);
 		}
 	}
 
