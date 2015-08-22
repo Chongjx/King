@@ -104,21 +104,6 @@ void SceneGame::Update(double dt)
 	}
 }
 
-
-void SceneGame::UpdateAI(double dt)
-{
-	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
-	{
-		Prisoners* tempPrisoner = *prisoner;
-		tempPrisoner->Update(dt);
-	}
-	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
-	{
-		Guards* tempGuard = *guard;
-		tempGuard->Update(dt);
-	}
-}
-
 // Game render
 void SceneGame::Render(void)
 {
@@ -170,7 +155,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
-	std::cout << fps << std::endl;
+	//std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -1359,8 +1344,10 @@ void SceneGame::InitAI(string config)
 				}
 
 				Guards* guard = new Guards;
-				guard->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
+				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+				guard->changeAni(StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
+				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 				guardList.push_back(guard);
 			}
 
@@ -1404,8 +1391,10 @@ void SceneGame::InitAI(string config)
 				}
 
 				Prisoners* prisoner = new Prisoners;
-				prisoner->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
+				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+				prisoner->changeAni(StateMachine::IDLE_STATE);
 				prisoner->setRoom(layout[mapLocation]);
+				prisoner->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 				prisonerList.push_back(prisoner);
 			}
 		}
@@ -1460,7 +1449,9 @@ void SceneGame::InitPlayer(string config)
 			}
 		}
 
-		player->Init(pos, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, mapLocation);
+		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
+		player->setState(StateMachine::IDLE_STATE);
 		player->setRoom(layout[mapLocation]);
 	}
 }
@@ -1643,87 +1634,152 @@ void SceneGame::UpdateEffect(void)
 
 void SceneGame::UpdateInGame(double dt)
 {
-	if (getKey("Up"))
+	UpdatePlayer(dt);
+	UpdateAI(dt);
+	UpdateMap();
+	day.UpdateDay(dt,gameSpeed);
+}
+
+void SceneGame::UpdatePlayer(double dt)
+{
+	static bool movable = true;
+
+	movable = true;
+	if (player->getState() == StateMachine::IDLE_STATE)
 	{
-		if (getKey("ToggleShift") && !player->GetRecovering())
+		if (getKey("Up"))
 		{
-			//player->moveUp(false, dt);
-			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			if (player->getDir().y != 1)
 			{
-				this->layout[currentLocation].roomLayout[i].setMapOffsetY(this->layout[currentLocation].roomLayout[i].getMapOffsetY() + 1000 * dt);
+				player->setDir(Vector2(0, 1));
+			}
+
+			else
+			{
+				player->setTargetPos(Vector2(player->getTargetPos().x, player->getTargetPos().y + TILESIZE));
+
+				if (getKey("ToggleShift") && !player->GetRecovering())
+				{
+					player->changeAni(StateMachine::RUN_STATE);
+				}
+				else
+				{
+					player->changeAni(StateMachine::WALK_STATE);
+				}
 			}
 		}
-		else
-		{
-			player->moveUp(true, dt);
-		}
-	}
 
-	else if (getKey("Down"))
-	{
-		if (getKey("ToggleShift") && !player->GetRecovering())
+		if (getKey("Down"))
 		{
-			//player->moveDown(false, dt);
-			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			if (player->getDir().y != -1)
 			{
-				this->layout[currentLocation].roomLayout[i].setMapOffsetY(this->layout[currentLocation].roomLayout[i].getMapOffsetY() - 1000 * dt);
+				player->setDir(Vector2(0, -1));
+			}
+
+			else
+			{
+				player->setTargetPos(Vector2(player->getTargetPos().x, player->getTargetPos().y - TILESIZE));
+
+				if (getKey("ToggleShift") && !player->GetRecovering())
+				{
+					player->changeAni(StateMachine::RUN_STATE);
+				}
+				else
+				{
+					player->changeAni(StateMachine::WALK_STATE);
+				}
 			}
 		}
-		else
-		{
-			player->moveDown(true, dt);
-		}
-	}
 
-	else if (getKey("Left"))
-	{
-		if (getKey("ToggleShift") && !player->GetRecovering())
+		if (getKey("Left"))
 		{
-			player->moveLeft(false, dt);
-			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			if (player->getDir().x != -1)
 			{
-				this->layout[currentLocation].roomLayout[i].setMapOffsetX(this->layout[currentLocation].roomLayout[i].getMapOffsetX() - 1000 * dt);
+				player->setDir(Vector2(-1, 0));
+			}
+
+			else
+			{
+				player->setTargetPos(Vector2(player->getTargetPos().x - TILESIZE, player->getTargetPos().y));
+
+				if (getKey("ToggleShift") && !player->GetRecovering())
+				{
+					player->changeAni(StateMachine::RUN_STATE);
+				}
+				else
+				{
+					player->changeAni(StateMachine::WALK_STATE);
+				}
 			}
 		}
-		else
-		{
-			player->moveLeft(true, dt);
-		}
-	}
 
-	else if (getKey("Right"))
-	{
-		if (getKey("ToggleShift") && !player->GetRecovering())
+		if (getKey("Right"))
 		{
-			//player->moveRight(false, dt);
-			for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+			if (player->getDir().x != 1)
 			{
-				this->layout[currentLocation].roomLayout[i].setMapOffsetX(this->layout[currentLocation].roomLayout[i].getMapOffsetX() + 1000 * dt);
+				player->setDir(Vector2(1, 0));
+			}
+
+			else
+			{
+				player->setTargetPos(Vector2(player->getTargetPos().x + TILESIZE, player->getTargetPos().y));
+
+				if (getKey("ToggleShift") && !player->GetRecovering())
+				{
+					player->changeAni(StateMachine::RUN_STATE);
+				}
+				else
+				{
+					player->changeAni(StateMachine::WALK_STATE);
+				}
 			}
 		}
-		else
-		{
-			player->moveRight(true, dt);
-		}
 	}
 
-	else
-	{
-		player->setState(StateMachine::IDLE_STATE);
-	}
-
-	//std::cout << player->getPos() << std::endl;
-	//std::cout << player->getVel() << std::endl;
-	//std::cout << player->getDir() << std::endl;
-
+	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->Update(dt);
+}
 
+void SceneGame::UpdateAI(double dt)
+{
+	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
+	{
+		Prisoners* tempPrisoner = *prisoner;
+
+		if (tempPrisoner->getRoom().ID == player->getRoom().ID)
+		{
+			tempPrisoner->setRender(true);
+		}
+
+		else
+		{
+			tempPrisoner->setRender(false);
+		}
+		//tempPrisoner->Update(dt);
+	}
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuard = *guard;
+
+		if (tempGuard->getRoom().ID == player->getRoom().ID)
+		{
+			tempGuard->setRender(true);
+		}
+
+		else
+		{
+			tempGuard->setRender(false);
+		}
+		//tempGuard->Update(dt);
+	}
+}
+
+void SceneGame::UpdateMap(void)
+{
 	for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
 	{
 		this->layout[currentLocation].roomLayout[i].Update();
 	}
-
-	day.UpdateDay(dt,gameSpeed);
 }
 
 void SceneGame::UpdateInteractions(void)
@@ -1795,29 +1851,42 @@ void SceneGame::RenderLevel(void)
 	{
 		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
 		{
-			if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
+			int m = 0;
+			int n = 0;
+			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 			{
-				int m = 0;
-				int n = 0;
-				for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
+				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+
+				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 				{
-					n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
 
-					for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+						break;
+					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
+						break;
+
+					if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
 					{
-						m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
-
-						if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
-							break;
-						if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
-							break;
-
 						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
 						if (tilesheet->m_currentTile != 0)
 						{
 							Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}
+					}
+
+					else
+					{
+						if (DEBUG)
+						{
+							int collideTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+
+							if (collideTile != 0 && layout[currentLocation].roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
+							{
+								Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+							}
 						}
 					}
 				}
@@ -1830,18 +1899,41 @@ void SceneGame::RenderCharacters(void)
 {
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
-	Render2DMesh(player->getSprite(), false, TILESIZE * 1.5f, player->getPos().x, player->getPos().y);
+	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f, player->getPos().y + TILESIZE * 0.5f);
+
+	if (DEBUG)
+	{
+		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f, player->getPos().y + TILESIZE * 0.5f);
+	}
 
 	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
 	{
 		Prisoners* tempPrisoner = *prisoner;
-		Render2DMesh(tempPrisoner->getSprite(), false, TILESIZE * 1.5f, tempPrisoner->getPos().x, tempPrisoner->getPos().y);
+
+		if (tempPrisoner->getRender())
+		{
+			Render2DMesh(tempPrisoner->getSprite(), false, (float)TILESIZE * 1.5f, tempPrisoner->getPos().x + TILESIZE * 0.5f, tempPrisoner->getPos().y + TILESIZE * 0.5f);
+
+			if (DEBUG)
+			{
+				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempPrisoner->getPos().x + TILESIZE * 0.5f, tempPrisoner->getPos().y + TILESIZE * 0.5f);
+			}
+		}
 	}
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
 	{
-		Guards* tempGuards = *guard;
-		Render2DMesh(tempGuards->getSprite(), false, TILESIZE * 1.5f, tempGuards->getPos().x, tempGuards->getPos().y);
+		Guards* tempGuard = *guard;
+
+		if (tempGuard->getRender())
+		{
+			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f, tempGuard->getPos().y + TILESIZE * 0.5f);
+
+			if (DEBUG)
+			{
+				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempGuard->getPos().x + TILESIZE * 0.5f, tempGuard->getPos().y + TILESIZE * 0.5f);
+			}
+		}
 	}
 }
 
@@ -1854,9 +1946,10 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
+		Render2DMesh(findMesh(day.moon.mesh),false, (float)day.moon.size, day.moon.pos);
 		//16, 736 original position
 	}
+
 	if(day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
 	{
 		std::ostringstream ss;
@@ -1864,7 +1957,7 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
+		Render2DMesh(findMesh(day.sun.mesh),false, (float)day.sun.size, day.sun.pos);
 	}
 }
 

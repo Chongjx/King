@@ -1,6 +1,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <iomanip>
+
 #include "Vector2.h"
 #include "GameObject2D.h"
 #include "SpriteAnimation.h"
@@ -39,6 +41,7 @@ public:
 	virtual void Update(double dt);
 
 	/*Movement contains both walk and run*/
+	bool moveTo(void);
 
 	// Movement up
 	void moveUp(bool walk, double dt);
@@ -48,6 +51,9 @@ public:
 	void moveLeft(bool walk, double dt);
 	// Movement right
 	void moveRight(bool walk, double dt);
+
+	void tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
+	void tileBasedOffset(void);
 
 	/*************************************/
 	// Set field of view of character based on tiles
@@ -72,17 +78,11 @@ public:
 	StateMachine::STATE getState(void) const;
 	SpriteAnimation* getSprite(void) const;
 
-	bool moveTo(Vector2 destination);
-
-	// Set to know which map the player is at now
-	void SetMapLocation(int mapLocation);
-	// Get to know which map the player is at now
-	int GetMapLocation(void);
-
 	// Inventory
 	CInventory getInventory(void) const;
 	void setRoom(Room &currentRoom);
 
+	Room getRoom(void);
 	virtual void changeAni(StateMachine::STATE unitState);
 
 protected:
@@ -116,7 +116,6 @@ protected:
 
 	Room currentRoom;
 	// variable to know which map the player is at
-	int mapLocation;
 };
 
 #endif

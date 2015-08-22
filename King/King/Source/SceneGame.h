@@ -94,7 +94,6 @@ public:
 
 	void Init(string config);
 	void Update(double dt);
-	void UpdateAI(double dt);
 	void Render(void);
 	void Exit(void);
 
@@ -117,6 +116,9 @@ public:
 	void UpdateState(void);
 	void UpdateEffect(void);
 	void UpdateInGame(double dt);
+	void UpdatePlayer(double dt);
+	void UpdateAI(double dt);
+	void UpdateMap(void);
 	void UpdateInteractions(void);
 
 	void changeScene(GAME_STATE nextState);

@@ -23,7 +23,6 @@ public:
 	void levelUpdate(void);
 	void levelStart (void);
 
-
 	void setState(LEVEL_STATE state);
 
 	LEVEL_STATE getObjectiveState(void) const;

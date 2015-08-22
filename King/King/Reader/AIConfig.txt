@@ -7,7 +7,7 @@
 	
 		{
 			[NAME] John
-			[Pos] 100, 300
+			[Pos] 10, 10
 		        [Dir] 0, -1
 		        [Mesh] GEO_PRISONER
 		        [Tiles] 1
@@ -15,7 +15,7 @@
 		}
 		{
 			[NAME] James
-			[Pos] 100, 200
+			[Pos] 10, 20
 		        [Dir] 0, -1
 		        [Mesh] GEO_PRISONER
 		        [Tiles] 1
@@ -27,7 +27,7 @@
 
 		{
 			[NAME] Banana
-			[Pos] 100, 450
+			[Pos] 5, 5
 		        [Dir] 0, -1
 		        [Mesh] GEO_GUARD
 		        [Tiles] 1

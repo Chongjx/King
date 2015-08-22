@@ -10,13 +10,13 @@ Prisoners::~Prisoners(void)
 
 }
 
-void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, int mapLocation)
+void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom)
 {
 	this->pos = pos;
 	this->dir = dir;
 	*(this->sprite) = *(sa);
 	this->tiles = tiles;
-	this->mapLocation = mapLocation;
+	this->currentRoom = currentRoom;
 	this->changeAni(StateMachine::IDLE_STATE);
 }
 

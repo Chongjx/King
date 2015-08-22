@@ -61,6 +61,38 @@ void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, 
 	this->mapType = TYPE_VISUAL;
 }
 
+void TileMap::InitDynamic(int ID, int screenWidth, int screenHeight, int numTilesWidth, int numTilesHeight, int mapOffsetX, int mapOffsetY, bool enableXscrolling, bool enableYScrolling, int tileSize)
+{
+	this->ID = ID;
+	this->screenWidth = screenWidth;
+	this->screenHeight = screenHeight;
+	this->numTilesWidth = numTilesWidth;
+	this->numTilesHeight = numTilesHeight;
+	this->mapOffsetX = mapOffsetX;
+	this->mapOffsetY = mapOffsetY;
+	this->mapFineOffsetX = mapFineOffsetX;
+	this->mapFineOffsetY = mapFineOffsetY;
+	this->xScrolling = enableXScrolling;
+	this->yScrolling = enableYScrolling;
+	this->tileSize = tileSize;
+
+	this->numTilesWidth = (int)(screenWidth * (1.f/ tileSize));
+	this->numTilesHeight = (int)(screenHeight * (1.f/tileSize));
+
+	this->numTilesMapWidth = (int) (mapWidth / tileSize);
+	this->numTilesMapHeight = (int) (mapHeight / tileSize);
+
+	screenMap.resize(numTilesMapHeight);
+
+	for(int i = 0; i < numTilesMapHeight; ++i)
+	{
+		screenMap[i].resize(numTilesMapWidth);
+	}
+
+	this->backgroundID = 0;
+	this->mapType = TYPE_VISUAL;
+}
+
 bool TileMap::LoadMap(const string mapName)
 {
 	if (loadFile(mapName))

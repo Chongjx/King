@@ -15,13 +15,14 @@ Player::~Player()
 {
 }
 
-void Player::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, int mapLocation)
+void Player::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom)
 {
 	this->pos = pos;
+	this->targetPos = pos;
 	this->dir = dir;
 	*(this->sprite) = *(sa);
 	this->tiles = tiles;
-	this->mapLocation = mapLocation;
+	this->currentRoom = currentRoom;
 	this->energy = MAX_ENERGY;
 	this->recovering = false;
 	this->changeAni(StateMachine::IDLE_STATE);
