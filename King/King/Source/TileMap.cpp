@@ -66,21 +66,21 @@ void TileMap::InitDynamic(int ID, int screenWidth, int screenHeight, int numTile
 	this->ID = ID;
 	this->screenWidth = screenWidth;
 	this->screenHeight = screenHeight;
-	this->numTilesWidth = numTilesWidth;
-	this->numTilesHeight = numTilesHeight;
+	this->numTilesMapWidth = numTilesWidth;
+	this->numTilesMapHeight = numTilesHeight;
 	this->mapOffsetX = mapOffsetX;
 	this->mapOffsetY = mapOffsetY;
 	this->mapFineOffsetX = mapFineOffsetX;
 	this->mapFineOffsetY = mapFineOffsetY;
-	this->xScrolling = enableXScrolling;
+	this->xScrolling = enableXscrolling;
 	this->yScrolling = enableYScrolling;
 	this->tileSize = tileSize;
 
+	this->mapWidth = numTilesMapWidth * tileSize;
+	this->mapHeight = numTilesMapHeight * tileSize;
+
 	this->numTilesWidth = (int)(screenWidth * (1.f/ tileSize));
 	this->numTilesHeight = (int)(screenHeight * (1.f/tileSize));
-
-	this->numTilesMapWidth = (int) (mapWidth / tileSize);
-	this->numTilesMapHeight = (int) (mapHeight / tileSize);
 
 	screenMap.resize(numTilesMapHeight);
 
