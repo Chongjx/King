@@ -1,8 +1,7 @@
 #include "Day.h"
 
 
-Day::Day(void):
-currentDay(1)
+Day::Day(void)
 {
 }
 
@@ -23,7 +22,7 @@ void Day::UpdateDay(double dt,float gameSpeed)
 	{
 		currentTime.min = 0;
 		currentTime.hour = 0;
-		++currentDay;
+		currentTime.day++;
 	}
 }
 
@@ -31,31 +30,20 @@ Day::Time Day::getCurrentTime(void)
 {
 	return currentTime;
 }
-
-int Day::getCurrentDay(void)
-{
-	return currentDay;
-}
-
 int Day::getCurrentLevel(void)
 {
 	return currentLevel;
 }
 
-
-void Day::setCurrentTime(int Hr,int Min)
+void Day::setCurrentTime(int Hr,int Min,int Day)
 {
 	currentTime.min = (float)Min;
 	currentTime.hour = Hr;
+	currentTime.day = Day;
 }
 void Day::setdifficulty(float difficulty)
 {
 	this->difficulty=difficulty;
-}
-
-void Day::setCurrentDay(int currentDay)
-{
-	this->currentDay = currentDay;
 }
 
 void Day::setCurrentLevel(int level)

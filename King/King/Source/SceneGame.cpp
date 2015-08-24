@@ -1144,6 +1144,7 @@ void SceneGame::InitVariables(string config)
 				string attriValue = tempAttri.value;
 				int tempHr;
 				int tempMin;
+				int tempDay;
 
 				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 				{
@@ -1158,12 +1159,16 @@ void SceneGame::InitVariables(string config)
 					{
 						tempMin = stoi(attriValue);
 					}
+					else if(attriName == "DAY")
+					{
+						tempDay = stoi(attriValue);
+					}
 					else if(attriName == "DIFFICULTY")
 					{
 						day.setdifficulty(stof(attriValue));
 					}
 				}
-				day.setCurrentTime(tempHr,tempMin);
+				day.setCurrentTime(tempHr,tempMin,tempDay);
 			}
 		}
 		else if (branch->branchName == "IconSprites")
@@ -1200,6 +1205,53 @@ void SceneGame::InitVariables(string config)
 					}
 				}
 				day.Initicons(name,size,pos,mesh);
+			}
+		}
+	}
+}
+
+void SceneGame::InitObjective(string config)
+{
+	Branch VariablesBranch = TextTree::FileToRead(config);
+
+	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
+	{
+		if (branch->branchName == "Level")
+		{
+			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
+			{
+				
+				//number branch
+				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
+				{
+					string Title;
+					bool Get;
+					int level;
+					string keyItem;
+					for (vector<Attribute>::iterator attri = grandchildbranch->attributes.begin(); attri != grandchildbranch->attributes.end(); ++attri)
+					{
+						Attribute tempAttri = *attri;
+						string attriName = tempAttri.name;
+						string attriValue = tempAttri.value;
+						if (attriName == "NAME")
+						{
+							Title = attriValue;
+						}
+						else if (attriName == "GET")
+						{
+							stringToBool(attriValue,Get);
+						}
+						else if (attriName == "LEVEL")
+						{
+							level = stoi(attriValue);
+						}
+						else if (attriName == "KEYITEM")
+						{
+							keyItem = attriValue;
+						}
+					}
+
+				}
 			}
 		}
 	}
