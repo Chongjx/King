@@ -13,6 +13,7 @@ class Day
 	{
 		int hour;
 		float min;
+		int day;
 	};
 	struct Icon
 	{
@@ -30,12 +31,10 @@ public:
 
 	Time getCurrentTime(void);
 	float getdifficulty(void);
-	int getCurrentDay(void);
-		int getCurrentLevel(void);
+	int getCurrentLevel(void);
 
-	void setCurrentTime(int Hr,int Min);
+	void setCurrentTime(int Hr,int Min, int Day);
 	void setdifficulty(float );
-	void setCurrentDay(int);
 	void setCurrentLevel(int);
 
 	vector<Level> levels;
@@ -47,7 +46,6 @@ private:
 	Time currentTime;
 	float difficulty;
 	float gameSpeed;
-	int currentDay;
 	int currentLevel;
 };
 

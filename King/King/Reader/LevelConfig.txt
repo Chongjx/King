@@ -1,12 +1,31 @@
-[NAME] LevelConfig
 {
+	[NAME] LevelConfig
+	{
+		[NAME] Level
+		{
+			[NAME] 1
+			{
+				[NAME] Title
+				[GET] false
+				[LEVEL] 0
+				[KEYITEM] Key
+			}
+			{
+				[NAME] Title
+				[GET] false
+				[LEVEL] 0
+				[KEYITEM] Key
+			}
+			[NAME] 2
+			{
+				[NAME] Title
+				[GET] false
+				[LEVEL] 0
+				[KEYITEM] Key
+			}
+		}
 
-
-
-
-
-
-
-
+	}
 
 }
+

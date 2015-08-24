@@ -113,6 +113,7 @@ public:
 	void InitPlayer(string config);
 	void InitInteractions(string config);
 	void InitAI(string config);
+void InitObjective(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
