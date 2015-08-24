@@ -14,7 +14,6 @@ public:
 		PATROL_STATE,
 		RETURN_STATE,
 
-
 		GUARD_MAX_STATE,
 	};
 

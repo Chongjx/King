@@ -11,6 +11,8 @@ public:
 	enum PRISONER_STATE
 	{
 		LEPAK_STATE = StateMachine::MAX_STATE,
+		WALK_OUT_STATE,
+		WALK_IN_STATE,
 	};
 
 	// Default constructor and destructor
