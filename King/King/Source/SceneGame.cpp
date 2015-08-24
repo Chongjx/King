@@ -155,7 +155,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
-	//std::cout << fps << std::endl;
+	std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
