@@ -1592,6 +1592,7 @@ void SceneGame::UpdateInGame(double dt)
 	UpdatePlayer(dt);
 	UpdateAI(dt);
 	UpdateMap();
+	UpdateInteractions();
 	day.UpdateDay(dt,gameSpeed);
 }
 
@@ -1691,6 +1692,17 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 	}
 
+	for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
+	{
+		if (layout[currentLocation].specialTiles[special].TileName == "Threadmill")
+		{
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(sceneHeight-player->getPos().y)/TILESIZE][player->getPos().x/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
+			{
+				currentInteraction = RUNNING_ON_THREADMILL;
+			}
+		}
+	}
+
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
@@ -1755,7 +1767,8 @@ void SceneGame::UpdateInteractions(void)
 		break;
 	case CLOSE_DOOR:;
 		break;
-	case RUNNING_ON_THREADMILL:;
+	case RUNNING_ON_THREADMILL:
+		std::cout << "Running on threadmill" << std::endl;
 		break;
 	case ATTACK:;
 		break;

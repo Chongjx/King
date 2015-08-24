@@ -89,7 +89,7 @@ class SceneGame : public Scene2D
 		CLOSE_DOOR,
 		RUNNING_ON_THREADMILL,
 		ATTACK,
-		MAX_INTERACTIONS
+		MAX_INTERACTIONS,
 	};
 
 public:
