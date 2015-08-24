@@ -1683,7 +1683,7 @@ void SceneGame::UpdatePlayer(double dt)
 	static bool movable = true;
 
 	movable = true;
-	if (player->getState() == StateMachine::IDLE_STATE)
+	if (player->getState() == StateMachine::IDLE_STATE || player->getState() == StateMachine::RUN_STATE)
 	{
 		if (getKey("Up"))
 		{
@@ -1705,7 +1705,7 @@ void SceneGame::UpdatePlayer(double dt)
 					player->changeAni(StateMachine::WALK_STATE);
 				}
 
-				std::cout << player->getPos().x << " , " << player->getPos().y << "\n";
+				//std::cout << player->getPos().x << " , " << player->getPos().y << "\n";
 			}
 		}
 
@@ -1784,6 +1784,10 @@ void SceneGame::UpdatePlayer(double dt)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
 				std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
+			}
+			else
+			{
+				currentInteraction = NO_INTERACTION;
 			}
 		}
 	}
@@ -1885,6 +1889,9 @@ void SceneGame::UpdateInteractions(void)
 {
 	switch (currentInteraction)
 	{
+	case NO_INTERACTION:
+		std::cout << "No Interaction" << std::endl;
+		break;
 	case PICKUP_ITEM:;
 		break;
 	case DROP_ITEM:;
@@ -1899,6 +1906,8 @@ void SceneGame::UpdateInteractions(void)
 		break;
 	case RUNNING_ON_THREADMILL:
 		std::cout << "Running on threadmill" << std::endl;
+		player->setDir(Vector2(-1,0));
+		player->changeAni(StateMachine::RUN_STATE);
 		break;
 	case ATTACK:;
 		break;

@@ -81,6 +81,7 @@ class SceneGame : public Scene2D
 
 	enum INTERACTIONS
 	{
+		NO_INTERACTION,
 		PICKUP_ITEM,
 		DROP_ITEM,
 		TALK_WITH_PRISONERS,
