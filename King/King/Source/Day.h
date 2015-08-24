@@ -46,7 +46,7 @@ private:
 	Time currentTime;
 	float difficulty;
 	float gameSpeed;
-	level currentLevel;
+	Level currentLevel;
 };
 
 #endif

@@ -30,7 +30,7 @@ Day::Time Day::getCurrentTime(void)
 {
 	return currentTime;
 }
-int Day::getCurrentLevel(void)
+Level Day::getCurrentLevel(void)
 {
 	return currentLevel;
 }
@@ -46,7 +46,7 @@ void Day::setdifficulty(float difficulty)
 	this->difficulty=difficulty;
 }
 
-void Day::setCurrentLevel(int level)
+void Day::setCurrentLevel(Level level)
 {
 currentLevel = level;
 }
