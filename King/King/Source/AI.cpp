@@ -44,5 +44,4 @@ Vector2 AI::GetDestination(void)
 
 void AI::changeAni(StateMachine::STATE unitState)
 {
-
 }

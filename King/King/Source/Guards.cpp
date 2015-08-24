@@ -1,13 +1,13 @@
 #include "Guards.h"
 
 Guards::Guards(void)
+	: guard_wayPoint(0,0)
 {
-
+	guardList_WP0.clear();
 }
 
 Guards::~Guards(void)
 {
-
 }
 
 void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom)
@@ -27,6 +27,8 @@ void Guards::Update(double dt)
 		AI::Update(dt);
 	}
 }
+
+
 
 void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 {
@@ -135,6 +137,78 @@ void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 			}
 
 		case Guards_StateMachine::SLEEP_STATE:
+			{
+				if (this->dir.x == 1)
+				{
+					this->currentAni = IDLE_RIGHT;
+				}
+
+				else if (this->dir.x == -1)
+				{
+					this->currentAni = IDLE_LEFT;
+				}
+
+				else if (this->dir.y == 1)
+				{
+					this->currentAni = IDLE_UP;
+				}
+
+				else if (this->dir.y == -1)
+				{
+					this->currentAni = IDLE_DOWN;
+				}
+				break;
+			}
+
+			case Guards_StateMachine::CHASE_STATE:
+			{
+				if (this->dir.x == 1)
+				{
+					this->currentAni = IDLE_RIGHT;
+				}
+
+				else if (this->dir.x == -1)
+				{
+					this->currentAni = IDLE_LEFT;
+				}
+
+				else if (this->dir.y == 1)
+				{
+					this->currentAni = IDLE_UP;
+				}
+
+				else if (this->dir.y == -1)
+				{
+					this->currentAni = IDLE_DOWN;
+				}
+				break;
+			}
+
+			case Guards_StateMachine::PATROL_STATE:
+			{
+				if (this->dir.x == 1)
+				{
+					this->currentAni = IDLE_RIGHT;
+				}
+
+				else if (this->dir.x == -1)
+				{
+					this->currentAni = IDLE_LEFT;
+				}
+
+				else if (this->dir.y == 1)
+				{
+					this->currentAni = IDLE_UP;
+				}
+
+				else if (this->dir.y == -1)
+				{
+					this->currentAni = IDLE_DOWN;
+				}
+				break;
+			}
+
+			case Guards_StateMachine::RETURN_STATE:
 			{
 				if (this->dir.x == 1)
 				{

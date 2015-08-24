@@ -1084,6 +1084,10 @@ void SceneGame::InitLevel(string config)
 				{
 					tempType = TileMap::TYPE_COLLISION;
 				}
+				else if (attriValue == "WayPoint")
+				{
+					tempType = TileMap::TYPE_WAYPOINT;
+				}
 			}
 
 			else
@@ -1690,6 +1694,8 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					player->changeAni(StateMachine::WALK_STATE);
 				}
+
+				std::cout << player->getPos().x << " , " << player->getPos().y << "\n";
 			}
 		}
 
@@ -1791,8 +1797,10 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempPrisoner->setRender(false);
 		}
-		//tempPrisoner->Update(dt);
+		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		tempPrisoner->Update(dt);
 	}
+
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
 	{
 		Guards* tempGuard = *guard;
@@ -1806,7 +1814,8 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempGuard->setRender(false);
 		}
-		//ftempGuard->Update(dt);
+		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		tempGuard->Update(dt);
 	}
 }
 
@@ -1941,7 +1950,7 @@ void SceneGame::RenderCharacters(void)
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-	std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
+	//std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
 
 	if (DEBUG)
 	{

@@ -58,6 +58,9 @@
 			[Bed] 264
 			[LeftChair] 343
 			[RightChair] 344
+			[PointPatternA] 36
+			[PointPatternB] 37
+			[PointPatternC] 38
 		}
 	}
 	{
@@ -81,5 +84,27 @@
 		[ScrollSpeed] 500
 		[TileSize] 32
 		[Directory] Image\\Map\\mainCellBack.csv
+	}
+	{
+		[NAME] MainRoom
+		[Type] WayPoint
+		[ID] 0
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 177
+		# 32 * 160		
+		[MapHeight] 70
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] true
+		[EnableYScroll] true
+		[ScrollSpeed] 500
+		[TileSize] 32
+		[Directory] Image\\Map\mainCellWayPoint.csv
 	}
 }

@@ -18,16 +18,22 @@ public:
 	// Update the character
 	void Update(double dt);
 
-	// Sets patrol area
-
-	//change animation
+	// Change animation
 	void changeAni(Guards_StateMachine::GUARD_STATE unitState);
+
+	// Set waypoints for guards loc0
+	void SetWayPoint(void);
 
 private:
 
-	//StateMachine object
+	// StateMachine object
 	Guards_StateMachine guardStateMachine;
+	
+	// Store guards waypoint to pushback in list
+	Vector2 guard_wayPoint;
 
+	// Vector of waypoints for guards
+	vector<Vector2> guardList_WP0;
 };
 
 #endif
