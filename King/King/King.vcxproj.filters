@@ -91,6 +91,12 @@
     <Filter Include="Source Files\Day System">
       <UniqueIdentifier>{7de4e7a8-e914-4311-abdc-c8eca1c0ed4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\2D\StateMachine">
+      <UniqueIdentifier>{b588dafe-5a2d-4b5e-8bb1-a8c281731784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2D\StateMachine">
+      <UniqueIdentifier>{90168942-ce88-438c-a097-2956f3845d2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -177,9 +183,6 @@
     <ClCompile Include="Source\Interface.cpp">
       <Filter>Source Files\2D\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateMachine.cpp">
-      <Filter>Source Files\2D\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Sound.cpp">
       <Filter>Source Files\2D</Filter>
     </ClCompile>
@@ -200,6 +203,15 @@
     </ClCompile>
     <ClCompile Include="Source\Interactions.cpp">
       <Filter>Source Files\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine.cpp">
+      <Filter>Source Files\2D\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Guards_StateMachine.cpp">
+      <Filter>Source Files\2D\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Prisoners_StateMachine.cpp">
+      <Filter>Source Files\2D\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +308,6 @@
     <ClInclude Include="Source\Interface.h">
       <Filter>Header Files\2D\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateMachine.h">
-      <Filter>Header Files\2D\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Sound.h">
       <Filter>Header Files\2D</Filter>
     </ClInclude>
@@ -322,6 +331,15 @@
     </ClInclude>
     <ClInclude Include="Source\Interactions.h">
       <Filter>Header Files\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine.h">
+      <Filter>Header Files\2D\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Guards_StateMachine.h">
+      <Filter>Header Files\2D\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Prisoners_StateMachine.h">
+      <Filter>Header Files\2D\StateMachine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

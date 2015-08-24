@@ -30,6 +30,7 @@ public:
 	int getlevel (void)const;
 	string getkeyItem (void) const;
 
+
 private:
 	OBJECTIVE_STATE currentState;
 	string Title;

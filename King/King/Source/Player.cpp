@@ -193,5 +193,5 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 	}
 
 	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
-	std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
+	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
 }

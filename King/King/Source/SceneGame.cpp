@@ -1084,6 +1084,10 @@ void SceneGame::InitLevel(string config)
 				{
 					tempType = TileMap::TYPE_COLLISION;
 				}
+				else if (attriValue == "WayPoint")
+				{
+					tempType = TileMap::TYPE_WAYPOINT;
+				}
 			}
 
 			else
@@ -1093,7 +1097,7 @@ void SceneGame::InitLevel(string config)
 					if (attriName == mapVarNames[k])
 					{
 						mapVar[k] = stoi(attriValue);
-						std::cout << mapVar[k] << std::endl;
+						//std::cout << mapVar[k] << std::endl;
 						break;
 					}
 				}
@@ -1233,7 +1237,7 @@ void SceneGame::InitObjective(string config)
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
 				childbranch->printBranch();
-					Level templevel;
+				Level templevel;
 				//number branch
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
 				{
@@ -1373,7 +1377,7 @@ void SceneGame::InitAI(string config)
 
 				Guards* guard = new Guards;
 				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
-				guard->changeAni(StateMachine::IDLE_STATE);
+				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 				guardList.push_back(guard);
@@ -1420,7 +1424,7 @@ void SceneGame::InitAI(string config)
 
 				Prisoners* prisoner = new Prisoners;
 				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
-				prisoner->changeAni(StateMachine::IDLE_STATE);
+				prisoner->changeAni(Prisoners_StateMachine::IDLE_STATE);
 				prisoner->setRoom(layout[mapLocation]);
 				prisoner->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 				prisonerList.push_back(prisoner);
@@ -1690,6 +1694,8 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					player->changeAni(StateMachine::WALK_STATE);
 				}
+
+				std::cout << player->getPos().x << " , " << player->getPos().y << "\n";
 			}
 		}
 
@@ -1792,8 +1798,10 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempPrisoner->setRender(false);
 		}
-		//tempPrisoner->Update(dt);
+		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		tempPrisoner->Update(dt);
 	}
+
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
 	{
 		Guards* tempGuard = *guard;
@@ -1807,7 +1815,8 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempGuard->setRender(false);
 		}
-		//tempGuard->Update(dt);
+		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		tempGuard->Update(dt);
 	}
 }
 
@@ -1942,6 +1951,7 @@ void SceneGame::RenderCharacters(void)
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+	//std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
 
 	if (DEBUG)
 	{
@@ -1986,7 +1996,12 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0,sceneHeight - specialFontSize );
+
+		std::ostringstream ss2;
+		ss2.precision(1);
+		ss2<< day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Skyblue"), specialFontSize,day.moon.pos.x+ specialFontSize, day.moon.pos.y);
 
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		if (DEBUG)
@@ -2002,6 +2017,11 @@ void SceneGame::RenderTime(void)
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
+
+		std::ostringstream ss2;
+		ss2.precision(1);
+		ss2<< day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Skyblue"), specialFontSize,day.sun.pos.x + specialFontSize, day.sun.pos.y );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
