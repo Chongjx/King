@@ -126,6 +126,7 @@ void InitObjective(string config);
 	void UpdateAI(double dt);
 	void UpdateMap(void);
 	void UpdateInteractions(void);
+	void UpdateThreadmill(void);
 
 	void changeScene(GAME_STATE nextState);
 

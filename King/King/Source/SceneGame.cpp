@@ -1731,7 +1731,7 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		if (getKey("Left"))
+		if (getKey("Left") && currentInteraction != RUNNING_ON_THREADMILL)
 		{
 			if (player->getDir().x != -1)
 			{
@@ -1905,14 +1905,31 @@ void SceneGame::UpdateInteractions(void)
 	case CLOSE_DOOR:;
 		break;
 	case RUNNING_ON_THREADMILL:
-		std::cout << "Running on threadmill" << std::endl;
-		player->setDir(Vector2(-1,0));
-		player->changeAni(StateMachine::RUN_STATE);
+		UpdateThreadmill();
 		break;
 	case ATTACK:;
 		break;
 	default:;
 		break;
+	}
+}
+
+void SceneGame::UpdateThreadmill(void)
+{
+	std::cout << "Running on threadmill" << std::endl;
+	player->setDir(Vector2(-1,0));
+	player->changeAni(StateMachine::RUN_STATE);
+	if(getKey("Right"))
+	{
+		player->setDir(Vector2(1,0));
+	}
+	else if(getKey("Up"))
+	{
+		player->setDir(Vector2(0,1));
+	}
+	else if(getKey("Down"))
+	{
+		player->setDir(Vector2(0,-1));
 	}
 }
 
@@ -2057,12 +2074,12 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0,sceneHeight - specialFontSize );
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize, 0,sceneHeight - specialFontSize );
 
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Skyblue"), specialFontSize,day.moon.pos.x+ specialFontSize, day.moon.pos.y);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,day.moon.pos.x+ specialFontSize, day.moon.pos.y);
 
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		if (DEBUG)
@@ -2082,7 +2099,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Skyblue"), specialFontSize,day.sun.pos.x + specialFontSize, day.sun.pos.y );
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,day.sun.pos.x + specialFontSize, day.sun.pos.y );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
