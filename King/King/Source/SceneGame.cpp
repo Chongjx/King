@@ -1172,7 +1172,7 @@ void SceneGame::InitVariables(string config)
 			{
 				Branch tempChildBranch = *childbranch;
 				string name;
-				int size;
+				Vector2 size;
 				Vector2 pos;
 				string mesh;
 
@@ -1188,7 +1188,7 @@ void SceneGame::InitVariables(string config)
 					}
 					else if (attriName == "Size")
 					{
-						size =stoi(attriValue);
+						stringToVector(attriValue, size);
 					}
 					else if (attriName == "Pos")
 					{
@@ -1210,7 +1210,7 @@ void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
 	{
-		
+
 
 		for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
 		{
@@ -1906,7 +1906,11 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.moon.mesh),false, (float)day.moon.size, day.moon.pos);
+		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
+		if (DEBUG)
+		{
+			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.moon.size, day.moon.pos);
+		}
 		//16, 736 original position
 	}
 
@@ -1917,7 +1921,14 @@ void SceneGame::RenderTime(void)
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
-		Render2DMesh(findMesh(day.sun.mesh),false, (float)day.sun.size, day.sun.pos);
+		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
+
+		if (DEBUG)
+		{
+			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.sun.size, day.sun.pos);
+		}
+
+
 	}
 
 	glDisable(GL_DEPTH_TEST);

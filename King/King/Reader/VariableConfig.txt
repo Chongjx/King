@@ -13,13 +13,13 @@
 		[NAME] IconSprites
 		{
 			[Name]Sun
-			[Size] 64
+			[Size] 64,64
 			[Pos] 500, 750
 			[Mesh] GEO_SUN
 		}
 		{
 			[Name]Moon
-			[Size] 64
+			[Size] 64,64
 			[Pos] 500, 750
 			[Mesh] GEO_MOON
 		}

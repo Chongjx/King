@@ -16,7 +16,7 @@ class Day
 	};
 	struct Icon
 	{
-		int size;
+		Vector2 size;
 		Vector2 pos;
 		string mesh;
 	};
@@ -40,7 +40,7 @@ public:
 
 	vector<Level> levels;
 
-	void Initicons(string name,int size,Vector2 pos ,string mesh);
+	void Initicons(string name,Vector2 size,Vector2 pos ,string mesh);
 	Icon sun;
 	Icon moon;
 private:

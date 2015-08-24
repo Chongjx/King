@@ -63,7 +63,7 @@ void Day::setCurrentLevel(int level)
 currentLevel = level;
 }
 
-void Day::Initicons(string name,int size,Vector2 pos ,string mesh)
+void Day::Initicons(string name,Vector2 size,Vector2 pos ,string mesh)
 {
 	if (name == "Sun")
 	{
