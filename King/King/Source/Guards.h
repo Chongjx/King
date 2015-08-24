@@ -2,21 +2,12 @@
 #define GUARDS_H
 
 #include "AI.h"
+#include "Guards_StateMachine.h"
 
 class Guards: public AI
 {
 	
 public:
-
-	enum GUARD_STATE
-	{
-		CHASE_STATE = StateMachine::MAX_STATE,
-		PATROL_STATE,
-		RETURN_STATE,
-
-
-		GUARD_MAX_STATE,
-	};
 
 	// Default constructor and destructor
 	Guards(void);
@@ -27,13 +18,22 @@ public:
 	// Update the character
 	void Update(double dt);
 
-	// Sets patrol area
+	// Change animation
+	void changeAni(Guards_StateMachine::GUARD_STATE unitState);
 
-
-	void changeAni(StateMachine::STATE unitState);
+	// Set waypoints for guards loc0
+	void SetWayPoint(void);
 
 private:
 
+	// StateMachine object
+	Guards_StateMachine guardStateMachine;
+	
+	// Store guards waypoint to pushback in list
+	Vector2 guard_wayPoint;
+
+	// Vector of waypoints for guards
+	vector<Vector2> guardList_WP0;
 };
 
 #endif

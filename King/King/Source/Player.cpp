@@ -164,7 +164,7 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
-			if (Math::FAbs(currentRoom.roomLayout[i].getMapOffsetY()) > currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize())
+			if (abs(currentRoom.roomLayout[i].getMapOffsetY()) > currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize())
 			{
 				currentRoom.roomLayout[i].setMapOffsetY(-(currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize()));
 			}
@@ -196,4 +196,5 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 	{
 		currentRoom.roomLayout[i].Update();
 	}
+
 }

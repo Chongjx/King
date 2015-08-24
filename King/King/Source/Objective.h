@@ -1,29 +1,42 @@
 #ifndef OBJECTIVE_H
 #define OBJECTIVE_H
 
+#include <string>
+using std::string;
 class Objective
 {
 public:
 	enum OBJECTIVE_STATE
 	{
-		STATE_UNASSIGNED,
-		STATE_ASSIGNED,
-		STATE_INPROGRESS,
-		STATE_COMPLETED,
+		OBJECTIVE_UNASSIGNED,
+		OBJECTIVE_INPROGRESS,
+		OBJECTIVE_COMPLETED,
 		MAX_STATE,
 	};
 
 	Objective(void);
 	~Objective(void);
 
-	void setDifficulty(int difficulty);
+	void initObjctives (string Title,bool Get,int level,string keyItem);
 	void setState(OBJECTIVE_STATE state);
+	void setTitle (string Title);
+	void setGet (bool Get);
+	void setlevel(int level);
+	void setkeyItem (string keyItem);
 
-	int getDifficulty(void) const;
 	OBJECTIVE_STATE getObjectiveState(void) const;
+	string getTitle (void)const;
+	bool getGet (void) const;
+	int getlevel (void)const;
+	string getkeyItem (void) const;
+
+
 private:
-	int difficulty;
 	OBJECTIVE_STATE currentState;
+	string Title;
+	bool Get;
+	int level;
+	string keyItem;
 };
 
 #endif

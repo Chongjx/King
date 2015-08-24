@@ -6,7 +6,10 @@
 		[NAME] StartTime
 		[HOUR] 18
 		[MIN] 00
+		[DAY] 1
 		[DIFFICULTY] 10
+
+
 	}
 
 	{

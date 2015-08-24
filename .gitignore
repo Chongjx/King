@@ -3,3 +3,14 @@ King/King.sdf
 *.suo
 *.opensdf
 *.log
+*.obj
+*.tlog
+*.cache
+*.manifest
+*.lastbuildstate
+*.unsuccessfulbuild
+*.pdb
+*.res
+*.exe
+*.rc
+*.lib
