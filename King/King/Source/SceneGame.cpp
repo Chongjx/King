@@ -1764,9 +1764,10 @@ void SceneGame::UpdatePlayer(double dt)
 	{
 		if (layout[currentLocation].specialTiles[special].TileName == "Threadmill")
 		{
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(sceneHeight-player->getPos().y)/TILESIZE][player->getPos().x/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(sceneHeight-player->getPos().y - TILESIZE)/TILESIZE][(player->getPos().x)/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
+				std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
 			}
 		}
 	}
