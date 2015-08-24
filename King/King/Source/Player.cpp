@@ -114,12 +114,12 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 		{
 			if (this->getState() == StateMachine::WALK_STATE)
 			{
-				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapOffsetX() - currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() - currentRoom.roomLayout[i].getScrollSpeed() * (float)dt));
 			}
 
 			else
 			{
-				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapOffsetX() - currentRoom.roomLayout[i].getScrollSpeed() * 2.f * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() - currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
 			if (currentRoom.roomLayout[i].getMapOffsetX() < 0)
@@ -135,17 +135,17 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 		{
 			if (this->getState() == StateMachine::WALK_STATE)
 			{
-				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * (float)dt));
 			}
 
 			else
 			{
-				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * 2.f * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
 			if (currentRoom.roomLayout[i].getMapOffsetX() > currentRoom.roomLayout[i].getMapWidth())
 			{
-				currentRoom.roomLayout[i].setMapOffsetX((float)currentRoom.roomLayout[i].getMapWidth());
+				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapWidth());
 			}
 		}
 	}
@@ -156,12 +156,12 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 		{
 			if (this->getState() == StateMachine::WALK_STATE)
 			{
-				currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * (float)dt));
 			}
 
 			else
 			{
-				currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * 2.f * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
 			/*if (currentRoom.roomLayout[i].getMapOffsetY() < 0)
@@ -177,21 +177,21 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 		{
 			if (this->getState() == StateMachine::WALK_STATE)
 			{
-				currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapOffsetY() + currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() + currentRoom.roomLayout[i].getScrollSpeed() * (float)dt));
 			}
 
 			else
 			{
-				currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapOffsetY() + currentRoom.roomLayout[i].getScrollSpeed() * 2.f * (float)dt);
+				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() + currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
 			if (currentRoom.roomLayout[i].getMapOffsetY() > currentRoom.roomLayout[i].getMapHeight())
 			{
-				currentRoom.roomLayout[i].setMapOffsetY((float)currentRoom.roomLayout[i].getMapHeight());
+				currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapHeight());
 			}
 		}
 	}
 
 	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
-	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
+	std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
 }

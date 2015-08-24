@@ -155,7 +155,7 @@ void SceneGame::Render(void)
 	ss.precision(5);
 	ss << "FPS: " << fps;
 	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Red"), specialFontSize, 0, sceneHeight - specialFontSize);*/
-	std::cout << fps << std::endl;
+	//std::cout << fps << std::endl;
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -1786,6 +1786,7 @@ void SceneGame::RenderInterface(void)
 		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::TEXT_BUTTON)
 		{
 			RenderTextOnScreen(gameInterfaces[currentState].buttons[i].getMesh(), gameInterfaces[currentState].buttons[i].getText(), gameInterfaces[currentState].buttons[i].getColor(), defaultFontSize, gameInterfaces[currentState].buttons[i].getPos().x, gameInterfaces[currentState].buttons[i].getPos().y, gameInterfaces[currentState].buttons[i].getRotation());
+
 		}
 
 		else
@@ -1799,6 +1800,8 @@ void SceneGame::RenderInterface(void)
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
 		}
 	}
+
+	glDisable(GL_DEPTH_TEST);
 }
 
 void SceneGame::RenderLevel(void)
@@ -1869,11 +1872,26 @@ void SceneGame::RenderCharacters(void)
 
 		if (tempGuard->getRender())
 		{
-			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f, tempGuard->getPos().y + TILESIZE * 0.5f);
+			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
-				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempGuard->getPos().x + TILESIZE * 0.5f, tempGuard->getPos().y + TILESIZE * 0.5f);
+				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(),  tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+			}
+		}
+	}
+
+	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
+	{
+		Prisoners* tempPrisoner = *prisoner;
+
+		if (tempPrisoner->getRender())
+		{
+			Render2DMesh(tempPrisoner->getSprite(), false, (float)TILESIZE * 1.5f, tempPrisoner->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempPrisoner->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+
+			if (DEBUG)
+			{
+				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempPrisoner->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(),  tempPrisoner->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 			}
 		}
 	}
@@ -1901,6 +1919,8 @@ void SceneGame::RenderTime(void)
 
 		Render2DMesh(findMesh(day.sun.mesh),false, (float)day.sun.size, day.sun.pos);
 	}
+
+	glDisable(GL_DEPTH_TEST);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
