@@ -17,7 +17,7 @@ public:
 	Objective(void);
 	~Objective(void);
 
-	void initObjctives (string Title,bool Get,int level,string keyItem,int difficulty,OBJECTIVE_STATE currentState);
+	void initObjctives (string Title,bool Get,int level,string keyItem);
 	void setState(OBJECTIVE_STATE state);
 	void setTitle (string Title);
 	void setGet (bool Get);

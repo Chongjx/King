@@ -16,6 +16,10 @@
 		[Directory] Reader\\VariableConfig.txt
 	}
 	{
+		[NAME] Objectives
+		[Directory] Reader\\LevelConfig.txt
+	}
+	{
 		[NAME] Color
 		[Directory] Reader\\ColorConfig.txt
 	}

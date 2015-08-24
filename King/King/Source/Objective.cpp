@@ -13,9 +13,8 @@ Objective::~Objective(void)
 {
 }
 
-void Objective::initObjctives (string Title,bool Get,int level,string keyItem,int difficulty,OBJECTIVE_STATE currentState)
+void Objective::initObjctives (string Title,bool Get,int level,string keyItem)
 {
-	this->currentState=currentState;
 	this->Title=Title;
 	this->Get=Get;
 	this->level=level;

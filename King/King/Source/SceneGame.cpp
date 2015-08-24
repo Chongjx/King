@@ -370,6 +370,19 @@ void SceneGame::Config(void)
 				}
 			}
 		}
+		else if (branch->branchName == "Objectives")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitObjective(attriValue);
+				}
+			}
+		}
 	}
 }
 
@@ -1213,27 +1226,27 @@ void SceneGame::InitVariables(string config)
 void SceneGame::InitObjective(string config)
 {
 	Branch VariablesBranch = TextTree::FileToRead(config);
-
 	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
 	{
 		if (branch->branchName == "Level")
 		{
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
-				
+				childbranch->printBranch();
+					Level templevel;
 				//number branch
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
 				{
 					string Title;
 					bool Get;
 					int level;
-					string keyItem;
+					string keyItem; 
 					for (vector<Attribute>::iterator attri = grandchildbranch->attributes.begin(); attri != grandchildbranch->attributes.end(); ++attri)
 					{
 						Attribute tempAttri = *attri;
 						string attriName = tempAttri.name;
 						string attriValue = tempAttri.value;
-						if (attriName == "NAME")
+						if (attriName == "DISCRIPTION")
 						{
 							Title = attriValue;
 						}
@@ -1250,8 +1263,11 @@ void SceneGame::InitObjective(string config)
 							keyItem = attriValue;
 						}
 					}
-
+					Objective tempobjective;
+					tempobjective.initObjctives(Title,Get,level,keyItem);
+					templevel.objectives.push_back(tempobjective);
 				}
+				day.levels.push_back(templevel);
 			}
 		}
 	}

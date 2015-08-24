@@ -5,20 +5,20 @@
 		{
 			[NAME] 1
 			{
-				[NAME] Title
+				[DISCRIPTION] Title
 				[GET] false
 				[LEVEL] 0
 				[KEYITEM] Key
 			}
 			{
-				[NAME] Title
+				[DISCRIPTION] Title
 				[GET] false
 				[LEVEL] 0
 				[KEYITEM] Key
 			}
 			[NAME] 2
 			{
-				[NAME] Title
+				[DISCRIPTION] Title
 				[GET] false
 				[LEVEL] 0
 				[KEYITEM] Key
