@@ -106,11 +106,6 @@ KEngine::~KEngine()
 // Setting up of the engine using data from the text files
 void KEngine::Config(void)
 {
-	if (DEBUG)
-	{
-		engineBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = engineBranch.childBranches.begin(); branch != engineBranch.childBranches.end(); ++branch)
 	{
 		if (branch->branchName == "SetUp")

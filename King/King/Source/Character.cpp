@@ -6,8 +6,8 @@ Character::Character()
 	, dir(0,0)
 	, targetPos(0, 0)
 	, tiles(0)
-	, walkSpeed(500.f)
-	, runSpeed (1000.f)
+	, walkSpeed(400.f)
+	, runSpeed (800.f)
 	, MAX_WALK_SPEED(25.0)
 	, MAX_RUN_SPEED(20.0)
 {
@@ -178,13 +178,17 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
-		for (unsigned special = 0; special != currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-
-			if (nextTile == currentRoom.specialTiles[special].TileID)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
-				movable = false;
+				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+
+				if (nextTile == currentRoom.specialTiles[special].TileID)
+				{
+					movable = false;
+				}
+				break;
 			}
 		}
 
@@ -209,18 +213,22 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	}
 
 	// move left
-	if (targetPos.x < pos.x)
+	else if (targetPos.x < pos.x)
 	{
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
-		for (unsigned special = 0; special != currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-
-			if (nextTile == currentRoom.specialTiles[special].TileID)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
-				movable = false;
+				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+
+				if (nextTile == currentRoom.specialTiles[special].TileID)
+				{
+					movable = false;
+				}
+				break;
 			}
 		}
 
@@ -250,13 +258,17 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
-		for (unsigned special = 0; special != currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-
-			if (nextTile == currentRoom.specialTiles[special].TileID)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
-				movable = false;
+				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+
+				if (nextTile == currentRoom.specialTiles[special].TileID)
+				{
+					movable = false;
+				}
+				break;
 			}
 		}
 
@@ -281,18 +293,22 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	}
 
 	// move down
-	if (targetPos.y < pos.y)
+	else if (targetPos.y < pos.y)
 	{
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
-		for (unsigned special = 0; special != currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-
-			if (nextTile == currentRoom.specialTiles[special].TileID)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
-				movable = false;
+				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+
+				if (nextTile == currentRoom.specialTiles[special].TileID)
+				{
+					movable = false;
+				}
+				break;
 			}
 		}
 
@@ -321,12 +337,12 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 void Character::tileBasedOffset(void)
 {
-	if (pos.x < targetPos.x + size.x * 0.2f && pos.x > targetPos.x - size.x * 0.2f)
+	if (Math::FAbs(targetPos.x - pos.x) < size.x * 0.2f)
 	{
 		pos.x = targetPos.x;
 	}
 
-	if (pos.y < targetPos.y + size.y * 0.2f && pos.y > targetPos.y - size.y * 0.2f)
+	if (Math::FAbs(targetPos.y - pos.y) < size.y * 0.2f)
 	{
 		pos.y = targetPos.y;
 	}
@@ -445,7 +461,7 @@ SpriteAnimation* Character::getSprite(void) const
 
 }*/
 
-void Character::setRoom(Room &room)
+void Character::setRoom(Room& room)
 {
 	this->currentRoom = room;
 }

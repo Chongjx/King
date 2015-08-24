@@ -18,6 +18,7 @@ screenWidth(0),
 	mapFineOffsetY(0),
 	xScrolling(0),
 	yScrolling(0),
+	scrollSpeed(0.f),
 	backgroundID(0),
 	ID(0)
 {
@@ -29,7 +30,7 @@ TileMap::~TileMap(void)
 	screenMap.clear();
 }
 
-void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, const int mapWidth, const int mapHeight, const int mapOffsetX, const int mapOffsetY, const int mapFineOffsetX, const int mapFineOffsetY, const bool enableXScrolling, const bool enableYScrolling, const int tileSize)
+void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, const int mapWidth, const int mapHeight, const int mapOffsetX, const int mapOffsetY, const int mapFineOffsetX, const int mapFineOffsetY, const bool enableXScrolling, const bool enableYScrolling, float scrollSpeed, const int tileSize)
 {
 	this->ID = ID;
 	this->screenWidth = screenWidth;
@@ -42,6 +43,7 @@ void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, 
 	this->mapFineOffsetY = mapFineOffsetY;
 	this->xScrolling = enableXScrolling;
 	this->yScrolling = enableYScrolling;
+	this->scrollSpeed = scrollSpeed;
 	this->tileSize = tileSize;
 
 	this->numTilesWidth = (int)(screenWidth * (1.f/ tileSize));
@@ -61,7 +63,7 @@ void TileMap::Init(const int ID, const int screenWidth, const int screenHeight, 
 	this->mapType = TYPE_VISUAL;
 }
 
-void TileMap::InitDynamic(int ID, int screenWidth, int screenHeight, int numTilesWidth, int numTilesHeight, int mapOffsetX, int mapOffsetY, bool enableXscrolling, bool enableYScrolling, int tileSize)
+void TileMap::InitDynamic(int ID, int screenWidth, int screenHeight, int numTilesWidth, int numTilesHeight, int mapOffsetX, int mapOffsetY, int mapFineOffsetX, int mapFineOffsetY, bool enableXscrolling, bool enableYScrolling, float scrollSpeed, int tileSize)
 {
 	this->ID = ID;
 	this->screenWidth = screenWidth;
@@ -74,6 +76,7 @@ void TileMap::InitDynamic(int ID, int screenWidth, int screenHeight, int numTile
 	this->mapFineOffsetY = mapFineOffsetY;
 	this->xScrolling = enableXscrolling;
 	this->yScrolling = enableYScrolling;
+	this->scrollSpeed = scrollSpeed;
 	this->tileSize = tileSize;
 
 	this->mapWidth = numTilesMapWidth * tileSize;
@@ -227,6 +230,21 @@ int TileMap::getMapFineOffsetY(void)
 	return this->mapFineOffsetY;
 }
 
+bool TileMap::getMapXScroll(void)
+{
+	return this->xScrolling;
+}
+
+bool TileMap::getMapYScroll(void)
+{
+	return this->yScrolling;
+}
+
+float TileMap::getScrollSpeed(void)
+{
+	return this->scrollSpeed;
+}
+
 TileMap::MAP_TYPE TileMap::getMapType(void)
 {
 	return this->mapType;
@@ -250,6 +268,11 @@ void TileMap::setXScroll(bool enabled)
 void TileMap::setYScroll(bool enabled)
 {
 	this->yScrolling = enabled;
+}
+
+void TileMap::setScrollSpeed(float scrollSpeed)
+{
+	this->scrollSpeed = scrollSpeed;
 }
 
 void TileMap::setMapType(TileMap::MAP_TYPE mapType)
@@ -281,6 +304,6 @@ void TileMap::Update(void)
 			this->tileOffsetY = this->numTilesMapHeight - this->numTilesHeight;
 		}
 
-	this->mapFineOffsetY = this->mapOffsetY % this->tileSize;
+		this->mapFineOffsetY = this->mapOffsetY % this->tileSize;
 	}
 }

@@ -10,11 +10,6 @@ Mouse::~Mouse()
 
 void Mouse::Config(void)
 {
-	if (DEBUG)
-	{
-		mouseBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = mouseBranch.childBranches.begin(); branch != mouseBranch.childBranches.end(); ++branch)
 	{
 		if (branch->branchName == "SetUp")

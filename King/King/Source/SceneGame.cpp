@@ -222,11 +222,6 @@ void SceneGame::Exit(void)
 // Setting up of the game using data from the text files
 void SceneGame::Config(void)
 {
-	if (DEBUG)
-	{	
-		gameBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = gameBranch.childBranches.begin(); branch != gameBranch.childBranches.end(); ++branch)
 	{
 		if (branch->branchName == "Shader")
@@ -447,11 +442,6 @@ void SceneGame::InitSettings(string config)
 {
 	Branch settingBranch = TextTree::FileToRead(config);
 
-	if (DEBUG)
-	{
-		settingBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = settingBranch.childBranches.begin(); branch != settingBranch.childBranches.end(); ++branch)
 	{
 		if (branch->branchName == "Resolution")
@@ -587,11 +577,6 @@ void SceneGame::InitSettings(string config)
 void SceneGame::InitMesh(string config)
 {
 	Branch meshBranch = TextTree::FileToRead(config);
-
-	if (DEBUG)
-	{
-		meshBranch.printBranch();
-	}
 
 	for (vector<Branch>::iterator branch = meshBranch.childBranches.begin(); branch != meshBranch.childBranches.end(); ++branch)
 	{
@@ -872,11 +857,6 @@ void SceneGame::InitColor(string config)
 {
 	Branch colorBranch = TextTree::FileToRead(config);
 
-	if (DEBUG)
-	{
-		colorBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = colorBranch.childBranches.begin(); branch != colorBranch.childBranches.end(); ++branch)
 	{
 		Color tempColor;
@@ -900,12 +880,6 @@ void SceneGame::InitColor(string config)
 void SceneGame::InitInterface(string config)
 {
 	Branch interfaceBranch = TextTree::FileToRead(config);
-
-	if (DEBUG)
-	{
-		interfaceBranch.printBranch();
-	}
-
 
 	for (vector<Branch>::iterator branch = interfaceBranch.childBranches.begin(); branch != interfaceBranch.childBranches.end(); ++branch)
 	{
@@ -1009,11 +983,6 @@ void SceneGame::InitLevel(string config)
 {
 	Branch levelBranch = TextTree::FileToRead(config);
 
-	if (DEBUG)
-	{
-		levelBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = levelBranch.childBranches.begin(); branch != levelBranch.childBranches.end(); ++branch)
 	{
 		string directory = "";
@@ -1032,6 +1001,7 @@ void SceneGame::InitLevel(string config)
 			VAR_MAP_OFFSETY,
 			VAR_MAP_FINE_OFFSETX,
 			VAR_MAP_FINE_OFFSETY,
+			VAR_MAP_SCROLL_SPEED,
 			TILE_SIZE,
 			MAX_VAR,
 		};
@@ -1057,6 +1027,7 @@ void SceneGame::InitLevel(string config)
 			"MapOffsetY",
 			"MapFineOffsetX",
 			"MapFineOffsetY",
+			"ScrollSpeed",
 			"TileSize",
 		};
 
@@ -1109,6 +1080,7 @@ void SceneGame::InitLevel(string config)
 					if (attriName == mapVarNames[k])
 					{
 						mapVar[k] = stoi(attriValue);
+						std::cout << mapVar[k] << std::endl;
 						break;
 					}
 				}
@@ -1116,7 +1088,7 @@ void SceneGame::InitLevel(string config)
 		}
 
 		TileMap tempMap;
-		tempMap.Init(mapVar[VAR_ID], mapVar[VAR_SCREEN_WIDTH], mapVar[VAR_SCREEN_HEIGHT], mapVar[VAR_MAP_WIDTH], mapVar[VAR_MAP_HEIGHT], mapVar[VAR_MAP_OFFSETX], mapVar[VAR_MAP_OFFSETY], mapVar[VAR_MAP_FINE_OFFSETX], mapVar[VAR_MAP_FINE_OFFSETY], enableX, enableY, mapVar[TILE_SIZE]);
+		tempMap.InitDynamic(mapVar[VAR_ID], mapVar[VAR_SCREEN_WIDTH], mapVar[VAR_SCREEN_HEIGHT], mapVar[VAR_MAP_WIDTH], mapVar[VAR_MAP_HEIGHT], mapVar[VAR_MAP_OFFSETX], mapVar[VAR_MAP_OFFSETY], mapVar[VAR_MAP_FINE_OFFSETX], mapVar[VAR_MAP_FINE_OFFSETY], enableX, enableY, (float)mapVar[VAR_MAP_SCROLL_SPEED], mapVar[TILE_SIZE]);
 		tempMap.LoadMap(directory);
 		tempMap.setMapType(tempType);
 
@@ -1160,11 +1132,6 @@ void SceneGame::InitLevel(string config)
 void SceneGame::InitVariables(string config)
 {
 	Branch VariablesBranch = TextTree::FileToRead(config);
-
-	if (DEBUG)
-	{
-		VariablesBranch.printBranch();
-	}
 
 	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
 	{
@@ -1243,18 +1210,16 @@ void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
 	{
-		irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
-		std::string soundName = "";
-		std::string soundFile= "";
-		float volume=0.f;
-		bool loop=false;
+		
 
-		if (DEBUG)
-		{
-			soundBranch.printBranch();
-		}
 		for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
 		{
+			irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
+			string soundName = "";
+			string soundFile = "";
+			float volume = 0.f;
+			bool loop = false;
+
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
 				Attribute tempAttri = *attri;
@@ -1294,11 +1259,6 @@ void SceneGame::InitSound(string config)
 void SceneGame::InitAI(string config)
 {
 	Branch AIBranch = TextTree::FileToRead(config);
-
-	if (DEBUG)
-	{
-		AIBranch.printBranch();
-	}
 
 	for (vector<Branch>::iterator branch = AIBranch.childBranches.begin(); branch != AIBranch.childBranches.end(); ++branch)
 	{
@@ -1404,11 +1364,6 @@ void SceneGame::InitAI(string config)
 void SceneGame::InitPlayer(string config)
 {
 	Branch playerBranch = TextTree::FileToRead(config);
-
-	if (DEBUG)
-	{
-		playerBranch.printBranch();
-	}
 
 	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
 	{
@@ -1737,6 +1692,7 @@ void SceneGame::UpdatePlayer(double dt)
 	}
 
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+	player->ConstrainPlayer(dt);
 	player->Update(dt);
 }
 
@@ -1776,6 +1732,7 @@ void SceneGame::UpdateAI(double dt)
 
 void SceneGame::UpdateMap(void)
 {
+	this->layout[currentLocation] = player->getRoom();
 	for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
 	{
 		this->layout[currentLocation].roomLayout[i].Update();
@@ -1871,7 +1828,7 @@ void SceneGame::RenderLevel(void)
 						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
 						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-						if (tilesheet->m_currentTile != 0)
+						if (tilesheet->m_currentTile != -1)
 						{
 							Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 						}
@@ -1883,7 +1840,7 @@ void SceneGame::RenderLevel(void)
 						{
 							int collideTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-							if (collideTile != 0 && layout[currentLocation].roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
+							if (collideTile != -1 && layout[currentLocation].roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
 							{
 								Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 							}
@@ -1899,26 +1856,11 @@ void SceneGame::RenderCharacters(void)
 {
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
-	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f, player->getPos().y + TILESIZE * 0.5f);
+	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 	if (DEBUG)
 	{
-		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f, player->getPos().y + TILESIZE * 0.5f);
-	}
-
-	for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
-	{
-		Prisoners* tempPrisoner = *prisoner;
-
-		if (tempPrisoner->getRender())
-		{
-			Render2DMesh(tempPrisoner->getSprite(), false, (float)TILESIZE * 1.5f, tempPrisoner->getPos().x + TILESIZE * 0.5f, tempPrisoner->getPos().y + TILESIZE * 0.5f);
-
-			if (DEBUG)
-			{
-				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempPrisoner->getPos().x + TILESIZE * 0.5f, tempPrisoner->getPos().y + TILESIZE * 0.5f);
-			}
-		}
+		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 	}
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)

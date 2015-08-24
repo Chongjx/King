@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Character.h"
+#include <cmath>
 
 class Player: public Character
 {
@@ -25,7 +26,7 @@ public:
 	bool GetRecovering(void);
 
 	// To contrain player at certain point of map
-	void ConstrainPlayer(bool constrain);
+	void ConstrainPlayer(double dt);
 
 private:
 	// Energy data

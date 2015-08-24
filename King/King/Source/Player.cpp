@@ -5,7 +5,7 @@ Player::Player() :
 	, recovering(false)
 	, MAX_ENERGY(100)
 	, ENERGY_TO_RUN(30.0)
-	, DEGENERATE_RUN(10)
+	, DEGENERATE_RUN(20)
 	, REGENERATE_WALK(5)
 	, REGENERATE_IDLE(7.5) 
 {
@@ -103,7 +103,63 @@ bool Player::GetRecovering(void)
 	return recovering;
 }
 
-void Player::ConstrainPlayer(bool constrain) /* parameters to be added */
+void Player::ConstrainPlayer(double dt) /* parameters to be added */
 {
+	Vector2 playerPos;
+	playerPos.Set((pos.x - size.x - currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()) * (1.f / size.x), (pos.y - size.y - currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())  * (1.f / size.y));
 
+	if (playerPos.x < currentRoom.roomLayout[TileMap::TYPE_VISUAL].getNumTilesWidth() * 0.5f - 1)
+	{
+		for (unsigned i = 0; i < currentRoom.roomLayout.size(); ++i)
+		{
+			//if (this->getState() == StateMachine::
+			currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapOffsetX() - currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+
+			if (currentRoom.roomLayout[i].getMapOffsetX() < 0)
+			{
+				currentRoom.roomLayout[i].setMapOffsetX(0);
+			}
+		}
+	}
+
+	else if (playerPos.x > currentRoom.roomLayout[TileMap::TYPE_VISUAL].getNumTilesWidth() * 0.5f + 1)
+	{
+		for (unsigned i = 0; i < currentRoom.roomLayout.size(); ++i)
+		{
+			currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+
+			if (currentRoom.roomLayout[i].getMapOffsetX() > currentRoom.roomLayout[i].getMapWidth())
+			{
+				currentRoom.roomLayout[i].setMapOffsetX((float)currentRoom.roomLayout[i].getMapWidth());
+			}
+		}
+	}
+
+	if (playerPos.y < currentRoom.roomLayout[TileMap::TYPE_VISUAL].getNumTilesHeight() * 0.5f - 1)
+	{
+		for (unsigned i = 0; i < currentRoom.roomLayout.size(); ++i)
+		{
+			currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+
+			/*if (currentRoom.roomLayout[i].getMapOffsetY() < 0)
+			{
+				currentRoom.roomLayout[i].setMapOffsetY(0);
+			}*/
+		}
+	}
+
+	else if (playerPos.y > currentRoom.roomLayout[TileMap::TYPE_VISUAL].getNumTilesHeight() * 0.5f + 1)
+	{
+		for (unsigned i = 0; i < currentRoom.roomLayout.size(); ++i)
+		{
+			currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapOffsetY() + currentRoom.roomLayout[i].getScrollSpeed() * (float)dt);
+
+			if (currentRoom.roomLayout[i].getMapOffsetY() > currentRoom.roomLayout[i].getMapHeight())
+			{
+				currentRoom.roomLayout[i].setMapOffsetY((float)currentRoom.roomLayout[i].getMapHeight());
+			}
+		}
+	}
+
+	std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 }

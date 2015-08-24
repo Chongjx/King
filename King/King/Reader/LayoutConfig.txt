@@ -11,17 +11,18 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 8192 
+		[MapWidth] 177 
 		# 32 * 160		
-		[MapHeight] 5120
+		[MapHeight] 70
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
 		[EnableXScroll] true
 		[EnableYScroll] true
+		[ScrollSpeed] 500
 		[TileSize] 32
-		[Directory] Image\\Map\\Prison.csv
+		[Directory] Image\\Map\\mainCell.csv
 	}
 	{
 		[NAME] MainRoom
@@ -32,27 +33,31 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 8192 
+		[MapWidth] 177
 		# 32 * 160		
-		[MapHeight] 5120
+		[MapHeight] 70
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
 		[EnableXScroll] true
 		[EnableYScroll] true
+		[ScrollSpeed] 500
 		[TileSize] 32
-		[Directory] Image\\Map\\CollisionMap.csv
+		[Directory] Image\\Map\\mainCellCollision.csv
 		{
 			[NAME] SpecialTiles
-			[Wall] 640
+			[Wall] 678
 			[PrisonDoorClosed] 266
-			[PrisonDoorOpened] 267
+			[PrisonDoorOpened] 307
 			[CellDoorLeftClosed] 478
 			[CellDoorRightClosed] 479
 			[CellDoorLeftOpened] 474
 			[CellDoorRightOpened] 475
 			[Threadmill] 184
+			[Bed] 264
+			[LeftChair] 343
+			[RightChair] 344
 		}
 	}
 	{
@@ -64,16 +69,17 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 8192 
+		[MapWidth] 177
 		# 32 * 160		
-		[MapHeight] 5120
+		[MapHeight] 70
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
 		[EnableXScroll] true
 		[EnableYScroll] true
+		[ScrollSpeed] 500
 		[TileSize] 32
-		[Directory] Image\\Map\\Background.csv
+		[Directory] Image\\Map\\mainCellBack.csv
 	}
 }

@@ -80,7 +80,7 @@ public:
 
 	// Inventory
 	CInventory getInventory(void) const;
-	void setRoom(Room &currentRoom);
+	void setRoom(Room& currentRoom);
 
 	Room getRoom(void);
 	virtual void changeAni(StateMachine::STATE unitState);
