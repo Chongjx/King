@@ -173,6 +173,8 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	static bool movable = true;
 	movable = true;
 
+	std::cout << currentRoom.ID << std::endl;
+
 	if (targetPos.x > pos.x)
 	{
 		Vector2 targetedLocation;

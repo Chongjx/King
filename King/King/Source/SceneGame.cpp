@@ -985,7 +985,6 @@ void SceneGame::InitLevel(string config)
 
 	for (vector<Branch>::iterator branch = levelBranch.childBranches.begin(); branch != levelBranch.childBranches.end(); ++branch)
 	{
-		string directory = "";
 		TileMap::MAP_TYPE tempType;
 		tempType = TileMap::MAX_TYPE;
 
@@ -1050,29 +1049,6 @@ void SceneGame::InitLevel(string config)
 				stringToBool(attriValue, enableY);
 			}
 
-			else if (attriName == "Directory")
-			{
-				directory = attriValue;
-			}
-
-			else if (attriName == "Type")
-			{
-				if (attriValue == "Visual")
-				{
-					tempType = TileMap::TYPE_VISUAL;
-				}
-
-				else if (attriValue == "Background")
-				{
-					tempType = TileMap::TYPE_BACKGROUND;
-				}
-
-				else if (attriValue == "Collision")
-				{
-					tempType = TileMap::TYPE_COLLISION;
-				}
-			}
-
 			else
 			{
 				for (int k = 0; k < MAX_VAR; ++k)
@@ -1080,44 +1056,82 @@ void SceneGame::InitLevel(string config)
 					if (attriName == mapVarNames[k])
 					{
 						mapVar[k] = stoi(attriValue);
-						std::cout << mapVar[k] << std::endl;
 						break;
 					}
 				}
 			}
 		}
 
-		TileMap tempMap;
-		tempMap.InitDynamic(mapVar[VAR_ID], mapVar[VAR_SCREEN_WIDTH], mapVar[VAR_SCREEN_HEIGHT], mapVar[VAR_MAP_WIDTH], mapVar[VAR_MAP_HEIGHT], mapVar[VAR_MAP_OFFSETX], mapVar[VAR_MAP_OFFSETY], mapVar[VAR_MAP_FINE_OFFSETX], mapVar[VAR_MAP_FINE_OFFSETY], enableX, enableY, (float)mapVar[VAR_MAP_SCROLL_SPEED], mapVar[TILE_SIZE]);
-		tempMap.LoadMap(directory);
-		tempMap.setMapType(tempType);
-
-		layout[VAR_ID].ID = mapVar[VAR_ID];
-		layout[VAR_ID].roomLayout.push_back(tempMap);
-
-		// Misc special tiles
 		if (branch->childBranches.size() != 0)
 		{
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
 				Branch tempChildBranch = *childbranch;
+				string directory = "";
+				TileMap::MAP_TYPE tempType;
 
-				if (tempChildBranch.branchName == "SpecialTiles")
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
-					SpecialTiles tiles;
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
 
-					for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+					if (attriName == "Directory")
 					{
-						Attribute tempAttri = *attri;
-						string attriName = tempAttri.name;
-						string attriValue = tempAttri.value;
+						directory = attriValue;
+					}
 
-						tiles.TileName = attriName;
-						tiles.TileID = stoi(attriValue);
+					else if (attriName == "Type")
+					{
+						if (attriValue == "Visual")
+						{
+							tempType = TileMap::TYPE_VISUAL;
+						}
 
-						layout[VAR_ID].specialTiles.push_back(tiles);
+						else if (attriValue == "Back")
+						{
+							tempType = TileMap::TYPE_BACKGROUND;
+						}
+
+						else if (attriValue == "Collision")
+						{
+							tempType = TileMap::TYPE_COLLISION;
+
+							if (childbranch->childBranches.size() != 0)
+							{
+								for (vector<Branch>::iterator childbranches = childbranch->childBranches.begin(); childbranches != childbranch->childBranches.end(); ++childbranches)
+								{
+									Branch tempChildBranch = *childbranches;
+
+									if (tempChildBranch.branchName == "SpecialTiles")
+									{
+										SpecialTiles tiles;
+
+										for (vector<Attribute>::iterator attri = childbranches->attributes.begin(); attri != childbranches->attributes.end(); ++attri)
+										{
+											Attribute tempAttri = *attri;
+											string attriName = tempAttri.name;
+											string attriValue = tempAttri.value;
+
+											tiles.TileName = attriName;
+											tiles.TileID = stoi(attriValue);
+
+											layout[mapVar[VAR_ID]].specialTiles.push_back(tiles);
+										}
+									}
+								}
+							}
+						}
 					}
 				}
+
+				TileMap tempMap;
+				tempMap.InitDynamic(mapVar[VAR_ID], mapVar[VAR_SCREEN_WIDTH], mapVar[VAR_SCREEN_HEIGHT], mapVar[VAR_MAP_WIDTH], mapVar[VAR_MAP_HEIGHT], mapVar[VAR_MAP_OFFSETX], mapVar[VAR_MAP_OFFSETY], mapVar[VAR_MAP_FINE_OFFSETX], mapVar[VAR_MAP_FINE_OFFSETY], enableX, enableY, (float)mapVar[VAR_MAP_SCROLL_SPEED], mapVar[TILE_SIZE]);
+				tempMap.LoadMap(directory);
+				tempMap.setMapType(tempType);
+
+				layout[mapVar[VAR_ID]].ID = mapVar[VAR_ID];
+				layout[mapVar[VAR_ID]].roomLayout.push_back(tempMap);
 			}
 		}
 	}
@@ -1732,6 +1746,48 @@ void SceneGame::UpdateAI(double dt)
 
 void SceneGame::UpdateMap(void)
 {
+	if(KEngine::getKeyboard()->getKey('Z'))
+	{
+		this->currentLocation = CELL_AREA;
+		player->setRoom(layout[CELL_AREA]);
+		player->setPos(Vector2(15 * 32,15 * 32));
+	}
+
+	if(KEngine::getKeyboard()->getKey('X'))
+	{
+		this->currentLocation = EXERCISE_AREA;
+		player->setRoom(layout[EXERCISE_AREA]);
+		player->setPos(Vector2(15 * 32,15 * 32));
+	}
+
+	if(KEngine::getKeyboard()->getKey('C'))
+	{
+		this->currentLocation = CANTEEN_AREA;
+		player->setRoom(layout[CANTEEN_AREA]);
+		player->setPos(Vector2(0,0));
+	}
+
+	if(KEngine::getKeyboard()->getKey('V'))
+	{
+		this->currentLocation = SHOWER_AREA;
+		player->setRoom(layout[SHOWER_AREA]);
+		player->setPos(Vector2(0,0));
+	}
+
+	if(KEngine::getKeyboard()->getKey('B'))
+	{
+		this->currentLocation = MEETING_AREA;
+		player->setRoom(layout[MEETING_AREA]);
+		player->setPos(Vector2(0,0));
+	}
+
+	if(KEngine::getKeyboard()->getKey('N'))
+	{
+		this->currentLocation = COURTYARD_AREA;
+		player->setRoom(layout[COURTYARD_AREA]);
+		player->setPos(Vector2(0,0));
+	}
+
 	this->layout[currentLocation] = player->getRoom();
 	for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
 	{
@@ -1820,7 +1876,7 @@ void SceneGame::RenderLevel(void)
 				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 				{
 					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
-
+					
 					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
 						break;
 					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)

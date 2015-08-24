@@ -4,7 +4,6 @@
 	[NAME] LayoutConfig
 	{
 		[NAME] MainRoom
-		[Type] Visual
 		[ID] 0
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
@@ -18,60 +17,48 @@
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
-		[EnableXScroll] true
-		[EnableYScroll] true
+		[EnableXScroll] 1
+		[EnableYScroll] 1
 		[ScrollSpeed] 500
 		[TileSize] 32
-		[Directory] Image\\Map\\mainCell.csv
-	}
-	{
-		[NAME] MainRoom
-		[Type] Collision
-		[ID] 0
-		[BackgroundID] 0
-		# ScreenWidth & ScreenHeight should be same as screen resolution
-		[ScreenWidth] 1024
-		[ScreenHeight] 800
-		# 32 * 256
-		[MapWidth] 177
-		# 32 * 160		
-		[MapHeight] 70
-		[MapOffsetX] 0
-		[MapOffsetY] 0
-		[MapFineOffsetX] 0
-		[MapFineOffsetY] 0
-		[EnableXScroll] true
-		[EnableYScroll] true
-		[ScrollSpeed] 500
-		[TileSize] 32
-		[Directory] Image\\Map\\mainCellCollision.csv
 		{
-			[NAME] SpecialTiles
-			[Wall] 678
-			[PrisonDoorClosed] 266
-			[PrisonDoorOpened] 307
-			[CellDoorLeftClosed] 478
-			[CellDoorRightClosed] 479
-			[CellDoorLeftOpened] 474
-			[CellDoorRightOpened] 475
-			[Threadmill] 184
-			[Bed] 264
-			[LeftChair] 343
-			[RightChair] 344
+			[Type] Visual
+			[Directory] Image\\Map\\mainCell.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\mainCellBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[PrisonDoorClosed] 266
+				[PrisonDoorOpened] 307
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[Threadmill] 184
+				[Bed] 264
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\mainCellCollision.csv
 		}
 	}
 	{
-		[NAME] MainRoom
-		[Type] Background
-		[ID] 0
+		[NAME] ExerciseRoom
+		[ID] 1
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 177
+		[MapWidth] 42 
 		# 32 * 160		
-		[MapHeight] 70
+		[MapHeight] 28
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
@@ -80,6 +67,215 @@
 		[EnableYScroll] true
 		[ScrollSpeed] 500
 		[TileSize] 32
-		[Directory] Image\\Map\\mainCellBack.csv
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\exerciseRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\exerciseRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[PrisonDoorClosed] 266
+				[PrisonDoorOpened] 307
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[Threadmill] 184
+				[Bed] 264
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\exerciseRoomCollision.csv
+		}
+	}
+	{
+		[NAME] CanteenRoom
+		[ID] 2
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 66 
+		# 32 * 160		
+		[MapHeight] 38
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 1
+		[EnableYScroll] 1
+		[ScrollSpeed] 500
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\canteenRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\canteenRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[PrisonDoorClosed] 266
+				[PrisonDoorOpened] 307
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[Threadmill] 184
+				[Bed] 264
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\canteenRoomCollision.csv
+		}
+	}
+	{
+		[NAME] ShowerRoom
+		[ID] 3
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 37 
+		# 32 * 160		
+		[MapHeight] 25
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 1
+		[EnableYScroll] 0
+		[ScrollSpeed] 500
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\showerRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\showerRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[PrisonDoorClosed] 266
+				[PrisonDoorOpened] 307
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[Threadmill] 184
+				[Bed] 264
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\showerRoomCollision.csv
+		}
+	}
+	{
+		[NAME] MeetingRoom
+		[ID] 4
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800s
+		# 32 * 256
+		[MapWidth] 142 
+		# 32 * 160		
+		[MapHeight] 19
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 0
+		[EnableYScroll] 1
+		[ScrollSpeed] 500
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\corridor.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\corridorBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[PrisonDoorClosed] 266
+				[PrisonDoorOpened] 307
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[Threadmill] 184
+				[Bed] 264
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\corridorCollision.csv
+		}
+	}
+	{
+		[NAME] Courtyard
+		[ID] 11
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 93 
+		# 32 * 160		
+		[MapHeight] 82
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] true
+		[EnableYScroll] true
+		[ScrollSpeed] 500
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\courtyard.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\courtyardBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[PrisonDoorClosed] 266
+				[PrisonDoorOpened] 307
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[Threadmill] 184
+				[Bed] 264
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\courtyardCollision.csv
+		}
 	}
 }

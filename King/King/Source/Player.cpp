@@ -140,12 +140,12 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 
 			else
 			{
-				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
+				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() + currentRoom.roomLayout[i].getScrollSpeed() * (int)(runSpeed / walkSpeed) * (float)dt));
 			}
 
-			if (currentRoom.roomLayout[i].getMapOffsetX() > currentRoom.roomLayout[i].getMapWidth())
+			if (currentRoom.roomLayout[i].getMapOffsetX() > currentRoom.roomLayout[i].getMapWidth() - currentRoom.roomLayout[i].getNumTilesWidth() * currentRoom.roomLayout[i].getTileSize())
 			{
-				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapWidth());
+				currentRoom.roomLayout[i].setMapOffsetX(currentRoom.roomLayout[i].getMapWidth() - currentRoom.roomLayout[i].getNumTilesWidth() * currentRoom.roomLayout[i].getTileSize());
 			}
 		}
 	}
@@ -164,10 +164,10 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() - currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
-			/*if (currentRoom.roomLayout[i].getMapOffsetY() < 0)
+			if (Math::FAbs(currentRoom.roomLayout[i].getMapOffsetY()) > currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize())
 			{
-				currentRoom.roomLayout[i].setMapOffsetY(0);
-			}*/
+				currentRoom.roomLayout[i].setMapOffsetY(-(currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize()));
+			}
 		}
 	}
 
@@ -185,13 +185,15 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 				currentRoom.roomLayout[i].setMapOffsetY((int)(currentRoom.roomLayout[i].getMapOffsetY() + currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
 
-			if (currentRoom.roomLayout[i].getMapOffsetY() > currentRoom.roomLayout[i].getMapHeight())
+			if (currentRoom.roomLayout[i].getMapOffsetY() > 0)
 			{
-				currentRoom.roomLayout[i].setMapOffsetY(currentRoom.roomLayout[i].getMapHeight());
+				currentRoom.roomLayout[i].setMapOffsetY(0);
 			}
 		}
 	}
 
-	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
-	std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
+	for (unsigned i = 0; i < currentRoom.roomLayout.size(); ++i)
+	{
+		currentRoom.roomLayout[i].Update();
+	}
 }
