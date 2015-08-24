@@ -20,12 +20,16 @@ public:
 	Level(void);
 	~Level(void);
 	vector<Objective> objectives;
-	void levelUpdate(void);
-	void levelStart (void);
 
 	void setState(LEVEL_STATE state);
 
 	LEVEL_STATE getObjectiveState(void) const;
+
+
+		void levelUpdate(void);
+	bool levelcheck (void);
+
+	void objectiveCheck(void);
 
 private:
 	LEVEL_STATE currentState;

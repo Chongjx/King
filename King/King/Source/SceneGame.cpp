@@ -1237,7 +1237,7 @@ void SceneGame::InitObjective(string config)
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
 				childbranch->printBranch();
-					Level templevel;
+				Level templevel;
 				//number branch
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
 				{
@@ -1995,7 +1995,12 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0, sceneHeight - specialFontSize);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("LightGrey"), specialFontSize, 0,sceneHeight - specialFontSize );
+
+		std::ostringstream ss2;
+		ss2.precision(1);
+		ss2<< day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Skyblue"), specialFontSize,day.moon.pos.x+ specialFontSize, day.moon.pos.y);
 
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		if (DEBUG)
@@ -2011,6 +2016,11 @@ void SceneGame::RenderTime(void)
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
+
+		std::ostringstream ss2;
+		ss2.precision(1);
+		ss2<< day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Skyblue"), specialFontSize,day.sun.pos.x + specialFontSize, day.sun.pos.y );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
