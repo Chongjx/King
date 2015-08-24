@@ -121,6 +121,8 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 			{
 				currentRoom.roomLayout[i].setMapOffsetX((int)(currentRoom.roomLayout[i].getMapOffsetX() - currentRoom.roomLayout[i].getScrollSpeed() * runSpeed / walkSpeed * (float)dt));
 			}
+			
+			std::cout << "exceed" << std::endl;
 
 			if (currentRoom.roomLayout[i].getMapOffsetX() < 0)
 			{
@@ -193,5 +195,5 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 	}
 
 	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
-	std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
+	//std::cout << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << std::endl;
 }

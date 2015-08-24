@@ -2,19 +2,13 @@
 #define PRISIONERS_H
 
 #include "AI.h"
+#include "Prisoners_StateMachine.h"
 
 class Prisoners: public AI
 {
 	
 public:
 	
-	enum PRISONER_STATE
-	{
-		LEPAK_STATE = StateMachine::MAX_STATE,
-		WALK_OUT_STATE,
-		WALK_IN_STATE,
-	};
-
 	// Default constructor and destructor
 	Prisoners(void);
 	~Prisoners(void);
@@ -24,9 +18,12 @@ public:
 	// Update the character
 	void Update(double dt);
 
-	void changeAni(StateMachine::STATE unitState);
+	void changeAni(Prisoners_StateMachine::PRISONER_STATE unitState);
 
 private:
+
+	//StateMachine object
+	Prisoners_StateMachine prisonerStateMachine;
 
 };
 

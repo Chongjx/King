@@ -1093,7 +1093,7 @@ void SceneGame::InitLevel(string config)
 					if (attriName == mapVarNames[k])
 					{
 						mapVar[k] = stoi(attriValue);
-						std::cout << mapVar[k] << std::endl;
+						//std::cout << mapVar[k] << std::endl;
 						break;
 					}
 				}
@@ -1373,7 +1373,7 @@ void SceneGame::InitAI(string config)
 
 				Guards* guard = new Guards;
 				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
-				guard->changeAni(StateMachine::IDLE_STATE);
+				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 				guardList.push_back(guard);
@@ -1420,7 +1420,7 @@ void SceneGame::InitAI(string config)
 
 				Prisoners* prisoner = new Prisoners;
 				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
-				prisoner->changeAni(StateMachine::IDLE_STATE);
+				prisoner->changeAni(Prisoners_StateMachine::IDLE_STATE);
 				prisoner->setRoom(layout[mapLocation]);
 				prisoner->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 				prisonerList.push_back(prisoner);
@@ -1806,7 +1806,7 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempGuard->setRender(false);
 		}
-		//tempGuard->Update(dt);
+		//ftempGuard->Update(dt);
 	}
 }
 
@@ -1941,6 +1941,7 @@ void SceneGame::RenderCharacters(void)
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+	std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
 
 	if (DEBUG)
 	{

@@ -7,7 +7,7 @@
 	
 		{
 			[NAME] John
-			[Pos] 10, 10
+			[Pos] 10, -10
 		        [Dir] 0, -1
 		        [Mesh] GEO_PRISONER
 		        [Tiles] 1
@@ -26,9 +26,9 @@
 		[NAME] Guard
 
 		{
-			[NAME] Banana
-			[Pos] 5, 5
-		        [Dir] 0, -1
+			[NAME] EAST_CELL_GUARD_A
+			[Pos] 5, -2
+		        [Dir] 1, 0
 		        [Mesh] GEO_GUARD
 		        [Tiles] 1
 		        [MapLocation] 0	
