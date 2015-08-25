@@ -3,26 +3,54 @@
 	{
 		[NAME] Level
 		{
-			[NAME] 1
-			{
-				[DISCRIPTION] Title
+			[LEVEL] 5
+			
+			
+				{
+				[DISCRIPTION] Get a Sharp Object
+				[GET] false
+				[LEVEL] 0
+				[KEYITEM] Fork
+				}
+			
+				{
+				[DISCRIPTION] Ob2
 				[GET] false
 				[LEVEL] 0
 				[KEYITEM] Key
-			}
-			{
-				[DISCRIPTION] Title
+				}
+		
+			
+			
+				{
+				[DISCRIPTION] Ob3
 				[GET] false
-				[LEVEL] 0
+				[LEVEL] 1				
 				[KEYITEM] Key
-			}
-			[NAME] 2
-			{
-				[DISCRIPTION] Title
+				}
+			
+				{
+				[DISCRIPTION] Ob4
 				[GET] false
-				[LEVEL] 0
+				[LEVEL] 2
 				[KEYITEM] Key
-			}
+				}
+			
+			
+				{
+				[DISCRIPTION] Ob5
+				[GET] false
+				[LEVEL] 3
+				[KEYITEM] Key
+				}
+			
+				{
+				[DISCRIPTION] ESCAPE
+				[GET] false
+				[LEVEL] 4
+				[KEYITEM] Nil
+				}
+			
 		}
 
 	}

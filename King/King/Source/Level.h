@@ -25,15 +25,11 @@ public:
 
 	LEVEL_STATE getObjectiveState(void) const;
 
-
-		void levelUpdate(void);
-	bool levelcheck (void);
-
 	void objectiveCheck(void);
 
+	void LevelUpdate (void);
 private:
 	LEVEL_STATE currentState;
-
 };
 
 #endif
