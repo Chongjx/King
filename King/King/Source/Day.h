@@ -31,13 +31,17 @@ public:
 
 	Time getCurrentTime(void);
 	float getdifficulty(void);
-	Level getCurrentLevel(void);
+	int getCurrentLevel(void);
 
 	void setCurrentTime(int Hr,int Min, int Day);
 	void setdifficulty(float );
-	void setCurrentLevel(Level level);
+	void setCurrentLevel(int level);
 
 	vector<Level> levels;
+
+	void CheckObjectives(void);
+	void UpdateLevel(void);
+
 
 	void Initicons(string name,Vector2 size,Vector2 pos ,string mesh);
 	Icon sun;
@@ -47,7 +51,7 @@ private:
 	Time currentTime;
 	float difficulty;
 	float gameSpeed;
-	Level currentLevel;
+	int currentLevel;
 };
 
 #endif

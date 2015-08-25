@@ -4,7 +4,7 @@
 #include "Scene2D.h"
 #include "TextTree.h"
 
-#define DEBUG true
+#define DEBUG false
 
 #include "Player.h"
 #include "Prisoners.h"
@@ -81,14 +81,11 @@ class SceneGame : public Scene2D
 	enum INTERACTIONS
 	{
 		NO_INTERACTION,
-		PICKUP_ITEM,
-		DROP_ITEM,
 		TALK_WITH_PRISONERS,
 		TALK_WITH_GUARDS,
 		OPEN_DOOR,
 		CLOSE_DOOR,
 		RUNNING_ON_THREADMILL,
-		ATTACK,
 		SLEEP,
 		MAX_INTERACTIONS,
 	};
@@ -136,6 +133,7 @@ public:
 	void RenderHUD(void);
 	void RenderGUI(void);
 	void RenderTime(void);
+	void RenderObjectives(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);

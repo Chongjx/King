@@ -4,7 +4,7 @@
 	[NAME] TimeSetting
 	{
 		[NAME] StartTime
-		[HOUR] 18
+		[HOUR] 08
 		[MIN] 00
 		[DAY] 1
 		[DIFFICULTY] 10

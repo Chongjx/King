@@ -1,7 +1,8 @@
 #include "Day.h"
 
 
-Day::Day(void)
+Day::Day(void):
+currentLevel(0)
 {
 }
 
@@ -23,14 +24,16 @@ void Day::UpdateDay(double dt,float gameSpeed)
 		currentTime.min = 0;
 		currentTime.hour = 0;
 		currentTime.day++;
+		levels[currentLevel].UpdateObjective("Explore");		
 	}
+	UpdateLevel();
 }
 
 Day::Time Day::getCurrentTime(void)
 {
 	return currentTime;
 }
-Level Day::getCurrentLevel(void)
+int Day::getCurrentLevel(void)
 {
 	return currentLevel;
 }
@@ -46,9 +49,9 @@ void Day::setdifficulty(float difficulty)
 	this->difficulty=difficulty;
 }
 
-void Day::setCurrentLevel(Level level)
+void Day::setCurrentLevel(int level)
 {
-currentLevel = level;
+	currentLevel = level;
 }
 
 void Day::Initicons(string name,Vector2 size,Vector2 pos ,string mesh)
@@ -64,5 +67,14 @@ void Day::Initicons(string name,Vector2 size,Vector2 pos ,string mesh)
 		moon.size = size;
 		moon.pos = pos;
 		moon.mesh = mesh;
+	}
+}
+
+void Day::UpdateLevel(void)
+{
+	levels[currentLevel].LevelUpdate();
+	if(levels[currentLevel].getLevelState() == Level::LEVEL_COMPLETED)
+	{
+		currentLevel++;
 	}
 }

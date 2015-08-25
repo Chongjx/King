@@ -11,8 +11,7 @@ class Level
 public:
 	enum LEVEL_STATE
 	{
-		LEVEL_UNASSIGNED,
-		LEVEL_INPROGRESS,
+		LEVEL_INPCOMPLETE,
 		LEVEL_COMPLETED,
 		MAX_STATE,
 	};
@@ -23,10 +22,10 @@ public:
 
 	void setState(LEVEL_STATE state);
 
-	LEVEL_STATE getObjectiveState(void) const;
+	LEVEL_STATE getLevelState(void) const;
 
 	void objectiveCheck(void);
-
+		void UpdateObjective(string name);
 	void LevelUpdate (void);
 private:
 	LEVEL_STATE currentState;

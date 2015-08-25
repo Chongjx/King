@@ -5,7 +5,7 @@ Title(""),
 	Get(false),
 	level(0),
 	keyItem(""),
-	currentState(OBJECTIVE_UNASSIGNED)
+	currentState(OBJECTIVE_INPCOMPLETE)
 {
 }
 

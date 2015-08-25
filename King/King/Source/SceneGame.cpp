@@ -122,6 +122,7 @@ void SceneGame::Render(void)
 			RenderLevel();
 			RenderTime();
 			RenderCharacters();
+			RenderObjectives();
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -141,6 +142,7 @@ void SceneGame::Render(void)
 			RenderLevel();
 			RenderTime();
 			RenderCharacters();
+			RenderObjectives();
 			break;
 		}
 	case EXIT_STATE:
@@ -1280,14 +1282,14 @@ void SceneGame::InitObjective(string config)
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
 				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+					if (attriName == "LEVEL")
 					{
-						Attribute tempAttri = *attri;
-						string attriName = tempAttri.name;
-						string attriValue = tempAttri.value;
-						if (attriName == "LEVEL")
-						{
-							day.levels.resize(stoi(attriValue));
-						}
+						day.levels.resize(stoi(attriValue));
+					}
 				}
 				childbranch->printBranch();
 				Level templevel;
@@ -1721,7 +1723,6 @@ void SceneGame::UpdateInGame(double dt)
 void SceneGame::UpdatePlayer(double dt)
 {
 	static bool movable = true;
-
 	movable = true;
 	if (player->getState() == StateMachine::IDLE_STATE && currentInteraction != SLEEP)
 	{
@@ -1731,11 +1732,9 @@ void SceneGame::UpdatePlayer(double dt)
 			{
 				player->setDir(Vector2(0, 1));
 			}
-
 			else
 			{
 				player->setTargetPos(Vector2(player->getTargetPos().x, player->getTargetPos().y + TILESIZE));
-
 				if (getKey("ToggleShift") && !player->GetRecovering())
 				{
 					player->changeAni(StateMachine::RUN_STATE);
@@ -1746,18 +1745,15 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 		}
-
 		if (getKey("Down"))
 		{
 			if (player->getDir().y != -1)
 			{
 				player->setDir(Vector2(0, -1));
 			}
-
 			else
 			{
 				player->setTargetPos(Vector2(player->getTargetPos().x, player->getTargetPos().y - TILESIZE));
-
 				if (getKey("ToggleShift") && !player->GetRecovering())
 				{
 					player->changeAni(StateMachine::RUN_STATE);
@@ -1768,18 +1764,15 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 		}
-
 		if (getKey("Left"))
 		{
 			if (player->getDir().x != -1)
 			{
 				player->setDir(Vector2(-1, 0));
 			}
-
 			else
 			{
 				player->setTargetPos(Vector2(player->getTargetPos().x - TILESIZE, player->getTargetPos().y));
-
 				if (getKey("ToggleShift") && !player->GetRecovering())
 				{
 					player->changeAni(StateMachine::RUN_STATE);
@@ -1790,18 +1783,15 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 		}
-
 		if (getKey("Right"))
 		{
 			if (player->getDir().x != 1)
 			{
 				player->setDir(Vector2(1, 0));
 			}
-
 			else
 			{
 				player->setTargetPos(Vector2(player->getTargetPos().x + TILESIZE, player->getTargetPos().y));
-
 				if (getKey("ToggleShift") && !player->GetRecovering())
 				{
 					player->changeAni(StateMachine::RUN_STATE);
@@ -1813,7 +1803,6 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 	}
-
 	for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
 	{
 		if (layout[currentLocation].specialTiles[special].TileName == "Threadmill")
@@ -1827,7 +1816,6 @@ void SceneGame::UpdatePlayer(double dt)
 				currentInteraction = NO_INTERACTION;
 			}
 		}
-
 		if (layout[currentLocation].specialTiles[special].TileName == "Bed")
 		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(sceneHeight-player->getPos().y - TILESIZE)/TILESIZE][(player->getPos().x)/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
@@ -1835,7 +1823,7 @@ void SceneGame::UpdatePlayer(double dt)
 				if(getKey("Enter"))
 				{
 					currentInteraction = SLEEP;
-					std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
+					std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y - TILESIZE) / TILESIZE << std::endl;
 				}
 				else
 				{
@@ -1847,14 +1835,50 @@ void SceneGame::UpdatePlayer(double dt)
 				currentInteraction = NO_INTERACTION;
 			}
 		}
+		if (layout[currentLocation].specialTiles[special].TileName == "CellDoorClosed")
+		{
+			Vector2 checkPos;
+			checkPos.y = (sceneHeight-player->getPos().y - TILESIZE)/TILESIZE;
+			checkPos.x = (player->getPos().x)/TILESIZE;
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[checkPos.y][checkPos.x] != layout[currentLocation].specialTiles[special].TileID)
+			{
+				if(player->getDir().y == -1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[checkPos.y + 1][checkPos.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("Enter"))
+						{
+							currentInteraction = OPEN_DOOR;
+							break;
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+						}
+					}
+				}
+				else if(player->getDir().y == 1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[checkPos.y - 1][checkPos.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("Enter"))
+						{
+							currentInteraction = OPEN_DOOR;
+							break;
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+						}
+					}
+				}
+			}
+		}
 	}
-
-
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
-
-	//std::cout << player->getPos() << std::endl;
+	//std::cout << player->getPos() << std::endl
 }
 
 void SceneGame::UpdateAI(double dt)
@@ -1955,22 +1979,18 @@ void SceneGame::UpdateInteractions(void)
 	case SLEEP:
 		gameSpeed = 50;
 		break;
-	case PICKUP_ITEM:;
-		break;
-	case DROP_ITEM:;
-		break;
 	case TALK_WITH_PRISONERS:;
 		break;
 	case TALK_WITH_GUARDS:;
 		break;
-	case OPEN_DOOR:;
+	case OPEN_DOOR:
+		std::cout << "Open Door" << std::endl;
 		break;
-	case CLOSE_DOOR:;
+	case CLOSE_DOOR:
+		std::cout << "Close Door" << std::endl;
 		break;
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
-		break;
-	case ATTACK:;
 		break;
 	default:;
 		break;
@@ -2032,6 +2052,41 @@ void SceneGame::RenderInterface(void)
 		}
 	}
 
+	glDisable(GL_DEPTH_TEST);
+}
+
+void SceneGame::RenderObjectives(void)
+{
+	int y_Space = specialFontSize*2;
+	std::ostringstream ss;
+	ss.precision(1);
+	ss <<"Objectives"<<endl;
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize*0.5, 0 ,sceneHeight - specialFontSize - y_Space);
+	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
+	{
+		for (vector<Objective>::iterator objective = level->objectives.begin(); objective !=  level->objectives.end(); objective++)
+		{
+			y_Space+=specialFontSize;
+			if(objective->getlevel() == day.getCurrentLevel())
+			{
+				if(objective->getObjectiveState() == objective->OBJECTIVE_INPCOMPLETE)
+				{
+					std::ostringstream ss;
+					ss.precision(1);
+					ss << objective->getTitle()<<endl;
+					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("DarkGrey"), specialFontSize*0.5, 0 ,sceneHeight - specialFontSize - y_Space);
+				}
+				else if(objective->getObjectiveState() == objective->OBJECTIVE_COMPLETED)
+				{
+					std::ostringstream ss;
+					ss.precision(1);
+					ss << objective->getTitle()<<endl;
+					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Green"), specialFontSize*0.5, 0 ,sceneHeight - specialFontSize - y_Space);
+				}
+			}
+		}
+		y_Space = specialFontSize*2;
+	}
 	glDisable(GL_DEPTH_TEST);
 }
 
@@ -2105,7 +2160,7 @@ void SceneGame::RenderCharacters(void)
 		if (tempGuard->getRender())
 		{
 			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-		//		Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+			//		Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
@@ -2143,7 +2198,7 @@ void SceneGame::RenderTime(void)
 		ss2<< "Day: " << day.getCurrentTime().day;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
-	
+
 		if (DEBUG)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.moon.size, day.moon.pos);
