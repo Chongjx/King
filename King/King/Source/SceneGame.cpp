@@ -122,6 +122,7 @@ void SceneGame::Render(void)
 			RenderLevel();
 			RenderTime();
 			RenderCharacters();
+			RenderObjectives();
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -141,6 +142,7 @@ void SceneGame::Render(void)
 			RenderLevel();
 			RenderTime();
 			RenderCharacters();
+			RenderObjectives();
 			break;
 		}
 	case EXIT_STATE:
@@ -2030,6 +2032,41 @@ void SceneGame::RenderInterface(void)
 		}
 	}
 
+	glDisable(GL_DEPTH_TEST);
+}
+
+void SceneGame::RenderObjectives(void)
+{
+	int y_Space = specialFontSize*2;
+	std::ostringstream ss;
+	ss.precision(1);
+	ss <<"Objectives"<<endl;
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize*0.5, 0 ,sceneHeight - specialFontSize - y_Space);
+	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
+	{
+		for (vector<Objective>::iterator objective = level->objectives.begin(); objective !=  level->objectives.end(); objective++)
+		{
+			y_Space+=specialFontSize;
+			if(objective->getlevel() == day.getCurrentLevel())
+			{
+				if(objective->getObjectiveState() == objective->OBJECTIVE_INPCOMPLETE)
+				{
+					std::ostringstream ss;
+					ss.precision(1);
+					ss << objective->getTitle()<<endl;
+					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("DarkGrey"), specialFontSize*0.5, 0 ,sceneHeight - specialFontSize - y_Space);
+				}
+				else if(objective->getObjectiveState() == objective->OBJECTIVE_COMPLETED)
+				{
+					std::ostringstream ss;
+					ss.precision(1);
+					ss << objective->getTitle()<<endl;
+					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Green"), specialFontSize*0.5, 0 ,sceneHeight - specialFontSize - y_Space);
+				}
+			}
+		}
+		y_Space = specialFontSize*2;
+	}
 	glDisable(GL_DEPTH_TEST);
 }
 

@@ -3,53 +3,63 @@
 	{
 		[NAME] Level
 		{
-			[LEVEL] 5
+			[LEVEL] 5		
+			{
+			[DISCRIPTION] Explore
+			[GET] false
+			[LEVEL] 0
+			[KEYITEM] Nil
+			}	
+
+			{
+			[DISCRIPTION] Get_Sharp_Item
+			[GET] false
+			[LEVEL] 1
+			[KEYITEM] Fork
+			}
+			
+			{
+			[DISCRIPTION] Find_Light_Source
+			[GET] false
+			[LEVEL] 1
+			[KEYITEM] Matches
+			}
+	
+			
+			{
+			[DISCRIPTION] Find_Weapon
+			[GET] false
+			[LEVEL] 2				
+			[KEYITEM] Dumbell
+			}
+			{
+			[DISCRIPTION] Find_Key
+			[GET] false
+			[LEVEL] 2				
+			[KEYITEM] Key
+			}
+			
+			{
+			[DISCRIPTION] Get_Card_Key
+			[GET] false
+			[LEVEL] 3
+			[KEYITEM] Card Key
+			}
 			
 			
-				{
-				[DISCRIPTION] Get a Sharp Object
-				[GET] false
-				[LEVEL] 0
-				[KEYITEM] Fork
-				}
+			{
+			[DISCRIPTION] Find_Disguise
+			[GET] false
+			[LEVEL] 3
+			[KEYITEM] Guard Uniform
+			}
 			
-				{
-				[DISCRIPTION] Ob2
-				[GET] false
-				[LEVEL] 0
-				[KEYITEM] Key
-				}
-		
-			
-			
-				{
-				[DISCRIPTION] Ob3
-				[GET] false
-				[LEVEL] 1				
-				[KEYITEM] Key
-				}
-			
-				{
-				[DISCRIPTION] Ob4
-				[GET] false
-				[LEVEL] 2
-				[KEYITEM] Key
-				}
-			
-			
-				{
-				[DISCRIPTION] Ob5
-				[GET] false
-				[LEVEL] 3
-				[KEYITEM] Key
-				}
-			
-				{
-				[DISCRIPTION] ESCAPE
-				[GET] false
-				[LEVEL] 4
-				[KEYITEM] Nil
-				}
+			{
+			[DISCRIPTION] ESCAPE
+			[GET] false
+			[LEVEL] 4
+			[KEYITEM] Nil
+			}
 			
 		}
 

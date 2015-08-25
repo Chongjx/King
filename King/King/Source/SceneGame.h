@@ -4,7 +4,7 @@
 #include "Scene2D.h"
 #include "TextTree.h"
 
-#define DEBUG true
+#define DEBUG false
 
 #include "Player.h"
 #include "Prisoners.h"
@@ -133,6 +133,7 @@ public:
 	void RenderHUD(void);
 	void RenderGUI(void);
 	void RenderTime(void);
+	void RenderObjectives(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
