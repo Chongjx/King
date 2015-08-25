@@ -317,8 +317,8 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-				std::cout << nextTile << std::endl;
-				std::cout << currentRoom.specialTiles[special].TileID << std::endl;
+				//std::cout << nextTile << std::endl;
+				//std::cout << currentRoom.specialTiles[special].TileID << std::endl;
 
 				if (nextTile == currentRoom.specialTiles[special].TileID)
 				{
