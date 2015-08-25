@@ -80,7 +80,7 @@ public:
 								{
 									Door tempDoor;
 									tempDoor.status = false;
-									tempDoor.pos.Set(col, row);
+									tempDoor.pos.Set((float)col, (float)row);
 									this->doors.push_back(tempDoor);
 								}	
 							}
