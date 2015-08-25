@@ -42,6 +42,7 @@ public:
 	void Initicons(string name,Vector2 size,Vector2 pos ,string mesh);
 	Icon sun;
 	Icon moon;
+
 private:
 	Time currentTime;
 	float difficulty;

@@ -1255,6 +1255,16 @@ void SceneGame::InitObjective(string config)
 		{
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+					{
+						Attribute tempAttri = *attri;
+						string attriName = tempAttri.name;
+						string attriValue = tempAttri.value;
+						if (attriName == "LEVEL")
+						{
+							day.levels.resize(stoi(attriValue));
+						}
+				}
 				childbranch->printBranch();
 				Level templevel;
 				//number branch
@@ -1288,9 +1298,8 @@ void SceneGame::InitObjective(string config)
 					}
 					Objective tempobjective;
 					tempobjective.initObjctives(Title,Get,level,keyItem);
-					templevel.objectives.push_back(tempobjective);
+					day.levels[level].objectives.push_back(tempobjective);
 				}
-				day.levels.push_back(templevel);
 			}
 		}
 	}
@@ -1301,8 +1310,6 @@ void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
 	{
-
-
 		for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
 		{
 			irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
@@ -1998,7 +2005,7 @@ void SceneGame::RenderLevel(void)
 				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 				{
 					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
-					
+
 					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
 						break;
 					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
@@ -2037,6 +2044,9 @@ void SceneGame::RenderCharacters(void)
 {
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
+	//Render2DMesh(findMesh("GEO_FOV1"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+	//std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
+
 	if (DEBUG)
 	{
 		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
@@ -2049,6 +2059,7 @@ void SceneGame::RenderCharacters(void)
 		if (tempGuard->getRender())
 		{
 			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+		//		Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
@@ -2080,14 +2091,13 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize, 0,sceneHeight - specialFontSize );
-
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Darkblue"), specialFontSize, 0,sceneHeight - specialFontSize );
 		std::ostringstream ss2;
 		ss2.precision(1);
-		ss2<< day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,day.moon.pos.x+ specialFontSize, day.moon.pos.y);
-
+		ss2<< "Day: " << day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
+	
 		if (DEBUG)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.moon.size, day.moon.pos);
@@ -2104,8 +2114,8 @@ void SceneGame::RenderTime(void)
 
 		std::ostringstream ss2;
 		ss2.precision(1);
-		ss2<< day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,day.sun.pos.x + specialFontSize, day.sun.pos.y );
+		ss2<< "Day:" << day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
