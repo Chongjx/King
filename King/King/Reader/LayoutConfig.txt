@@ -34,12 +34,12 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorClosed] 266
-				[PrisonDoorOpened] 307
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[CellDoorClosed] 266
+				[CellDoorOpened] 307
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[Bed] 264
 				[LeftChair] 343
 				[RightChair] 344
@@ -86,10 +86,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[Threadmill] 184
 			}
 			[Directory] Image\\Map\\exerciseRoomCollision.csv
@@ -127,10 +127,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -169,10 +169,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 			}
 			[Directory] Image\\Map\\showerRoomCollision.csv
 		}
@@ -209,10 +209,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -251,10 +251,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -293,10 +293,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -335,10 +335,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -377,10 +377,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -419,10 +419,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
 				[SwitchOn] 439
 				[SwitchOff] 398
 				[LeftChair] 343
@@ -463,10 +463,11 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[CellDoorLeftClosed] 478
-				[CellDoorRightClosed] 479
-				[CellDoorLeftOpened] 474
-				[CellDoorRightOpened] 475
+				[PrisonDoorLeftClosed] 478
+				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftOpened] 474
+				[PrisonDoorRightOpened] 475
+				[Exit] 0
 
 			}
 			[Directory] Image\\Map\\courtyardCollision.csv

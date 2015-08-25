@@ -1160,6 +1160,7 @@ void SceneGame::InitLevel(string config)
 	for (unsigned i = 0; i < layout.size(); ++i)
 	{
 		layout[i].rearrange();
+		layout[i].locateDoors();
 	}
 }
 
@@ -1691,7 +1692,7 @@ void SceneGame::UpdatePlayer(double dt)
 	static bool movable = true;
 
 	movable = true;
-	if (player->getState() == StateMachine::IDLE_STATE || player->getState() == StateMachine::RUN_STATE)
+	if (player->getState() == StateMachine::IDLE_STATE)
 	{
 		if (getKey("Up"))
 		{
@@ -1712,8 +1713,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					player->changeAni(StateMachine::WALK_STATE);
 				}
-
-				//std::cout << player->getPos().x << " , " << player->getPos().y << "\n";
 			}
 		}
 
@@ -1739,7 +1738,7 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		if (getKey("Left") && currentInteraction != RUNNING_ON_THREADMILL)
+		if (getKey("Left"))
 		{
 			if (player->getDir().x != -1)
 			{
@@ -1791,7 +1790,6 @@ void SceneGame::UpdatePlayer(double dt)
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(sceneHeight-player->getPos().y - TILESIZE)/TILESIZE][(player->getPos().x)/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
-				std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
 			}
 			else
 			{
@@ -1803,6 +1801,10 @@ void SceneGame::UpdatePlayer(double dt)
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
+
+	//std::cout << player->getPos() << std::endl;
+
+	std::cout << player->collideWithDoor() << std::endl;
 }
 
 void SceneGame::UpdateAI(double dt)
@@ -1898,7 +1900,6 @@ void SceneGame::UpdateInteractions(void)
 	switch (currentInteraction)
 	{
 	case NO_INTERACTION:
-		std::cout << "No Interaction" << std::endl;
 		break;
 	case PICKUP_ITEM:;
 		break;
@@ -1924,9 +1925,9 @@ void SceneGame::UpdateInteractions(void)
 
 void SceneGame::UpdateThreadmill(void)
 {
-	std::cout << "Running on threadmill" << std::endl;
-	player->setDir(Vector2(-1,0));
-	player->changeAni(StateMachine::RUN_STATE);
+	//std::cout << "Running on threadmill" << std::endl;
+	player->setDir(Vector2(-1, 0));
+	player->setAni(Character::RUN_LEFT);
 	if(getKey("Right"))
 	{
 		player->setDir(Vector2(1,0));
@@ -2034,11 +2035,7 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
-	// Render player
-	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-
-	//std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
 
 	if (DEBUG)
 	{

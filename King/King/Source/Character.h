@@ -69,6 +69,7 @@ public:
 	void setTargetPos(Vector2 targetPos);
 	void setState(StateMachine::STATE unitState);
 	void setSprite(SpriteAnimation *sa);
+	void setAni(SPRITE_ANI currentAni);
 
 	Vector2 getPos(void) const;
 	Vector2 getDir(void) const;
@@ -84,6 +85,9 @@ public:
 
 	Room getRoom(void);
 	virtual void changeAni(StateMachine::STATE unitState);
+
+	bool collideWithDoor(void);
+	bool changeRoom(void);
 
 protected:
 	// Movement data
