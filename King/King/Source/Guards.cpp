@@ -1,9 +1,7 @@
 #include "Guards.h"
 
 Guards::Guards(void)
-	: guard_wayPoint(0,0)
 {
-	guardList_WP0.clear();
 }
 
 Guards::~Guards(void)
@@ -27,7 +25,6 @@ void Guards::Update(double dt)
 		AI::Update(dt);
 	}
 }
-
 
 
 void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)

@@ -28,12 +28,7 @@ private:
 
 	// StateMachine object
 	Guards_StateMachine guardStateMachine;
-	
-	// Store guards waypoint to pushback in list
-	Vector2 guard_wayPoint;
 
-	// Vector of waypoints for guards
-	vector<Vector2> guardList_WP0;
 };
 
 #endif

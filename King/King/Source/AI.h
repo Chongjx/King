@@ -17,7 +17,7 @@ public:
 	void Update(double dt);
 
 	// Set destination for AI
-	void SetDestination(float x, float y);
+	void SetDestination(void);
 	// Get destination for AI
 	Vector2 GetDestination(void);
 
@@ -28,10 +28,18 @@ public:
 	// Get update status
 	bool GetUpdate(void);
 
+	// Function for AI path finding
+	bool CheckDestination(void);
+	void PathFinding(int worldWidth, int worldHeight, int tileSize, double dt);
+
 private:
 
 	Vector2 destination;
 	bool updating;
+
+	//Path finding open close list
+	vector<Vector2> OpenList;
+	vector<Vector2> CloseList;
 
 };
 

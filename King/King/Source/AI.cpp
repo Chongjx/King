@@ -31,15 +31,46 @@ bool AI::GetUpdate(void)
 	return updating;
 }
 
-void AI::SetDestination(float x, float y)
+void AI::SetDestination(void)
 {
-	this->destination.x = x;
-	this->destination.y = y;
+	destination.x = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth());
+	destination.y = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight());
+
+	CheckDestination();
+
+	if(CheckDestination() == false)
+	{
+		SetDestination();
+	}
 }
 	
 Vector2 AI::GetDestination(void)
 {
 	return destination;
+}
+
+bool AI::CheckDestination(void)
+{
+	for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
+	{
+		if (currentRoom.specialTiles[special].TileName == "A" ||
+			currentRoom.specialTiles[special].TileName == "B" ||
+			currentRoom.specialTiles[special].TileName == "C"  )
+		{
+			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[destination.y][destination.x] == currentRoom.specialTiles[special].TileID)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void AI::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
+{
+	Vector2 targetedLocation;
+	targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 }
 
 void AI::changeAni(StateMachine::STATE unitState)

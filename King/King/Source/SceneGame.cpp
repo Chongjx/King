@@ -1965,6 +1965,7 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempPrisoner->setRender(false);
 		}
+		tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->Update(dt);
 	}
@@ -1982,6 +1983,8 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempGuard->setRender(false);
 		}
+
+		tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->Update(dt);
 	}
