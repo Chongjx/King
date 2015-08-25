@@ -1935,10 +1935,6 @@ void SceneGame::UpdateInteractions(void)
 		std::cout << "Sleeping" << std::endl;
 		gameSpeed = 50;
 		break;
-	case PICKUP_ITEM:;
-		break;
-	case DROP_ITEM:;
-		break;
 	case TALK_WITH_PRISONERS:;
 		break;
 	case TALK_WITH_GUARDS:;
@@ -1949,8 +1945,6 @@ void SceneGame::UpdateInteractions(void)
 		break;
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
-		break;
-	case ATTACK:;
 		break;
 	default:;
 		break;
