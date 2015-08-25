@@ -12,6 +12,13 @@ struct SpecialTiles
 	int TileID;
 };
 
+struct Door
+{
+	// true for open, false for close
+	bool status;
+	Vector2 pos;
+};
+
 struct Room
 {
 public:
@@ -29,6 +36,7 @@ public:
 	}
 
 	int ID;
+	string name;
 	vector<TileMap> roomLayout;
 	vector<SpecialTiles> specialTiles;
 

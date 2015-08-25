@@ -1000,6 +1000,7 @@ void SceneGame::InitLevel(string config)
 	{
 		TileMap::MAP_TYPE tempType;
 		tempType = TileMap::MAX_TYPE;
+		string roomName = branch->branchName;
 
 		enum MAP_VAR
 		{
@@ -1075,6 +1076,9 @@ void SceneGame::InitLevel(string config)
 			}
 		}
 
+		layout[mapVar[VAR_ID]].name = roomName;
+		layout[mapVar[VAR_ID]].ID = mapVar[VAR_ID];
+
 		if (branch->childBranches.size() != 0)
 		{
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
@@ -1135,6 +1139,11 @@ void SceneGame::InitLevel(string config)
 								}
 							}
 						}
+
+						else if (attriValue == "WayPoint")
+						{
+							tempType = TileMap::TYPE_WAYPOINT;
+						}
 					}
 				}
 
@@ -1143,7 +1152,6 @@ void SceneGame::InitLevel(string config)
 				tempMap.LoadMap(directory);
 				tempMap.setMapType(tempType);
 
-				layout[mapVar[VAR_ID]].ID = mapVar[VAR_ID];
 				layout[mapVar[VAR_ID]].roomLayout.push_back(tempMap);
 			}
 		}
@@ -1898,6 +1906,8 @@ void SceneGame::UpdateInteractions(void)
 	case CLOSE_DOOR:;
 		break;
 	case RUNNING_ON_THREADMILL:
+		player->setDir(Vector2(-1, 0));
+		player->changeAni(StateMachine::RUN_STATE);
 		std::cout << "Running on threadmill" << std::endl;
 		break;
 	case ATTACK:;
@@ -2003,6 +2013,7 @@ void SceneGame::RenderCharacters(void)
 	// Render player
 	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+
 	//std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
 
 	if (DEBUG)

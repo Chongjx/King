@@ -3,7 +3,7 @@
 {
 	[NAME] LayoutConfig
 	{
-		[NAME] MainRoom
+		[NAME] CellArea
 		[ID] 0
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
@@ -40,12 +40,18 @@
 				[CellDoorRightClosed] 479
 				[CellDoorLeftOpened] 474
 				[CellDoorRightOpened] 475
-				[Threadmill] 184
 				[Bed] 264
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			[Directory] Image\\Map\\mainCellCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\mainCellWayPoint.csv
 		}
 	}
 	{
@@ -80,23 +86,17 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorClosed] 266
-				[PrisonDoorOpened] 307
 				[CellDoorLeftClosed] 478
 				[CellDoorRightClosed] 479
 				[CellDoorLeftOpened] 474
 				[CellDoorRightOpened] 475
 				[Threadmill] 184
-				[Bed] 264
-				[LeftChair] 343
-				[RightChair] 344
 			}
 			[Directory] Image\\Map\\exerciseRoomCollision.csv
 		}
-		
 	}
 	{
-		[NAME] CanteenRoom
+		[NAME] Canteen
 		[ID] 2
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
@@ -127,14 +127,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorClosed] 266
-				[PrisonDoorOpened] 307
 				[CellDoorLeftClosed] 478
 				[CellDoorRightClosed] 479
 				[CellDoorLeftOpened] 474
 				[CellDoorRightOpened] 475
-				[Threadmill] 184
-				[Bed] 264
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -173,22 +169,16 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorClosed] 266
-				[PrisonDoorOpened] 307
 				[CellDoorLeftClosed] 478
 				[CellDoorRightClosed] 479
 				[CellDoorLeftOpened] 474
 				[CellDoorRightOpened] 475
-				[Threadmill] 184
-				[Bed] 264
-				[LeftChair] 343
-				[RightChair] 344
 			}
 			[Directory] Image\\Map\\showerRoomCollision.csv
 		}
 	}
 	{
-		[NAME] MeetingRoom
+		[NAME] MainCorridor
 		[ID] 4
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
@@ -219,14 +209,10 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorClosed] 266
-				[PrisonDoorOpened] 307
 				[CellDoorLeftClosed] 478
 				[CellDoorRightClosed] 479
 				[CellDoorLeftOpened] 474
 				[CellDoorRightOpened] 475
-				[Threadmill] 184
-				[Bed] 264
 				[LeftChair] 343
 				[RightChair] 344
 			}
@@ -234,8 +220,220 @@
 		}
 	}
 	{
+		[NAME] GuardRoom
+		[ID] 5
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 10 
+		# 32 * 160		
+		[MapHeight] 6
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 0
+		[EnableYScroll] 0
+		[ScrollSpeed] 0
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\fakeRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\fakeRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+	}
+	{
+		[NAME] GuardRoom
+		[ID] 6
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 10 
+		# 32 * 160		
+		[MapHeight] 6
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 0
+		[EnableYScroll] 0
+		[ScrollSpeed] 0
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\fakeRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\fakeRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+	}
+	{
+		[NAME] GuardRoom
+		[ID] 7
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 10 
+		# 32 * 160		
+		[MapHeight] 6
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 0
+		[EnableYScroll] 0
+		[ScrollSpeed] 0
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\fakeRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\fakeRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+	}
+	{
+		[NAME] GuardRoom
+		[ID] 8
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 10 
+		# 32 * 160		
+		[MapHeight] 6
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 0
+		[EnableYScroll] 0
+		[ScrollSpeed] 0
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\fakeRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\fakeRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+	}
+	{
+		[NAME] CameraRoom
+		[ID] 9
+		[BackgroundID] 0
+		# ScreenWidth & ScreenHeight should be same as screen resolution
+		[ScreenWidth] 1024
+		[ScreenHeight] 800
+		# 32 * 256
+		[MapWidth] 10 
+		# 32 * 160		
+		[MapHeight] 7
+		[MapOffsetX] 0
+		[MapOffsetY] 0
+		[MapFineOffsetX] 0
+		[MapFineOffsetY] 0
+		[EnableXScroll] 0
+		[EnableYScroll] 0
+		[ScrollSpeed] 0
+		[TileSize] 32
+		{
+			[Type] Visual
+			[Directory] Image\\Map\\cameraRoom.csv
+		}
+		{
+			[Type] Back
+			[Directory] Image\\Map\\cameraRoomBack.csv
+		}
+		{
+			[Type] Collision
+			{
+				[NAME] SpecialTiles
+				[Wall] 678
+				[CellDoorLeftClosed] 478
+				[CellDoorRightClosed] 479
+				[CellDoorLeftOpened] 474
+				[CellDoorRightOpened] 475
+				[SwitchOn] 439
+				[SwitchOff] 398
+				[LeftChair] 343
+				[RightChair] 344
+			}
+			[Directory] Image\\Map\\cameraRoomCollision.csv
+		}
+	}
+	{
 		[NAME] Courtyard
-		[ID] 11
+		[ID] 10
 		[BackgroundID] 0
 		# ScreenWidth & ScreenHeight should be same as screen resolution
 		[ScreenWidth] 1024
@@ -265,40 +463,13 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorClosed] 266
-				[PrisonDoorOpened] 307
 				[CellDoorLeftClosed] 478
 				[CellDoorRightClosed] 479
 				[CellDoorLeftOpened] 474
 				[CellDoorRightOpened] 475
-				[Threadmill] 184
-				[Bed] 264
-				[LeftChair] 343
-				[RightChair] 344
+
 			}
 			[Directory] Image\\Map\\courtyardCollision.csv
 		}
 	}
-	#{
-	#	[NAME] MainRoom
-	#	[Type] WayPoint
-	#	[ID] 0
-	#	[BackgroundID] 0
-	#	# ScreenWidth & ScreenHeight should be same as screen resolution
-	#	[ScreenWidth] 1024
-	#	[ScreenHeight] 800
-	#	# 32 * 256
-	#	[MapWidth] 177
-	#	# 32 * 160		
-	#	[MapHeight] 70
-	#	[MapOffsetX] 0
-	#	[MapOffsetY] 0
-	#	[MapFineOffsetX] 0
-	#	[MapFineOffsetY] 0
-	#	[EnableXScroll] true
-	#	[EnableYScroll] true
-	#	[ScrollSpeed] 500
-	#	[TileSize] 32
-	#	[Directory] Image\\Map\mainCellWayPoint.csv
-	#}
 }
