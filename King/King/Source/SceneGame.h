@@ -80,6 +80,7 @@ class SceneGame : public Scene2D
 
 	enum INTERACTIONS
 	{
+		NO_INTERACTION,
 		PICKUP_ITEM,
 		DROP_ITEM,
 		TALK_WITH_PRISONERS,
@@ -124,6 +125,7 @@ void InitObjective(string config);
 	void UpdateAI(double dt);
 	void UpdateMap(void);
 	void UpdateInteractions(void);
+	void UpdateThreadmill(void);
 
 	void changeScene(GAME_STATE nextState);
 
