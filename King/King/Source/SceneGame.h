@@ -89,6 +89,7 @@ class SceneGame : public Scene2D
 		CLOSE_DOOR,
 		RUNNING_ON_THREADMILL,
 		ATTACK,
+		SLEEP,
 		MAX_INTERACTIONS,
 	};
 
@@ -113,7 +114,7 @@ public:
 	void InitPlayer(string config);
 	void InitInteractions(string config);
 	void InitAI(string config);
-void InitObjective(string config);
+	void InitObjective(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);

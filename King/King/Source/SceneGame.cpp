@@ -1691,7 +1691,7 @@ void SceneGame::UpdatePlayer(double dt)
 	static bool movable = true;
 
 	movable = true;
-	if (player->getState() == StateMachine::IDLE_STATE || player->getState() == StateMachine::RUN_STATE)
+	if (player->getState() == StateMachine::IDLE_STATE && currentInteraction != SLEEP)
 	{
 		if (getKey("Up"))
 		{
@@ -1739,7 +1739,7 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		if (getKey("Left") && currentInteraction != RUNNING_ON_THREADMILL)
+		if (getKey("Left"))
 		{
 			if (player->getDir().x != -1)
 			{
@@ -1798,7 +1798,28 @@ void SceneGame::UpdatePlayer(double dt)
 				currentInteraction = NO_INTERACTION;
 			}
 		}
+
+		if (layout[currentLocation].specialTiles[special].TileName == "Bed")
+		{
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(sceneHeight-player->getPos().y - TILESIZE)/TILESIZE][(player->getPos().x)/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
+			{
+				if(getKey("Enter"))
+				{
+					currentInteraction = SLEEP;
+					std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
+				}
+				else
+				{
+					currentInteraction = NO_INTERACTION;
+				}
+			}
+			else
+			{
+				currentInteraction = NO_INTERACTION;
+			}
+		}
 	}
+
 
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
@@ -1899,6 +1920,11 @@ void SceneGame::UpdateInteractions(void)
 	{
 	case NO_INTERACTION:
 		std::cout << "No Interaction" << std::endl;
+		gameSpeed = 10;
+		break;
+	case SLEEP:
+		std::cout << "Sleeping" << std::endl;
+		gameSpeed = 50;
 		break;
 	case PICKUP_ITEM:;
 		break;
@@ -1926,19 +1952,6 @@ void SceneGame::UpdateThreadmill(void)
 {
 	std::cout << "Running on threadmill" << std::endl;
 	player->setDir(Vector2(-1,0));
-	player->changeAni(StateMachine::RUN_STATE);
-	if(getKey("Right"))
-	{
-		player->setDir(Vector2(1,0));
-	}
-	else if(getKey("Up"))
-	{
-		player->setDir(Vector2(0,1));
-	}
-	else if(getKey("Down"))
-	{
-		player->setDir(Vector2(0,-1));
-	}
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
