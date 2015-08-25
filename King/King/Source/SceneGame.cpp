@@ -1160,6 +1160,7 @@ void SceneGame::InitLevel(string config)
 	for (unsigned i = 0; i < layout.size(); ++i)
 	{
 		layout[i].rearrange();
+		layout[i].locateDoors();
 	}
 }
 
@@ -1254,6 +1255,16 @@ void SceneGame::InitObjective(string config)
 		{
 			for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 			{
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+					{
+						Attribute tempAttri = *attri;
+						string attriName = tempAttri.name;
+						string attriValue = tempAttri.value;
+						if (attriName == "LEVEL")
+						{
+							day.levels.resize(stoi(attriValue));
+						}
+				}
 				childbranch->printBranch();
 				Level templevel;
 				//number branch
@@ -1287,9 +1298,8 @@ void SceneGame::InitObjective(string config)
 					}
 					Objective tempobjective;
 					tempobjective.initObjctives(Title,Get,level,keyItem);
-					templevel.objectives.push_back(tempobjective);
+					day.levels[level].objectives.push_back(tempobjective);
 				}
-				day.levels.push_back(templevel);
 			}
 		}
 	}
@@ -1300,8 +1310,6 @@ void SceneGame::InitSound(string config)
 {
 	Branch soundBranch = TextTree::FileToRead(config);
 	{
-
-
 		for (vector<Branch>::iterator branch = soundBranch.childBranches.begin(); branch != soundBranch.childBranches.end(); ++branch)
 		{
 			irrklang::ISoundEngine* Soundengine = irrklang::createIrrKlangDevice();
@@ -1712,8 +1720,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					player->changeAni(StateMachine::WALK_STATE);
 				}
-
-				//std::cout << player->getPos().x << " , " << player->getPos().y << "\n";
 			}
 		}
 
@@ -1791,7 +1797,6 @@ void SceneGame::UpdatePlayer(double dt)
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(sceneHeight-player->getPos().y - TILESIZE)/TILESIZE][(player->getPos().x)/TILESIZE] == layout[currentLocation].specialTiles[special].TileID)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
-				std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
 			}
 			else
 			{
@@ -1824,6 +1829,10 @@ void SceneGame::UpdatePlayer(double dt)
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
+
+	//std::cout << player->getPos() << std::endl;
+
+	std::cout << player->collideWithDoor() << std::endl;
 }
 
 void SceneGame::UpdateAI(double dt)
@@ -1951,7 +1960,20 @@ void SceneGame::UpdateInteractions(void)
 void SceneGame::UpdateThreadmill(void)
 {
 	std::cout << "Running on threadmill" << std::endl;
-	player->setDir(Vector2(-1,0));
+	player->setDir(Vector2(-1, 0));
+	player->setAni(Character::RUN_LEFT);
+	if(getKey("Right"))
+	{
+		player->setDir(Vector2(1,0));
+	}
+	else if(getKey("Up"))
+	{
+		player->setDir(Vector2(0,1));
+	}
+	else if(getKey("Down"))
+	{
+		player->setDir(Vector2(0,-1));
+	}
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)
@@ -2010,7 +2032,7 @@ void SceneGame::RenderLevel(void)
 				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 				{
 					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
-					
+
 					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
 						break;
 					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
@@ -2047,10 +2069,9 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
-	// Render player
-	//Render2DMesh(player->getSprite(), false, TILESIZE, player->getPos().x + layout[currentLocation].roomLayout[0].getMapOffsetX(), player->getPos().y - layout[currentLocation].roomLayout[0].getMapOffsetY());
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
+	//Render2DMesh(findMesh("GEO_FOV1"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 	//std::cout <<  layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << std::endl;
 
 	if (DEBUG)
@@ -2065,6 +2086,7 @@ void SceneGame::RenderCharacters(void)
 		if (tempGuard->getRender())
 		{
 			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+		//		Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
@@ -2096,14 +2118,13 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize, 0,sceneHeight - specialFontSize );
-
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Darkblue"), specialFontSize, 0,sceneHeight - specialFontSize );
 		std::ostringstream ss2;
 		ss2.precision(1);
-		ss2<< day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,day.moon.pos.x+ specialFontSize, day.moon.pos.y);
-
+		ss2<< "Day: " << day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
+	
 		if (DEBUG)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.moon.size, day.moon.pos);
@@ -2120,8 +2141,8 @@ void SceneGame::RenderTime(void)
 
 		std::ostringstream ss2;
 		ss2.precision(1);
-		ss2<< day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,day.sun.pos.x + specialFontSize, day.sun.pos.y );
+		ss2<< "Day:" << day.getCurrentTime().day;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 

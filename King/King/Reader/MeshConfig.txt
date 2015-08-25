@@ -403,7 +403,26 @@
 		[Type] DebugCircle
 		[Slices] 36
 	}
-	
+	{
+		[NAME] GEO_FOV0
+		[Type] Quad
+		[Texture] Image\\FOV0.tga
+	}
+	{
+		[NAME] GEO_FOV1
+		[Type] Quad
+		[Texture] Image\\FOV1.tga
+	}
+	{
+		[NAME] GEO_FOV3
+		[Type] Quad
+		[Texture] Image\\FOV3.tga
+	}
+	{
+		[NAME] GEO_FOV5
+		[Type] Quad
+		[Texture] Image\\FOV5.tga
+	}
 	# Player's Inventory (UI)
 	{
 		[NAME] Inventory_Box

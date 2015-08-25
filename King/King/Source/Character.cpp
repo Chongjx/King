@@ -5,7 +5,7 @@ Character::Character()
 	, vel(0,0)
 	, dir(0,0)
 	, targetPos(0, 0)
-	, tiles(0)
+	, tiles(1)
 	, walkSpeed(400.f)
 	, runSpeed (800.f)
 	, MAX_WALK_SPEED(25.0)
@@ -182,7 +182,10 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall")
+			if (currentRoom.specialTiles[special].TileName == "Wall" || 
+				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClose")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
@@ -222,7 +225,10 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall")
+			if (currentRoom.specialTiles[special].TileName == "Wall" || 
+				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClose")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
@@ -262,7 +268,10 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall")
+			if (currentRoom.specialTiles[special].TileName == "Wall" || 
+				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClose")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
@@ -302,12 +311,18 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall")
+			if (currentRoom.specialTiles[special].TileName == "Wall" || 
+				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				std::cout << nextTile << std::endl;
+				std::cout << currentRoom.specialTiles[special].TileID << std::endl;
 
 				if (nextTile == currentRoom.specialTiles[special].TileID)
 				{
+					std::cout << " Collide!" << std::endl;
 					movable = false;
 				}
 				break;
@@ -421,6 +436,11 @@ void Character::setState(StateMachine::STATE unitState)
 void Character::setSprite(SpriteAnimation *sa)
 {
 	*(this->sprite) = *sa;
+}
+
+void Character::setAni(SPRITE_ANI currentAni)
+{
+	this->currentAni = currentAni;
 }
 
 Vector2 Character::getPos(void) const
@@ -611,4 +631,17 @@ void Character::changeAni(StateMachine::STATE unitState)
 
 		sprite->currentAni = currentAni;
 	}
+}
+
+bool Character::collideWithDoor(void)
+{
+	for (unsigned i = 0; i < currentRoom.doors.size(); ++i)
+	{
+		if (pos == currentRoom.doors[i].pos)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
