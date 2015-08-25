@@ -1136,6 +1136,30 @@ void SceneGame::InitLevel(string config)
 											layout[mapVar[VAR_ID]].specialTiles.push_back(tiles);
 										}
 									}
+
+									else if (tempChildBranch.branchName == "Door")
+									{
+										Door tempDoor;
+										tempDoor.status = false;
+											
+										for (vector<Attribute>::iterator attri = childbranches->attributes.begin(); attri != childbranches->attributes.end(); ++attri)
+										{
+											Attribute tempAttri = *attri;
+											string attriName = tempAttri.name;
+											string attriValue = tempAttri.value;
+											
+											if (tempAttri.name == "Transition")
+											{
+												tempDoor.transitionRoom = stoi(attriValue);
+											}
+
+											else if (tempAttri.name == "Position")
+											{
+												stringToVector(attriValue, tempDoor.pos);
+											}
+										}
+										layout[mapVar[VAR_ID]].doors.push_back(tempDoor);
+									}
 								}
 							}
 						}
@@ -1160,7 +1184,7 @@ void SceneGame::InitLevel(string config)
 	for (unsigned i = 0; i < layout.size(); ++i)
 	{
 		layout[i].rearrange();
-		layout[i].locateDoors();
+		//layout[i].locateDoors();
 	}
 }
 
@@ -1831,8 +1855,6 @@ void SceneGame::UpdatePlayer(double dt)
 	player->Update(dt);
 
 	//std::cout << player->getPos() << std::endl;
-
-	std::cout << player->collideWithDoor() << std::endl;
 }
 
 void SceneGame::UpdateAI(double dt)
@@ -1928,11 +1950,9 @@ void SceneGame::UpdateInteractions(void)
 	switch (currentInteraction)
 	{
 	case NO_INTERACTION:
-		std::cout << "No Interaction" << std::endl;
 		gameSpeed = 10;
 		break;
 	case SLEEP:
-		std::cout << "Sleeping" << std::endl;
 		gameSpeed = 50;
 		break;
 	case PICKUP_ITEM:;
@@ -1959,7 +1979,6 @@ void SceneGame::UpdateInteractions(void)
 
 void SceneGame::UpdateThreadmill(void)
 {
-	std::cout << "Running on threadmill" << std::endl;
 	player->setDir(Vector2(-1, 0));
 	player->setAni(Character::RUN_LEFT);
 	if(getKey("Right"))

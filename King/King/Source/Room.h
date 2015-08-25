@@ -26,6 +26,7 @@ struct SpecialTiles
 struct Door
 {
 	// true for open, false for close
+	int transitionRoom;
 	bool status;
 	Vector2 pos;
 };
@@ -52,7 +53,7 @@ public:
 	vector<SpecialTiles> specialTiles;
 	vector<Door> doors;
 
-	bool locateDoors(void)
+	/*bool locateDoors(void)
 	{
 		if (roomLayout.size() >= TileMap::MAX_TYPE)
 		{
@@ -93,7 +94,7 @@ public:
 		}
 
 		return false;
-	};
+	};*/
 
 	void rearrange(void)
 	{

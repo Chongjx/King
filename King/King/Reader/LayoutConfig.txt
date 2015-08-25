@@ -47,6 +47,36 @@
 				[B] 37
 				[C] 38
 			}
+			{
+				[NAME] Door
+				[Transition] 1
+				[Position] 88, 43
+			}
+			{
+				[NAME] Door
+				[Transition] 1
+				[Position] 89, 43			
+			}
+			{
+				[NAME] Door
+				[Transition] 2
+				[Position] 77, 19
+			}
+			{
+				[NAME] Door
+				[Transition] 2
+				[Position] 78, 19
+			}
+			{
+				[NAME] Door
+				[Transition] 3
+				[Position] 101, 6
+			}
+			{
+				[NAME] Door
+				[Transition] 3
+				[Position] 102, 6
+			}
 			[Directory] Image\\Map\\mainCellCollision.csv
 		}
 		{
