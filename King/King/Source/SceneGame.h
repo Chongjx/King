@@ -14,6 +14,7 @@
 #include "Level.h"
 #include "Day.h"
 #include "Interactions.h"
+#include "Instructions.h"
 
 using std::string;
 
@@ -112,6 +113,7 @@ public:
 	void InitInteractions(string config);
 	void InitAI(string config);
 	void InitObjective(string config);
+	void InitInstruct(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -134,6 +136,7 @@ public:
 	void RenderGUI(void);
 	void RenderTime(void);
 	void RenderObjectives(void);
+	void RenderInstruct(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -155,6 +158,7 @@ private:
 	vector<Guards*> guardList;
 	Vector2 mousePos;
 	vector<Interactions> interactionList;
+		vector<Instructions> instructions;
 
 	GAME_STATE currentState;
 	INTERACTIONS currentInteraction;

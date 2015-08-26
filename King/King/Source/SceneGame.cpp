@@ -127,6 +127,7 @@ void SceneGame::Render(void)
 		}
 	case INSTRUCTION_STATE:
 		{
+				RenderInstruct();
 			break;
 		}
 	case HIGHSCORE_STATE:
@@ -382,6 +383,19 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitObjective(attriValue);
+				}
+			}
+		}
+		else if (branch->branchName == "Instructions")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitInstruct(attriValue);
 				}
 			}
 		}
@@ -871,7 +885,6 @@ void SceneGame::InitMesh(string config)
 void SceneGame::InitColor(string config)
 {
 	Branch colorBranch = TextTree::FileToRead(config);
-
 	for (vector<Branch>::iterator branch = colorBranch.childBranches.begin(); branch != colorBranch.childBranches.end(); ++branch)
 	{
 		Color tempColor;
@@ -888,6 +901,29 @@ void SceneGame::InitColor(string config)
 			tempColor.Set(colorValue.x, colorValue.y, colorValue.z, branch->branchName);
 
 			colorList.push_back(tempColor);
+		}
+	}
+}
+
+void SceneGame::InitInstruct(string config)
+{
+	Branch InstructBranch = TextTree::FileToRead(config);
+
+	for (vector<Branch>::iterator branch = InstructBranch.childBranches.begin(); branch != InstructBranch.childBranches.end(); ++branch)
+	{
+		branch->printBranch();
+		Instructions tempInstruct;
+		string temptext;
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			temptext = attriValue;
+
+			tempInstruct.InitInstructions( branch->branchName,temptext);
+			instructions.push_back(tempInstruct);
 		}
 	}
 }
@@ -1296,7 +1332,6 @@ void SceneGame::InitObjective(string config)
 						day.levels.resize(stoi(attriValue));
 					}
 				}
-				childbranch->printBranch();
 				Level templevel;
 				//number branch
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
@@ -2112,7 +2147,7 @@ void SceneGame::RenderObjectives(void)
 	std::ostringstream ss;
 	ss <<"Objectives"<<endl;
 
-	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize * 0.5, 0, sceneHeight - specialFontSize - y_Space);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Blue"), specialFontSize * 0.5, 0, sceneHeight - specialFontSize - y_Space);
 
 	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
 	{
@@ -2135,6 +2170,7 @@ void SceneGame::RenderObjectives(void)
 				}
 			}
 		}
+		y_Space = specialFontSize * 2;
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -2276,6 +2312,24 @@ void SceneGame::RenderTime(void)
 
 
 	}
+
+	glDisable(GL_DEPTH_TEST);
+}
+
+
+void SceneGame::RenderInstruct(void)
+{
+	float y_Space = specialFontSize;
+	for (vector<Instructions>::iterator Instruct = instructions.begin(); Instruct != instructions.end(); ++Instruct)
+	{
+		 y_Space +=specialFontSize;
+		std::ostringstream ss;
+		ss.precision(2);
+		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0,sceneHeight -y_Space );
+		//16, 736 original position
+	}
+	y_Space = specialFontSize;
 
 	glDisable(GL_DEPTH_TEST);
 }

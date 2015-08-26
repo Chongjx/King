@@ -89,6 +89,7 @@
     <ClCompile Include="Source\GameObject2D.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
     <ClCompile Include="Source\Guards_StateMachine.cpp" />
+    <ClCompile Include="Source\Instructions.cpp" />
     <ClCompile Include="Source\Interactions.cpp" />
     <ClCompile Include="Source\Interface.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Source\GameObject2D.h" />
     <ClInclude Include="Source\Guards.h" />
     <ClInclude Include="Source\Guards_StateMachine.h" />
+    <ClInclude Include="Source\Instructions.h" />
     <ClInclude Include="Source\Interactions.h" />
     <ClInclude Include="Source\Interface.h" />
     <ClInclude Include="Source\Inventory.h" />

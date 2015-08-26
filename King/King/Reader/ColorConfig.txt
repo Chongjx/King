@@ -35,10 +35,6 @@
 		[Color] 1, 0.5, 0.7
 	}
 	{
-		[NAME] White
-		[Color] 1, 1, 1
-	}
-	{
 		[NAME] Skyblue
 		[Color] 0.2, 0.6, 1
 	}

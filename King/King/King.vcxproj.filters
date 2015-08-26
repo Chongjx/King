@@ -213,6 +213,9 @@
     <ClCompile Include="Source\Prisoners_StateMachine.cpp">
       <Filter>Source Files\2D\StateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Instructions.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Mouse.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="Source\Prisoners_StateMachine.h">
       <Filter>Header Files\2D\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Instructions.h">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
