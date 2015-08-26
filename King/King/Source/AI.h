@@ -30,12 +30,15 @@ public:
 
 	// Function for AI path finding
 	bool CheckDestination(void);
-	void PathFinding(int worldWidth, int worldHeight, int tileSize, double dt);
+	virtual void PathFinding(int worldWidth, int worldHeight, int tileSize, double dt);
 
-private:
+protected:
 
 	Vector2 destination;
 	bool updating;
+
+	//WayPoint ID " A, B, C "
+	string waypoint;
 
 	//Path finding open close list
 	vector<Vector2> OpenList;

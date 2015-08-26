@@ -10,14 +10,16 @@ Prisoners::~Prisoners(void)
 
 }
 
-void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom)
+void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom, string waypoint)
 {
 	this->pos = pos;
 	this->dir = dir;
 	*(this->sprite) = *(sa);
 	this->tiles = tiles;
 	this->currentRoom = currentRoom;
+	this->waypoint = waypoint;
 	this->changeAni(Prisoners_StateMachine::IDLE_STATE);
+	AI::Init();
 }
 
 void Prisoners::Update(double dt)

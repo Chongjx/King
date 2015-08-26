@@ -3,17 +3,16 @@
 AI::AI(void)
 	: destination(0,0)
 	, updating(true)
+	, waypoint("A")
 {
 }
 
 AI::~AI(void)
 {
-
 }
 
 void AI::Init()
 {
-
 }
 
 void AI::Update(double dt)
@@ -36,14 +35,10 @@ void AI::SetDestination(void)
 	destination.x = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth());
 	destination.y = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight());
 
-	CheckDestination();
-
-	if(CheckDestination() == false)
-	{
-		SetDestination();
-	}
+	targetPos.x = destination.x * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
+	targetPos.y = currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
 }
-	
+
 Vector2 AI::GetDestination(void)
 {
 	return destination;
@@ -53,9 +48,7 @@ bool AI::CheckDestination(void)
 {
 	for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 	{
-		if (currentRoom.specialTiles[special].TileName == "A" ||
-			currentRoom.specialTiles[special].TileName == "B" ||
-			currentRoom.specialTiles[special].TileName == "C"  )
+		if (currentRoom.specialTiles[special].TileName == waypoint)
 		{
 			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[destination.y][destination.x] == currentRoom.specialTiles[special].TileID)
 			{
@@ -69,8 +62,6 @@ bool AI::CheckDestination(void)
 
 void AI::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
 {
-	Vector2 targetedLocation;
-	targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 }
 
 void AI::changeAni(StateMachine::STATE unitState)

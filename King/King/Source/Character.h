@@ -52,7 +52,8 @@ public:
 	// Movement right
 	void moveRight(bool walk, double dt);
 
-	void tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
+	virtual void tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
+
 	void tileBasedOffset(void);
 
 	/*************************************/

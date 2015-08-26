@@ -1398,6 +1398,7 @@ void SceneGame::InitAI(string config)
 				Vector2 pos;
 				Vector2 dir;
 				string spriteName;
+				string waypoint;
 				int tiles = 0;
 				int mapLocation = 0;
 
@@ -1430,10 +1431,15 @@ void SceneGame::InitAI(string config)
 					{
 						spriteName = attriValue;
 					}
+
+					else if (attriName == "Waypoint")
+					{
+						waypoint = attriValue;
+					}
 				}
 
 				Guards* guard = new Guards;
-				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation], waypoint);
 				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
@@ -1445,6 +1451,7 @@ void SceneGame::InitAI(string config)
 				Vector2 pos;
 				Vector2 dir;
 				string spriteName;
+				string waypoint;
 				int tiles = 0;
 				int mapLocation = 0;
 
@@ -1477,10 +1484,15 @@ void SceneGame::InitAI(string config)
 					{
 						spriteName = attriValue;
 					}
+
+					else if (attriName == "Waypoint")
+					{
+						waypoint = attriValue;
+					}
 				}
 
 				Prisoners* prisoner = new Prisoners;
-				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation], waypoint);
 				prisoner->changeAni(Prisoners_StateMachine::IDLE_STATE);
 				prisoner->setRoom(layout[mapLocation]);
 				prisoner->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
@@ -1729,6 +1741,7 @@ void SceneGame::UpdatePlayer(double dt)
 {
 	static bool movable = true;
 	movable = true;
+
 	if (player->getState() == StateMachine::IDLE_STATE && currentInteraction != SLEEP)
 	{
 		if (getKey("Up"))
@@ -1819,6 +1832,7 @@ void SceneGame::UpdatePlayer(double dt)
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[playerPosToScreen.y][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
+				//std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
 			}
 			else
 			{
@@ -1965,7 +1979,7 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempPrisoner->setRender(false);
 		}
-		tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		//tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->Update(dt);
 	}
@@ -1987,6 +2001,11 @@ void SceneGame::UpdateAI(double dt)
 		tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->Update(dt);
+		//std::cout << guardList[0]->getTargetPos() << "\n";
+		//std::cout << guardList[0]->getPos() << "\n";
+		//std::cout << guardList[0]->getDir() << "\n";
+
+		
 	}
 }
 
@@ -2005,6 +2024,9 @@ void SceneGame::UpdateInteractions(void)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
+		//std::cout << "No Interaction" << std::endl;
+		break;
+	case PICKUP_ITEM:;
 		break;
 	case SLEEP:
 		gameSpeed = 75;
