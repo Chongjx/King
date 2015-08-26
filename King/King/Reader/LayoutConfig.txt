@@ -47,33 +47,42 @@
 				[B] 37
 				[C] 38
 			}
+			# Door to exercise room
 			{
 				[NAME] Door
+				[ID] 1
 				[Transition] 1
 				[Position] 88, 43
 			}
 			{
 				[NAME] Door
+				[ID] 2
 				[Transition] 1
 				[Position] 89, 43			
 			}
+			# Door to canteen
 			{
 				[NAME] Door
+				[ID] 3
 				[Transition] 2
 				[Position] 77, 19
 			}
 			{
 				[NAME] Door
+				[ID] 4
 				[Transition] 2
 				[Position] 78, 19
 			}
+			# Door to showerroom
 			{
 				[NAME] Door
+				[ID] 5
 				[Transition] 3
 				[Position] 101, 6
 			}
 			{
 				[NAME] Door
+				[ID] 6
 				[Transition] 3
 				[Position] 102, 6
 			}
@@ -122,6 +131,19 @@
 				[PrisonDoorRightOpened] 475
 				[Threadmill] 184
 			}
+			# Door to main cell
+			{
+				[NAME] Door
+				[ID] 1
+				[Transition] 0
+				[Position] 21, 0
+			}
+			{
+				[NAME] Door
+				[ID] 2
+				[Transition] 0
+				[Position] 22, 0
+			}
 			[Directory] Image\\Map\\exerciseRoomCollision.csv
 		}
 	}
@@ -164,6 +186,32 @@
 				[LeftChair] 343
 				[RightChair] 344
 			}
+			# Door to main Cell
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 0
+				[Position] 51, 37
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 0
+				[Position] 52, 37
+			}
+			# Door to main Corridor
+			{
+				[NAME] Door
+				[ID] 1
+				[Transition] 4
+				[Position] 42, 0
+			}
+			{
+				[NAME] Door
+				[ID] 2
+				[Transition] 4
+				[Position] 43, 0
+			}
 			[Directory] Image\\Map\\canteenRoomCollision.csv
 		}
 	}
@@ -204,6 +252,18 @@
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 			}
+			{
+				[NAME] Door
+				[ID] 5
+				[Transition] 0
+				[Position] 9, 24
+			}
+			{
+				[NAME] Door
+				[ID] 6
+				[Transition] 0
+				[Position] 10, 24
+			}
 			[Directory] Image\\Map\\showerRoomCollision.csv
 		}
 	}
@@ -222,8 +282,8 @@
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
-		[EnableXScroll] 0
-		[EnableYScroll] 1
+		[EnableXScroll] 1
+		[EnableYScroll] 0
 		[ScrollSpeed] 500
 		[TileSize] 32
 		{
@@ -246,6 +306,92 @@
 				[LeftChair] 343
 				[RightChair] 344
 			}
+			# Door to canteen
+			{
+				[NAME] Door
+				[ID] 1
+				[Transition] 2
+				[Position] 68, 18
+			}
+			{
+				[NAME] Door
+				[ID] 2
+				[Transition] 2
+				[Position] 69, 18
+			}
+			# Door to decoyRoom 1
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 5
+				[Position] 4, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 5
+				[Position] 5, 5
+			}
+			# Door to decoyRoom 2
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 6
+				[Position] 11, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 6
+				[Position] 12, 5
+			}
+			# Door to decoyRoom 3
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 7
+				[Position] 18, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 7
+				[Position] 19, 5
+			}
+			# Door to decoyRoom 4
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 8
+				[Position] 32, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 8
+				[Position] 33, 5
+			}
+			# Door to cameraRoom
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 9
+				[Position] 25, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 9
+				[Position] 26, 5
+			}
+			# Door to courtyard
+			{
+				[NAME] Door
+				[ID] 0
+				[Transition] 10
+				[Position] 0, 13
+			}
+
 			[Directory] Image\\Map\\corridorCollision.csv
 		}
 	}
@@ -287,6 +433,19 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+			}
+			# Door to corridor
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 4
+				[Position] 4, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 4
+				[Position] 5, 5
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
@@ -330,6 +489,19 @@
 				[LeftChair] 343
 				[RightChair] 344
 			}
+			# Door to corridor
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 4
+				[Position] 4, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 4
+				[Position] 5, 5
+			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
 	}
@@ -372,6 +544,19 @@
 				[LeftChair] 343
 				[RightChair] 344
 			}
+			# Door to corridor
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 4
+				[Position] 4, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 4
+				[Position] 5, 5
+			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
 	}
@@ -413,6 +598,19 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+			}
+			# Door to corridor
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 4
+				[Position] 4, 5
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 4
+				[Position] 5, 5
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
@@ -458,6 +656,19 @@
 				[LeftChair] 343
 				[RightChair] 344
 			}
+			# Door to corridor
+			{
+				[NAME] Door
+				[ID] 3
+				[Transition] 4
+				[Position] 4, 6
+			}
+			{
+				[NAME] Door
+				[ID] 4
+				[Transition] 4
+				[Position] 5, 6
+			}
 			[Directory] Image\\Map\\cameraRoomCollision.csv
 		}
 	}
@@ -476,8 +687,8 @@
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
-		[EnableXScroll] true
-		[EnableYScroll] true
+		[EnableXScroll] 1
+		[EnableYScroll] 1
 		[ScrollSpeed] 500
 		[TileSize] 32
 		{
@@ -500,6 +711,14 @@
 				[Exit] 0
 
 			}
+			# Door to corridor
+			{
+				[NAME] Door
+				[ID] 0
+				[Transition] 4
+				[Position] 65, 47
+			}
+
 			[Directory] Image\\Map\\courtyardCollision.csv
 		}
 	}
