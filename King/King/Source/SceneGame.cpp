@@ -1909,26 +1909,21 @@ void SceneGame::UpdatePlayer(double dt)
 						// offset the current pos by 1 tile
 						if (player->getDir().x == 1)
 						{
-							player->setPos(Vector2((nextRoomDoorPos.x + 1)* layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() + (nextRoomDoorPos.y + 1) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
+							player->setPos(Vector2((nextRoomDoorPos.x + 1)* layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 1) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().x == -1)
 						{
-							player->setPos(Vector2((nextRoomDoorPos.x - 1)* layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() + (nextRoomDoorPos.y + 1) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
+							player->setPos(Vector2((nextRoomDoorPos.x - 1)* layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 1) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().y == 1)
 						{
-							std::cout << "Offset 1 tile!" << std::endl;
-							std::cout << nextRoomDoorPos.y << ">> " << layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize() << std::endl;
 							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().y == -1)
 						{
-							std::cout << "Offset 1 tile!" << std::endl;
-							std::cout << nextRoomDoorPos << ">> " << layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 2) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize() << std::endl;
-
 							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 2) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
@@ -1942,12 +1937,9 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 	}
 
-	std::cout << player->getPos().y << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
-	
-	//std::cout << playerPosToScreen << std::endl;
 }
 
 void SceneGame::UpdateAI(double dt)

@@ -277,7 +277,7 @@
 		# 32 * 256
 		[MapWidth] 142 
 		# 32 * 160		
-		[MapHeight] 19
+		[MapHeight] 25
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
@@ -311,13 +311,13 @@
 				[NAME] Door
 				[ID] 1
 				[Transition] 2
-				[Position] 68, 18
+				[Position] 68, 24
 			}
 			{
 				[NAME] Door
 				[ID] 2
 				[Transition] 2
-				[Position] 69, 18
+				[Position] 69, 24
 			}
 			# Door to decoyRoom 1
 			{

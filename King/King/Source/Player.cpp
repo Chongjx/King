@@ -108,6 +108,9 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 	Vector2 playerPos;
 	playerPos.Set((pos.x - size.x - currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()) * (1.f / size.x), (pos.y - size.y - currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())  * (1.f / size.y));
 
+	std::cout << pos.y << "," << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
+	//std::cout << playerPos << std::endl;
+
 	if (playerPos.x < currentRoom.roomLayout[TileMap::TYPE_VISUAL].getNumTilesWidth() * 0.5f - 1)
 	{
 		for (unsigned i = 0; i < currentRoom.roomLayout.size(); ++i)
@@ -166,6 +169,8 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 
 			if (abs(currentRoom.roomLayout[i].getMapOffsetY()) > currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize())
 			{
+				std::cout << currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize() << std::endl;
+
 				currentRoom.roomLayout[i].setMapOffsetY(-(currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize()));
 			}
 		}
