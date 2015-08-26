@@ -2026,8 +2026,6 @@ void SceneGame::UpdateInteractions(void)
 		gameSpeed = 10;
 		//std::cout << "No Interaction" << std::endl;
 		break;
-	case PICKUP_ITEM:;
-		break;
 	case SLEEP:
 		gameSpeed = 75;
 		break;
