@@ -169,8 +169,6 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 
 			if (abs(currentRoom.roomLayout[i].getMapOffsetY()) > currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize())
 			{
-				std::cout << currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize() << std::endl;
-
 				currentRoom.roomLayout[i].setMapOffsetY(-(currentRoom.roomLayout[i].getMapHeight() - currentRoom.roomLayout[i].getNumTilesHeight() * currentRoom.roomLayout[i].getTileSize()));
 			}
 		}

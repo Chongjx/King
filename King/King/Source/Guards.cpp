@@ -16,6 +16,7 @@ void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room
 	this->tiles = tiles;
 	this->currentRoom = currentRoom;
 	this->waypoint = waypoint;
+	this->destination = pos;
 	this->changeAni(Guards_StateMachine::IDLE_STATE);
 	AI::Init();
 }
@@ -30,7 +31,8 @@ void Guards::Update(double dt)
 
 void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
 {
-	if ( pos == targetPos && this->guardStateMachine.GetState() == Guards_StateMachine::IDLE_STATE)
+	bool travel = travel = Character::tileBasedMovement(worldWidth, worldHeight, tileSize, dt);;
+	if (pos == destination && this->guardStateMachine.GetState() == Guards_StateMachine::IDLE_STATE || !travel)
 	{
 		do 
 		{
@@ -39,7 +41,36 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 		while (CheckDestination() == false);
 	}
 
-	if (targetPos != pos)
+	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
+	{
+		//std::cout << "Changed!" << std::endl;
+		pos = destination;
+		targetPos = pos;
+	}
+
+	else if( destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	{
+		targetPos.Set(pos.x + currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize(), pos.y);
+	}
+
+	else if( destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	{
+		targetPos.Set(pos.x - currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize(), pos.y);
+	}
+
+	else if(destination.y > pos.y && Math::FAbs(destination.y -  pos.y) > size.y * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.Set(pos.x, pos.y + currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize());
+	}
+
+	else if(destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.Set(pos.x, pos.y - currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize());
+	}
+
+	if (destination != pos)
 	{
 		changeAni(Guards_StateMachine::WALK_STATE);
 		Character::changeAni(StateMachine::WALK_STATE);
@@ -50,8 +81,9 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 		changeAni(Guards_StateMachine::IDLE_STATE);
 		Character::changeAni(StateMachine::IDLE_STATE);
 	}
-}
 
+	Character::tileBasedOffset();
+}
 
 void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 {

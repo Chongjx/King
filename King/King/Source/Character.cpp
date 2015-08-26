@@ -167,7 +167,7 @@ void Character::moveRight(bool walk, double dt)
 	pos.x += vel.x;
 }
 
-void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt)
+bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt)
 {
 	// move right
 	static bool movable = true;
@@ -346,6 +346,8 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	}
 
 	tileBasedOffset();
+
+	return movable;
 }
 
 void Character::tileBasedOffset(void)

@@ -2075,9 +2075,10 @@ void SceneGame::UpdateAI(double dt)
 			tempGuard->setRender(false);
 		}
 
+		std::cout << tempGuard->getPos() << std::endl;
 		tempGuard->Update(dt);
 		tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		//tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		//std::cout << guardList[0]->getTargetPos() << "\n";
 		//std::cout << guardList[0]->getPos() << "\n";
 		//std::cout << guardList[0]->getDir() << "\n";
@@ -2282,7 +2283,7 @@ void SceneGame::RenderCharacters(void)
 {
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
-	//Render2DMesh(findMesh("GEO_FOV1"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+	Render2DMesh(findMesh("GEO_FOV5"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 	if (DEBUG)
 	{
@@ -2296,7 +2297,7 @@ void SceneGame::RenderCharacters(void)
 		if (tempGuard->getRender())
 		{
 			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-			//		Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+			Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{

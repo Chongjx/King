@@ -32,11 +32,8 @@ bool AI::GetUpdate(void)
 
 void AI::SetDestination(void)
 {
-	destination.x = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth() - 1);
-	destination.y = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight() - 1);
-
-	targetPos.x = destination.x * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
-	targetPos.y = currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
+	destination.x = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth() - 1) * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
+	destination.y = currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight() - 1) * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
 }
 
 Vector2 AI::GetDestination(void)
@@ -50,7 +47,8 @@ bool AI::CheckDestination(void)
 	{
 		if (currentRoom.specialTiles[special].TileName == waypoint)
 		{
-			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[destination.y][destination.x] == currentRoom.specialTiles[special].TileID)
+			//std::cout << destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize() << ", " << Math::FAbs(destination.y / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << std::endl;
+			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[Math::FAbs(destination.y / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())][destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize() ]  == currentRoom.specialTiles[special].TileID)
 			{
 				return true;
 			}
