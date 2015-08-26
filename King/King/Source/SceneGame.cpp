@@ -1897,6 +1897,7 @@ void SceneGame::UpdatePlayer(double dt)
 
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y][playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
 			{
+				std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] << std::endl;
 				if(player->getDir().y == -1)
 				{
 					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
@@ -1904,6 +1905,9 @@ void SceneGame::UpdatePlayer(double dt)
 						if(getKey("Enter"))
 						{
 							currentInteraction = OPEN_DOOR;
+							layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] = 307;
+							layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] = 307;
+							std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] << std::endl;
 							break;
 						}
 						else
@@ -1919,6 +1923,7 @@ void SceneGame::UpdatePlayer(double dt)
 						if(getKey("Enter"))
 						{
 							currentInteraction = OPEN_DOOR;
+							layout[currentLocation].specialTiles[special].TileName = "CellDoorOpened";
 							break;
 						}
 						else
@@ -1929,6 +1934,47 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 		}
+
+		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
+		{
+
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y][playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
+			{
+				if(player->getDir().y == -1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("Enter"))
+						{
+							currentInteraction = CLOSE_DOOR;
+							//layout[currentLocation].specialTiles[special].TileID = 266;
+							break;
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+						}
+					}
+				}
+				else if(player->getDir().y == 1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y - 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("Enter"))
+						{
+							currentInteraction = CLOSE_DOOR;
+							//layout[currentLocation].specialTiles[special].TileID = 266;
+							break;
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+						}
+					}
+				}
+			}
+		}
+
 
 		else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
 		{
@@ -2066,6 +2112,7 @@ void SceneGame::UpdateInteractions(void)
 		break;
 	case OPEN_DOOR:
 		std::cout << "Open Door" << std::endl;
+
 		break;
 	case CLOSE_DOOR:
 		std::cout << "Close Door" << std::endl;
