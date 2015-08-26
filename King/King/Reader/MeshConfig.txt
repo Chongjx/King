@@ -429,6 +429,7 @@
 		[Type] Quad
 		[Texture] Image\\ui_inventory_box.tga
 	}
+
 }
 
 # Types available

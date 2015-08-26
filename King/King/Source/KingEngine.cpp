@@ -230,7 +230,7 @@ void KEngine::Init(string config)
 	glewExperimental = true; // Needed for core profile
 	//Initialize GLEW
 	GLenum err = glewInit();
-
+	
 	//If GLEW hasn't initialized
 	if (err != GLEW_OK) 
 	{
@@ -239,7 +239,7 @@ void KEngine::Init(string config)
 	}
 
 	// Hide the cursor
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	// Set these 2 variables to zero
 	m_dElapsedTime = 0.0;

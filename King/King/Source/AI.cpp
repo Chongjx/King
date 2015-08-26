@@ -32,8 +32,8 @@ bool AI::GetUpdate(void)
 
 void AI::SetDestination(void)
 {
-	destination.x = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth());
-	destination.y = Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight());
+	destination.x = (float)Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth() - 1);
+	destination.y = (float)Math::RandIntMinMax(0,currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight() - 1);
 
 	targetPos.x = destination.x * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
 	targetPos.y = currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
@@ -50,7 +50,7 @@ bool AI::CheckDestination(void)
 	{
 		if (currentRoom.specialTiles[special].TileName == waypoint)
 		{
-			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[destination.y][destination.x] == currentRoom.specialTiles[special].TileID)
+			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[(int)destination.y][(int)destination.x] == currentRoom.specialTiles[special].TileID)
 			{
 				return true;
 			}
