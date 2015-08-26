@@ -59,7 +59,6 @@ void SceneGame::Update(double dt)
 	camera.Update(dt);
 	UpdateState();
 	UpdateEffect();
-
 	// Update buttons
 	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
@@ -110,7 +109,6 @@ void SceneGame::Render(void)
 	// Call default scene render
 	Scene2D::Render();
 	glDisable(GL_DEPTH_TEST);
-
 	switch(currentState)
 	{
 	case MENU_STATE:
@@ -153,6 +151,7 @@ void SceneGame::Render(void)
 	}
 
 	RenderInterface();
+			RenderCursor();
 
 	/*std::ostringstream ss;
 	ss.precision(5);
@@ -2169,6 +2168,14 @@ void SceneGame::RenderObjectives(void)
 		}
 		y_Space = specialFontSize * 2;
 	}
+
+	glDisable(GL_DEPTH_TEST);
+}
+
+
+void SceneGame::RenderCursor(void)
+{
+	Render2DMesh(findMesh("GEO_CURSOR"), false, (float) 64.0f,mousePos.x,mousePos.y );
 
 	glDisable(GL_DEPTH_TEST);
 }

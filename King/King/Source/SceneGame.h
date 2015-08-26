@@ -137,6 +137,7 @@ public:
 	void RenderTime(void);
 	void RenderObjectives(void);
 	void RenderInstruct(void);
+	void RenderCursor(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
