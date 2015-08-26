@@ -216,6 +216,9 @@
     <ClCompile Include="Source\Instructions.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Dialogs.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Mouse.h">
@@ -345,6 +348,9 @@
       <Filter>Header Files\2D\StateMachine</Filter>
     </ClInclude>
     <ClInclude Include="Source\Instructions.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Dialogs.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>

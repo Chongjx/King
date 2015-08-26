@@ -15,6 +15,7 @@
 #include "Day.h"
 #include "Interactions.h"
 #include "Instructions.h"
+#include "Dialogs.h"
 
 using std::string;
 
@@ -159,7 +160,8 @@ private:
 	vector<Guards*> guardList;
 	Vector2 mousePos;
 	vector<Interactions> interactionList;
-		vector<Instructions> instructions;
+	vector<Instructions> instructions;
+	vector<Dialogs> dialogs;
 
 	GAME_STATE currentState;
 	INTERACTIONS currentInteraction;

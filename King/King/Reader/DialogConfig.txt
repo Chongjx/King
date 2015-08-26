@@ -1,0 +1,82 @@
+{
+	[NAME] WeaDialog
+	{
+		{
+			[ID] 1
+			[Text] You_Found_A_Baton
+		}
+		{
+			[ID] 2
+			[Text] You_Found_A_Fork
+		}
+		{
+			[ID] 3
+			[Text] You_Found_A_Dumbbell
+		}
+		{
+			[ID] 4
+			[Text] You_Found_A_Taser
+		}
+		{
+			[ID] 5
+			[Text] You_Found_A_Guard_Uniform
+			}
+		{
+			[ID] 6
+			[Text] You_Found_A_CellKey
+		}
+		{
+			[ID] 7
+			[Text] You_Found_A_Box_Of_Matches
+		}
+		{
+			[ID] 8
+			[Text] You_Found_A_Torchlight
+		}
+		{
+			[ID] 9
+			[Text] You_Found_A_Note
+		}
+		{
+			[ID] 10
+			[Text] You_Found_A_Access_Card
+		}
+	}
+
+	[NAME] SelfDialog
+	{
+		{
+			[ID] 1
+			[Text] The_Door_Is_Locked
+		}
+		{
+			[ID] 2
+			[Text] I_Hear_Noises
+		}
+		{
+			[ID] 3
+			[Text] I_Need_A_CellKey_To_Unlock_This_Door
+		}
+		{
+			[ID] 4
+			[Text] This_Place_Is_Huge
+		}
+		{
+			[ID] 5
+			[Text] I_Need_To_Escape
+		}
+		{
+			[ID] 6
+			[Text] I'm_Tired
+		}
+		{
+			[ID] 7
+			[Text] I'm_Almost_There
+		}
+		{
+			[ID] 8
+			[Text] F***_This_Place_I'm_Out!
+		}
+	}
+
+}

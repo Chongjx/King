@@ -86,6 +86,7 @@
     <ClCompile Include="Source\Camera2.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Day.cpp" />
+    <ClCompile Include="Source\Dialogs.cpp" />
     <ClCompile Include="Source\GameObject2D.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
     <ClCompile Include="Source\Guards_StateMachine.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Source\Camera2.h" />
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\Day.h" />
+    <ClInclude Include="Source\Dialogs.h" />
     <ClInclude Include="Source\GameObject2D.h" />
     <ClInclude Include="Source\Guards.h" />
     <ClInclude Include="Source\Guards_StateMachine.h" />

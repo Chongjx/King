@@ -397,6 +397,18 @@ void SceneGame::Config(void)
 					InitInstruct(attriValue);
 				}
 			}
+		}else if (branch->branchName == "Dialog")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitInteractions(attriValue);
+				}
+			}
 		}
 	}
 }
@@ -910,7 +922,6 @@ void SceneGame::InitInstruct(string config)
 
 	for (vector<Branch>::iterator branch = InstructBranch.childBranches.begin(); branch != InstructBranch.childBranches.end(); ++branch)
 	{
-		branch->printBranch();
 		Instructions tempInstruct;
 		string temptext;
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
@@ -1588,7 +1599,64 @@ void SceneGame::InitPlayer(string config)
 
 void SceneGame::InitInteractions(string config)
 {
+	Branch InteractionsBranch = TextTree::FileToRead(config);
 
+	for (vector<Branch>::iterator branch = InteractionsBranch.childBranches.begin(); branch != InteractionsBranch.childBranches.end(); ++branch)
+	{
+		branch->printBranch();
+		if (branch->branchName == "WeaDialog")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				Dialogs tempDialogs;
+				int tempID;
+				string tempText;
+
+				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				{
+					if (attriName == "ID")
+					{
+						tempID = stoi(attriValue);
+					}
+					else if(attriName == "TEXT")
+					{
+						tempText = attriValue;
+					}
+					tempDialogs.InitDialogs(tempID,tempText);
+					dialogs.push_back(tempDialogs);
+				}
+			}
+		}
+		else if (branch->branchName == "SelfDialog")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				Dialogs tempDialogs;
+				int tempID;
+				string tempText;
+
+				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				{
+					if (attriName == "ID")
+					{
+						tempID = stoi(attriValue);
+					}
+					else if(attriName == "TEXT")
+					{
+						tempText = attriValue;
+					}
+					tempDialogs.InitDialogs(tempID,tempText);
+					dialogs.push_back(tempDialogs);
+				}
+			}
+		}
+	}
 }
 
 void SceneGame::UpdateOpengl(void)
@@ -1910,6 +1978,7 @@ void SceneGame::UpdatePlayer(double dt)
 						else
 						{
 							currentInteraction = NO_INTERACTION;
+							break; 
 						}
 					}
 				}
@@ -1963,14 +2032,50 @@ void SceneGame::UpdatePlayer(double dt)
 							//layout[currentLocation].specialTiles[special].TileID = 266;
 							break;
 						}
-						else
-						{
-							currentInteraction = NO_INTERACTION;
-						}
 					}
 				}
 			}
 		}
+
+		//if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
+		//{
+
+		//	if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y][playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
+		//	{
+		//		if(player->getDir().y == -1)
+		//		{
+		//			if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+		//			{
+		//				if(getKey("Enter"))
+		//				{
+		//					currentInteraction = CLOSE_DOOR;
+		//					//layout[currentLocation].specialTiles[special].TileID = 266;
+		//					break;
+		//				}
+		//				else
+		//				{
+		//					currentInteraction = NO_INTERACTION;
+		//				}
+		//			}
+		//		}
+		//		else if(player->getDir().y == 1)
+		//		{
+		//			if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y - 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+		//			{
+		//				if(getKey("Enter"))
+		//				{
+		//					currentInteraction = CLOSE_DOOR;
+		//					//layout[currentLocation].specialTiles[special].TileID = 266;
+		//					break;
+		//				}
+		//				else
+		//				{
+		//					currentInteraction = NO_INTERACTION;
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 
 
 		else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
