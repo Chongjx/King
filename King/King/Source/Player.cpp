@@ -108,7 +108,7 @@ void Player::ConstrainPlayer(double dt) /* parameters to be added */
 	Vector2 playerPos;
 	playerPos.Set((pos.x - size.x - currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()) * (1.f / size.x), (pos.y - size.y - currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())  * (1.f / size.y));
 
-	std::cout << pos.y << "," << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
+	//std::cout << pos.y << "," << currentRoom.roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	//std::cout << playerPos << std::endl;
 
 	if (playerPos.x < currentRoom.roomLayout[TileMap::TYPE_VISUAL].getNumTilesWidth() * 0.5f - 1)

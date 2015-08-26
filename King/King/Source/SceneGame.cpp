@@ -1968,11 +1968,15 @@ void SceneGame::UpdatePlayer(double dt)
 
 						else if (player->getDir().y == 1)
 						{
+							//std::cout << nextRoomDoorPos.y << ">> " << layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize() << std::endl;
 							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().y == -1)
 						{
+
+							//std::cout << nextRoomDoorPos << ">> " << layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 2) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize() << std::endl;
+
 							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 2) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
@@ -1986,6 +1990,7 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 	}
 
+	//std::cout << player->getPos().y << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
@@ -2025,9 +2030,9 @@ void SceneGame::UpdateAI(double dt)
 			tempGuard->setRender(false);
 		}
 
+		tempGuard->Update(dt);
 		tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-		tempGuard->Update(dt);
 		//std::cout << guardList[0]->getTargetPos() << "\n";
 		//std::cout << guardList[0]->getPos() << "\n";
 		//std::cout << guardList[0]->getDir() << "\n";

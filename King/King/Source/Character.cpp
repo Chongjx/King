@@ -183,15 +183,13 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" /*|| 
-				/*currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed"*/)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom.specialTiles[special].TileID)
 				{
+					std::cout << "collided with wall right\n";
 					movable = false;
 					break;
 				}
@@ -228,15 +226,13 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" /*|| 
-				/*currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed"*/)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom.specialTiles[special].TileID)
 				{
+					std::cout << "collided with wall left\n";
 					movable = false;
 					break;
 				}
@@ -273,15 +269,13 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" /*|| 
-				/*currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed"*/)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom.specialTiles[special].TileID)
 				{
+					std::cout << "collided with wall upwards\n";
 					movable = false;
 					break;
 				}
@@ -318,15 +312,13 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" /*|| 
-				/*currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed"*/)
+			if (currentRoom.specialTiles[special].TileName == "Wall")
 			{
 				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom.specialTiles[special].TileID)
 				{
+					std::cout << "collided with wall downwards\n";
 					movable = false;
 					break;
 				}

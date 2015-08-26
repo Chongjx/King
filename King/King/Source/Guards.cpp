@@ -37,26 +37,6 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 			SetDestination();
 		}
 		while (CheckDestination() == false);
-		
-			if (targetPos.x > pos.x )
-			{
-				this->dir.Set(1, 0);
-			}
-
-			else if (targetPos.x < pos.x)
-			{
-				this->dir.Set(-1, 0);
-			}
-
-			else if (targetPos.y > pos.y )
-			{
-				this->dir.Set(0, 1);
-			}
-
-			else if (targetPos.y < pos.y)
-			{
-				this->dir.Set(0, -1);
-			}
 	}
 
 	if (targetPos != pos)
