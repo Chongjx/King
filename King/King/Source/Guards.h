@@ -14,26 +14,20 @@ public:
 	~Guards(void);
 
 	// Initialise this class instance
-	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& room);
+	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& room, string waypoint);
 	// Update the character
 	void Update(double dt);
 
 	// Change animation
 	void changeAni(Guards_StateMachine::GUARD_STATE unitState);
 
-	// Set waypoints for guards loc0
-	void SetWayPoint(void);
+	void PathFinding(int worldWidth, int worldHeight, int tileSize, double dt);
 
 private:
 
 	// StateMachine object
 	Guards_StateMachine guardStateMachine;
-	
-	// Store guards waypoint to pushback in list
-	Vector2 guard_wayPoint;
 
-	// Vector of waypoints for guards
-	vector<Vector2> guardList_WP0;
 };
 
 #endif

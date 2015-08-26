@@ -1,23 +1,23 @@
 #include "Guards.h"
 
 Guards::Guards(void)
-	: guard_wayPoint(0,0)
 {
-	guardList_WP0.clear();
 }
 
 Guards::~Guards(void)
 {
 }
 
-void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom)
+void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom, string waypoint)
 {
 	this->pos = pos;
 	this->dir = dir;
 	*(this->sprite) = *(sa);
 	this->tiles = tiles;
 	this->currentRoom = currentRoom;
+	this->waypoint = waypoint;
 	this->changeAni(Guards_StateMachine::IDLE_STATE);
+	AI::Init();
 }
 
 void Guards::Update(double dt)
@@ -28,6 +28,49 @@ void Guards::Update(double dt)
 	}
 }
 
+void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
+{
+	if ( pos == targetPos && this->guardStateMachine.GetState() == Guards_StateMachine::IDLE_STATE)
+	{
+		do 
+		{
+			SetDestination();
+		}
+		while (CheckDestination() == false);
+		
+			if (targetPos.x > pos.x )
+			{
+				this->dir.Set(1, 0);
+			}
+
+			else if (targetPos.x < pos.x)
+			{
+				this->dir.Set(-1, 0);
+			}
+
+			else if (targetPos.y > pos.y )
+			{
+				this->dir.Set(0, 1);
+			}
+
+			else if (targetPos.y < pos.y)
+			{
+				this->dir.Set(0, -1);
+			}
+	}
+
+	if (targetPos != pos)
+	{
+		changeAni(Guards_StateMachine::WALK_STATE);
+		Character::changeAni(StateMachine::WALK_STATE);
+	}
+
+	else
+	{
+		changeAni(Guards_StateMachine::IDLE_STATE);
+		Character::changeAni(StateMachine::IDLE_STATE);
+	}
+}
 
 
 void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
@@ -60,7 +103,6 @@ void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 					this->currentAni = IDLE_DOWN;
 				}
 
-				this->vel.SetZero();
 				break;
 			}
 

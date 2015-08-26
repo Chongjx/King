@@ -2,26 +2,28 @@
 # Init default AIproperties outside of source codes 
 {
 	[NAME] AI
-	{
-		[NAME] Prisoner
+	#{
+		#[NAME] Prisoner
 	
-		{
-			[NAME] John
-			[Pos] 10, -10
-		        [Dir] 0, -1
-		        [Mesh] GEO_PRISONER
-		        [Tiles] 1
-		        [MapLocation] 0			
-		}
-		{
-			[NAME] James
-			[Pos] 10, 20
-		        [Dir] 0, -1
-		        [Mesh] GEO_PRISONER
-		        [Tiles] 1
-		        [MapLocation] 0		
-		}
-	}
+		#{
+			#[NAME] John
+			#[Pos] 10, -10
+		        #[Dir] 0, -1
+		        #[Mesh] GEO_PRISONER
+		       # [Tiles] 1
+		        #[MapLocation] 0
+			#[Waypoint] A			
+		#}
+		#{
+			#[NAME] James
+			#[Pos] 10, 20
+		       # [Dir] 0, -1
+		        #[Mesh] GEO_PRISONER
+		       # [Tiles] 1
+		       # [MapLocation] 0
+			#[Waypoint] A			
+		#}
+	#}
 	{
 		[NAME] Guard
 
@@ -32,6 +34,7 @@
 		        [Mesh] GEO_GUARD
 		        [Tiles] 1
 		        [MapLocation] 0	
+			[Waypoint] A
 		}
 		{
 			[NAME] EAST_CELL_GUARD_B
@@ -40,6 +43,7 @@
 		        [Mesh] GEO_GUARD
 		        [Tiles] 1
 		        [MapLocation] 0	
+			[Waypoint] A
 		}
 	}
 }

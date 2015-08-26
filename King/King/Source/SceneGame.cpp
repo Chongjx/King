@@ -127,6 +127,7 @@ void SceneGame::Render(void)
 		}
 	case INSTRUCTION_STATE:
 		{
+				RenderInstruct();
 			break;
 		}
 	case HIGHSCORE_STATE:
@@ -382,6 +383,19 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitObjective(attriValue);
+				}
+			}
+		}
+		else if (branch->branchName == "Instructions")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitInstruct(attriValue);
 				}
 			}
 		}
@@ -871,7 +885,6 @@ void SceneGame::InitMesh(string config)
 void SceneGame::InitColor(string config)
 {
 	Branch colorBranch = TextTree::FileToRead(config);
-
 	for (vector<Branch>::iterator branch = colorBranch.childBranches.begin(); branch != colorBranch.childBranches.end(); ++branch)
 	{
 		Color tempColor;
@@ -888,6 +901,29 @@ void SceneGame::InitColor(string config)
 			tempColor.Set(colorValue.x, colorValue.y, colorValue.z, branch->branchName);
 
 			colorList.push_back(tempColor);
+		}
+	}
+}
+
+void SceneGame::InitInstruct(string config)
+{
+	Branch InstructBranch = TextTree::FileToRead(config);
+
+	for (vector<Branch>::iterator branch = InstructBranch.childBranches.begin(); branch != InstructBranch.childBranches.end(); ++branch)
+	{
+		branch->printBranch();
+		Instructions tempInstruct;
+		string temptext;
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			temptext = attriValue;
+
+			tempInstruct.InitInstructions( branch->branchName,temptext);
+			instructions.push_back(tempInstruct);
 		}
 	}
 }
@@ -1296,7 +1332,6 @@ void SceneGame::InitObjective(string config)
 						day.levels.resize(stoi(attriValue));
 					}
 				}
-				childbranch->printBranch();
 				Level templevel;
 				//number branch
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
@@ -1398,6 +1433,7 @@ void SceneGame::InitAI(string config)
 				Vector2 pos;
 				Vector2 dir;
 				string spriteName;
+				string waypoint;
 				int tiles = 0;
 				int mapLocation = 0;
 
@@ -1430,10 +1466,15 @@ void SceneGame::InitAI(string config)
 					{
 						spriteName = attriValue;
 					}
+
+					else if (attriName == "Waypoint")
+					{
+						waypoint = attriValue;
+					}
 				}
 
 				Guards* guard = new Guards;
-				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+				guard->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation], waypoint);
 				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
@@ -1445,6 +1486,7 @@ void SceneGame::InitAI(string config)
 				Vector2 pos;
 				Vector2 dir;
 				string spriteName;
+				string waypoint;
 				int tiles = 0;
 				int mapLocation = 0;
 
@@ -1477,10 +1519,15 @@ void SceneGame::InitAI(string config)
 					{
 						spriteName = attriValue;
 					}
+
+					else if (attriName == "Waypoint")
+					{
+						waypoint = attriValue;
+					}
 				}
 
 				Prisoners* prisoner = new Prisoners;
-				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
+				prisoner->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation], waypoint);
 				prisoner->changeAni(Prisoners_StateMachine::IDLE_STATE);
 				prisoner->setRoom(layout[mapLocation]);
 				prisoner->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
@@ -1729,6 +1776,7 @@ void SceneGame::UpdatePlayer(double dt)
 {
 	static bool movable = true;
 	movable = true;
+
 	if (player->getState() == StateMachine::IDLE_STATE && currentInteraction != SLEEP)
 	{
 		if (getKey("Up"))
@@ -1819,6 +1867,7 @@ void SceneGame::UpdatePlayer(double dt)
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[playerPosToScreen.y][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
+				//std::cout << player->getPos().x / TILESIZE << ", " << (sceneHeight - player->getPos().y  - TILESIZE) / TILESIZE << std::endl;
 			}
 			else
 			{
@@ -1957,6 +2006,7 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempPrisoner->setRender(false);
 		}
+		//tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->Update(dt);
 	}
@@ -1974,8 +2024,15 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempGuard->setRender(false);
 		}
+
+		tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempGuard->Update(dt);
+		//std::cout << guardList[0]->getTargetPos() << "\n";
+		//std::cout << guardList[0]->getPos() << "\n";
+		//std::cout << guardList[0]->getDir() << "\n";
+
+		
 	}
 }
 
@@ -1994,6 +2051,7 @@ void SceneGame::UpdateInteractions(void)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
+		//std::cout << "No Interaction" << std::endl;
 		break;
 	case SLEEP:
 		gameSpeed = 75;
@@ -2081,7 +2139,7 @@ void SceneGame::RenderObjectives(void)
 	std::ostringstream ss;
 	ss <<"Objectives"<<endl;
 
-	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Black"), specialFontSize * 0.5, 0, sceneHeight - specialFontSize - y_Space);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Blue"), specialFontSize * 0.5, 0, sceneHeight - specialFontSize - y_Space);
 
 	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
 	{
@@ -2104,6 +2162,7 @@ void SceneGame::RenderObjectives(void)
 				}
 			}
 		}
+		y_Space = specialFontSize * 2;
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -2245,6 +2304,24 @@ void SceneGame::RenderTime(void)
 
 
 	}
+
+	glDisable(GL_DEPTH_TEST);
+}
+
+
+void SceneGame::RenderInstruct(void)
+{
+	float y_Space = specialFontSize;
+	for (vector<Instructions>::iterator Instruct = instructions.begin(); Instruct != instructions.end(); ++Instruct)
+	{
+		 y_Space +=specialFontSize;
+		std::ostringstream ss;
+		ss.precision(2);
+		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0,sceneHeight -y_Space );
+		//16, 736 original position
+	}
+	y_Space = specialFontSize;
 
 	glDisable(GL_DEPTH_TEST);
 }

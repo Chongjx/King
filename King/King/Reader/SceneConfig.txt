@@ -2,6 +2,10 @@
 # Init all the scene properties outside of source codes #
 {
 	[NAME] SceneConfig
+	{	
+		[NAME] Instructions
+		[Directory] Reader\\InstructionConfig.txt
+	}
 	{
 		[NAME] Shader
 		[VertexShader] Shader//comg.vertexshader
@@ -47,4 +51,5 @@
 		[NAME] AI
 		[Directory] Reader\\AIConfig.txt
 	}
+	
 }

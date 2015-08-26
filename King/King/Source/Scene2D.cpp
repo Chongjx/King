@@ -32,6 +32,8 @@ void Scene2D::Init(void)
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	Math::InitRNG();
 }
 
 // default scene update

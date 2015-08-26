@@ -172,11 +172,14 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	// move right
 	static bool movable = true;
 	movable = true;
-
+	//std::cout << currentRoom.ID << std::endl;
+	//std::cout << targetPos << "\n";
 	if (targetPos.x > pos.x)
 	{
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
+		
+		dir.Set(1,0);
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
@@ -221,6 +224,8 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
+		dir.Set(-1,0);
+
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
 			if (currentRoom.specialTiles[special].TileName == "Wall" /*|| 
@@ -259,10 +264,12 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	}
 
 	// move up
-	if (targetPos.y > pos.y)
+	else if (targetPos.y > pos.y)
 	{
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
+
+		dir.Set(0,1);
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{
@@ -306,6 +313,8 @@ void Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	{
 		Vector2 targetedLocation;
 		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
+
+		dir.Set(0,-1);
 
 		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
 		{

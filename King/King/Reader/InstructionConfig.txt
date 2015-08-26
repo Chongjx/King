@@ -1,0 +1,16 @@
+{
+	[Name] Instructions
+	{
+		[NAME] Goal
+		[Text] ESCAPE
+	}
+	{
+		[NAME] WASD
+		[Text] Move_Player
+	}
+	{
+		[NAME] Mouse
+		[Text] Interact
+	}
+	
+}
