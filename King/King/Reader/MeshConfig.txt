@@ -404,24 +404,14 @@
 		[Slices] 36
 	}
 	{
-		[NAME] GEO_FOV0
+		[NAME] GEO_FOV_CLEAR
 		[Type] Quad
-		[Texture] Image\\FOV0.tga
+		[Texture] Image\\FOV_Clear.tga
 	}
 	{
-		[NAME] GEO_FOV1
+		[NAME] GEO_FOV_SOLID
 		[Type] Quad
-		[Texture] Image\\FOV1.tga
-	}
-	{
-		[NAME] GEO_FOV3
-		[Type] Quad
-		[Texture] Image\\FOV3.tga
-	}
-	{
-		[NAME] GEO_FOV5
-		[Type] Quad
-		[Texture] Image\\FOV5.tga
+		[Texture] Image\\FOV_Solid.tga
 	}
 	# Player's Inventory (UI)
 	{

@@ -31,6 +31,7 @@ SceneGame::SceneGame(void)
 	player = new Player();
 	guardList.clear();
 	prisonerList.clear();
+	FOG = false;
 }
 
 SceneGame::~SceneGame(void)
@@ -118,9 +119,13 @@ void SceneGame::Render(void)
 	case INGAME_STATE:
 		{
 			RenderLevel();
-			RenderTime();
-			RenderItem();
 			RenderCharacters();
+			RenderItem();
+			if(FOG)
+			{
+				RenderFOV();
+			}
+			RenderTime();
 			RenderPlayerInventory();
 			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
@@ -128,7 +133,7 @@ void SceneGame::Render(void)
 		}
 	case INSTRUCTION_STATE:
 		{
-				RenderInstruct();
+			RenderInstruct();
 			break;
 		}
 	case HIGHSCORE_STATE:
@@ -142,8 +147,15 @@ void SceneGame::Render(void)
 	case PAUSE_STATE:
 		{
 			RenderLevel();
-			RenderTime();
 			RenderCharacters();
+			RenderItem();
+			if(FOG)
+			{
+				RenderFOV();
+			}
+			RenderTime();
+			RenderPlayerInventory();
+			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
 			break;
 		}
@@ -154,7 +166,7 @@ void SceneGame::Render(void)
 	}
 
 	RenderInterface();
-			RenderCursor();
+	RenderCursor();
 
 	/*std::ostringstream ss;
 	ss.precision(5);
@@ -1207,13 +1219,13 @@ void SceneGame::InitLevel(string config)
 									{
 										Door tempDoor;
 										tempDoor.status = false;
-											
+
 										for (vector<Attribute>::iterator attri = childbranches->attributes.begin(); attri != childbranches->attributes.end(); ++attri)
 										{
 											Attribute tempAttri = *attri;
 											string attriName = tempAttri.name;
 											string attriValue = tempAttri.value;
-											
+
 											if (tempAttri.name == "Transition")
 											{
 												tempDoor.transitionRoom = stoi(attriValue);
@@ -1772,6 +1784,12 @@ void SceneGame::UpdateOpengl(void)
 
 	if(KEngine::getKeyboard()->getKey('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	if(KEngine::getKeyboard()->getKey('9'))
+		FOG= true;
+
+	if(KEngine::getKeyboard()->getKey('0'))
+		FOG=false;
 }
 
 void SceneGame::UpdateInput(void)
@@ -2034,17 +2052,17 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 
 								if (modX < TILESIZE * 0.5)
 								{
-									if (modY < TILESIZE * 0.5)
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
-									else
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+								if (modY < TILESIZE * 0.5)
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+								else
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
 								}
 								else
 								{
-									if (modY < TILESIZE * 0.5)
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
-									else
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+								if (modY < TILESIZE * 0.5)
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+								else
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
 								}*/
 								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
 								updateMousePos = true;
@@ -2319,7 +2337,7 @@ void SceneGame::UpdatePlayer(double dt)
 						// find the door on that map
 						int nextRoom = layout[currentLocation].doors[numDoors].transitionRoom;
 						Vector2 nextRoomDoorPos;
-						
+
 						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[nextRoom].doors.size(); ++nextRoomDoors)
 						{
 							if (layout[nextRoom].doors[nextRoomDoors].transitionRoom == currentLocation && layout[currentLocation].doors[numDoors].ID == layout[nextRoom].doors[nextRoomDoors].ID)
@@ -2542,6 +2560,44 @@ void SceneGame::RenderCursor(void)
 	glDisable(GL_DEPTH_TEST);
 }
 
+void SceneGame::RenderFOV(void)
+{
+	if ((unsigned)currentLocation < layout.size())
+	{
+		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
+		{
+			int m = 0;
+			int n = 0;
+			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
+			{
+				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+
+				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+				{						
+					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+
+					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+						break;
+					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
+						break;
+
+					if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
+					{
+						if(	player->CalculateDistance(Vector2 (m*TILESIZE,800-(n+1)*TILESIZE),TILESIZE) <= player->GetFOV() )
+						{
+							Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}
+						else
+						{
+							Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}	
+					}		
+				}			
+			}
+		}
+	}
+}
+
 void SceneGame::RenderLevel(void)
 {
 	// check if player is within the game
@@ -2597,8 +2653,6 @@ void SceneGame::RenderCharacters(void)
 {
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
-	Render2DMesh(findMesh("GEO_FOV5"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-
 	if (DEBUG)
 	{
 		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
@@ -2611,7 +2665,6 @@ void SceneGame::RenderCharacters(void)
 		if (tempGuard->getRender())
 		{
 			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-			Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
@@ -2727,7 +2780,7 @@ void SceneGame::RenderInstruct(void)
 	float y_Space = specialFontSize;
 	for (vector<Instructions>::iterator Instruct = instructions.begin(); Instruct != instructions.end(); ++Instruct)
 	{
-		 y_Space +=specialFontSize;
+		y_Space +=specialFontSize;
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;

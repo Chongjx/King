@@ -144,6 +144,7 @@ public:
 	void RenderItem(void);
 	void RenderPlayerInventory(void);
 	void RenderItemOnMouse(bool pressed);
+		void RenderFOV(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -153,6 +154,7 @@ public:
 	Mesh* findMesh(string meshName);
 	Color findColor(string colorName);
 	bool getKey(string keyName);
+	bool FOG;
 private:
 	float sceneWidth;
 	float sceneHeight;

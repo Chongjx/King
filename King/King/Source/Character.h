@@ -55,6 +55,8 @@ public:
 	virtual bool tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
 
 	void tileBasedOffset(void);
+ int	CalculateDistance(Vector2 position, int tilesize);
+
 
 	/*************************************/
 	// Set field of view of character based on tiles
