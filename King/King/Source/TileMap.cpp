@@ -93,7 +93,7 @@ void TileMap::InitDynamic(int ID, int screenWidth, int screenHeight, int numTile
 	}
 
 	this->backgroundID = 0;
-	this->mapType = TYPE_VISUAL;
+	this->mapType = TYPE_VISUAL;	
 }
 
 bool TileMap::LoadMap(const string mapName)

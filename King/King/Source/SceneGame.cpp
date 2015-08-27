@@ -2322,6 +2322,7 @@ void SceneGame::RenderLevel(void)
 		{
 			int m = 0;
 			int n = 0;
+
 			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 			{
 				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
@@ -2342,6 +2343,7 @@ void SceneGame::RenderLevel(void)
 
 						if (tilesheet->m_currentTile != -1)
 						{
+							// offset the world
 							Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 						}
 					}
@@ -2367,6 +2369,9 @@ void SceneGame::RenderLevel(void)
 void SceneGame::RenderCharacters(void)
 {
 	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+
+	/*std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
+	std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
 
 	Render2DMesh(findMesh("GEO_FOV5"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 

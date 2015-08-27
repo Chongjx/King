@@ -391,7 +391,6 @@
 				[Transition] 10
 				[Position] 0, 13
 			}
-
 			[Directory] Image\\Map\\corridorCollision.csv
 		}
 	}
@@ -403,15 +402,15 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 10 
+		[MapWidth] 32
 		# 32 * 160		
-		[MapHeight] 6
+		[MapHeight] 25
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
 		[MapFineOffsetY] 0
-		[EnableXScroll] 0
-		[EnableYScroll] 0
+		[EnableXScroll] 1
+		[EnableYScroll] 1
 		[ScrollSpeed] 0
 		[TileSize] 32
 		{
@@ -439,13 +438,13 @@
 				[NAME] Door
 				[ID] 3
 				[Transition] 4
-				[Position] 4, 5
+				[Position] 15, 15
 			}
 			{
 				[NAME] Door
 				[ID] 4
 				[Transition] 4
-				[Position] 5, 5
+				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
@@ -458,9 +457,9 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 10 
+		[MapWidth] 32 
 		# 32 * 160		
-		[MapHeight] 6
+		[MapHeight] 25
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
@@ -494,13 +493,13 @@
 				[NAME] Door
 				[ID] 3
 				[Transition] 4
-				[Position] 4, 5
+				[Position] 15, 15
 			}
 			{
 				[NAME] Door
 				[ID] 4
 				[Transition] 4
-				[Position] 5, 5
+				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
@@ -513,9 +512,9 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 10 
+		[MapWidth] 32 
 		# 32 * 160		
-		[MapHeight] 6
+		[MapHeight] 25
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
@@ -549,13 +548,13 @@
 				[NAME] Door
 				[ID] 3
 				[Transition] 4
-				[Position] 4, 5
+				[Position] 15, 15
 			}
 			{
 				[NAME] Door
 				[ID] 4
 				[Transition] 4
-				[Position] 5, 5
+				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
@@ -568,9 +567,9 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 10 
+		[MapWidth] 32 
 		# 32 * 160		
-		[MapHeight] 6
+		[MapHeight] 25
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
@@ -604,13 +603,13 @@
 				[NAME] Door
 				[ID] 3
 				[Transition] 4
-				[Position] 4, 5
+				[Position] 15, 15
 			}
 			{
 				[NAME] Door
 				[ID] 4
 				[Transition] 4
-				[Position] 5, 5
+				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
@@ -623,9 +622,9 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 10 
+		[MapWidth] 32 
 		# 32 * 160		
-		[MapHeight] 7
+		[MapHeight] 25
 		[MapOffsetX] 0
 		[MapOffsetY] 0
 		[MapFineOffsetX] 0
@@ -661,13 +660,13 @@
 				[NAME] Door
 				[ID] 3
 				[Transition] 4
-				[Position] 4, 6
+				[Position] 15, 15
 			}
 			{
 				[NAME] Door
 				[ID] 4
 				[Transition] 4
-				[Position] 5, 6
+				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\cameraRoomCollision.csv
 		}
