@@ -272,9 +272,6 @@
     <ClInclude Include="Source\Scene.h">
       <Filter>Header Files\Main\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneGame.h">
-      <Filter>Header Files\Main\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D.h">
       <Filter>Header Files\Main\Scene</Filter>
     </ClInclude>
@@ -352,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Source\Dialogs.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGame.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
