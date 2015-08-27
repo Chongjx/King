@@ -2555,7 +2555,7 @@ void SceneGame::RenderObjectives(void)
 
 void SceneGame::RenderCursor(void)
 {
-	Render2DMesh(findMesh("GEO_CURSOR"), false, (float) 64.0f,mousePos.x,mousePos.y );
+	Render2DMesh(findMesh("GEO_CURSOR"), false, (float) TILESIZE,mousePos.x,mousePos.y );
 
 	glDisable(GL_DEPTH_TEST);
 }
