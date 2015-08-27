@@ -483,6 +483,12 @@
 		[Type] Quad
 		[Texture] Image\\Item\\item_notes.tga
 	}
+	# Dialog Bubble
+	{
+		[NAME] GEO_BUBBLE
+		[Type] Quad
+		[Texture] Image\\chatBalloon.tga
+	}
 
 }
 

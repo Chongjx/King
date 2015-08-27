@@ -1,6 +1,7 @@
 {
-	[NAME] WeaDialog
+	
 	{
+		[NAME] WeaDialog
 		{
 			[ID] 1
 			[Text] You_Found_A_Baton
@@ -43,39 +44,46 @@
 		}
 	}
 
-	[NAME] SelfDialog
 	{
+		[NAME] SelfDialog
 		{
-			[ID] 1
+			[ID] 21
 			[Text] The_Door_Is_Locked
 		}
 		{
-			[ID] 2
+			[ID] 22
 			[Text] I_Hear_Noises
 		}
 		{
-			[ID] 3
+			[ID] 23
 			[Text] I_Need_A_CellKey_To_Unlock_This_Door
 		}
 		{
-			[ID] 4
+			[ID] 24
 			[Text] This_Place_Is_Huge
 		}
 		{
-			[ID] 5
+			[ID] 25
 			[Text] I_Need_To_Escape
 		}
 		{
-			[ID] 6
+			[ID] 26
 			[Text] I'm_Tired
 		}
 		{
-			[ID] 7
+			[ID] 27
 			[Text] I'm_Almost_There
 		}
 		{
-			[ID] 8
+			[ID] 28
 			[Text] F***_This_Place_I'm_Out!
+		}
+	}
+	{
+		[NAME] Setting
+		{
+			[TextSpeed] 100
+			[MESH] GEO_BUBBLE
 		}
 	}
 

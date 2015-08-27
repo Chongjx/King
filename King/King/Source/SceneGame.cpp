@@ -129,6 +129,7 @@ void SceneGame::Render(void)
 			RenderPlayerInventory();
 			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
+			RenderDialogs();
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -1716,54 +1717,77 @@ void SceneGame::InitInteractions(string config)
 	for (vector<Branch>::iterator branch = InteractionsBranch.childBranches.begin(); branch != InteractionsBranch.childBranches.end(); ++branch)
 	{
 		branch->printBranch();
-		if (branch->branchName == "WeaDialog")
+
+		for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 		{
-			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			if (branch->branchName == "WeaDialog")
 			{
-				Attribute tempAttri = *attri;
-				string attriName = tempAttri.name;
-				string attriValue = tempAttri.value;
 				Dialogs tempDialogs;
 				int tempID;
 				string tempText;
-
-				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
 					if (attriName == "ID")
 					{
 						tempID = stoi(attriValue);
 					}
-					else if(attriName == "TEXT")
+					else if(attriName == "Text")
 					{
 						tempText = attriValue;
 					}
-					tempDialogs.InitDialogs(tempID,tempText);
-					dialogs.push_back(tempDialogs);
+
+
 				}
+				tempDialogs.InitDialogs(tempID,tempText);
+				dialogs.push_back(tempDialogs);
 			}
-		}
-		else if (branch->branchName == "SelfDialog")
-		{
-			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			else if (branch->branchName == "SelfDialog")
 			{
-				Attribute tempAttri = *attri;
-				string attriName = tempAttri.name;
-				string attriValue = tempAttri.value;
 				Dialogs tempDialogs;
 				int tempID;
 				string tempText;
-
-				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
 					if (attriName == "ID")
 					{
 						tempID = stoi(attriValue);
 					}
-					else if(attriName == "TEXT")
+					else if(attriName == "Text")
 					{
 						tempText = attriValue;
 					}
-					tempDialogs.InitDialogs(tempID,tempText);
+				}
+				tempDialogs.InitDialogs(tempID,tempText);
+				dialogs.push_back(tempDialogs);
+			}
+			else if (branch->branchName == "Setting")
+			{
+				Dialogs tempDialogs;
+				int tempSpeed;
+				string tempMesh;
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "TextSpeed")
+					{
+						tempSpeed = stoi(attriValue);
+					}
+					else if (attriName == "Mesh")
+					{
+						tempMesh = attriValue;
+					}
+					tempDialogs.InitSetting(tempSpeed,tempMesh);
 					dialogs.push_back(tempDialogs);
 				}
 			}
@@ -2074,7 +2098,8 @@ void SceneGame::UpdateInGame(double dt)
 	UpdatePlayer(dt);
 	UpdateAI(dt);
 	UpdateMap();
-	UpdateInteractions();
+	UpdateInteractions(dt);
+	UpdateDialog(dt);
 	day.UpdateDay(dt,gameSpeed);
 	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
 }
@@ -2425,7 +2450,7 @@ void SceneGame::UpdateMap(void)
 	}
 }
 
-void SceneGame::UpdateInteractions(void)
+void SceneGame::UpdateInteractions(double dt)
 {
 	switch (currentInteraction)
 	{
@@ -2466,6 +2491,38 @@ void SceneGame::UpdateThreadmill(void)
 	else if(getKey("Down"))
 	{
 		player->setDir(Vector2(0,-1));
+	}
+}
+
+void SceneGame::UpdateDialog(double dt)
+{
+	static float timer = 10.f;
+	static float startTimer = 0.f;
+
+	std::cout << startTimer << std::endl;
+	startTimer += (float) dt * 100;
+
+	if (startTimer > timer)
+	{
+		std::cout << dialogString.size() << std::endl;
+		for (int i = dialogString.size(), check = 0; i < dialogString.size() + 1 && check == 0; ++i)
+		{
+			std::cout << check << std::endl;
+			dialogString[i] += findDialog(BATON).GetText()[i];
+			check = 1;
+		}
+		startTimer = 0.f;
+	}
+
+	std::cout << dialogString << std::endl;
+
+	if(dialogString.size() >= findDialog(BATON).GetText().size())
+	{
+		std::cout << "clear" << std::endl;
+		for (int i = 0; i < findDialog(BATON).GetText().size(); i++)
+		{
+			dialogString[i]=NULL;
+		}
 	}
 }
 
@@ -2792,6 +2849,12 @@ void SceneGame::RenderInstruct(void)
 	glDisable(GL_DEPTH_TEST);
 }
 
+void SceneGame::RenderDialogs(void)
+{
+	Render2DMesh(findMesh("GEO_BUBBLE"),false,Vector2(375,64),Vector2(sceneWidth*0.8,sceneHeight*0.85));
+	RenderTextOnScreen(findMesh("GEO_TEXT"),dialogString,findColor("Skyblue"),specialFontSize,0,sceneHeight);
+}
+
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
 {
 	if(!mesh || mesh->textureID <= 0)
@@ -2997,6 +3060,26 @@ Color SceneGame::findColor(string colorName)
 	std::cout << "Unable to find color! Check your naming" << std::endl;
 
 	return Color(1, 1, 1);
+}
+
+
+Dialogs SceneGame::findDialog(Dialog_ID diaID)
+{
+	Dialogs tempDialogs;
+	for (vector<Dialogs>::iterator it = dialogs.begin(); it != dialogs.end(); ++it)
+	{
+		tempDialogs = *it;
+		//std::cout <<tempDialogs.GetID() << std::endl;
+		if (tempDialogs.GetID() == diaID)
+		{
+			
+			return tempDialogs;
+		}
+	}
+
+	std::cout << "Unable to find Dialog! Check your naming" << std::endl;
+
+	return tempDialogs;
 }
 
 bool SceneGame::getKey(string keyName)

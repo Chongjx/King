@@ -92,6 +92,29 @@ class SceneGame : public Scene2D
 		MAX_INTERACTIONS,
 	};
 
+	enum Dialog_ID
+	{
+		BATON = 1,
+		FORK,
+		DUMBBELL,
+		TASER,
+		GUARD_UNIFORM,
+		CELLKEY,
+		MATCHES,
+		TORCHLIGHT,
+		NOTE,
+		ACCESS_CARD,
+		DOOR_LOCKED = 21,
+		NOISES,
+		UNABLE_TO_UNLOCK_DOOR,
+		PLACE_HUGE,
+		NEED_TO_ESCAPE,
+		IM_TIRED,
+		IM_ALMOST_THERE,
+		IM_OUT,
+		MAX_DIALOG,
+	};
+
 public:
 	SceneGame(void);
 	~SceneGame(void);
@@ -126,9 +149,10 @@ public:
 	void UpdatePlayer(double dt);
 	void UpdateAI(double dt);
 	void UpdateMap(void);
-	void UpdateInteractions(void);
+	void UpdateInteractions(double dt);
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool pressed, double mouseX, double mouseY);
+	void UpdateDialog(double dt);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -144,7 +168,8 @@ public:
 	void RenderItem(void);
 	void RenderPlayerInventory(void);
 	void RenderItemOnMouse(bool pressed);
-		void RenderFOV(void);
+	void RenderFOV(void);
+	void RenderDialogs(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -153,6 +178,7 @@ public:
 
 	Mesh* findMesh(string meshName);
 	Color findColor(string colorName);
+	Dialogs findDialog(enum Dialog_ID);
 	bool getKey(string keyName);
 	bool FOG;
 private:
@@ -186,6 +212,7 @@ private:
 	Sound sound;
 	Player* player;
 	Day day;
+	Dialogs dialog;
 
 	CItem* item;
 	vector<CItem*> itemList;
@@ -193,6 +220,7 @@ private:
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
 	int indexItem1, indexItem2;
+	string dialogString;
 };
 
 #endif
