@@ -1,0 +1,44 @@
+# Item setup #
+# Init items #
+{
+	[NAME] ItemConfig
+	# Format 
+	# [NAME] 
+	# [ID] 
+	# [Pos] x, y  (number of tiles)
+	# [ItemStatus] Ground/Inventory/Inactive 
+	# [ItemType] Weapon/Clothing/Misc 
+	# [Description]
+	# [Location] 
+	# [Mesh]
+	
+	# Weapon 
+	{
+		[NAME] Dumbbell
+		[ID] 1
+		[Pos] 11, 11
+		[ItemStatus] Ground
+		[ItemType] Weapon
+		[Description] Work Them Muscles!
+		[Location] 1
+		[Mesh] ITEM_DUMBBELL
+	}
+	{
+		[NAME] Taser
+		[ID] 2
+		[Pos] 35, 11
+		[ItemStatus] Ground
+		[ItemType] Weapon
+		[Description] BZZT!
+		[Location] 1
+		[Mesh] ITEM_TASER
+	}
+	
+	# Clothes 
+	#{
+	#}
+	
+	# Misc 
+	#{
+	#}
+}

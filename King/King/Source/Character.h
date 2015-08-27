@@ -81,7 +81,8 @@ public:
 	SpriteAnimation* getSprite(void) const;
 
 	// Inventory
-	CInventory getInventory(void) const;
+	void setInventory(CInventory inventory);
+	CInventory& getInventory(void);
 	void setRoom(Room& currentRoom);
 
 	Room getRoom(void);

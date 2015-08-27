@@ -119,7 +119,10 @@ void SceneGame::Render(void)
 		{
 			RenderLevel();
 			RenderTime();
+			RenderItem();
 			RenderCharacters();
+			RenderPlayerInventory();
+			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
 			break;
 		}
@@ -333,6 +336,21 @@ void SceneGame::Config(void)
 				}
 			}
 		}
+
+		else if (branch->branchName == "Item")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitItem(attriValue);
+				}
+			}
+		}
+
 		else if (branch->branchName == "Sound")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
@@ -1597,6 +1615,88 @@ void SceneGame::InitPlayer(string config)
 	}
 }
 
+void SceneGame::InitItem(string config)
+{
+	Branch playerBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		playerBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
+	{
+		int ID = 0, locationID = 0;
+		string name, description, meshName;
+		Vector2 pos;
+		CItem::ITEM_TYPE type;
+		CItem::ITEM_STATUS status;
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			name = branch->branchName;
+
+			if (attriName == "ItemStatus")
+			{
+				if (attriValue == "Ground")
+					status = CItem::ITEM_ONGROUND;
+				else if (attriValue == "Inventory")
+					status = CItem::ITEM_ININVENTORY;
+				else if (attriValue == "Inactive")
+					status = CItem::ITEM_INACTIVE;
+			}
+
+			else if (attriName == "ItemType")
+			{
+				if (attriValue == "Weapon")
+					type = CItem::ITEM_WEAPON;
+				else if (attriValue == "Clothing")
+					type = CItem::ITEM_CLOTHNG;
+				else if (attriValue == "Misc")
+					type = CItem::ITEM_MISC;
+			}
+
+			else if (attriName == "Pos")
+			{
+				stringToVector(attriValue, pos);
+				pos *= TILESIZE;
+			}
+			else if (attriName == "ID")
+			{
+				ID = stoi(attriValue);
+			}
+			else if (attriName == "Name")
+			{
+				name = attriValue;
+			}
+			else if (attriName == "Description")
+			{
+				description = attriValue;
+			}
+			else if (attriName == "Location")
+			{
+				locationID = stoi(attriValue);
+			}
+			else if (attriName == "Mesh")
+			{
+				meshName = attriValue;
+			}
+		}
+
+		CItem* item = new CItem();
+
+		item->Init(status, type, pos, ID, name, description, findMesh(meshName), locationID);
+		itemList.push_back(item);
+	}
+	updateMousePos = true;
+	indexItem1 = 0;
+	indexItem2 = 0;
+}
+
 void SceneGame::InitInteractions(string config)
 {
 	Branch InteractionsBranch = TextTree::FileToRead(config);
@@ -1830,6 +1930,134 @@ void SceneGame::UpdateEffect(void)
 	}
 }
 
+void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY)
+{
+	for(vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+	{
+		CItem *item = (CItem *)*it;
+		//Picking up of item
+		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE)
+		{
+			if (mouseX <= item->getItemPos().x + TILESIZE - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
+				&& mouseX >= item->getItemPos().x - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
+				&& mouseY <= item->getItemPos().y + TILESIZE - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()
+				&& mouseY >= item->getItemPos().y - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())
+			{
+				if (pressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
+				{
+					CInventory tempInventory = player->getInventory();
+					tempInventory.addItem(item);
+					player->setInventory(tempInventory);
+					break;
+				}
+			}
+		}
+	}
+
+	bool dropItem = true;
+	//get mouse position when player clicks
+	if (pressed && updateMousePos == true)
+	{
+		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+		{
+			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+			{
+				//Find location of mouse press
+				//If mouseX & mouseY is within a box, store pos
+				if (mouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+					&& mouseX > gameInterfaces[currentState].buttons[i].getPos().x
+					&& mouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+					&& mouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					//store pos
+					indexItem1 = stoi(gameInterfaces[currentState].buttons[i].getName());
+					tempMouseX = mouseX;
+					tempMouseY = mouseY;
+					updateMousePos = false;
+					break;
+				}
+			}
+		}
+	}
+	//get mouse position when player releases the click
+	else if (!pressed && updateMousePos == false)
+	{
+		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+		{
+			//Find location of mouse press
+			//If mouseX and mouse Y within box range, swap item
+			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+			{
+				if (mouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+					&& mouseX > gameInterfaces[currentState].buttons[i].getPos().x
+					&& mouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+					&& mouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					{
+						//Swap item
+						indexItem2 = stoi(gameInterfaces[currentState].buttons[i].getName());
+						player->getInventory().swapItem(indexItem1,indexItem2);
+						updateMousePos = true;
+						dropItem = false;
+						break;
+					}
+				}
+			}
+		}
+
+		if (dropItem == true)
+		{
+			for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+			{
+				//Find location of mouse press
+				//If mouseX and mouse Y NOT within box range, drop item
+				if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+				{
+					if ((mouseX > gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+						|| mouseX < gameInterfaces[currentState].buttons[i].getPos().x
+						|| mouseY > gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+						|| mouseY < gameInterfaces[currentState].buttons[i].getPos().y)
+						&& stof(gameInterfaces[currentState].buttons[i].getName()) < player->getInventory().getVecOfItems().size())
+					{
+						{
+							if (tempMouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+								&& tempMouseX > gameInterfaces[currentState].buttons[i].getPos().x
+								&& tempMouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+								&& tempMouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+							{
+								//remove item from the box obtained at tempX n tempY
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemStatus(CItem::ITEM_ONGROUND);
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x /*+ layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()*/), (float)(player->getPos().y /*+ layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()*/)));
+								//snapping item pos to tile
+								/*int modX = (int)(mouseX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()) % TILESIZE;
+								int modY = (int)(mouseY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()) % TILESIZE;
+
+								if (modX < TILESIZE * 0.5)
+								{
+									if (modY < TILESIZE * 0.5)
+										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+									else
+										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+								}
+								else
+								{
+									if (modY < TILESIZE * 0.5)
+										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+									else
+										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+								}*/
+								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
+								updateMousePos = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void SceneGame::UpdateInGame(double dt)
 {
 	UpdatePlayer(dt);
@@ -1837,6 +2065,7 @@ void SceneGame::UpdateInGame(double dt)
 	UpdateMap();
 	UpdateInteractions();
 	day.UpdateDay(dt,gameSpeed);
+	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
 }
 
 void SceneGame::UpdatePlayer(double dt)
@@ -2453,6 +2682,45 @@ void SceneGame::RenderTime(void)
 	glDisable(GL_DEPTH_TEST);
 }
 
+void SceneGame::RenderItem(void)
+{
+	for (vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+	{
+		CItem *renderItem = (CItem *)*it;
+		if (renderItem->getItemStatus() == CItem::ITEM_ONGROUND)
+			Render2DMesh(renderItem->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>(renderItem->getItemPos().x + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), static_cast<float>(renderItem->getItemPos().y + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()));
+	}
+}
+
+void SceneGame::RenderPlayerInventory(void)
+{
+	for (unsigned int i = 0; i < player->getInventory().getVecOfItems().size(); i++)
+	{
+		if (player->getInventory().getVecOfItems().at(i)->getItemStatus() == CItem::ITEM_ININVENTORY)
+			Render2DMesh(player->getInventory().getVecOfItems().at(i)->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>((350 + 75 * 0.5) + i * 75), static_cast<float>(75 * 0.5));
+	}
+}
+
+void SceneGame::RenderItemOnMouse(bool pressed)
+{
+	if (pressed && updateMousePos == false)
+	{
+		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+		{
+			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+			{
+				if (tempMouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+					&& tempMouseX > gameInterfaces[currentState].buttons[i].getPos().x
+					&& tempMouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+					&& tempMouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					//cout << "Item On Mouse" << endl;
+					Render2DMesh(player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getMesh(), false, static_cast<float>(TILESIZE), mousePos.x, mousePos.y);
+				}
+			}
+		}
+	}
+}
 
 void SceneGame::RenderInstruct(void)
 {

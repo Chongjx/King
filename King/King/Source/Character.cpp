@@ -486,9 +486,14 @@ Room Character::getRoom(void)
 	return this->currentRoom;
 }
 
-CInventory Character::getInventory(void) const
+void Character::setInventory(CInventory inventory)
 {
-	return this->inventory;
+	this->inventory = inventory;
+}
+
+CInventory& Character::getInventory(void)
+{
+	return (this->inventory);
 }
 
 void Character::changeAni(StateMachine::STATE unitState)

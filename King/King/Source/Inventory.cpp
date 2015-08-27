@@ -14,6 +14,7 @@ bool CInventory::addItem(CItem* itemToAdd)
 {
 	if (myInventory.size() < myInventory.max_size())
 	{
+		itemToAdd->setItemStatus(CItem::ITEM_ININVENTORY);
 		myInventory.push_back(itemToAdd);
 		return true;
 	}
@@ -23,55 +24,18 @@ bool CInventory::addItem(CItem* itemToAdd)
 	}
 	return false;
 }
-void CInventory::removeItem(int itemID)
+void CInventory::removeItem(int indexToRemove)
 {
-	for (std::vector<CItem *>::iterator it = myInventory.begin(); it != myInventory.end(); ++it)
-	{
-		CItem *item = (CItem *)*it;
-
-		if (item->getItemID() == itemID)
-		{
-			delete item;
-			break;
-		}
-	}
+	myInventory.erase(myInventory.begin() + indexToRemove);	
 }
 
-//Item1 and Item2 ID will be obtained from the button position of the inventory
-void CInventory::swapItem(int item1ID, int item2ID)
+//Item1 and Item2 Index will be obtained from the button position of the inventory
+void CInventory::swapItem(int item1Index, int item2Index)
 {	
-	CItem* tempItem = new CItem;
-
-	for (std::vector<CItem *>::iterator it = myInventory.begin(); it != myInventory.end(); ++it)
-	{
-		CItem *item1 = (CItem *)*it;
-		//if the item in the list is the 1st item to be swapped
-		if (item1->getItemID() == item1ID)
-		{
-			//store item1 in a temporary storage
-			tempItem = item1;
-			//check through the vector for the 2nd item that is going to be swapped
-			for (std::vector<CItem *>::iterator it = myInventory.begin(); it != myInventory.end(); ++it)
-			{
-				CItem *item2 = (CItem *)*it;
-				if (item2->getItemID() == item2ID)
-				{
-					//Swapping of items in the vector
-					item1 = item2;
-					item2 = tempItem;
-					delete tempItem;
-					break;
-				}
-			}
-		}	
-	}
+	std::iter_swap(myInventory.at(item1Index), myInventory.at(item2Index));
 }
 
-void CInventory::setSize(int size)
+vector<CItem*> CInventory::getVecOfItems(void)
 {
-	this->myInventory.resize(size);
-}
-int CInventory::getSize(void)
-{
-	return this->myInventory.size();
+	return this->myInventory;
 }

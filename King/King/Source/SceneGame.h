@@ -115,6 +115,7 @@ public:
 	void InitAI(string config);
 	void InitObjective(string config);
 	void InitInstruct(string config);
+	void InitItem(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -127,6 +128,7 @@ public:
 	void UpdateMap(void);
 	void UpdateInteractions(void);
 	void UpdateThreadmill(void);
+	void UpdatePlayerInventory(bool pressed, double mouseX, double mouseY);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -139,6 +141,9 @@ public:
 	void RenderObjectives(void);
 	void RenderInstruct(void);
 	void RenderCursor(void);
+	void RenderItem(void);
+	void RenderPlayerInventory(void);
+	void RenderItemOnMouse(bool pressed);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
@@ -179,6 +184,13 @@ private:
 	Sound sound;
 	Player* player;
 	Day day;
+
+	CItem* item;
+	vector<CItem*> itemList;
+
+	bool updateMousePos;
+	double tempMouseX, tempMouseY;
+	int indexItem1, indexItem2;
 };
 
 #endif
