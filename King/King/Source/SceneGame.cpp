@@ -1958,8 +1958,10 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 	//get mouse position when player clicks
 	if (pressed && updateMousePos == true)
 	{
+		//check through all the buttons in the game state
 		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 		{
+			//check only against image buttons
 			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
 			{
 				//Find location of mouse press
@@ -1973,6 +1975,7 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 					indexItem1 = stoi(gameInterfaces[currentState].buttons[i].getName());
 					tempMouseX = mouseX;
 					tempMouseY = mouseY;
+					//breaking line
 					updateMousePos = false;
 					break;
 				}
@@ -2027,25 +2030,15 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 							{
 								//remove item from the box obtained at tempX n tempY
 								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemStatus(CItem::ITEM_ONGROUND);
-								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x /*+ layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()*/), (float)(player->getPos().y /*+ layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()*/)));
-								//snapping item pos to tile
-								/*int modX = (int)(mouseX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()) % TILESIZE;
-								int modY = (int)(mouseY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()) % TILESIZE;
-
-								if (modX < TILESIZE * 0.5)
+								if (player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getLocationID() == layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID())
 								{
-									if (modY < TILESIZE * 0.5)
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
-									else
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX - modX + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x), (float)(player->getPos().y)));
 								}
 								else
 								{
-									if (modY < TILESIZE * 0.5)
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY + modY + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
-									else
-										player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(mouseX + (TILESIZE - modX) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), (float)(mouseY - (TILESIZE - modY) + layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())));
-								}*/
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setLocationID(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID());
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x), (float)(player->getPos().y)));
+								}
 								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
 								updateMousePos = true;
 								break;
@@ -2675,10 +2668,7 @@ void SceneGame::RenderTime(void)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.sun.size, day.sun.pos);
 		}
-
-
 	}
-
 	glDisable(GL_DEPTH_TEST);
 }
 
@@ -2687,8 +2677,10 @@ void SceneGame::RenderItem(void)
 	for (vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
 	{
 		CItem *renderItem = (CItem *)*it;
-		if (renderItem->getItemStatus() == CItem::ITEM_ONGROUND)
+		if (renderItem->getLocationID() == layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID() && renderItem->getItemStatus() == CItem::ITEM_ONGROUND)
+		{
 			Render2DMesh(renderItem->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>(renderItem->getItemPos().x + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), static_cast<float>(renderItem->getItemPos().y + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()));
+		}
 	}
 }
 
@@ -2714,7 +2706,6 @@ void SceneGame::RenderItemOnMouse(bool pressed)
 					&& tempMouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
 					&& tempMouseY > gameInterfaces[currentState].buttons[i].getPos().y)
 				{
-					//cout << "Item On Mouse" << endl;
 					Render2DMesh(player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getMesh(), false, static_cast<float>(TILESIZE), mousePos.x, mousePos.y);
 				}
 			}

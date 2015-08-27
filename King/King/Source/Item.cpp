@@ -5,7 +5,7 @@ CItem::CItem(void)
 	: itemType(ITEM_WEAPON)
 	, itemPos(0, 0)
 	, itemID(0)
-	, itemName("Name")
+	, itemName("NULL")
 	, itemDescription("Description")
 {
 }
