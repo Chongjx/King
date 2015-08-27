@@ -643,3 +643,9 @@ bool Character::collideWithDoor(void)
 
 	return false;
 }
+int Character::CalculateDistance(Vector2 position, int tilesize)
+{
+	return Math::FAbs((this->pos.x - position.x)) * (1.f/tilesize) + Math::FAbs((this->pos.y - position.y)) * (1.f/tilesize);
+
+
+}
