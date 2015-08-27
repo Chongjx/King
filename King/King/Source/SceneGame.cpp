@@ -31,6 +31,7 @@ SceneGame::SceneGame(void)
 	player = new Player();
 	guardList.clear();
 	prisonerList.clear();
+	FOG = false;
 }
 
 SceneGame::~SceneGame(void)
@@ -118,14 +119,22 @@ void SceneGame::Render(void)
 	case INGAME_STATE:
 		{
 			RenderLevel();
-			RenderTime();
 			RenderCharacters();
+			RenderItem();
+			if(FOG)
+			{
+				RenderFOV();
+			}
+			RenderTime();
+			RenderPlayerInventory();
+			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
+			RenderDialogs();
 			break;
 		}
 	case INSTRUCTION_STATE:
 		{
-				RenderInstruct();
+			RenderInstruct();
 			break;
 		}
 	case HIGHSCORE_STATE:
@@ -139,8 +148,15 @@ void SceneGame::Render(void)
 	case PAUSE_STATE:
 		{
 			RenderLevel();
-			RenderTime();
 			RenderCharacters();
+			RenderItem();
+			if(FOG)
+			{
+				RenderFOV();
+			}
+			RenderTime();
+			RenderPlayerInventory();
+			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
 			break;
 		}
@@ -151,7 +167,7 @@ void SceneGame::Render(void)
 	}
 
 	RenderInterface();
-			RenderCursor();
+	RenderCursor();
 
 	/*std::ostringstream ss;
 	ss.precision(5);
@@ -333,6 +349,21 @@ void SceneGame::Config(void)
 				}
 			}
 		}
+
+		else if (branch->branchName == "Item")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitItem(attriValue);
+				}
+			}
+		}
+
 		else if (branch->branchName == "Sound")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
@@ -1189,13 +1220,13 @@ void SceneGame::InitLevel(string config)
 									{
 										Door tempDoor;
 										tempDoor.status = false;
-											
+
 										for (vector<Attribute>::iterator attri = childbranches->attributes.begin(); attri != childbranches->attributes.end(); ++attri)
 										{
 											Attribute tempAttri = *attri;
 											string attriName = tempAttri.name;
 											string attriValue = tempAttri.value;
-											
+
 											if (tempAttri.name == "Transition")
 											{
 												tempDoor.transitionRoom = stoi(attriValue);
@@ -1597,6 +1628,88 @@ void SceneGame::InitPlayer(string config)
 	}
 }
 
+void SceneGame::InitItem(string config)
+{
+	Branch playerBranch = TextTree::FileToRead(config);
+
+	if (DEBUG)
+	{
+		playerBranch.printBranch();
+	}
+
+	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
+	{
+		int ID = 0, locationID = 0;
+		string name, description, meshName;
+		Vector2 pos;
+		CItem::ITEM_TYPE type;
+		CItem::ITEM_STATUS status;
+
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			name = branch->branchName;
+
+			if (attriName == "ItemStatus")
+			{
+				if (attriValue == "Ground")
+					status = CItem::ITEM_ONGROUND;
+				else if (attriValue == "Inventory")
+					status = CItem::ITEM_ININVENTORY;
+				else if (attriValue == "Inactive")
+					status = CItem::ITEM_INACTIVE;
+			}
+
+			else if (attriName == "ItemType")
+			{
+				if (attriValue == "Weapon")
+					type = CItem::ITEM_WEAPON;
+				else if (attriValue == "Clothing")
+					type = CItem::ITEM_CLOTHNG;
+				else if (attriValue == "Misc")
+					type = CItem::ITEM_MISC;
+			}
+
+			else if (attriName == "Pos")
+			{
+				stringToVector(attriValue, pos);
+				pos *= TILESIZE;
+			}
+			else if (attriName == "ID")
+			{
+				ID = stoi(attriValue);
+			}
+			else if (attriName == "Name")
+			{
+				name = attriValue;
+			}
+			else if (attriName == "Description")
+			{
+				description = attriValue;
+			}
+			else if (attriName == "Location")
+			{
+				locationID = stoi(attriValue);
+			}
+			else if (attriName == "Mesh")
+			{
+				meshName = attriValue;
+			}
+		}
+
+		CItem* item = new CItem();
+
+		item->Init(status, type, pos, ID, name, description, findMesh(meshName), locationID);
+		itemList.push_back(item);
+	}
+	updateMousePos = true;
+	indexItem1 = 0;
+	indexItem2 = 0;
+}
+
 void SceneGame::InitInteractions(string config)
 {
 	Branch InteractionsBranch = TextTree::FileToRead(config);
@@ -1604,54 +1717,77 @@ void SceneGame::InitInteractions(string config)
 	for (vector<Branch>::iterator branch = InteractionsBranch.childBranches.begin(); branch != InteractionsBranch.childBranches.end(); ++branch)
 	{
 		branch->printBranch();
-		if (branch->branchName == "WeaDialog")
+
+		for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 		{
-			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			if (branch->branchName == "WeaDialog")
 			{
-				Attribute tempAttri = *attri;
-				string attriName = tempAttri.name;
-				string attriValue = tempAttri.value;
 				Dialogs tempDialogs;
 				int tempID;
 				string tempText;
-
-				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
 					if (attriName == "ID")
 					{
 						tempID = stoi(attriValue);
 					}
-					else if(attriName == "TEXT")
+					else if(attriName == "Text")
 					{
 						tempText = attriValue;
 					}
-					tempDialogs.InitDialogs(tempID,tempText);
-					dialogs.push_back(tempDialogs);
+
+
 				}
+				tempDialogs.InitDialogs(tempID,tempText);
+				dialogs.push_back(tempDialogs);
 			}
-		}
-		else if (branch->branchName == "SelfDialog")
-		{
-			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			else if (branch->branchName == "SelfDialog")
 			{
-				Attribute tempAttri = *attri;
-				string attriName = tempAttri.name;
-				string attriValue = tempAttri.value;
 				Dialogs tempDialogs;
 				int tempID;
 				string tempText;
-
-				for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
 					if (attriName == "ID")
 					{
 						tempID = stoi(attriValue);
 					}
-					else if(attriName == "TEXT")
+					else if(attriName == "Text")
 					{
 						tempText = attriValue;
 					}
-					tempDialogs.InitDialogs(tempID,tempText);
+				}
+				tempDialogs.InitDialogs(tempID,tempText);
+				dialogs.push_back(tempDialogs);
+			}
+			else if (branch->branchName == "Setting")
+			{
+				Dialogs tempDialogs;
+				int tempSpeed;
+				string tempMesh;
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "TextSpeed")
+					{
+						tempSpeed = stoi(attriValue);
+					}
+					else if (attriName == "Mesh")
+					{
+						tempMesh = attriValue;
+					}
+					tempDialogs.InitSetting(tempSpeed,tempMesh);
 					dialogs.push_back(tempDialogs);
 				}
 			}
@@ -1672,6 +1808,12 @@ void SceneGame::UpdateOpengl(void)
 
 	if(KEngine::getKeyboard()->getKey('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	if(KEngine::getKeyboard()->getKey('9'))
+		FOG= true;
+
+	if(KEngine::getKeyboard()->getKey('0'))
+		FOG=false;
 }
 
 void SceneGame::UpdateInput(void)
@@ -1830,13 +1972,136 @@ void SceneGame::UpdateEffect(void)
 	}
 }
 
+void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY)
+{
+	for(vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+	{
+		CItem *item = (CItem *)*it;
+		//Picking up of item
+		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE)
+		{
+			if (mouseX <= item->getItemPos().x + TILESIZE - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
+				&& mouseX >= item->getItemPos().x - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
+				&& mouseY <= item->getItemPos().y + TILESIZE - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()
+				&& mouseY >= item->getItemPos().y - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())
+			{
+				if (pressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
+				{
+					CInventory tempInventory = player->getInventory();
+					tempInventory.addItem(item);
+					player->setInventory(tempInventory);
+					break;
+				}
+			}
+		}
+	}
+
+	bool dropItem = true;
+	//get mouse position when player clicks
+	if (pressed && updateMousePos == true)
+	{
+		//check through all the buttons in the game state
+		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+		{
+			//check only against image buttons
+			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+			{
+				//Find location of mouse press
+				//If mouseX & mouseY is within a box, store pos
+				if (mouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+					&& mouseX > gameInterfaces[currentState].buttons[i].getPos().x
+					&& mouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+					&& mouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					//store pos
+					indexItem1 = stoi(gameInterfaces[currentState].buttons[i].getName());
+					tempMouseX = mouseX;
+					tempMouseY = mouseY;
+					//breaking line
+					updateMousePos = false;
+					break;
+				}
+			}
+		}
+	}
+	//get mouse position when player releases the click
+	else if (!pressed && updateMousePos == false)
+	{
+		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+		{
+			//Find location of mouse press
+			//If mouseX and mouse Y within box range, swap item
+			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+			{
+				if (mouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+					&& mouseX > gameInterfaces[currentState].buttons[i].getPos().x
+					&& mouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+					&& mouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					{
+						//Swap item
+						indexItem2 = stoi(gameInterfaces[currentState].buttons[i].getName());
+						player->getInventory().swapItem(indexItem1,indexItem2);
+						updateMousePos = true;
+						dropItem = false;
+						break;
+					}
+				}
+			}
+		}
+
+		if (dropItem == true)
+		{
+			for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+			{
+				//Find location of mouse press
+				//If mouseX and mouse Y NOT within box range, drop item
+				if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+				{
+					if ((mouseX > gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+						|| mouseX < gameInterfaces[currentState].buttons[i].getPos().x
+						|| mouseY > gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+						|| mouseY < gameInterfaces[currentState].buttons[i].getPos().y)
+						&& stof(gameInterfaces[currentState].buttons[i].getName()) < player->getInventory().getVecOfItems().size())
+					{
+						{
+							if (tempMouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+								&& tempMouseX > gameInterfaces[currentState].buttons[i].getPos().x
+								&& tempMouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+								&& tempMouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+							{
+								//remove item from the box obtained at tempX n tempY
+								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemStatus(CItem::ITEM_ONGROUND);
+								if (player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getLocationID() == layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID())
+								{
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x), (float)(player->getPos().y)));
+								}
+								else
+								{
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setLocationID(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID());
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x), (float)(player->getPos().y)));
+								}
+								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
+								updateMousePos = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void SceneGame::UpdateInGame(double dt)
 {
 	UpdatePlayer(dt);
 	UpdateAI(dt);
 	UpdateMap();
-	UpdateInteractions();
+	UpdateInteractions(dt);
+	UpdateDialog(dt);
 	day.UpdateDay(dt,gameSpeed);
+	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
 }
 
 void SceneGame::UpdatePlayer(double dt)
@@ -2090,7 +2355,7 @@ void SceneGame::UpdatePlayer(double dt)
 						// find the door on that map
 						int nextRoom = layout[currentLocation].doors[numDoors].transitionRoom;
 						Vector2 nextRoomDoorPos;
-						
+
 						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[nextRoom].doors.size(); ++nextRoomDoors)
 						{
 							if (layout[nextRoom].doors[nextRoomDoors].transitionRoom == currentLocation && layout[currentLocation].doors[numDoors].ID == layout[nextRoom].doors[nextRoomDoors].ID)
@@ -2185,7 +2450,7 @@ void SceneGame::UpdateMap(void)
 	}
 }
 
-void SceneGame::UpdateInteractions(void)
+void SceneGame::UpdateInteractions(double dt)
 {
 	switch (currentInteraction)
 	{
@@ -2226,6 +2491,38 @@ void SceneGame::UpdateThreadmill(void)
 	else if(getKey("Down"))
 	{
 		player->setDir(Vector2(0,-1));
+	}
+}
+
+void SceneGame::UpdateDialog(double dt)
+{
+	static float timer = 10.f;
+	static float startTimer = 0.f;
+
+	std::cout << startTimer << std::endl;
+	startTimer += (float) dt * 100;
+
+	if (startTimer > timer)
+	{
+		std::cout << dialogString.size() << std::endl;
+		for (int i = dialogString.size(), check = 0; i < dialogString.size() + 1 && check == 0; ++i)
+		{
+			std::cout << check << std::endl;
+			dialogString[i] += findDialog(BATON).GetText()[i];
+			check = 1;
+		}
+		startTimer = 0.f;
+	}
+
+	std::cout << dialogString << std::endl;
+
+	if(dialogString.size() >= findDialog(BATON).GetText().size())
+	{
+		std::cout << "clear" << std::endl;
+		for (int i = 0; i < findDialog(BATON).GetText().size(); i++)
+		{
+			dialogString[i]=NULL;
+		}
 	}
 }
 
@@ -2308,9 +2605,56 @@ void SceneGame::RenderObjectives(void)
 
 void SceneGame::RenderCursor(void)
 {
-	Render2DMesh(findMesh("GEO_CURSOR"), false, (float) 64.0f,mousePos.x,mousePos.y );
+	Render2DMesh(findMesh("GEO_CURSOR"), false, (float) TILESIZE,mousePos.x,mousePos.y );
 
 	glDisable(GL_DEPTH_TEST);
+}
+
+void SceneGame::RenderFOV(void)
+{
+	if ((unsigned)currentLocation < layout.size())
+	{
+		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
+		{
+			int m = 0;
+			int n = 0;
+			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
+			{
+				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+
+				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+				{						
+					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+
+					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+						break;
+					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
+						break;
+
+					if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_VISUAL)
+					{
+						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
+						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+
+						//for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
+						//{
+						//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
+						//	{
+								if(player->CalculateDistance(Vector2 (m*TILESIZE,800-(n+1)*TILESIZE),TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
+								{
+									Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+								}
+								else
+								{
+									Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+								}	
+						//	}
+						//}
+					}		
+				}			
+			}
+		}
+	}
 }
 
 void SceneGame::RenderLevel(void)
@@ -2387,7 +2731,6 @@ void SceneGame::RenderCharacters(void)
 		if (tempGuard->getRender())
 		{
 			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
-			Render2DMesh(findMesh("GEO_FOV3"),false, (float)TILESIZE*12, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
@@ -2451,20 +2794,57 @@ void SceneGame::RenderTime(void)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.sun.size, day.sun.pos);
 		}
-
-
 	}
-
 	glDisable(GL_DEPTH_TEST);
 }
 
+void SceneGame::RenderItem(void)
+{
+	for (vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+	{
+		CItem *renderItem = (CItem *)*it;
+		if (renderItem->getLocationID() == layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID() && renderItem->getItemStatus() == CItem::ITEM_ONGROUND)
+		{
+			Render2DMesh(renderItem->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>(renderItem->getItemPos().x + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), static_cast<float>(renderItem->getItemPos().y + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()));
+		}
+	}
+}
+
+void SceneGame::RenderPlayerInventory(void)
+{
+	for (unsigned int i = 0; i < player->getInventory().getVecOfItems().size(); i++)
+	{
+		if (player->getInventory().getVecOfItems().at(i)->getItemStatus() == CItem::ITEM_ININVENTORY)
+			Render2DMesh(player->getInventory().getVecOfItems().at(i)->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>((350 + 75 * 0.5) + i * 75), static_cast<float>(75 * 0.5));
+	}
+}
+
+void SceneGame::RenderItemOnMouse(bool pressed)
+{
+	if (pressed && updateMousePos == false)
+	{
+		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+		{
+			if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+			{
+				if (tempMouseX < gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x
+					&& tempMouseX > gameInterfaces[currentState].buttons[i].getPos().x
+					&& tempMouseY < gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y
+					&& tempMouseY > gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					Render2DMesh(player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getMesh(), false, static_cast<float>(TILESIZE), mousePos.x, mousePos.y);
+				}
+			}
+		}
+	}
+}
 
 void SceneGame::RenderInstruct(void)
 {
 	float y_Space = specialFontSize;
 	for (vector<Instructions>::iterator Instruct = instructions.begin(); Instruct != instructions.end(); ++Instruct)
 	{
-		 y_Space +=specialFontSize;
+		y_Space +=specialFontSize;
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;
@@ -2474,6 +2854,12 @@ void SceneGame::RenderInstruct(void)
 	y_Space = specialFontSize;
 
 	glDisable(GL_DEPTH_TEST);
+}
+
+void SceneGame::RenderDialogs(void)
+{
+	Render2DMesh(findMesh("GEO_BUBBLE"),false,Vector2(375,64),Vector2(sceneWidth*0.8,sceneHeight*0.85));
+	RenderTextOnScreen(findMesh("GEO_TEXT"),dialogString,findColor("Skyblue"),specialFontSize,0,sceneHeight);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
@@ -2681,6 +3067,26 @@ Color SceneGame::findColor(string colorName)
 	std::cout << "Unable to find color! Check your naming" << std::endl;
 
 	return Color(1, 1, 1);
+}
+
+
+Dialogs SceneGame::findDialog(Dialog_ID diaID)
+{
+	Dialogs tempDialogs;
+	for (vector<Dialogs>::iterator it = dialogs.begin(); it != dialogs.end(); ++it)
+	{
+		tempDialogs = *it;
+		//std::cout <<tempDialogs.GetID() << std::endl;
+		if (tempDialogs.GetID() == diaID)
+		{
+			
+			return tempDialogs;
+		}
+	}
+
+	std::cout << "Unable to find Dialog! Check your naming" << std::endl;
+
+	return tempDialogs;
 }
 
 bool SceneGame::getKey(string keyName)

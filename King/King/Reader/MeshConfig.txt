@@ -404,30 +404,90 @@
 		[Slices] 36
 	}
 	{
-		[NAME] GEO_FOV0
+		[NAME] GEO_FOV_CLEAR
 		[Type] Quad
-		[Texture] Image\\FOV0.tga
+		[Texture] Image\\FOV_Clear.tga
 	}
 	{
-		[NAME] GEO_FOV1
+		[NAME] GEO_FOV_SOLID
 		[Type] Quad
-		[Texture] Image\\FOV1.tga
-	}
-	{
-		[NAME] GEO_FOV3
-		[Type] Quad
-		[Texture] Image\\FOV3.tga
-	}
-	{
-		[NAME] GEO_FOV5
-		[Type] Quad
-		[Texture] Image\\FOV5.tga
+		[Texture] Image\\FOV_Solid.tga
 	}
 	# Player's Inventory (UI)
 	{
 		[NAME] Inventory_Box
 		[Type] Quad
 		[Texture] Image\\ui_inventory_box.tga
+	}
+	
+	# Weapons
+	{
+		[NAME] ITEM_DUMBBELL
+		[Type] Quad
+		[Texture] Image\\Item\\item_dumbbell.tga
+	}
+	{
+		[NAME] ITEM_BATON
+		[Type] Quad
+		[Texture] Image\\Item\\item_baton.tga
+	}
+	{
+		[NAME] ITEM_TASER
+		[Type] Quad
+		[Texture] Image\\Item\\item_taser.tga
+	}
+	# Clothes
+	{
+		[NAME] ITEM_PRISONER
+		[Type] Quad
+		[Texture] Image\\Item\\item_prisoner.tga
+	}
+	{
+		[NAME] ITEM_GUARD
+		[Type] Quad
+		[Texture] Image\\Item\\item_guard.tga
+	}
+	{
+		[NAME] ITEM_VEST
+		[Type] Quad
+		[Texture] Image\\Item\\item_vest.tga
+	}
+	# Misc
+	{
+		[NAME] ITEM_FORK
+		[Type] Quad
+		[Texture] Image\\Item\\item_fork.tga
+	}
+	{
+		[NAME] ITEM_KEY
+		[Type] Quad
+		[Texture] Image\\Item\\item_key.tga
+	}
+	{
+		[NAME] ITEM_ACCESSCARD
+		[Type] Quad
+		[Texture] Image\\Item\\item_accesskey.tga
+	}
+	{
+		[NAME] ITEM_MATCHES
+		[Type] Quad
+		[Texture] Image\\Item\\item_matches.tga
+	}
+	{
+		[NAME] ITEM_TORCHLIGHT
+		[Type] Quad
+		[Texture] Image\\Item\\item_torchlight.tga
+	}
+	{
+		[NAME] ITEM_NOTES
+		[Type] Quad
+		[Texture] Image\\Item\\item_notes.tga
+	}
+	# Dialog Bubble
+	{
+		[NAME] GEO_BUBBLE
+		[Type] Quad
+		[Texture] Image\\chatBalloon.tga
 	}
 
 }

@@ -100,7 +100,7 @@
 	}
 	{
 		
-		[NAME] Inventory Button 1
+		[NAME] 0
 		[GameState] Ingame
 		[Type] Image
 		[Pos] 350, 0
@@ -110,7 +110,7 @@
 	}
 	{
 		
-		[NAME] Inventory Button 2
+		[NAME] 1
 		[GameState] Ingame
 		[Type] Image
 		[Pos] 425, 0
@@ -120,7 +120,7 @@
 	}
 	{
 		
-		[NAME] Inventory Button 3
+		[NAME] 2
 		[GameState] Ingame
 		[Type] Image
 		[Pos] 500, 0
@@ -130,7 +130,7 @@
 	}
 	{
 		
-		[NAME] Inventory Button 4
+		[NAME] 3
 		[GameState] Ingame
 		[Type] Image
 		[Pos] 575, 0
@@ -140,7 +140,7 @@
 	}
 	{
 		
-		[NAME] Inventory Button 5
+		[NAME] 4
 		[GameState] Ingame
 		[Type] Image
 		[Pos] 650, 0

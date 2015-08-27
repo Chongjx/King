@@ -21,7 +21,7 @@ public:
 	enum ITEM_STATUS
 	{
 		//Active status
-		ITEM_ONGROUND,
+		ITEM_ONGROUND = 0,
 		ITEM_ININVENTORY,
 		//Inactive status
 		ITEM_INACTIVE,
@@ -40,13 +40,15 @@ private:
 	string itemName;
 	//description of item
 	string itemDescription;
+	//Location ID of item
+	int locationID;
 
 public:
 	CItem(void);
 	~CItem(void);
 
 	//Initialise item
-	void Init(ITEM_STATUS status, ITEM_TYPE type, Vector2 position, int id, string name, string description);
+	void Init(ITEM_STATUS status, ITEM_TYPE type, Vector2 position, int id, string name, string description, Mesh* mesh, int location);
 	//Update item
 	void Update();
 
@@ -78,5 +80,10 @@ public:
 	void setItemDescription(string description);
 	//get description of item
 	string getItemDescription(void);
+	
+	//set location of item
+	void setLocationID(int location);
+	//get location of item
+	int getLocationID(void);
 };
 

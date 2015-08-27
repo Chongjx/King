@@ -486,9 +486,14 @@ Room Character::getRoom(void)
 	return this->currentRoom;
 }
 
-CInventory Character::getInventory(void) const
+void Character::setInventory(CInventory inventory)
 {
-	return this->inventory;
+	this->inventory = inventory;
+}
+
+CInventory& Character::getInventory(void)
+{
+	return (this->inventory);
 }
 
 void Character::changeAni(StateMachine::STATE unitState)
@@ -637,4 +642,10 @@ bool Character::collideWithDoor(void)
 	}
 
 	return false;
+}
+int Character::CalculateDistance(Vector2 position, int tilesize)
+{
+	return Math::FAbs((this->pos.x - position.x)) * (1.f/tilesize) + Math::FAbs((this->pos.y - position.y)) * (1.f/tilesize);
+
+
 }

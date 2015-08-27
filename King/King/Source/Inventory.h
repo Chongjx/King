@@ -15,10 +15,9 @@ public:
 
 	//Inventory functions
 	bool addItem(CItem* itemToAdd);
-	void removeItem(int itemID);
-	void swapItem(int item1ID, int item2ID);
+	void removeItem(int indexToRemove);
+	void swapItem(int item1Index, int item2Index);
 
-	void setSize(int size);
-	int getSize(void);
+	vector<CItem*> getVecOfItems(void);
 };
 

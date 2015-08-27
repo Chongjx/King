@@ -5,7 +5,7 @@ CItem::CItem(void)
 	: itemType(ITEM_WEAPON)
 	, itemPos(0, 0)
 	, itemID(0)
-	, itemName("Name")
+	, itemName("NULL")
 	, itemDescription("Description")
 {
 }
@@ -15,7 +15,7 @@ CItem::~CItem(void)
 {
 }
 
-void CItem::Init(ITEM_STATUS status, ITEM_TYPE type, Vector2 position, int id, string name, string description)
+void CItem::Init(ITEM_STATUS status, ITEM_TYPE type, Vector2 position, int id, string name, string description, Mesh* mesh, int location)
 {
 	this->itemStatus = status;
 	this->itemType = type;
@@ -23,6 +23,8 @@ void CItem::Init(ITEM_STATUS status, ITEM_TYPE type, Vector2 position, int id, s
 	this->itemID = id;
 	this->itemName = name;
 	this->itemDescription = description;
+	this->mesh = mesh;
+	this->locationID = location;
 }
 void CItem::Update()
 {
@@ -95,4 +97,13 @@ void CItem::setItemDescription(string description)
 string CItem::getItemDescription(void)
 {
 	return this->itemDescription;
+}
+
+void CItem::setLocationID(int location)
+{
+	this->locationID = location;
+}
+int CItem::getLocationID(void)
+{
+	return this->locationID;
 }
