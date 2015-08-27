@@ -1632,11 +1632,6 @@ void SceneGame::InitItem(string config)
 {
 	Branch playerBranch = TextTree::FileToRead(config);
 
-	if (DEBUG)
-	{
-		playerBranch.printBranch();
-	}
-
 	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
 	{
 		int ID = 0, locationID = 0;
@@ -1716,8 +1711,6 @@ void SceneGame::InitInteractions(string config)
 
 	for (vector<Branch>::iterator branch = InteractionsBranch.childBranches.begin(); branch != InteractionsBranch.childBranches.end(); ++branch)
 	{
-		branch->printBranch();
-
 		for (vector<Branch>::iterator childbranch = branch->childBranches.begin(); childbranch != branch->childBranches.end(); ++childbranch)
 		{
 			if (branch->branchName == "WeaDialog")
@@ -1787,9 +1780,9 @@ void SceneGame::InitInteractions(string config)
 					{
 						tempMesh = attriValue;
 					}
-					tempDialogs.InitSetting(tempSpeed,tempMesh);
-					dialogs.push_back(tempDialogs);
 				}
+				tempDialogs.InitSetting(tempSpeed,tempMesh);
+				dialogs.push_back(tempDialogs);
 			}
 		}
 	}
@@ -2499,26 +2492,22 @@ void SceneGame::UpdateDialog(double dt)
 	static float timer = 10.f;
 	static float startTimer = 0.f;
 
-	std::cout << startTimer << std::endl;
 	startTimer += (float) dt * 100;
 
 	if (startTimer > timer)
 	{
-		std::cout << dialogString.size() << std::endl;
-		for (int i = dialogString.size(), check = 0; i < dialogString.size() + 1 && check == 0; ++i)
-		{
-			std::cout << check << std::endl;
-			dialogString[i] += findDialog(BATON).GetText()[i];
-			check = 1;
-		}
-		startTimer = 0.f;
+		//std::cout << dialogString.size() << std::endl;
+		//for (int i = dialogString.size(), check = 0; i < dialogString.size() + 1 && check == 0; ++i)
+		//{
+		//	std::cout << check << std::endl;
+		//	dialogString[i] += findDialog(BATON).GetText()[i];
+		//	check = 1;
+		//}
+		//startTimer = 0.f;
 	}
-
-	std::cout << dialogString << std::endl;
 
 	if(dialogString.size() >= findDialog(BATON).GetText().size())
 	{
-		std::cout << "clear" << std::endl;
 		for (int i = 0; i < findDialog(BATON).GetText().size(); i++)
 		{
 			dialogString[i]=NULL;
@@ -2716,8 +2705,6 @@ void SceneGame::RenderCharacters(void)
 
 	/*std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
-
-	Render2DMesh(findMesh("GEO_FOV5"),false, (float)TILESIZE*12, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 	if (DEBUG)
 	{

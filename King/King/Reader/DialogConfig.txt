@@ -1,3 +1,5 @@
+# Scenesetup #
+# Init all the diaglog speech#
 {
 	
 	{
@@ -76,14 +78,14 @@
 		}
 		{
 			[ID] 28
-			[Text] F***_This_Place_I'm_Out!
+			[Text] I'm_Out_Of_This_Place!
 		}
 	}
 	{
 		[NAME] Setting
 		{
 			[TextSpeed] 100
-			[MESH] GEO_BUBBLE
+			[Mesh] GEO_BUBBLE
 		}
 	}
 
