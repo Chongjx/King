@@ -130,6 +130,9 @@
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[Threadmill] 184
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to main cell
 			{
@@ -145,6 +148,10 @@
 				[Position] 22, 0
 			}
 			[Directory] Image\\Map\\exerciseRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\exerciseRoomWayPoint.csv
 		}
 	}
 	{
@@ -185,6 +192,9 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to main Cell
 			{
@@ -213,6 +223,10 @@
 				[Position] 43, 0
 			}
 			[Directory] Image\\Map\\canteenRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\canteenRoomWayPoint.csv
 		}
 	}
 	{
@@ -251,6 +265,9 @@
 				[PrisonDoorRightClosed] 479
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			{
 				[NAME] Door
@@ -265,6 +282,10 @@
 				[Position] 10, 24
 			}
 			[Directory] Image\\Map\\showerRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\showerRoomWayPoint.csv
 		}
 	}
 	{
@@ -305,6 +326,10 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
+				[D] 39
 			}
 			# Door to canteen
 			{
@@ -393,6 +418,10 @@
 			}
 			[Directory] Image\\Map\\corridorCollision.csv
 		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\corridorWayPoint.csv
+		}
 	}
 	{
 		[NAME] GuardRoom
@@ -432,6 +461,9 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to corridor
 			{
@@ -447,6 +479,10 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\fakeRoomWayPoint.csv
 		}
 	}
 	{
@@ -487,6 +523,9 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to corridor
 			{
@@ -502,6 +541,10 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\fakeRoomWayPoint.csv
 		}
 	}
 	{
@@ -542,6 +585,9 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to corridor
 			{
@@ -557,6 +603,10 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\fakeRoomWayPoint.csv
 		}
 	}
 	{
@@ -597,6 +647,9 @@
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to corridor
 			{
@@ -612,6 +665,10 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\fakeRoomWayPoint.csv
 		}
 	}
 	{
@@ -654,6 +711,9 @@
 				[SwitchOff] 398
 				[LeftChair] 343
 				[RightChair] 344
+				[A] 36
+				[B] 37
+				[C] 38
 			}
 			# Door to corridor
 			{
@@ -669,6 +729,10 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\cameraRoomCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\cameraRoomWayPoint.csv
 		}
 	}
 	{
@@ -708,6 +772,12 @@
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[Exit] 0
+				[A] 36
+				[B] 37
+				[C] 38
+				[D] 39
+				[E] 40
+				[F] 41
 
 			}
 			# Door to corridor
@@ -719,6 +789,10 @@
 			}
 
 			[Directory] Image\\Map\\courtyardCollision.csv
+		}
+		{
+			[Type] WayPoint
+			[Directory] Image\\Map\\courtyardWayPoint.csv
 		}
 	}
 }

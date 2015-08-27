@@ -47,8 +47,10 @@ bool AI::CheckDestination(void)
 	{
 		if (currentRoom.specialTiles[special].TileName == waypoint)
 		{
-			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[(int)(Math::FAbs(destination.y / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()))][(int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())]  == currentRoom.specialTiles[special].TileID)
+			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[(int)((currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())][(int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())]  == currentRoom.specialTiles[special].TileID)
 			{
+				//std::cout << destination << std::endl;
+				//std::cout << (destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << ", " << (int)((currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << std::endl;
 				return true;
 			}
 		}
