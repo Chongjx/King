@@ -2271,7 +2271,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 					{
-						if(getKey("OpenDoor"))
+						if(getKey("OpenDoor") && findItem("Fork"))
 						{
 							currentInteraction = OPEN_CELL_DOOR;
 
@@ -2298,7 +2298,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 					{
-						if(getKey("OpenDoor"))
+						if(getKey("OpenDoor") && findItem("Fork"))
 						{
 							currentInteraction = OPEN_CELL_DOOR;
 
@@ -3138,6 +3138,18 @@ Dialogs SceneGame::findDialog(Dialog_ID diaID)
 	std::cout << "Unable to find Dialog! Check your naming" << std::endl;
 
 	return tempDialogs;
+}
+
+bool SceneGame::findItem(string name)
+{
+	for (unsigned i = 0; i < player->getInventory().getVecOfItems().size(); ++i)
+	{
+		if (player->getInventory().getVecOfItems()[i]->getItemName() == name)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool SceneGame::getKey(string keyName)

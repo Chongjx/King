@@ -182,6 +182,7 @@ public:
 	Mesh* findMesh(string meshName);
 	Color findColor(string colorName);
 	Dialogs findDialog(enum Dialog_ID);
+	bool findItem(string name);
 	bool getKey(string keyName);
 	bool FOG;
 private:
