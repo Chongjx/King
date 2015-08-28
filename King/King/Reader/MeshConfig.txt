@@ -409,6 +409,11 @@
 		[Texture] Image\\FOV_Clear.tga
 	}
 	{
+		[NAME] GEO_FOV_SEMI
+		[Type] Quad
+		[Texture] Image\\FOV_SemiSolid.tga
+	}
+	{
 		[NAME] GEO_FOV_SOLID
 		[Type] Quad
 		[Texture] Image\\FOV_Solid.tga

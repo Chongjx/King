@@ -2133,7 +2133,21 @@ void SceneGame::UpdateInGame(double dt)
 	UpdateMap();
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
+	UpdateFOV;
 	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
+}
+
+void SceneGame::UpdateFOV(void)
+{
+	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6) 
+	{
+						
+	}
+	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
+	{
+
+	}
+
 }
 
 void SceneGame::UpdatePlayer(double dt)
@@ -2665,6 +2679,7 @@ void SceneGame::RenderCursor(void)
 
 void SceneGame::RenderFOV(void)
 {
+
 	if ((unsigned)currentLocation < layout.size())
 	{
 		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
@@ -2693,9 +2708,13 @@ void SceneGame::RenderFOV(void)
 						//{
 						//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
 						//	{
-						if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
+						if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV()*0.5f)// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
 						{
 							Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}
+						else if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
+						{
+							Render2DMesh(findMesh("GEO_FOV_SEMI"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 						}
 						else
 						{
@@ -2822,7 +2841,7 @@ void SceneGame::RenderTime(void)
 		ss2<< "Day: " << day.getCurrentTime().day;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
-
+		
 		if (DEBUG)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.moon.size, day.moon.pos);

@@ -156,6 +156,7 @@ public:
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool pressed, double mouseX, double mouseY);
 	void UpdateDialog(double dt,Dialog_ID diaName);
+	void UpdateFOV(void);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -171,7 +172,7 @@ public:
 	void RenderItem(void);
 	void RenderPlayerInventory(void);
 	void RenderItemOnMouse(bool pressed);
-	void RenderFOV(void);
+	void RenderFOV(int FOV);
 	void RenderDialogs(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
