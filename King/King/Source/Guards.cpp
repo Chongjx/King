@@ -31,9 +31,9 @@ void Guards::Update(double dt)
 
 void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
 {
-	bool travel = Character::tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
+	bool collide = tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
 
-	if (pos == destination && this->guardStateMachine.GetState() == Guards_StateMachine::IDLE_STATE || !travel)
+	if (pos == destination && this->guardStateMachine.GetState() == Guards_StateMachine::IDLE_STATE || !collide)
 	{
 		do 
 		{
@@ -72,8 +72,8 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 
 	if (destination != pos)
 	{
-		changeAni(Guards_StateMachine::WALK_STATE);
-		Character::changeAni(StateMachine::WALK_STATE);
+		changeAni(Guards_StateMachine::RUN_STATE);
+		Character::changeAni(StateMachine::RUN_STATE);
 	}
 
 	else
@@ -83,8 +83,6 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 	}
 
 	Character::tileBasedOffset();
-
-	//std::cout << pos << std::endl;
 }
 
 void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)

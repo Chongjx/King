@@ -34,8 +34,6 @@ void AI::SetDestination(void)
 {
 	destination.x = (float)Math::RandIntMinMax(0, currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth() - 1) * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
 	destination.y = currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - (float)Math::RandIntMinMax(0, currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapHeight() - 1) * currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
-
-	std::cout << destination << std::endl;
 }
 
 Vector2 AI::GetDestination(void)
@@ -49,11 +47,27 @@ bool AI::CheckDestination(void)
 	{
 		if (currentRoom.specialTiles[special].TileName == waypoint)
 		{
-			if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[(int)((currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())][(int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())]  == currentRoom.specialTiles[special].TileID)
+			//std::cout << destination << std::endl;
+			if (destination.y >= 0)
 			{
-				//std::cout << destination << std::endl;
-				//std::cout << (destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << ", " << (int)((currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << std::endl;
-				return true;
+				if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesHeight() - destination.y / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()][(int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())] == currentRoom.specialTiles[special].TileID)
+				{
+					return true;
+				}
+
+				return false;
+			}
+
+			else
+			{
+
+				if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[(int)((currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())][(int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())] == currentRoom.specialTiles[special].TileID)
+				{
+					//std::cout << (int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << ", " << abs((int)(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesHeight() - (currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())) << std::endl;
+					return true;
+				}
+
+				return false;
 			}
 		}
 	}

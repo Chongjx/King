@@ -2498,7 +2498,7 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempGuard->Update(dt);
 			tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-			std::cout << tempGuard->getPos() << std::endl;
+			//std::cout << tempGuard->getPos() << std::endl;
 		}
 	}
 }
@@ -2725,6 +2725,8 @@ void SceneGame::RenderLevel(void)
 			int m = 0;
 			int n = 0;
 
+			if (numMaps == TileMap::TYPE_BACKGROUND || numMaps == TileMap::TYPE_VISUAL)
+			{
 			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 			{
 				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
@@ -2764,6 +2766,7 @@ void SceneGame::RenderLevel(void)
 					}
 				}
 			}
+		}
 		}
 	}
 }

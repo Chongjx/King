@@ -10,7 +10,7 @@
 		[ScreenWidth] 1024
 		[ScreenHeight] 800
 		# 32 * 256
-		[MapWidth] 177 
+		[MapWidth] 119 
 		# 32 * 160		
 		[MapHeight] 70
 		[MapOffsetX] 0
