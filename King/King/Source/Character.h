@@ -55,7 +55,7 @@ public:
 	virtual bool tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
 
 	void tileBasedOffset(void);
- int	CalculateDistance(Vector2 position, int tilesize);
+	int CalculateDistance(Vector2 position, int tilesize);
 
 
 	/*************************************/
@@ -87,7 +87,7 @@ public:
 	CInventory& getInventory(void);
 	void setRoom(Room& currentRoom);
 
-	Room getRoom(void);
+	Room& getRoom(void);
 	virtual void changeAni(StateMachine::STATE unitState);
 
 	bool collideWithDoor(void);

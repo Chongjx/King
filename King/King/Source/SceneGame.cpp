@@ -511,6 +511,7 @@ void SceneGame::InitShaders(void)
 
 void SceneGame::InitSettings(string config)
 {
+	// various properties of the game (width, height, controls, etc)
 	Branch settingBranch = TextTree::FileToRead(config);
 
 	for (vector<Branch>::iterator branch = settingBranch.childBranches.begin(); branch != settingBranch.childBranches.end(); ++branch)
@@ -924,9 +925,12 @@ void SceneGame::InitMesh(string config)
 	}
 }
 
+
 void SceneGame::InitColor(string config)
 {
 	Branch colorBranch = TextTree::FileToRead(config);
+	// various colors needed for text
+
 	for (vector<Branch>::iterator branch = colorBranch.childBranches.begin(); branch != colorBranch.childBranches.end(); ++branch)
 	{
 		Color tempColor;
@@ -950,7 +954,7 @@ void SceneGame::InitColor(string config)
 void SceneGame::InitInstruct(string config)
 {
 	Branch InstructBranch = TextTree::FileToRead(config);
-
+	// Instructions for the game
 	for (vector<Branch>::iterator branch = InstructBranch.childBranches.begin(); branch != InstructBranch.childBranches.end(); ++branch)
 	{
 		Instructions tempInstruct;
@@ -972,6 +976,7 @@ void SceneGame::InitInstruct(string config)
 void SceneGame::InitInterface(string config)
 {
 	Branch interfaceBranch = TextTree::FileToRead(config);
+	// Init interfaces of the game, buttons etc..
 
 	for (vector<Branch>::iterator branch = interfaceBranch.childBranches.begin(); branch != interfaceBranch.childBranches.end(); ++branch)
 	{
@@ -1074,6 +1079,7 @@ void SceneGame::InitInterface(string config)
 void SceneGame::InitLevel(string config)
 {
 	Branch levelBranch = TextTree::FileToRead(config);
+	// Processing all levels layout
 
 	for (vector<Branch>::iterator branch = levelBranch.childBranches.begin(); branch != levelBranch.childBranches.end(); ++branch)
 	{
@@ -1199,6 +1205,7 @@ void SceneGame::InitLevel(string config)
 								{
 									Branch tempChildBranch = *childbranches;
 
+									// handling special tiles for collision & interaction purposes
 									if (tempChildBranch.branchName == "SpecialTiles")
 									{
 										SpecialTiles tiles;
@@ -1216,6 +1223,7 @@ void SceneGame::InitLevel(string config)
 										}
 									}
 
+									// handling doors in all the rooms for transition between rooms purposes
 									else if (tempChildBranch.branchName == "Door")
 									{
 										Door tempDoor;
@@ -1248,6 +1256,7 @@ void SceneGame::InitLevel(string config)
 							}
 						}
 
+						// For AI waypoints purposes
 						else if (attriValue == "WayPoint")
 						{
 							tempType = TileMap::TYPE_WAYPOINT;
@@ -1357,6 +1366,8 @@ void SceneGame::InitVariables(string config)
 void SceneGame::InitObjective(string config)
 {
 	Branch VariablesBranch = TextTree::FileToRead(config);
+	// Objectives of the game
+
 	for (vector<Branch>::iterator branch = VariablesBranch.childBranches.begin(); branch != VariablesBranch.childBranches.end(); ++branch)
 	{
 		if (branch->branchName == "Level")
@@ -1464,6 +1475,7 @@ void SceneGame::InitSound(string config)
 void SceneGame::InitAI(string config)
 {
 	Branch AIBranch = TextTree::FileToRead(config);
+	// Init AIs pos, mesh, maplocation & waypoint etc...
 
 	for (vector<Branch>::iterator branch = AIBranch.childBranches.begin(); branch != AIBranch.childBranches.end(); ++branch)
 	{
@@ -1581,6 +1593,7 @@ void SceneGame::InitAI(string config)
 void SceneGame::InitPlayer(string config)
 {
 	Branch playerBranch = TextTree::FileToRead(config);
+	// Init player's pos, mesh, maplocation & waypoint etc...
 
 	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
 	{
@@ -1631,6 +1644,7 @@ void SceneGame::InitPlayer(string config)
 void SceneGame::InitItem(string config)
 {
 	Branch playerBranch = TextTree::FileToRead(config);
+	// Init items pos & location in the game, etc...
 
 	for (vector<Branch>::iterator branch = playerBranch.childBranches.begin(); branch != playerBranch.childBranches.end(); ++branch)
 	{
@@ -1708,6 +1722,7 @@ void SceneGame::InitItem(string config)
 void SceneGame::InitInteractions(string config)
 {
 	Branch InteractionsBranch = TextTree::FileToRead(config);
+	// Init all possible dialogs
 
 	for (vector<Branch>::iterator branch = InteractionsBranch.childBranches.begin(); branch != InteractionsBranch.childBranches.end(); ++branch)
 	{
@@ -1811,6 +1826,7 @@ void SceneGame::UpdateOpengl(void)
 
 void SceneGame::UpdateInput(void)
 {
+	// updating keyboard intput via a handler from the engine
 	for (unsigned i = 0; i < interactionKeys.size(); ++i)
 	{
 		interactionKeys[i].pressed = KEngine::getKeyboard()->getKey(interactionKeys[i].value);
@@ -1819,6 +1835,7 @@ void SceneGame::UpdateInput(void)
 
 void SceneGame::UpdateMouse(void)
 {
+	// updating mouse pos in the scene via a handler from the engine
 	double x, y;
 	x = KEngine::getMouse()->getCurrentPosX();
 	y = KEngine::getMouse()->getCurrentPosY();
@@ -1831,6 +1848,7 @@ void SceneGame::UpdateMouse(void)
 
 void SceneGame::UpdateState(void)
 {
+	// changing the scene game state
 	bool updated = false;
 	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size() && !updated; ++i)
 	{
@@ -1929,6 +1947,7 @@ void SceneGame::UpdateState(void)
 
 void SceneGame::UpdateEffect(void)
 {	
+	// Provide player with feedback
 	static bool played = false;
 	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
@@ -1967,6 +1986,7 @@ void SceneGame::UpdateEffect(void)
 
 void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY)
 {
+	// picking, dropping & switching of items
 	for(vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
 	{
 		CItem *item = (CItem *)*it;
@@ -1979,6 +1999,17 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 				&& mouseY >= item->getItemPos().y - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())
 			{
 				if (pressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
+				{
+					CInventory tempInventory = player->getInventory();
+					tempInventory.addItem(item);
+					player->setInventory(tempInventory);
+					break;
+				}
+			}
+
+			else if (getKey("Enter"))
+			{
+				if (CItem::ITEM_ONGROUND)
 				{
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
@@ -2007,12 +2038,15 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 					&& mouseY > gameInterfaces[currentState].buttons[i].getPos().y)
 				{
 					//store pos
-					indexItem1 = stoi(gameInterfaces[currentState].buttons[i].getName());
-					tempMouseX = mouseX;
-					tempMouseY = mouseY;
-					//breaking line
-					updateMousePos = false;
-					break;
+					if (i < player->getInventory().getVecOfItems().size() + 1)
+					{
+						indexItem1 = stoi(gameInterfaces[currentState].buttons[i].getName());
+						tempMouseX = mouseX;
+						tempMouseY = mouseY;
+						//breaking line
+						updateMousePos = false;
+						break;
+					}
 				}
 			}
 		}
@@ -2033,11 +2067,14 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 				{
 					{
 						//Swap item
-						indexItem2 = stoi(gameInterfaces[currentState].buttons[i].getName());
-						player->getInventory().swapItem(indexItem1,indexItem2);
-						updateMousePos = true;
-						dropItem = false;
-						break;
+						if (i < player->getInventory().getVecOfItems().size() + 1)
+						{
+							indexItem2 = stoi(gameInterfaces[currentState].buttons[i].getName());
+							player->getInventory().swapItem(indexItem1,indexItem2);
+							updateMousePos = true;
+							dropItem = false;
+							break;
+						}
 					}
 				}
 			}
@@ -2182,11 +2219,14 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 	}
 
+	// convert player from world pos to screen pos
 	static Vector2 playerPosToScreen;
 	playerPosToScreen.Set((player->getPos().x)/TILESIZE, (sceneHeight - player->getPos().y - TILESIZE)/TILESIZE);
 
+	// Update for interaction
 	for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
 	{
+		// threadmill
 		if (layout[currentLocation].specialTiles[special].TileName == "Threadmill")
 		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
@@ -2198,6 +2238,7 @@ void SceneGame::UpdatePlayer(double dt)
 				currentInteraction = NO_INTERACTION;
 			}
 		}
+		// bed - fast forward time
 		else if (layout[currentLocation].specialTiles[special].TileName == "Bed")
 		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
@@ -2217,21 +2258,225 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
+		// open a closed cell
 		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorClosed")
 		{
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
+			{
+				// the door is below the player
+				if(player->getDir().y == -1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("OpenDoor"))
+						{
+							currentInteraction = OPEN_CELL_DOOR;
 
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+							break; 
+						}
+					}
+				}
+
+				// the door is above the player
+				else if(player->getDir().y == 1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("OpenDoor"))
+						{
+							currentInteraction = OPEN_CELL_DOOR;
+
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+							break; 
+						}
+					}
+				}
+			}
+		}
+
+		// close a opened cell
+		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
+		{
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
+			{
+				// door is below the player
+				if(player->getDir().y == -1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("CloseDoor"))
+						{
+							currentInteraction = CLOSE_CELL_DOOR;
+
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+							break; 
+						}
+					}
+				}
+				// door is above the player
+				else if(player->getDir().y == 1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("CloseDoor"))
+						{
+							currentInteraction = CLOSE_CELL_DOOR;
+
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+							break; 
+						}
+					}
+				}
+			}
+		}
+
+		// Interacting with closed doors
+		/*else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
+		{
+			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
+			{
+				// if the door is below the player
+				if(player->getDir().y == -1)
+				{
+					if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("OpenDoor"))
+						{
+							currentInteraction = OPEN_PRISON_DOOR;
+
+							// match the sides of the door (left / right)
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if ((layout[currentLocation].specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation].specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed"))
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+							break; 
+						}
+					}
+				}
+
+				// door is above player
+				else if(player->getDir().y == 1)
+				{
+					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					{
+						if(getKey("OpenDoor"))
+						{
+							currentInteraction = OPEN_PRISON_DOOR;
+
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if ((layout[currentLocation].specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation].specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed"))
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
+						}
+						else
+						{
+							currentInteraction = NO_INTERACTION;
+							break; 
+						}
+					}
+				}
+			}
+		}*/
+
+		// close door
+		/*else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftOpened" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightOpened")
+		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
 			{
 				if(player->getDir().y == -1)
 				{
 					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 					{
-						if(getKey("Enter"))
+						if(getKey("CloseDoor"))
 						{
-							currentInteraction = OPEN_DOOR;
-							layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = 307;
-							layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = 307;
-							break;
+							currentInteraction = CLOSE_PRISON_DOOR;
+
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
 						}
 						else
 						{
@@ -2244,99 +2489,34 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 					{
-						if(getKey("Enter"))
+						if(getKey("CloseDoor"))
 						{
-							currentInteraction = OPEN_DOOR;
-							layout[currentLocation].specialTiles[special].TileName = "CellDoorOpened";
-							break;
+							currentInteraction = CLOSE_CELL_DOOR;
+
+							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+							{
+								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+								{
+									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
+									{
+										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									}
+									break;
+								}
+							}
 						}
 						else
 						{
 							currentInteraction = NO_INTERACTION;
+							break; 
 						}
 					}
 				}
 			}
-		}
+		}*/
 
-		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
-		{
-
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
-			{
-				if(player->getDir().y == -1)
-				{
-					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
-					{
-						if(getKey("Enter"))
-						{
-							currentInteraction = CLOSE_DOOR;
-							//layout[currentLocation].specialTiles[special].TileID = 266;
-							break;
-						}
-						else
-						{
-							currentInteraction = NO_INTERACTION;
-						}
-					}
-				}
-				else if(player->getDir().y == 1)
-				{
-					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
-					{
-						if(getKey("Enter"))
-						{
-							currentInteraction = CLOSE_DOOR;
-							//layout[currentLocation].specialTiles[special].TileID = 266;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		//if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
-		//{
-
-		//	if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y][playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
-		//	{
-		//		if(player->getDir().y == -1)
-		//		{
-		//			if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y + 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
-		//			{
-		//				if(getKey("Enter"))
-		//				{
-		//					currentInteraction = CLOSE_DOOR;
-		//					//layout[currentLocation].specialTiles[special].TileID = 266;
-		//					break;
-		//				}
-		//				else
-		//				{
-		//					currentInteraction = NO_INTERACTION;
-		//				}
-		//			}
-		//		}
-		//		else if(player->getDir().y == 1)
-		//		{
-		//			if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[playerPosToScreen.y - 1][playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
-		//			{
-		//				if(getKey("Enter"))
-		//				{
-		//					currentInteraction = CLOSE_DOOR;
-		//					//layout[currentLocation].specialTiles[special].TileID = 266;
-		//					break;
-		//				}
-		//				else
-		//				{
-		//					currentInteraction = NO_INTERACTION;
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
-
-
-		else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
+		// transition between rooms
+		else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftOpened" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightOpened")
 		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 			{
@@ -2457,9 +2637,9 @@ void SceneGame::UpdateInteractions(double dt)
 		break;
 	case TALK_WITH_GUARDS:;
 		break;
-	case OPEN_DOOR:
+	case OPEN_CELL_DOOR:
 		break;
-	case CLOSE_DOOR:
+	case CLOSE_CELL_DOOR:
 		break;
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
@@ -2508,7 +2688,7 @@ void SceneGame::UpdateDialog(double dt)
 
 	if(dialogString.size() >= findDialog(BATON).GetText().size())
 	{
-		for (int i = 0; i < findDialog(BATON).GetText().size(); i++)
+		for (unsigned i = 0; i < findDialog(BATON).GetText().size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
@@ -2629,7 +2809,7 @@ void SceneGame::RenderFOV(void)
 						//{
 						//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
 						//	{
-								if(player->CalculateDistance(Vector2 (m*TILESIZE,800-(n+1)*TILESIZE),TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
+						if(player->CalculateDistance(Vector2 (m * TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1)*TILESIZE), TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
 								{
 									Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 								}
@@ -2845,8 +3025,8 @@ void SceneGame::RenderInstruct(void)
 
 void SceneGame::RenderDialogs(void)
 {
-	Render2DMesh(findMesh("GEO_BUBBLE"),false,Vector2(375,64),Vector2(sceneWidth*0.8,sceneHeight*0.85));
-	RenderTextOnScreen(findMesh("GEO_TEXT"),dialogString,findColor("Skyblue"),specialFontSize,0,sceneHeight);
+	Render2DMesh(findMesh("GEO_BUBBLE"), false, Vector2(375, 64), Vector2(sceneWidth*0.8f, sceneHeight*0.85f));
+	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Skyblue"), specialFontSize, 0, sceneHeight);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)

@@ -63,5 +63,15 @@
 			[Key] 0x0D
 			# [Key] VK_RETURN
 		}
+		{
+			[NAME] OpenDoor
+			[Key] 0x4E
+			# [Key] N
+		}
+		{
+			[NAME] CloseDoor
+			[Key] 0x4D
+			# [Key] M
+		}
 	}
 }
