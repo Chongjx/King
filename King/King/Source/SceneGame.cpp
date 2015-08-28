@@ -2279,10 +2279,8 @@ void SceneGame::UpdatePlayer(double dt)
 							{
 								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
 								{
-									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
-									{
-										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									}
+									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
 									break;
 								}
 							}
@@ -2308,10 +2306,8 @@ void SceneGame::UpdatePlayer(double dt)
 							{
 								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
 								{
-									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
-									{
-										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									}
+									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
 									break;
 								}
 							}
@@ -2344,10 +2340,8 @@ void SceneGame::UpdatePlayer(double dt)
 							{
 								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
 								{
-									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
-									{
-										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									}
+									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
 									break;
 								}
 							}
@@ -2372,10 +2366,8 @@ void SceneGame::UpdatePlayer(double dt)
 							{
 								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
 								{
-									for (unsigned numMaps = 0; numMaps < player->getRoom().roomLayout.size(); ++numMaps)
-									{
-										player->getRoom().roomLayout[numMaps].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									}
+									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
 									break;
 								}
 							}
@@ -2702,13 +2694,13 @@ void SceneGame::RenderFOV(void)
 						//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
 						//	{
 						if(player->CalculateDistance(Vector2 (m * TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1)*TILESIZE), TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
-								{
-									Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
-								}
-								else
-								{
-									Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
-								}	
+						{
+							Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}
+						else
+						{
+							Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+						}	
 						//	}
 						//}
 					}		
@@ -2730,46 +2722,46 @@ void SceneGame::RenderLevel(void)
 
 			if (numMaps == TileMap::TYPE_BACKGROUND || numMaps == TileMap::TYPE_VISUAL)
 			{
-			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
-			{
-				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
-
-				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+				for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 				{
-					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+					n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
 
-					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
-						break;
-					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
-						break;
-
-					if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
+					for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 					{
-						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
-						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+						m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
 
-						if (tilesheet->m_currentTile != -1)
+						if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+							break;
+						if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
+							break;
+
+						if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
 						{
-							// offset the world
-							Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
-						}
-					}
+							TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
+							tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
 
-					else
-					{
-						if (DEBUG)
-						{
-							int collideTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
-
-							if (collideTile != -1 && layout[currentLocation].roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
+							if (tilesheet->m_currentTile != -1)
 							{
-								Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+								// offset the world
+								Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+							}
+						}
+
+						else
+						{
+							if (DEBUG)
+							{
+								int collideTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+
+								if (collideTile != -1 && layout[currentLocation].roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
+								{
+									Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+								}
 							}
 						}
 					}
 				}
 			}
-		}
 		}
 	}
 }
@@ -3141,7 +3133,7 @@ Dialogs SceneGame::findDialog(Dialog_ID diaID)
 		//std::cout <<tempDialogs.GetID() << std::endl;
 		if (tempDialogs.GetID() == diaID)
 		{
-			
+
 			return tempDialogs;
 		}
 	}
