@@ -480,10 +480,6 @@
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
-		{
-			[Type] WayPoint
-			[Directory] Image\\Map\\fakeRoomWayPoint.csv
-		}
 	}
 	{
 		[NAME] GuardRoom
@@ -541,10 +537,6 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
-		}
-		{
-			[Type] WayPoint
-			[Directory] Image\\Map\\fakeRoomWayPoint.csv
 		}
 	}
 	{
@@ -604,10 +596,6 @@
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
 		}
-		{
-			[Type] WayPoint
-			[Directory] Image\\Map\\fakeRoomWayPoint.csv
-		}
 	}
 	{
 		[NAME] GuardRoom
@@ -665,10 +653,6 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\fakeRoomCollision.csv
-		}
-		{
-			[Type] WayPoint
-			[Directory] Image\\Map\\fakeRoomWayPoint.csv
 		}
 	}
 	{
@@ -729,10 +713,6 @@
 				[Position] 16, 15
 			}
 			[Directory] Image\\Map\\cameraRoomCollision.csv
-		}
-		{
-			[Type] WayPoint
-			[Directory] Image\\Map\\cameraRoomWayPoint.csv
 		}
 	}
 	{

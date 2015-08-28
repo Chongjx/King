@@ -37,79 +37,79 @@
 		        [MapLocation] 0	
 			[Waypoint] A
 		}
-		{
-			[NAME] MAIN_CELL_GUARD_A
-			#26 - pos.y
-			[Pos] 4, -15 
-		        [Dir] 1, 0
-		     	[Mesh] GEO_GUARD
-		     	[Tiles] 1
-		      	[MapLocation] 0	
-			[Waypoint] A
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_A
-			[Pos] 4, -41
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		        [MapLocation] 0
-			[Waypoint] A
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_A
-			[Pos] 55, -28
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		      	[MapLocation] 0
-			[Waypoint] A
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_B
-			[Pos] 63, -43
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		      	[MapLocation] 0
-			[Waypoint] B
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_B
-			[Pos] 63, 0
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		      	[MapLocation] 0
-			[Waypoint] B
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_B
-			[Pos] 81, -7
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		      	[MapLocation] 0
-			[Waypoint] B
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_B
-			[Pos] 101, -7
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		      	[MapLocation] 0
-			[Waypoint] B
-		}
-		{
-			[NAME] MAIN_CELL_GUARD_B
-			[Pos] 113, -41
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
-		      	[MapLocation] 0
-			[Waypoint] B
-		}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_A
+		#	#26 - pos.y
+		#	[Pos] 4, -15
+		#	[Dir] 1, 0
+		#     	[Mesh] GEO_GUARD
+		#     	[Tiles] 1
+		#      	[MapLocation] 0	
+		#	[Waypoint] A
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_A
+		#	[Pos] 4, -41
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#	[MapLocation] 0
+		#	[Waypoint] A
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_A
+		#	[Pos] 55, -28
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#	[MapLocation] 0
+		#	[Waypoint] A
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_B
+		#	[Pos] 63, -43
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#      	[MapLocation] 0
+		#	[Waypoint] B
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_B
+		#	[Pos] 63, 0
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#    	[MapLocation] 0
+		#	[Waypoint] B
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_B
+		#	[Pos] 81, -7
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#      	[MapLocation] 0
+		#	[Waypoint] B
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_B
+		#	[Pos] 101, -7
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#      	[MapLocation] 0
+		#	[Waypoint] B
+		#}
+		#{
+		#	[NAME] MAIN_CELL_GUARD_B
+		#	[Pos] 113, -41
+		#      	[Dir] 1, 0
+		#	[Mesh] GEO_GUARD
+		#	[Tiles] 1
+		#      	[MapLocation] 0
+		#	[Waypoint] B
+		#}
 		# exercise room
 		{
 			[NAME] EXERCISE_GUARD_A
@@ -326,17 +326,17 @@
 			[NAME] COURT_GUARD_D
 			[Pos] 9, -13
 		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
+			[Mesh] GEO_GUARD
+			[Tiles] 1
 		      	[MapLocation] 10
 			[Waypoint] D
 		}
 		{
 			[NAME] COURT_GUARD_E
 			[Pos] 43, 21
-		      	[Dir] 1, 0
-		        [Mesh] GEO_GUARD
-		        [Tiles] 1
+		     	[Dir] 1, 0
+			[Mesh] GEO_GUARD
+			[Tiles] 1
 		      	[MapLocation] 10
 			[Waypoint] E
 		}
