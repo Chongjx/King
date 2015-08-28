@@ -1503,6 +1503,7 @@ void SceneGame::InitAI(string config)
 					if (attriName == "Pos")
 					{
 						stringToVector(attriValue, pos);
+
 					}
 
 					else if (attriName == "Dir")
@@ -2607,14 +2608,25 @@ void SceneGame::UpdateAI(double dt)
 		if (tempGuard->getRoom().ID == player->getRoom().ID)
 		{
 			tempGuard->setRender(true);
+			tempGuard->SetUpdate(true);
 		}
 
 		else
 		{
 			tempGuard->setRender(false);
+			tempGuard->SetUpdate(false);
 		}
-		tempGuard->Update(dt);
-		tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+	}
+
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuard = *guard;
+
+		if (tempGuard->GetUpdate())
+		{
+			tempGuard->Update(dt);
+			tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+		}
 	}
 }
 
