@@ -60,10 +60,8 @@ bool AI::CheckDestination(void)
 
 			else
 			{
-
 				if(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].screenMap[(int)((currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())][(int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())] == currentRoom.specialTiles[special].TileID)
 				{
-					//std::cout << (int)(destination.x / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize()) << ", " << abs((int)(currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesHeight() - (currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getScreenHeight() - destination.y) / currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize())) << std::endl;
 					return true;
 				}
 

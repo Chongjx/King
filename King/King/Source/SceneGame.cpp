@@ -2386,7 +2386,6 @@ void SceneGame::UpdatePlayer(double dt)
 		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 			{
-				std::cout << "Transit!" << std::endl;
 				for (unsigned numDoors = 0; numDoors < layout[currentLocation].doors.size(); ++numDoors)
 				{
 					// switch room
@@ -2693,7 +2692,7 @@ void SceneGame::RenderFOV(void)
 						//{
 						//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
 						//	{
-						if(player->CalculateDistance(Vector2 (m * TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1)*TILESIZE), TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
+						if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
 						{
 							Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
 						}
@@ -2913,7 +2912,7 @@ void SceneGame::RenderInstruct(void)
 void SceneGame::RenderDialogs(void)
 {
 	Render2DMesh(findMesh("GEO_BUBBLE"), false, Vector2(375, 64), Vector2(sceneWidth*0.8f, sceneHeight*0.85f));
-	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.4, sceneWidth * 0.65,sceneHeight*0.85);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.4f, sceneWidth * 0.65f,sceneHeight*0.85f);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
@@ -3130,7 +3129,6 @@ Dialogs SceneGame::findDialog(Dialog_ID diaID)
 	for (vector<Dialogs>::iterator it = dialogs.begin(); it != dialogs.end(); ++it)
 	{
 		tempDialogs = *it;
-		//std::cout <<tempDialogs.GetID() << std::endl;
 		if (tempDialogs.GetID() == diaID)
 		{
 

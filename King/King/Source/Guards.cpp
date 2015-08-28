@@ -42,29 +42,41 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 		while (CheckDestination() == false);
 	}
 
+	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
+	{
+		pos.y = destination.y;
+		targetPos.y = pos.y;
+	}
+
+	if (Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.x = pos.x;
+	}
+
 	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
 	{
 		pos = destination;
 		targetPos = pos;
 	}
 
-	else if( destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
 		targetPos.Set(pos.x + currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize(), pos.y);
 	}
 
-	else if( destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
 		targetPos.Set(pos.x - currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize(), pos.y);
 	}
 
-	else if(destination.y > pos.y && Math::FAbs(destination.y -  pos.y) > size.y * 0.2f)
+	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
 	{
 		pos.x = destination.x;
 		targetPos.Set(pos.x, pos.y + currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize());
 	}
 
-	else if(destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
 	{
 		pos.x = destination.x;
 		targetPos.Set(pos.x, pos.y - currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize());
@@ -72,8 +84,8 @@ void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double d
 
 	if (destination != pos)
 	{
-		changeAni(Guards_StateMachine::RUN_STATE);
-		Character::changeAni(StateMachine::RUN_STATE);
+		changeAni(Guards_StateMachine::WALK_STATE);
+		Character::changeAni(StateMachine::WALK_STATE);
 	}
 
 	else
