@@ -75,7 +75,7 @@ bool AI::CheckDestination(void)
 	return false;
 }
 
-void AI::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
+void AI::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt)
 {
 }
 
