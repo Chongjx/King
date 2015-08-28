@@ -40,3 +40,8 @@ int Dialogs::GetTextSpeed(void)
 {
 	return textSpeed;
 }
+
+string Dialogs::getMesh(void)
+{
+	return mesh;
+}

@@ -1801,8 +1801,7 @@ void SceneGame::InitInteractions(string config)
 						tempMesh = attriValue;
 					}
 				}
-				tempDialogs.InitSetting(tempSpeed,tempMesh);
-				dialogs.push_back(tempDialogs);
+				dialog.InitSetting(tempSpeed,tempMesh);
 			}
 		}
 	}
@@ -2134,7 +2133,6 @@ void SceneGame::UpdateInGame(double dt)
 	UpdateAI(dt);
 	UpdateMap();
 	UpdateInteractions(dt);
-	UpdateDialog(dt);
 	day.UpdateDay(dt,gameSpeed);
 	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
 }
@@ -2518,9 +2516,11 @@ void SceneGame::UpdateInteractions(double dt)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
+		UpdateDialog(dt,NEED_TO_ESCAPE);
 		break;
 	case SLEEP:
 		gameSpeed = 75;
+		UpdateDialog(dt,IM_TIRED);
 		break;
 	case TALK_WITH_PRISONERS:;
 		break;
@@ -2556,31 +2556,34 @@ void SceneGame::UpdateThreadmill(void)
 	}
 }
 
-void SceneGame::UpdateDialog(double dt)
+void SceneGame::UpdateDialog(double dt,Dialog_ID diaName)
 {
-	static float timer = 10.f;
+	static float timer = 1.f;
 	static float startTimer = 0.f;
+	static float clearTimer = 0.f;
 
-	startTimer += (float) dt * 100;
+	startTimer += (float) dt * dialog.GetTextSpeed();
+	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	if (startTimer > timer)
+	if (startTimer > timer || clearTimer <= timer*dialogString.size())
 	{
-		//std::cout << dialogString.size() << std::endl;
-		//for (int i = dialogString.size(), check = 0; i < dialogString.size() + 1 && check == 0; ++i)
-		//{
-		//	std::cout << check << std::endl;
-		//	dialogString[i] += findDialog(BATON).GetText()[i];
-		//	check = 1;
-		//}
-		//startTimer = 0.f;
+		int currentSize = dialogString.size();
+		for (int i = dialogString.size(); i <= currentSize; ++i)
+		{
+			dialogString += findDialog(diaName).GetText()[i];
+		}
+		startTimer = 0.f;
 	}
 
-	if(dialogString.size() >= findDialog(BATON).GetText().size())
+	if(clearTimer >= 30.f)
 	{
-		for (unsigned i = 0; i < findDialog(BATON).GetText().size(); i++)
+		for (unsigned i = 0; i < findDialog(diaName).GetText().size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
+
+		dialogString.resize(0);
+		clearTimer = 0.0f;
 	}
 }
 
@@ -2918,7 +2921,7 @@ void SceneGame::RenderInstruct(void)
 void SceneGame::RenderDialogs(void)
 {
 	Render2DMesh(findMesh("GEO_BUBBLE"), false, Vector2(375, 64), Vector2(sceneWidth*0.8f, sceneHeight*0.85f));
-	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Skyblue"), specialFontSize, 0, sceneHeight);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.4, sceneWidth * 0.65,sceneHeight*0.85);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
