@@ -1,6 +1,7 @@
 #include "Guards.h"
 
 Guards::Guards(void)
+	: chase(false)
 {
 }
 
@@ -21,15 +22,34 @@ void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room
 	AI::Init();
 }
 
-void Guards::Update(double dt)
+void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 {
 	if(GetUpdate() == true)
 	{
 		AI::Update(dt);
+		
+		if (chase == false)
+		{
+			Patrolling(worldWidth, worldHeight, tileSize, dt);
+		}
+		else
+		{
+			Chasing(worldWidth, worldHeight, tileSize, dt);
+		}
 	}
 }
 
-void Guards::PathFinding(int worldWidth, int worldHeight, int tileSize, double dt)
+void Guards::CheckChase(Vector2 playerPos)
+{
+
+}
+
+void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
+{
+
+}
+
+void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt)
 {
 	bool collide = tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
 

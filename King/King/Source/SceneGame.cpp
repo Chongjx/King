@@ -2485,9 +2485,8 @@ void SceneGame::UpdateAI(double dt)
 
 		if (tempGuard->GetUpdate())
 		{
-			tempGuard->Update(dt);
-			tempGuard->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-			//std::cout << tempGuard->getPos() << std::endl;
+			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+			tempGuard->CheckChase(player->getPos());
 		}
 	}
 }
