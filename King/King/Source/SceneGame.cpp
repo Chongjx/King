@@ -1784,15 +1784,14 @@ void SceneGame::InitInteractions(string config)
 			else if (branch->branchName == "Setting")
 			{
 				Dialogs tempDialogs;
-				int tempSpeed;
 				string tempMesh;
+				int tempSpeed;
 				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
 					Attribute tempAttri = *attri;
 					string attriName = tempAttri.name;
 					string attriValue = tempAttri.value;
-
-					if (attriName == "TextSpeed")
+					if(attriName == "TextSpeed")
 					{
 						tempSpeed = stoi(attriValue);
 					}
@@ -2555,25 +2554,28 @@ void SceneGame::UpdateDialog(double dt,Dialog_ID diaName)
 	startTimer += (float) dt * dialog.GetTextSpeed();
 	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	if (startTimer > timer || clearTimer <= timer*dialogString.size())
+	if (startTimer > timer || clearTimer < timer*dialogString.length())
 	{
-		int currentSize = dialogString.size();
-		for (int i = dialogString.size(); i <= currentSize; ++i)
+		int currentSize = dialogString.length();
+		if(currentSize <= findDialog(diaName).GetText().size())
 		{
-			dialogString += findDialog(diaName).GetText()[i];
+			for (int i = dialogString.length(); i <= currentSize; ++i)
+			{
+				dialogString += findDialog(diaName).GetText()[i];
+			}
 		}
 		startTimer = 0.f;
 	}
 
-	if(clearTimer >= 30.f)
+	if(clearTimer >= dialog.GetTextSpeed())
 	{
 		for (unsigned i = 0; i < findDialog(diaName).GetText().size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
-
 		dialogString.resize(0);
-		clearTimer = 0.0f;
+		startTimer = 0.f;
+		clearTimer = 0.f;
 	}
 }
 
