@@ -4,10 +4,10 @@ Player::Player() :
 	energy(0)
 	, recovering(false)
 	, MAX_ENERGY(100)
-	, ENERGY_TO_RUN(30.0)
+	, ENERGY_TO_RUN(25.0)
 	, DEGENERATE_RUN(20)
-	, REGENERATE_WALK(5)
-	, REGENERATE_IDLE(7.5) 
+	, REGENERATE_WALK(8)
+	, REGENERATE_IDLE(10) 
 {
 }
 
