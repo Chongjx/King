@@ -1801,11 +1801,11 @@ void SceneGame::InitInteractions(string config)
 						tempMesh = attriValue;
 					}
 				}
-				tempDialogs.InitSetting(tempSpeed,tempMesh);
-				dialogs.push_back(tempDialogs);
+				dialog.InitSetting(tempSpeed,tempMesh);
 			}
 		}
 	}
+	std::cout << dialog.GetTextSpeed() << std::endl;
 }
 
 void SceneGame::UpdateOpengl(void)
