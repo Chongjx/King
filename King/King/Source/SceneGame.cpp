@@ -1320,6 +1320,10 @@ void SceneGame::InitVariables(string config)
 					{
 						day.setdifficulty(stof(attriValue));
 					}
+					else if (attriName == "LEVEL")
+					{
+						day.setCurrentLevel(stoi(attriValue));
+					}
 				}
 				day.setCurrentTime(tempHr,tempMin,tempDay);
 			}
@@ -2387,8 +2391,8 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		// Interacting with closed doors
-		/*else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
+		//Interacting with closed doors
+		else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
 		{
 			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
 			{
@@ -2451,7 +2455,7 @@ void SceneGame::UpdatePlayer(double dt)
 					}
 				}
 			}
-		}*/
+		}
 
 		// close door
 		/*else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftOpened" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightOpened")

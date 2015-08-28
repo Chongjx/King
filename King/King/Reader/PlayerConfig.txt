@@ -8,7 +8,7 @@
 		[Pos] 15, 15
 		[Dir] 1, 0
 		[Mesh] GEO_PLAYER
-		[Tiles] 7
+		[Tiles] 3
 		[MapLocation] 0	
 	}
 }

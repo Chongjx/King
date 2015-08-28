@@ -32,12 +32,12 @@
 			[LEVEL] 2				
 			[KEYITEM] Dumbell
 			}
-			{
-			[DISCRIPTION] Find_Key
-			[GET] false
-			[LEVEL] 2				
-			[KEYITEM] Key
-			}
+			#{
+			#[DISCRIPTION] Find_Key
+			#[GET] false
+			#[LEVEL] 2				
+			#[KEYITEM] Key
+			#}
 			
 			{
 			[DISCRIPTION] Get_Card_Key
