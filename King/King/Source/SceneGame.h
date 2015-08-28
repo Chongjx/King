@@ -155,7 +155,7 @@ public:
 	void UpdateInteractions(double dt);
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool pressed, double mouseX, double mouseY);
-	void UpdateDialog(double dt);
+	void UpdateDialog(double dt,Dialog_ID diaName);
 
 	void changeScene(GAME_STATE nextState);
 
