@@ -174,6 +174,9 @@ public:
 	void RenderFOV(void);
 	void RenderDialogs(void);
 
+	void FOV(void);
+	bool doFOV(Vector2 pos);
+
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size = 1.0f, const float x = 0.0f, const float y = 0.0f, const float rotation = 0.f);

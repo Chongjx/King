@@ -34,6 +34,11 @@
 			# [Key] VK_LBUTTON
 		}
 		{
+			[NAME] RSelect
+			[Key] 0x02
+			# [Key] VK_RBUTTON
+		}
+		{
 			[NAME] Up
 			[Key] 0x57
 			# [Key] VK_W

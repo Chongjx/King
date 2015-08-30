@@ -34,19 +34,110 @@ void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 		}
 		else
 		{
-			Chasing(worldWidth, worldHeight, tileSize, dt);
+			changeAni(Guards_StateMachine::IDLE_STATE);
+			Character::changeAni(StateMachine::IDLE_STATE);
+			//Chasing(worldWidth, worldHeight, tileSize, dt);
 		}
 	}
 }
 
-void Guards::CheckChase(Vector2 playerPos)
+void Guards::CheckChase(Vector2 playerPos, int tileSize)
 {
+	// if player is close to the guards
+	if (this->CalculateTileBasedDistance(playerPos, tileSize) < this->tiles)
+	{
+		// if player is within the line of sight of the guard
+		if (playerPos.x > this->pos.x && this->dir.x == 1)
+		{
+			this->chase = true;
+		}
 
+		else if (playerPos.x < this->pos.x && this->dir.x == -1)
+		{
+			this->chase = true;
+		}
+
+		else if (playerPos.y > this->pos.y && this->dir.y == 1)
+		{
+			this->chase = true;
+		}
+
+		else if (playerPos.y < this->pos.y && this->dir.y == -1)
+		{
+			this->chase = true;
+		}
+		
+		else
+		{
+			this->chase = false;
+		}
+	}
+	else
+	{
+		this->chase = false;
+	}
+
+	if (chase)
+	{
+		destination = playerPos;
+	}
 }
 
 void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 {
+	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
+	{
+		pos.y = destination.y;
+		targetPos.y = pos.y;
+	}
 
+	if (Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.x = pos.x;
+	}
+
+	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
+	{
+		pos = destination;
+		targetPos = pos;
+	}
+
+	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	{
+		targetPos.Set(pos.x + currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize(), pos.y);
+	}
+
+	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	{
+		targetPos.Set(pos.x - currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize(), pos.y);
+	}
+
+	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.Set(pos.x, pos.y + currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize());
+	}
+
+	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.Set(pos.x, pos.y - currentRoom.roomLayout[TileMap::TYPE_WAYPOINT].getTileSize());
+	}
+
+	if (destination != pos)
+	{
+		changeAni(Guards_StateMachine::RUN_STATE);
+		Character::changeAni(StateMachine::RUN_STATE);
+	}
+
+	/*else
+	{
+		changeAni(Guards_StateMachine::IDLE_STATE);
+		Character::changeAni(StateMachine::IDLE_STATE);
+	}*/
+
+	Character::tileBasedOffset();
 }
 
 void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt)

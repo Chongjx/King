@@ -56,7 +56,7 @@ public:
 
 	void tileBasedOffset(void);
 	int CalculateDistance(Vector2 position, int tilesize);
-
+	int CalculateTileBasedDistance(Vector2 position, int tilesize);
 
 	/*************************************/
 	// Set field of view of character based on tiles

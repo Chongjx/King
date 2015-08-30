@@ -1536,6 +1536,7 @@ void SceneGame::InitAI(string config)
 				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
+				guard->pathFinding.setGameDimension(Vector2((float)layout[mapLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth(), (float)layout[mapLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight()));
 				guardList.push_back(guard);
 			}
 
@@ -2263,59 +2264,56 @@ void SceneGame::UpdatePlayer(double dt)
 		// open a closed cell
 		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorClosed")
 		{
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
+			// the door is below the player
+			if(player->getDir().y == -1)
 			{
-				// the door is below the player
-				if(player->getDir().y == -1)
+				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
 				{
-					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
-						if(getKey("OpenDoor") && findItem("Fork"))
-						{
-							currentInteraction = OPEN_CELL_DOOR;
+						currentInteraction = OPEN_CELL_DOOR;
 
-							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
-							{
-								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
-								{
-									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									break;
-								}
-							}
-						}
-						else
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
 						{
-							currentInteraction = NO_INTERACTION;
-							break; 
+							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
+							{
+								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								break;
+							}
 						}
 					}
-				}
-
-				// the door is above the player
-				else if(player->getDir().y == 1)
-				{
-					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					else
 					{
-						if(getKey("OpenDoor") && findItem("Fork"))
-						{
-							currentInteraction = OPEN_CELL_DOOR;
+						currentInteraction = NO_INTERACTION;
+						break; 
+					}
+				}
+			}
 
-							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+			// the door is above the player
+			else if(player->getDir().y == 1)
+			{
+				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				{
+					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
+					{
+						currentInteraction = OPEN_CELL_DOOR;
+
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						{
+							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
 							{
-								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
-								{
-									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									break;
-								}
+								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								break;
 							}
 						}
-						else
-						{
-							currentInteraction = NO_INTERACTION;
-							break; 
-						}
+					}
+					else
+					{
+						currentInteraction = NO_INTERACTION;
+						break; 
 					}
 				}
 			}
@@ -2324,58 +2322,56 @@ void SceneGame::UpdatePlayer(double dt)
 		// close a opened cell
 		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
 		{
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] != layout[currentLocation].specialTiles[special].TileID)
-			{
-				// door is below the player
-				if(player->getDir().y == -1)
-				{
-					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
-					{
-						if(getKey("CloseDoor"))
-						{
-							currentInteraction = CLOSE_CELL_DOOR;
 
-							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
-							{
-								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
-								{
-									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									break;
-								}
-							}
-						}
-						else
+			// door is below the player
+			if(player->getDir().y == -1)
+			{
+				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				{
+					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
+					{
+						currentInteraction = CLOSE_CELL_DOOR;
+
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
 						{
-							currentInteraction = NO_INTERACTION;
-							break; 
+							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+							{
+								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								break;
+							}
 						}
 					}
-				}
-				// door is above the player
-				else if(player->getDir().y == 1)
-				{
-					if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+					else
 					{
-						if(getKey("CloseDoor"))
-						{
-							currentInteraction = CLOSE_CELL_DOOR;
+						currentInteraction = NO_INTERACTION;
+						break; 
+					}
+				}
+			}
+			// door is above the player
+			else if(player->getDir().y == 1)
+			{
+				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				{
+					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
+					{
+						currentInteraction = CLOSE_CELL_DOOR;
 
-							for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						{
+							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
 							{
-								if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
-								{
-									player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-									break;
-								}
+								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								break;
 							}
 						}
-						else
-						{
-							currentInteraction = NO_INTERACTION;
-							break; 
-						}
+					}
+					else
+					{
+						currentInteraction = NO_INTERACTION;
+						break; 
 					}
 				}
 			}
@@ -2439,6 +2435,8 @@ void SceneGame::UpdatePlayer(double dt)
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
+
+	std::cout << player->getPos() << std::endl;
 }
 
 void SceneGame::UpdateAI(double dt)
@@ -2485,7 +2483,7 @@ void SceneGame::UpdateAI(double dt)
 		if (tempGuard->GetUpdate())
 		{
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-			tempGuard->CheckChase(player->getPos());
+			tempGuard->CheckChase(player->getPos(), TILESIZE);
 		}
 	}
 }
@@ -2556,10 +2554,10 @@ void SceneGame::UpdateDialog(double dt,Dialog_ID diaName)
 
 	if (startTimer > timer || clearTimer < timer*dialogString.length())
 	{
-		int currentSize = dialogString.length();
+		unsigned currentSize = dialogString.length();
 		if(currentSize <= findDialog(diaName).GetText().size())
 		{
-			for (int i = dialogString.length(); i <= currentSize; ++i)
+			for (unsigned i = dialogString.length(); i <= currentSize; ++i)
 			{
 				dialogString += findDialog(diaName).GetText()[i];
 			}
@@ -2667,45 +2665,38 @@ void SceneGame::RenderFOV(void)
 {
 	if ((unsigned)currentLocation < layout.size())
 	{
-		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
+		int m = 0;
+		int n = 0;
+		for(int i = 0; i < layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() + 1; i++)
 		{
-			int m = 0;
-			int n = 0;
-			for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
-			{
-				n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+			n = -(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileOffsetY()) + i;
 
-				for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
-				{						
-					m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+			for(int k = 0; k < layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesWidth() + 1; k++)
+			{						
+				m = layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileOffsetX() + k;
 
-					if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
-						break;
-					if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
-						break;
+				if (m >= layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth() || m < 0)
+					break;
+				if (n >= layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight() || n < 0)
+					break;
 
-					if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_VISUAL)
-					{
-						TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
-						tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+				TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
+				tilesheet->m_currentTile = layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[n][m];
 
-						//for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
-						//{
-						//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
-						//	{
-						if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation].specialTiles[special].TileID))
-						{
-							Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
-						}
-						else
-						{
-							Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
-						}	
-						//	}
-						//}
-					}		
-				}			
-			}
+				//for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
+				//{
+				//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
+				//	{
+				if(player->CalculateTileBasedDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layut[currentLocation].specialTiles[special].TileID))
+				{
+					Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
+				}
+
+				else
+				{
+					Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
+				}	
+			}			
 		}
 	}
 }
@@ -3164,6 +3155,7 @@ bool SceneGame::getKey(string keyName)
 		}
 	}
 
+	std::cout << "No such key! Check your naming!" << std::endl;
 	return false;
 }
 
@@ -3233,7 +3225,6 @@ void SceneGame::stringToBool(string text, bool &boo)
 	{
 		boo = true;
 	}
-
 	else
 	{
 		boo = false;

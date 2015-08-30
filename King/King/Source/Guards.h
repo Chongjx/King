@@ -25,7 +25,7 @@ public:
 	void Patrolling(int worldWidth, int worldHeight, int tileSize, double dt);
 
 	void Chasing(int worldWidth, int worldHeight, int tileSize, double dt);
-	void CheckChase(Vector2 playerPos);
+	void CheckChase(Vector2 playerPos, int tileSize);
 
 private:
 

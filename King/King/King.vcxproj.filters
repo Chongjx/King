@@ -225,10 +225,10 @@
     <ClCompile Include="Source\Dialogs.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Nodes.cpp">
+    <ClCompile Include="Source\PathFind.cpp">
       <Filter>Source Files\2D\Character\AI\PathFinding</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PathFind.cpp">
+    <ClCompile Include="Source\Node.cpp">
       <Filter>Source Files\2D\Character\AI\PathFinding</Filter>
     </ClCompile>
   </ItemGroup>
@@ -365,10 +365,10 @@
     <ClInclude Include="Source\SceneGame.h">
       <Filter>Header Files\Main\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Nodes.h">
+    <ClInclude Include="Source\PathFind.h">
       <Filter>Header Files\2D\Character\AI\PathFinding</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PathFind.h">
+    <ClInclude Include="Source\Node.h">
       <Filter>Header Files\2D\Character\AI\PathFinding</Filter>
     </ClInclude>
   </ItemGroup>

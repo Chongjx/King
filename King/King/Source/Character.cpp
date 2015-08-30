@@ -655,7 +655,12 @@ bool Character::collideWithDoor(void)
 
 	return false;
 }
-int Character::CalculateDistance(Vector2 position, int tilesize)
+int Character::CalculateDistance(Vector2 position, int tileSize)
 {
-	return (int)(Math::FAbs((this->pos.x - position.x)) * (1.f/tilesize) + Math::FAbs((this->pos.y - position.y)) * (1.f/tilesize));
+	return (int)((pos - position).Length() * (1.f / tileSize));
+}
+
+int Character::CalculateTileBasedDistance(Vector2 position, int tileSize)
+{
+	return (int)(Math::FAbs((this->pos.x - position.x)) * (1.f/tileSize) + Math::FAbs((this->pos.y - position.y)) * (1.f/tileSize));
 }

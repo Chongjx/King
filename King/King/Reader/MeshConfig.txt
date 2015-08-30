@@ -10,11 +10,6 @@
 		[Texture] Image\\font.tga
 	}
 	{
-		[NAME] GEO_MENU
-		[Type] Quad
-		[Texture] Image\\menu.tga
-	}
-	{
 		[NAME] GEO_CURSOR
 		[Type] Quad
 		[Texture] Image\\cursorDefault.tga
