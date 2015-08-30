@@ -27,7 +27,9 @@ void Day::UpdateDay(double dt,float gameSpeed)
 		levels[currentLevel].UpdateObjective("Explore");		
 	}
 	UpdateLevel();
+
 }
+
 
 Day::Time Day::getCurrentTime(void)
 {

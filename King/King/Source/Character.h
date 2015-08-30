@@ -75,6 +75,7 @@ public:
 	void setAni(SPRITE_ANI currentAni);
 
 	Vector2 getPos(void) const;
+	Vector2 getStartPos(void) const;
 	Vector2 getDir(void) const;
 	Vector2 getVel(void) const;
 	Vector2 getSize(void) const;
@@ -85,14 +86,15 @@ public:
 	// Inventory
 	void setInventory(CInventory inventory);
 	CInventory& getInventory(void);
-	void setRoom(Room& currentRoom);
+	void setRoom(Room* currentRoom);
 
-	Room& getRoom(void);
+	Room* getRoom(void);
 	virtual void changeAni(StateMachine::STATE unitState);
 
 	bool collideWithDoor(void);
 	bool changeRoom(void);
 
+	void ResetPos(void);
 protected:
 	// Movement data
 	const double MAX_WALK_SPEED;
@@ -101,6 +103,7 @@ protected:
 	float runSpeed;
 
 	//character attributes
+	Vector2 startPos;
 	Vector2 pos;
 	Vector2 dir;
 	Vector2 vel;
@@ -122,7 +125,7 @@ protected:
 	vector<Animation*> animationList;
 	SPRITE_ANI currentAni;
 
-	Room currentRoom;
+	Room* currentRoom;
 	// variable to know which map the player is at
 };
 

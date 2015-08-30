@@ -33,7 +33,7 @@
 			[Pos] 4, 11
 		        [Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		        [MapLocation] 0	
 			[Waypoint] A
 		}
@@ -43,7 +43,7 @@
 			[Pos] 4, -15
 			[Dir] 1, 0
 		     	[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 0	
 			[Waypoint] A
 		}
@@ -52,7 +52,7 @@
 			[Pos] 4, -41
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 			[MapLocation] 0
 			[Waypoint] A
 		}
@@ -61,7 +61,7 @@
 			[Pos] 55, -28
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 			[MapLocation] 0
 			[Waypoint] A
 		}
@@ -70,7 +70,7 @@
 			[Pos] 63, -43
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		     	[MapLocation] 0
 			[Waypoint] B
 		}
@@ -79,7 +79,7 @@
 			[Pos] 63, 0
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		   	[MapLocation] 0
 			[Waypoint] B
 		}
@@ -88,7 +88,7 @@
 			[Pos] 81, -7
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 0
 			[Waypoint] B
 		}
@@ -97,7 +97,7 @@
 			[Pos] 101, -7
 		     	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 0
 			[Waypoint] B
 		}
@@ -107,7 +107,7 @@
 			[Pos] 3, 12
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 1
 			[Waypoint] A
 		}
@@ -116,7 +116,7 @@
 			[Pos] 20, 12
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 1
 			[Waypoint] A
 		}
@@ -125,7 +125,7 @@
 			[Pos] 23, 12
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 1
 			[Waypoint] B
 		}
@@ -134,7 +134,7 @@
 			[Pos] 38, 12
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 1
 			[Waypoint] B
 		}
@@ -144,7 +144,7 @@
 			[Pos] 3, 15
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 2
 			[Waypoint] A
 		}
@@ -153,7 +153,7 @@
 			[Pos] 36, 3
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 2
 			[Waypoint] B
 		}
@@ -162,7 +162,7 @@
 			[Pos] 49, 6
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 2
 			[Waypoint] B
 		}
@@ -171,7 +171,7 @@
 			[Pos] 62, 7
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 2
 			[Waypoint] C
 		}
@@ -181,7 +181,7 @@
 			[Pos] 8, 12
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 3
 			[Waypoint] A
 		}
@@ -191,7 +191,7 @@
 			[Pos] 19, 17
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] A
 		}
@@ -200,7 +200,7 @@
 			[Pos] 7, 11
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] B
 		}
@@ -209,7 +209,7 @@
 			[Pos] 27, 11
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] B
 		}
@@ -218,7 +218,7 @@
 			[Pos] 49, 11
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] B
 		}
@@ -227,7 +227,7 @@
 			[Pos] 63, 11
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] C
 		}
@@ -236,7 +236,7 @@
 			[Pos] 73, 11
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] C
 		}
@@ -245,7 +245,7 @@
 			[Pos] 103, 11
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] C
 		}
@@ -254,7 +254,7 @@
 			[Pos] 113, 15
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] D
 		}
@@ -263,7 +263,7 @@
 			[Pos] 120, 15
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] D
 		}
@@ -272,7 +272,7 @@
 			[Pos] 135, 15
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 4
 			[Waypoint] D
 		}
@@ -282,7 +282,7 @@
 			[Pos] 7, -27
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 10
 			[Waypoint] A
 		}
@@ -300,7 +300,7 @@
 			[Pos] 62, 3
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 10
 			[Waypoint] B
 		}
@@ -309,7 +309,7 @@
 			[Pos] 13, -6
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 10
 			[Waypoint] C
 		}
@@ -318,7 +318,7 @@
 			[Pos] 9, -13
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 10
 			[Waypoint] D
 		}
@@ -327,7 +327,7 @@
 			[Pos] 43, 21
 		     	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 3
+		        [Tiles] 5
 		      	[MapLocation] 10
 			[Waypoint] E
 		}

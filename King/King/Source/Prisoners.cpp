@@ -10,7 +10,7 @@ Prisoners::~Prisoners(void)
 
 }
 
-void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& currentRoom, string waypoint)
+void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room* currentRoom, string waypoint)
 {
 	this->pos = pos;
 	this->dir = dir;

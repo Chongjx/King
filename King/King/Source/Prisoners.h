@@ -14,7 +14,7 @@ public:
 	~Prisoners(void);
 
 	// Initialise this class instance
-	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& room, string waypoint);
+	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room* room, string waypoint);
 	// Update the character
 	void Update(double dt);
 

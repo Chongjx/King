@@ -39,6 +39,7 @@ Character::~Character()
 void Character::Init(Vector2 pos, Vector2 dir, Vector2 vel, SpriteAnimation* sa)
 {
 	this->pos = pos;
+	this->startPos = pos;
 	this->targetPos = pos;
 	this->dir = dir;
 	this->vel = vel;
@@ -49,6 +50,7 @@ void Character::Init(Vector2 pos, Vector2 dir, Vector2 vel, SpriteAnimation* sa)
 void Character::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa)
 {
 	this->pos = pos;
+	this->startPos = pos;
 	this->targetPos = pos;
 	this->dir = dir;
 	*(this->sprite) = *(sa);
@@ -173,23 +175,23 @@ bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	static bool movable = true;
 	movable = true;
 
+	Vector2 targetedLocation;
+	targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
+
 	if (targetPos.x > pos.x)
 	{
-		Vector2 targetedLocation;
-		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
-		
 		dir.Set(1,0);
 
-		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" ||
-				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed")
+			if (currentRoom->specialTiles[special].TileName == "Wall" ||
+				currentRoom->specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
-				if (nextTile == currentRoom.specialTiles[special].TileID)
+				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
 					movable = false;
 					break;
@@ -220,21 +222,18 @@ bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	// move left
 	else if (targetPos.x < pos.x)
 	{
-		Vector2 targetedLocation;
-		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
-
 		dir.Set(-1,0);
 
-		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" ||
-				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed")
+			if (currentRoom->specialTiles[special].TileName == "Wall" ||
+				currentRoom->specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
-				if (nextTile == currentRoom.specialTiles[special].TileID)
+				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
 					movable = false;
 					break;
@@ -265,21 +264,18 @@ bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	// move up
 	else if (targetPos.y > pos.y)
 	{
-		Vector2 targetedLocation;
-		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
-
 		dir.Set(0,1);
 
-		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" ||
-				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed")
+			if (currentRoom->specialTiles[special].TileName == "Wall" ||
+				currentRoom->specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
-				if (nextTile == currentRoom.specialTiles[special].TileID)
+				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
 					movable = false;
 					break;
@@ -310,21 +306,18 @@ bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	// move down
 	else if (targetPos.y < pos.y)
 	{
-		Vector2 targetedLocation;
-		targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
-
 		dir.Set(0,-1);
 
-		for (unsigned special = 0; special < currentRoom.specialTiles.size(); ++special)
+		for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
 		{
-			if (currentRoom.specialTiles[special].TileName == "Wall" ||
-				currentRoom.specialTiles[special].TileName == "CellDoorClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-				currentRoom.specialTiles[special].TileName == "PrisonDoorRightClosed")
+			if (currentRoom->specialTiles[special].TileName == "Wall" ||
+				currentRoom->specialTiles[special].TileName == "CellDoorClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = currentRoom.roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
-				if (nextTile == currentRoom.specialTiles[special].TileID)
+				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
 					movable = false;
 					break;
@@ -453,6 +446,11 @@ Vector2 Character::getPos(void) const
 	return this->pos;
 }
 
+Vector2 Character::getStartPos(void) const
+{
+	return this->startPos;
+}
+
 Vector2 Character::getDir(void) const
 {
 	return this->dir;
@@ -488,12 +486,12 @@ SpriteAnimation* Character::getSprite(void) const
 
 }*/
 
-void Character::setRoom(Room& room)
+void Character::setRoom(Room* room)
 {
 	this->currentRoom = room;
 }
 
-Room& Character::getRoom(void)
+Room* Character::getRoom(void)
 {
 	return this->currentRoom;
 }
@@ -645,9 +643,9 @@ void Character::changeAni(StateMachine::STATE unitState)
 
 bool Character::collideWithDoor(void)
 {
-	for (unsigned i = 0; i < currentRoom.doors.size(); ++i)
+	for (unsigned i = 0; i < currentRoom->doors.size(); ++i)
 	{
-		if (pos == currentRoom.doors[i].pos)
+		if (pos == currentRoom->doors[i].pos)
 		{
 			return true;
 		}
@@ -663,4 +661,10 @@ int Character::CalculateDistance(Vector2 position, int tileSize)
 int Character::CalculateTileBasedDistance(Vector2 position, int tileSize)
 {
 	return (int)(Math::FAbs((this->pos.x - position.x)) * (1.f/tileSize) + Math::FAbs((this->pos.y - position.y)) * (1.f/tileSize));
+}
+
+void Character::ResetPos(void)
+{
+	this->pos = this->startPos;
+	this->targetPos = this->pos;
 }

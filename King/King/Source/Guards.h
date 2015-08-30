@@ -15,7 +15,7 @@ public:
 	~Guards(void);
 
 	// Initialise this class instance
-	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room& room, string waypoint);
+	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room* room, string waypoint);
 	// Update the character
 	void Update(int worldWidth, int worldHeight, int tileSize, double dt);
 
@@ -24,8 +24,11 @@ public:
 
 	void Patrolling(int worldWidth, int worldHeight, int tileSize, double dt);
 
+	bool tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
+
 	void Chasing(int worldWidth, int worldHeight, int tileSize, double dt);
 	void CheckChase(Vector2 playerPos, int tileSize);
+	void checkNextTile(void);
 
 private:
 

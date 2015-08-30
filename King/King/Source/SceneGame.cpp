@@ -11,6 +11,10 @@ SceneGame::SceneGame(void)
 	m_parameters.resize(U_TOTAL);
 	lights.resize(NUM_LIGHTS);
 	layout.resize(MAX_AREAS);
+	for (int i = 0; i < MAX_AREAS; ++i)
+	{
+		layout[i] = new Room;
+	}
 	gameInterfaces.resize(MAX_STATE);
 	interactionList.resize(MAX_INTERACTIONS);
 
@@ -1161,8 +1165,8 @@ void SceneGame::InitLevel(string config)
 			}
 		}
 
-		layout[mapVar[VAR_ID]].name = roomName;
-		layout[mapVar[VAR_ID]].ID = mapVar[VAR_ID];
+		layout[mapVar[VAR_ID]]->name = roomName;
+		layout[mapVar[VAR_ID]]->ID = mapVar[VAR_ID];
 
 		if (branch->childBranches.size() != 0)
 		{
@@ -1219,7 +1223,7 @@ void SceneGame::InitLevel(string config)
 											tiles.TileName = attriName;
 											tiles.TileID = stoi(attriValue);
 
-											layout[mapVar[VAR_ID]].specialTiles.push_back(tiles);
+											layout[mapVar[VAR_ID]]->specialTiles.push_back(tiles);
 										}
 									}
 
@@ -1250,7 +1254,7 @@ void SceneGame::InitLevel(string config)
 												stringToVector(attriValue, tempDoor.pos);
 											}
 										}
-										layout[mapVar[VAR_ID]].doors.push_back(tempDoor);
+										layout[mapVar[VAR_ID]]->doors.push_back(tempDoor);
 									}
 								}
 							}
@@ -1269,15 +1273,14 @@ void SceneGame::InitLevel(string config)
 				tempMap.LoadMap(directory);
 				tempMap.setMapType(tempType);
 
-				layout[mapVar[VAR_ID]].roomLayout.push_back(tempMap);
+				layout[mapVar[VAR_ID]]->roomLayout.push_back(tempMap);
 			}
 		}
 	}
 
 	for (unsigned i = 0; i < layout.size(); ++i)
 	{
-		layout[i].rearrange();
-		//layout[i].locateDoors();
+		layout[i]->rearrange();
 	}
 }
 
@@ -1503,7 +1506,6 @@ void SceneGame::InitAI(string config)
 					if (attriName == "Pos")
 					{
 						stringToVector(attriValue, pos);
-
 					}
 
 					else if (attriName == "Dir")
@@ -1536,7 +1538,7 @@ void SceneGame::InitAI(string config)
 				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
-				guard->pathFinding.setGameDimension(Vector2((float)layout[mapLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth(), (float)layout[mapLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight()));
+				guard->pathFinding.setGameDimension(Vector2((float)layout[mapLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth(), (float)layout[mapLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight()));
 				guardList.push_back(guard);
 			}
 
@@ -1997,10 +1999,10 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 		//Picking up of item
 		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE)
 		{
-			if (mouseX <= item->getItemPos().x + TILESIZE - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
-				&& mouseX >= item->getItemPos().x - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
-				&& mouseY <= item->getItemPos().y + TILESIZE - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()
-				&& mouseY >= item->getItemPos().y - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())
+			if (mouseX <= item->getItemPos().x + TILESIZE - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
+				&& mouseX >= item->getItemPos().x - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
+				&& mouseY <= item->getItemPos().y + TILESIZE - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()
+				&& mouseY >= item->getItemPos().y - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())
 			{
 				if (pressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
@@ -2106,13 +2108,13 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 							{
 								//remove item from the box obtained at tempX n tempY
 								player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemStatus(CItem::ITEM_ONGROUND);
-								if (player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getLocationID() == layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID())
+								if (player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->getLocationID() == layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getID())
 								{
 									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x), (float)(player->getPos().y)));
 								}
 								else
 								{
-									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setLocationID(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID());
+									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setLocationID(layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getID());
 									player->getInventory().getVecOfItems().at(stoi(gameInterfaces[currentState].buttons[i].getName()))->setItemPos(Vector2((float)(player->getPos().x), (float)(player->getPos().y)));
 								}
 								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
@@ -2134,14 +2136,25 @@ void SceneGame::UpdateInGame(double dt)
 	UpdateMap();
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
+	UpdateFOV();
 	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
+}
+
+void SceneGame::UpdateFOV(void)
+{
+	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6) 
+	{
+						
+	}
+	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
+	{
+
+	}
+
 }
 
 void SceneGame::UpdatePlayer(double dt)
 {
-	static bool movable = true;
-	movable = true;
-
 	if (player->getState() == StateMachine::IDLE_STATE && currentInteraction != SLEEP)
 	{
 		if (getKey("Up"))
@@ -2227,12 +2240,12 @@ void SceneGame::UpdatePlayer(double dt)
 	playerPosToScreen.Set((player->getPos().x)/TILESIZE, (sceneHeight - player->getPos().y - TILESIZE)/TILESIZE);
 
 	// Update for interaction
-	for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
+	for (unsigned special = 0; special < layout[currentLocation]->specialTiles.size(); ++special)
 	{
 		// threadmill
-		if (layout[currentLocation].specialTiles[special].TileName == "Threadmill")
+		if (layout[currentLocation]->specialTiles[special].TileName == "Threadmill")
 		{
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+			if(layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
 			}
@@ -2242,9 +2255,9 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 		// bed - fast forward time
-		else if (layout[currentLocation].specialTiles[special].TileName == "Bed")
+		else if (layout[currentLocation]->specialTiles[special].TileName == "Bed")
 		{
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+			if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 			{
 				if(getKey("Enter"))
 				{
@@ -2262,23 +2275,23 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 
 		// open a closed cell
-		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorClosed")
+		else if (layout[currentLocation]->specialTiles[special].TileName == "CellDoorClosed")
 		{
 			// the door is below the player
 			if(player->getDir().y == -1)
 			{
-				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
 						currentInteraction = OPEN_CELL_DOOR;
 
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
-							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
+							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorOpened")
 							{
-								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
 								break;
 							}
 						}
@@ -2294,18 +2307,18 @@ void SceneGame::UpdatePlayer(double dt)
 			// the door is above the player
 			else if(player->getDir().y == 1)
 			{
-				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
 						currentInteraction = OPEN_CELL_DOOR;
 
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
-							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorOpened")
+							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorOpened")
 							{
-								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
 								break;
 							}
 						}
@@ -2320,24 +2333,23 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 
 		// close a opened cell
-		else if (layout[currentLocation].specialTiles[special].TileName == "CellDoorOpened")
+		else if (layout[currentLocation]->specialTiles[special].TileName == "CellDoorOpened")
 		{
-
 			// door is below the player
 			if(player->getDir().y == -1)
 			{
-				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				if( layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 				{
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
 						currentInteraction = CLOSE_CELL_DOOR;
 
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
-							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorClosed")
 							{
-								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
 								break;
 							}
 						}
@@ -2352,18 +2364,18 @@ void SceneGame::UpdatePlayer(double dt)
 			// door is above the player
 			else if(player->getDir().y == 1)
 			{
-				if( layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+				if( layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 				{
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
 						currentInteraction = CLOSE_CELL_DOOR;
 
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation].specialTiles.size(); ++openDoor)
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
-							if (layout[currentLocation].specialTiles[openDoor].TileName == "CellDoorClosed")
+							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorClosed")
 							{
-								player->getRoom().roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
-								player->getRoom().roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation].specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
 								break;
 							}
 						}
@@ -2377,24 +2389,24 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		else if (layout[currentLocation].specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation].specialTiles[special].TileName == "PrisonDoorRightClosed")
+		else if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed")
 		{
-			if(layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation].specialTiles[special].TileID)
+			if(layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 			{
-				for (unsigned numDoors = 0; numDoors < layout[currentLocation].doors.size(); ++numDoors)
+				for (unsigned numDoors = 0; numDoors < layout[currentLocation]->doors.size(); ++numDoors)
 				{
 					// switch room
-					if (playerPosToScreen == layout[currentLocation].doors[numDoors].pos)
+					if (playerPosToScreen == layout[currentLocation]->doors[numDoors].pos)
 					{
 						// find the door on that map
-						int nextRoom = layout[currentLocation].doors[numDoors].transitionRoom;
+						int nextRoom = layout[currentLocation]->doors[numDoors].transitionRoom;
 						Vector2 nextRoomDoorPos;
 
-						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[nextRoom].doors.size(); ++nextRoomDoors)
+						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[currentLocation]->doors.size(); ++nextRoomDoors)
 						{
-							if (layout[nextRoom].doors[nextRoomDoors].transitionRoom == currentLocation && layout[currentLocation].doors[numDoors].ID == layout[nextRoom].doors[nextRoomDoors].ID)
+							if (layout[nextRoom]->doors[nextRoomDoors].transitionRoom == currentLocation && layout[nextRoom]->doors[numDoors].ID == layout[nextRoom]->doors[nextRoomDoors].ID)
 							{
-								nextRoomDoorPos = layout[nextRoom].doors[nextRoomDoors].pos;
+								nextRoomDoorPos = layout[nextRoom]->doors[nextRoomDoors].pos;
 								break;
 							}
 						}
@@ -2404,22 +2416,22 @@ void SceneGame::UpdatePlayer(double dt)
 						// offset the current pos by 1 tile
 						if (player->getDir().x == 1)
 						{
-							player->setPos(Vector2((nextRoomDoorPos.x + 1)* layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 1) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
+							player->setPos(Vector2((nextRoomDoorPos.x + 1)* layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 1) * layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().x == -1)
 						{
-							player->setPos(Vector2((nextRoomDoorPos.x - 1)* layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 1) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
+							player->setPos(Vector2((nextRoomDoorPos.x - 1)* layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 1) * layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().y == 1)
 						{
-							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
+							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y) * layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						else if (player->getDir().y == -1)
 						{
-							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 2) * layout[nextRoom].roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
+							player->setPos(Vector2(nextRoomDoorPos.x * layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize(), layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (nextRoomDoorPos.y + 2) * layout[nextRoom]->roomLayout[TileMap::TYPE_VISUAL].getTileSize()));
 						}
 
 						player->setTargetPos(player->getPos());
@@ -2435,8 +2447,6 @@ void SceneGame::UpdatePlayer(double dt)
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);
-
-	std::cout << player->getPos() << std::endl;
 }
 
 void SceneGame::UpdateAI(double dt)
@@ -2445,7 +2455,7 @@ void SceneGame::UpdateAI(double dt)
 	{
 		Prisoners* tempPrisoner = *prisoner;
 
-		if (tempPrisoner->getRoom().ID == player->getRoom().ID)
+		if (tempPrisoner->getRoom()->ID == player->getRoom()->ID)
 		{
 			tempPrisoner->setRender(true);
 		}
@@ -2463,7 +2473,7 @@ void SceneGame::UpdateAI(double dt)
 	{
 		Guards* tempGuard = *guard;
 
-		if (tempGuard->getRoom().ID == player->getRoom().ID)
+		if (tempGuard->getRoom()->ID == player->getRoom()->ID)
 		{
 			tempGuard->setRender(true);
 			tempGuard->SetUpdate(true);
@@ -2482,18 +2492,24 @@ void SceneGame::UpdateAI(double dt)
 
 		if (tempGuard->GetUpdate())
 		{
+			tempGuard->CheckChase(player->getTargetPos(), TILESIZE);
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-			tempGuard->CheckChase(player->getPos(), TILESIZE);
+
+			// If the player is caught by the guard
+			if ((tempGuard->getPos() - player->getPos()).Length() < TILESIZE * 0.2f)
+			{
+				player->ResetPos();
+				player->setRoom(layout[CELL_AREA]);
+			}
 		}
 	}
 }
 
 void SceneGame::UpdateMap(void)
 {
-	this->layout[currentLocation] = player->getRoom();
-	for (unsigned i = 0; i < layout[currentLocation].roomLayout.size(); ++i)
+	for (unsigned i = 0; i < layout[currentLocation]->roomLayout.size(); ++i)
 	{
-		this->layout[currentLocation].roomLayout[i].Update();
+		this->layout[currentLocation]->roomLayout[i].Update();
 	}
 }
 
@@ -2543,7 +2559,7 @@ void SceneGame::UpdateThreadmill(void)
 	}
 }
 
-void SceneGame::UpdateDialog(double dt,Dialog_ID diaName)
+void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 {
 	static float timer = 1.f;
 	static float startTimer = 0.f;
@@ -2552,10 +2568,10 @@ void SceneGame::UpdateDialog(double dt,Dialog_ID diaName)
 	startTimer += (float) dt * dialog.GetTextSpeed();
 	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	if (startTimer > timer || clearTimer < timer*dialogString.length())
+	if (startTimer > timer || clearTimer < timer * dialogString.length())
 	{
 		unsigned currentSize = dialogString.length();
-		if(currentSize <= findDialog(diaName).GetText().size())
+		if(currentSize < findDialog(diaName).GetText().size())
 		{
 			for (unsigned i = dialogString.length(); i <= currentSize; ++i)
 			{
@@ -2667,36 +2683,44 @@ void SceneGame::RenderFOV(void)
 	{
 		int m = 0;
 		int n = 0;
-		for(int i = 0; i < layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() + 1; i++)
+
+		for(int i = 0; i < layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() + 1; i++)
 		{
-			n = -(layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileOffsetY()) + i;
+			n = -(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileOffsetY()) + i;
 
-			for(int k = 0; k < layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesWidth() + 1; k++)
+			for(int k = 0; k < layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesWidth() + 1; k++)
 			{						
-				m = layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileOffsetX() + k;
+				m = layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileOffsetX() + k;
 
-				if (m >= layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth() || m < 0)
+				if (m >= layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth() || m < 0)
 					break;
-				if (n >= layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight() || n < 0)
+				if (n >= layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight() || n < 0)
 					break;
 
 				TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
-				tilesheet->m_currentTile = layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].screenMap[n][m];
+				tilesheet->m_currentTile = layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[n][m];
 
-				//for (unsigned special = 0; special < layout[currentLocation].specialTiles.size(); ++special)
+				//for (unsigned special = 0; special < layout[currentLocation]->specialTiles.size(); ++special)
 				//{
-				//	if(layout[currentLocation].specialTiles[special].TileName == "Wall")
+				//	if(layout[currentLocation]->specialTiles[special].TileName == "Wall")
 				//	{
-				if(player->CalculateTileBasedDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layut[currentLocation].specialTiles[special].TileID))
+				if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV()*0.5f)// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
 				{
-					Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
+					Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
+				}
+
+				else if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
+				{
+					Render2DMesh(findMesh("GEO_FOV_SEMI"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
 				}
 
 				else
 				{
-					Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation].roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
+					Render2DMesh(findMesh("GEO_FOV_SOLID"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
 				}	
-			}			
+						//	}
+						//}				
+			}
 		}
 	}
 }
@@ -2706,35 +2730,35 @@ void SceneGame::RenderLevel(void)
 	// check if player is within the game
 	if ((unsigned)currentLocation < layout.size())
 	{
-		for (unsigned numMaps = 0; numMaps < layout[currentLocation].roomLayout.size(); ++numMaps)
+		for (unsigned numMaps = 0; numMaps < layout[currentLocation]->roomLayout.size(); ++numMaps)
 		{
 			int m = 0;
 			int n = 0;
 
 			if (numMaps == TileMap::TYPE_BACKGROUND || numMaps == TileMap::TYPE_VISUAL)
 			{
-				for(int i = 0; i < layout[currentLocation].roomLayout[numMaps].getNumTilesHeight() + 1; i++)
+				for(int i = 0; i < layout[currentLocation]->roomLayout[numMaps].getNumTilesHeight() + 1; i++)
 				{
-					n = -(layout[currentLocation].roomLayout[numMaps].getTileOffsetY()) + i;
+					n = -(layout[currentLocation]->roomLayout[numMaps].getTileOffsetY()) + i;
 
-					for(int k = 0; k < layout[currentLocation].roomLayout[numMaps].getNumTilesWidth() + 1; k++)
+					for(int k = 0; k < layout[currentLocation]->roomLayout[numMaps].getNumTilesWidth() + 1; k++)
 					{
-						m = layout[currentLocation].roomLayout[numMaps].getTileOffsetX() + k;
+						m = layout[currentLocation]->roomLayout[numMaps].getTileOffsetX() + k;
 
-						if (m >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
+						if (m >= layout[currentLocation]->roomLayout[numMaps].getNumTilesMapWidth() || m < 0)
 							break;
-						if (n >= layout[currentLocation].roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
+						if (n >= layout[currentLocation]->roomLayout[numMaps].getNumTilesMapHeight() || n < 0)
 							break;
 
-						if (layout[currentLocation].roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
+						if (layout[currentLocation]->roomLayout[numMaps].getMapType() != TileMap::TYPE_COLLISION)
 						{
 							TileSheet *tilesheet = dynamic_cast<TileSheet*>(findMesh("GEO_TILESHEET"));
-							tilesheet->m_currentTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+							tilesheet->m_currentTile = layout[currentLocation]->roomLayout[numMaps].screenMap[n][m];
 
 							if (tilesheet->m_currentTile != -1)
 							{
 								// offset the world
-								Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+								Render2DMesh(findMesh("GEO_TILESHEET"), false, (float)layout[currentLocation]->roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation]->roomLayout[numMaps].getTileSize() - layout[currentLocation]->roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation]->roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[numMaps].getTileSize() - layout[currentLocation]->roomLayout[numMaps].getMapFineOffsetY());
 							}
 						}
 
@@ -2742,11 +2766,11 @@ void SceneGame::RenderLevel(void)
 						{
 							if (DEBUG)
 							{
-								int collideTile = layout[currentLocation].roomLayout[numMaps].screenMap[n][m];
+								int collideTile = layout[currentLocation]->roomLayout[numMaps].screenMap[n][m];
 
-								if (collideTile != -1 && layout[currentLocation].roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
+								if (collideTile != -1 && layout[currentLocation]->roomLayout[numMaps].getMapType() == TileMap::TYPE_COLLISION)
 								{
-									Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)layout[currentLocation].roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation].roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation].roomLayout[numMaps].getTileSize() - layout[currentLocation].roomLayout[numMaps].getMapFineOffsetY());
+									Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)layout[currentLocation]->roomLayout[numMaps].getTileSize() + 3, (k + 0.5f) * layout[currentLocation]->roomLayout[numMaps].getTileSize() - layout[currentLocation]->roomLayout[numMaps].getMapFineOffsetX(), layout[currentLocation]->roomLayout[numMaps].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[numMaps].getTileSize() - layout[currentLocation]->roomLayout[numMaps].getMapFineOffsetY());
 								}
 							}
 						}
@@ -2759,14 +2783,14 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
-	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
-	/*std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
-	std::cout << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
+	/*std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
+	std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
 
 	if (DEBUG)
 	{
-		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+		Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 	}
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
@@ -2775,11 +2799,11 @@ void SceneGame::RenderCharacters(void)
 
 		if (tempGuard->getRender())
 		{
-			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+			Render2DMesh(tempGuard->getSprite(), false, (float)TILESIZE * 1.5f, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
-				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(),  tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempGuard->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(),  tempGuard->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 			}
 		}
 	}
@@ -2790,11 +2814,11 @@ void SceneGame::RenderCharacters(void)
 
 		if (tempPrisoner->getRender())
 		{
-			Render2DMesh(tempPrisoner->getSprite(), false, (float)TILESIZE * 1.5f, tempPrisoner->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempPrisoner->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+			Render2DMesh(tempPrisoner->getSprite(), false, (float)TILESIZE * 1.5f, tempPrisoner->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), tempPrisoner->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 			if (DEBUG)
 			{
-				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempPrisoner->getPos().x + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(),  tempPrisoner->getPos().y + TILESIZE * 0.5f - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+				Render2DMesh(findMesh("GEO_DEBUGQUAD"), false, (float)TILESIZE, tempPrisoner->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(),  tempPrisoner->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 			}
 		}
 	}
@@ -2813,7 +2837,7 @@ void SceneGame::RenderTime(void)
 		ss2<< "Day: " << day.getCurrentTime().day;
 		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
-
+		
 		if (DEBUG)
 		{
 			Render2DMesh(findMesh("GEO_DEBUGQUAD"),false, day.moon.size, day.moon.pos);
@@ -2848,9 +2872,9 @@ void SceneGame::RenderItem(void)
 	for (vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
 	{
 		CItem *renderItem = (CItem *)*it;
-		if (renderItem->getLocationID() == layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getID() && renderItem->getItemStatus() == CItem::ITEM_ONGROUND)
+		if (renderItem->getLocationID() == layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getID() && renderItem->getItemStatus() == CItem::ITEM_ONGROUND)
 		{
-			Render2DMesh(renderItem->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>(renderItem->getItemPos().x + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), static_cast<float>(renderItem->getItemPos().y + TILESIZE * 0.5 - layout[currentLocation].roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()));
+			Render2DMesh(renderItem->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>(renderItem->getItemPos().x + TILESIZE * 0.5 - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()), static_cast<float>(renderItem->getItemPos().y + TILESIZE * 0.5 - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()));
 		}
 	}
 }

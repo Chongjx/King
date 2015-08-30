@@ -156,6 +156,7 @@ public:
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool pressed, double mouseX, double mouseY);
 	void UpdateDialog(double dt,Dialog_ID diaName);
+	void UpdateFOV(void);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -194,7 +195,7 @@ private:
 
 	Branch gameBranch;
 	vector<KEYS> interactionKeys;
-	vector<Room> layout;
+	vector<Room*> layout;
 	vector<Interface> gameInterfaces;
 	vector<Prisoners*> prisonerList;
 	vector<Guards*> guardList;
@@ -221,7 +222,6 @@ private:
 	Day day;
 	Dialogs dialog;
 
-	CItem* item;
 	vector<CItem*> itemList;
 
 	bool updateMousePos;
