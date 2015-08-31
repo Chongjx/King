@@ -1,16 +1,22 @@
 {
 	[NAME] Scores
 	{
-		[NAME] 1
-		[Score] 999
+		[Score] 9
 	}
 	{
-		[NAME] 2
-		[Score] 9999
+		[Score] 8
 	}
 	{
-		[NAME] 3
-		[Score] 99
+		[Score] 7
+	}
+	{
+		[Score] 6
+	}
+	{
+		[Score] 5
+	}
+	{
+		[Score] 4
 	}
 }
 

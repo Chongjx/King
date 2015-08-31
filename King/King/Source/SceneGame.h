@@ -189,6 +189,8 @@ public:
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size = 1.0f, const float x = 0.0f, const float y = 0.0f, const float rotation = 0.f);
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 size, const Vector2 pos, const float rotation = 0.f);
 
+	void save (string);
+
 	Mesh* findMesh(string meshName);
 	Color findColor(string colorName);
 	Dialogs findDialog(enum Dialog_ID);
@@ -241,6 +243,8 @@ private:
 	int indexItem1, indexItem2;
 	string dialogString;
 	bool renderInventory;
+	string ScoreDirectory;
+	Score CurrentScore;
 };
 
 #endif

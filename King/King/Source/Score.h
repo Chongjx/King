@@ -15,7 +15,6 @@ public:
 	int getplace (void);
 
 private:
-
 	int score;
 	int place;
 };

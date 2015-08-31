@@ -154,11 +154,13 @@ void SceneGame::Render(void)
 		}
 	case HIGHSCORE_STATE:
 		{
+			save(ScoreDirectory);
 			RenderScore();
 			break;
 		}
 	case OPTIONS_STATE:
 		{
+		
 			break;
 		}
 	case PAUSE_STATE:
@@ -1407,6 +1409,7 @@ void SceneGame::InitScore(string config)
 {
 	Branch ScoreBranch = TextTree::FileToRead(config);
 	// Instructions for the game
+	ScoreDirectory =config;
 	for (vector<Branch>::iterator branch = ScoreBranch.childBranches.begin(); branch != ScoreBranch.childBranches.end(); ++branch)
 	{
 		Score TempScore;
@@ -3584,4 +3587,26 @@ void SceneGame::stringToBool(string text, bool &boo)
 	{
 		boo = false;
 	}
+}
+void SceneGame::save (string file)
+{
+	Branch BScore = TextTree::FileToRead(file);
+	CurrentScore = *score.begin();
+
+	for (vector<Score>::iterator it = score.begin(); it != score.end(); ++it)
+	{
+		for (vector<Score>::iterator it2 = score.begin(); it2 != score.end(); ++it2)
+		{
+			Score *temp;
+			if (it->getScore() < it2->getScore())   
+			{ 
+				*temp = *it2;             
+				*it2 = *it;
+				*it = *temp;
+			}
+		}
+	}
+
+	BScore.printBranch();
+	//TextTree::FileToWrite(file, BScore);
 }
