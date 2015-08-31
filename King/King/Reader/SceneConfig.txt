@@ -59,5 +59,10 @@
 		[NAME] Dialog
 		[Directory] Reader\\DialogConfig.txt
 	}
+
+	{	
+		[NAME] Score
+		[Directory] Reader\\ScoreConfig.txt
+	}
 	
 }

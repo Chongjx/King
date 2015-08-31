@@ -231,6 +231,9 @@
     <ClCompile Include="Source\Node.cpp">
       <Filter>Source Files\2D\Character\AI\PathFinding</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Score.cpp">
+      <Filter>Source Files\Day System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Mouse.h">
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="Source\Node.h">
       <Filter>Header Files\2D\Character\AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Score.h">
+      <Filter>Header Files\Day System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
