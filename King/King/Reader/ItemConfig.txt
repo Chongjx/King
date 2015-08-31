@@ -52,7 +52,7 @@
 	# Guard Clothing
 		[NAME] GuardUniform
 		[ID] 5
-		[Pos] 7, 21
+		[Pos] 2, 10
 		[ItemStatus] Ground
 		[ItemType] Clothing
 		[Description] Disguise!
@@ -75,7 +75,7 @@
 	{
 	#Matches
 		[NAME] Matches
-		[ID] 5
+		[ID] 2
 		[Pos] 22, 20
 		[ItemStatus] Ground
 		[ItemType] Misc
@@ -92,87 +92,6 @@
 		[ItemType] Misc
 		[Description] Works like Magic!
 		[Location] 0
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 801
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 1
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 802
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 2
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 803
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 3
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 804
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 4
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-
-		[NAME] AccessCard
-		[ID] 805
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 5
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 806
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 6
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 807
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 7
-		[Mesh] ITEM_ACCESSCARD
-	}
-	{
-		[NAME] AccessCard
-		[ID] 808
-		[Pos] 7, 21
-		[ItemStatus] Ground
-		[ItemType] Misc
-		[Description] Works like Magic!
-		[Location] 8
 		[Mesh] ITEM_ACCESSCARD
 	}
 }

@@ -130,7 +130,7 @@ void SceneGame::Render(void)
 				RenderFOV();
 			}
 			RenderTime();
-			RenderInterface();
+			RenderInterface(renderInventory);
 			RenderPlayerInventory();
 			RenderObjectives();
 			RenderDialogs();
@@ -174,7 +174,7 @@ void SceneGame::Render(void)
 
 	if (currentState != SceneGame::INGAME_STATE || currentState != SceneGame::PAUSE_STATE)
 	{
-		RenderInterface();
+		RenderInterface(false);
 		RenderCursor();
 	}
 
@@ -2002,7 +2002,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 	{
 		CItem *item = (CItem *)*it;
 		//Picking up of item
-		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE)
+		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE && layout[currentLocation]->ID == item->getLocationID())
 		{
 			if (mouseX <= item->getItemPos().x + TILESIZE - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
 				&& mouseX >= item->getItemPos().x - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
@@ -2132,6 +2132,8 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			}
 		}
 	}
+	if (getKey("ToggleInv"))
+		renderInventory = !renderInventory;
 }
 
 void SceneGame::UpdateInGame(double dt)
@@ -2724,7 +2726,7 @@ void SceneGame::changeScene(GAME_STATE nextState)
 	}
 }
 
-void SceneGame::RenderInterface(void)
+void SceneGame::RenderInterface(bool toggle)
 {
 	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
@@ -2736,7 +2738,10 @@ void SceneGame::RenderInterface(void)
 
 		else
 		{
-			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
+			if (toggle == true)
+			{
+				Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
+			}
 			//Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), gameInterfaces[currentState].buttons[i].getPos(), gameInterfaces[currentState].buttons[i].getRotation());
 		}
 

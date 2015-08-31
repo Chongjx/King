@@ -160,7 +160,7 @@ public:
 
 	void changeScene(GAME_STATE nextState);
 
-	void RenderInterface(void);
+	void RenderInterface(bool toggle);
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
@@ -229,6 +229,7 @@ private:
 	double tempMouseX, tempMouseY;
 	int indexItem1, indexItem2;
 	string dialogString;
+	bool renderInventory;
 };
 
 #endif
