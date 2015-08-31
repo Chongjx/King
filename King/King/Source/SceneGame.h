@@ -224,6 +224,7 @@ private:
 
 	vector<CItem*> itemList;
 
+	int BaseFOV;
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
 	int indexItem1, indexItem2;
