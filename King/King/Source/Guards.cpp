@@ -439,7 +439,16 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
 				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				int nextTile = 0;
+
+				if (targetedLocation.x - (int)(targetedLocation.x / tileSize) * tileSize > tileSize * 0.1f)
+				{
+					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize + 1];
+				}
+				else
+				{
+					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				}
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
@@ -583,7 +592,16 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
 				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				int nextTile = 0;
+
+				if (targetedLocation.y - (int)(targetedLocation.y / tileSize) * tileSize > tileSize * 0.1f)
+				{
+					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize + 1][(int)targetedLocation.x / tileSize];
+				}
+				else
+				{
+					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
+				}
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
