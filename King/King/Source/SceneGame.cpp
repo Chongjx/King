@@ -2553,11 +2553,6 @@ void SceneGame::UpdatePlayer(double dt)
 							}
 						}
 					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
-					}
 				}
 			}
 
@@ -2578,11 +2573,6 @@ void SceneGame::UpdatePlayer(double dt)
 								break;
 							}
 						}
-					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
 					}
 				}
 			}
@@ -2609,11 +2599,6 @@ void SceneGame::UpdatePlayer(double dt)
 							}
 						}
 					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
-					}
 				}
 			}
 			// door is above the player
@@ -2633,11 +2618,6 @@ void SceneGame::UpdatePlayer(double dt)
 								break;
 							}
 						}
-					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
 					}
 				}
 			}
@@ -2928,8 +2908,6 @@ void SceneGame::UpdateInteractions(double dt)
 	case GAINED_ACCESS_CARD:
 		UpdateDialog(dt,ACCESS_CARD);
 		break;
-	default:;
-		break;
 	}
 
 	//std::cout << currentInteraction << std::endl;
@@ -2963,7 +2941,7 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 	startTimer += (float) dt * dialog.GetTextSpeed();
 	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	//std::cout << diaName << std::endl;
+	std::cout << diaName << std::endl;
 	//std::cout << currentDialogue << std::endl;
 
 	if(currentDialogue == diaName)
@@ -2973,12 +2951,8 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 			unsigned currentSize = dialogString.length();
 			if(currentSize < findDialog(diaName).GetText().size())
 			{
-
-				for (unsigned i = dialogString.length(); i <= currentSize; ++i)
-				{
-					dialogString += findDialog(diaName).GetText()[i];
-					sound.Play("Sound_Beep");
-				}
+				dialogString += findDialog(diaName).GetText();
+				sound.Play("Sound_Beep");
 			}
 			startTimer = 0.f;
 		}
