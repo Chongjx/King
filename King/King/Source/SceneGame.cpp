@@ -1413,7 +1413,6 @@ void SceneGame::InitScore(string config)
 	for (vector<Branch>::iterator branch = ScoreBranch.childBranches.begin(); branch != ScoreBranch.childBranches.end(); ++branch)
 	{
 		Score TempScore;
-	int tempScore;
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 		{
 			Attribute tempAttri = *attri;
@@ -3070,7 +3069,7 @@ void SceneGame::RenderScore(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2 << itr->getScore()<<endl;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.5 ,sceneHeight - specialFontSize - y_Space);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.5.f ,sceneHeight - specialFontSize - y_Space);
 	}
 	y_Space = specialFontSize * 2;
 	glDisable(GL_DEPTH_TEST);
