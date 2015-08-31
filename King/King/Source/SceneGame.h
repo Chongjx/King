@@ -83,8 +83,6 @@ class SceneGame : public Scene2D
 	enum INTERACTIONS
 	{
 		NO_INTERACTION,
-		TALK_WITH_PRISONERS,
-		TALK_WITH_GUARDS,
 		OPEN_CELL_DOOR,
 		CLOSE_CELL_DOOR,
 		OPEN_PRISON_DOOR,
@@ -92,6 +90,16 @@ class SceneGame : public Scene2D
 		CHANGE_ROOM,
 		RUNNING_ON_THREADMILL,
 		SLEEP,
+		GAINED_BATON,
+		GAINED_FORK,
+		GAINED_DUMBBELL,
+		GAINED_TASER,
+		GAINED_GUARD_UNIFORM,
+		GAINED_CELLKEY,
+		GAINED_MATCHES,
+		GAINED_TORCHLIGHT,
+		GAINED_NOTE,
+		GAINED_ACCESS_CARD,
 		MAX_INTERACTIONS,
 	};
 
@@ -155,12 +163,13 @@ public:
 	void UpdateInteractions(double dt);
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY);
+	void UpdateEnergy(double dt);
 	void UpdateDialog(double dt,Dialog_ID diaName);
 	void UpdateFOV(void);
 
 	void changeScene(GAME_STATE nextState);
 
-	void RenderInterface(void);
+	void RenderInterface(bool toggle);
 	void RenderLevel(void);
 	void RenderCharacters(void);
 	void RenderHUD(void);
@@ -170,6 +179,7 @@ public:
 	void RenderInstruct(void);
 	void RenderCursor(void);
 	void RenderItem(void);
+	void RenderEnergy(void);
 	void RenderPlayerInventory(void);
 	void RenderItemOnMouse(bool pressed);
 	void RenderFOV(void);
@@ -227,8 +237,13 @@ private:
 	int BaseFOV;
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
+
+	float energyTranslate;
+	double energyScale;
+
 	int indexItem1, indexItem2;
 	string dialogString;
+	bool renderInventory;
 };
 
 #endif

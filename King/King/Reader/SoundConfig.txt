@@ -6,30 +6,30 @@
 		[SoundName] Sound_Footstep
 		[SoundFile] Sound\\Footstep.ogg
 		[Loop] false
-		[DefaultVol] 1.0f	
+		[DefaultVol] 0.5f	
 	}
-	{
-		[SoundName] Sound_Bookflip
-		[SoundFile] Sound\\bookFlip.ogg
-		[Loop] false
-		[DefaultVol] 1.0f	
-	}
+	
 	{
 		[SoundName] Sound_Bookflip2
 		[SoundFile] Sound\\bookFlip2.ogg
 		[Loop] false
-		[DefaultVol] 1.0f	
-	}
-
-	{
-		[SoundName] Sound_Alarm
-		[SoundFile] Sound\\Alarm.mp3
-		[Loop] false
-		[DefaultVol] 1.0f	
+		[DefaultVol] 0.5f	
 	}
 	{
 		[SoundName] Sound_Alert
 		[SoundFile] Sound\\Alert.wav
+		[Loop] false
+		[DefaultVol] 0.5f	
+	}
+	{
+		[SoundName] Sound_Caught
+		[SoundFile] Sound\\Caught.ogg
+		[Loop] false
+		[DefaultVol] 0.5f	
+	}
+	{
+		[SoundName] Sound_PickUp
+		[SoundFile] Sound\\PickUp.ogg
 		[Loop] false
 		[DefaultVol] 1.0f	
 	}
@@ -37,31 +37,19 @@
 		[SoundName] Sound_Beep
 		[SoundFile] Sound\\Beep.wav
 		[Loop] false
-		[DefaultVol] 1.0f	
-	}
-	{
-		[SoundName] Sound_Chatter
-		[SoundFile] Sound\\Chatter.wav
-		[Loop] false
-		[DefaultVol] 0.5f	
-	}
-	{
-		[SoundName] Sound_Cricket
-		[SoundFile] Sound\\Cricket.wav
-		[Loop] false
-		[DefaultVol] 1.0f	
+		[DefaultVol] 0.3f	
 	}
 	{
 		[SoundName] Sound_DoorClose
 		[SoundFile] Sound\\DoorClose.wav
 		[Loop] false
-		[DefaultVol] 1.0f	
+		[DefaultVol] 0.5f	
 	}
 	{
 		[SoundName] Sound_DoorOpen
 		[SoundFile] Sound\\DoorOpen.wav
 		[Loop] false
-		[DefaultVol] 1.0f	
+		[DefaultVol] 0.5f	
 	}
 	{
 		[SoundName] Sound_Background

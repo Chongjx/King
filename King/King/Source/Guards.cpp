@@ -643,3 +643,8 @@ void Guards::checkNextTile(void)
 
 	}
 }
+
+bool Guards::getChase (void)
+{
+	return chase;
+}

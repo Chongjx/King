@@ -30,6 +30,8 @@ public:
 	void CheckChase(Vector2 playerPos, int tileSize);
 	void checkNextTile(void);
 
+	bool getChase (void);
+
 private:
 
 	// StateMachine object

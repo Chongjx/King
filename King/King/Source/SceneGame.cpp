@@ -36,6 +36,8 @@ SceneGame::SceneGame(void)
 	guardList.clear();
 	prisonerList.clear();
 	FOG = false;
+
+	energyScale = 85;
 }
 
 SceneGame::~SceneGame(void)
@@ -50,6 +52,7 @@ void SceneGame::Init(string config)
 
 	gameBranch = TextTree::FileToRead(config);
 	Config();
+	energyTranslate = sceneWidth * 0.105f;
 }
 
 // Game update
@@ -62,6 +65,7 @@ void SceneGame::Update(double dt)
 	UpdateInput();
 	UpdateMouse();
 	camera.Update(dt);
+	UpdateEnergy(dt);
 	UpdateState();
 	UpdateEffect();
 	// Update buttons
@@ -130,12 +134,14 @@ void SceneGame::Render(void)
 				RenderFOV();
 			}
 			RenderTime();
-			RenderInterface();
+			RenderInterface(renderInventory);
 			RenderPlayerInventory();
 			RenderObjectives();
 			RenderDialogs();
 			RenderItemOnMouse(getKey("Select"));
 			RenderCursor();
+			RenderEnergy();
+
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -154,16 +160,21 @@ void SceneGame::Render(void)
 	case PAUSE_STATE:
 		{
 			RenderLevel();
-			RenderCharacters();
 			RenderItem();
+			RenderCharacters();
 			if(FOG)
 			{
 				RenderFOV();
 			}
 			RenderTime();
+			RenderInterface(renderInventory);
 			RenderPlayerInventory();
-			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
+			RenderDialogs();
+			RenderItemOnMouse(getKey("Select"));
+			RenderCursor();
+			RenderEnergy();
+			Render2DMesh(findMesh("GEO_Semi_Quad"), false,Vector2(sceneWidth,sceneHeight),Vector2(sceneWidth*0.5,sceneHeight*0.5),0);
 			break;
 		}
 	case EXIT_STATE:
@@ -174,7 +185,7 @@ void SceneGame::Render(void)
 
 	if (currentState != SceneGame::INGAME_STATE || currentState != SceneGame::PAUSE_STATE)
 	{
-		RenderInterface();
+		RenderInterface(false);
 		RenderCursor();
 	}
 
@@ -1730,6 +1741,7 @@ void SceneGame::InitItem(string config)
 	updateMousePos = true;
 	indexItem1 = 0;
 	indexItem2 = 0;
+	renderInventory = true;
 }
 
 void SceneGame::InitInteractions(string config)
@@ -2019,7 +2031,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 	{
 		CItem *item = (CItem *)*it;
 		//Picking up of item
-		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE)
+		if ((player->getPos() - item->getItemPos()).Length() <= TILESIZE && layout[currentLocation]->ID == item->getLocationID())
 		{
 			if (mouseX <= item->getItemPos().x + TILESIZE - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
 				&& mouseX >= item->getItemPos().x - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX()
@@ -2031,6 +2043,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
 					player->setInventory(tempInventory);
+					sound.Play("Sound_PickUp");
 					break;
 				}
 			}
@@ -2042,6 +2055,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
 					player->setInventory(tempInventory);
+					sound.Play("Sound_PickUp");
 					break;
 				}
 			}
@@ -2101,7 +2115,9 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 							player->getInventory().swapItem(indexItem1,indexItem2);
 							updateMousePos = true;
 							dropItem = false;
+								sound.Play("Sound_PickUp");
 							break;
+
 						}
 					}
 				}
@@ -2141,6 +2157,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 								}
 								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
 								updateMousePos = true;
+									sound.Play("Sound_PickUp");
 								break;
 							}
 						}
@@ -2149,6 +2166,8 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			}
 		}
 	}
+	if (getKey("ToggleInv"))
+		renderInventory = !renderInventory;
 }
 
 void SceneGame::UpdateInGame(double dt)
@@ -2164,15 +2183,34 @@ void SceneGame::UpdateInGame(double dt)
 
 void SceneGame::UpdateFOV(void)
 {
-	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6) 
-	{
-						
+	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
+	{		
+		if (player->GetFOV() >= BaseFOV)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() - day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
 	}
-	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
+	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18) //Day
 	{
-
+		if (player->GetFOV() <= 64)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() + day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
 	}
-
 }
 
 void SceneGame::UpdatePlayer(double dt)
@@ -2306,7 +2344,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
-						currentInteraction = OPEN_CELL_DOOR;
+						sound.Play("Sound_DoorOpen");
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2333,8 +2371,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
-						currentInteraction = OPEN_CELL_DOOR;
-
+							sound.Play("Sound_DoorOpen");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
 							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorOpened")
@@ -2364,8 +2401,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
-						currentInteraction = CLOSE_CELL_DOOR;
-
+						sound.Play("Sound_DoorClose");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
 							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorClosed")
@@ -2390,8 +2426,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
-						currentInteraction = CLOSE_CELL_DOOR;
-
+							sound.Play("Sound_DoorClose");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
 							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorClosed")
@@ -2410,6 +2445,113 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 		}
+
+		/*else if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed")
+		{
+			// the door is below the player
+			if(player->getDir().y == -1)
+			{
+				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
+				{
+					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
+					{
+
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
+						{
+							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
+							{
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								break;
+							}
+						}
+					}
+					else
+					{
+						currentInteraction = NO_INTERACTION;
+						break; 
+					}
+				}
+			}
+
+			// the door is below the player
+			else if(player->getDir().y == 1)
+			{
+				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
+				{
+					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
+					{
+
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
+						{
+							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
+							{
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								break;
+							}
+						}
+					}
+					else
+					{
+						currentInteraction = NO_INTERACTION;
+						break; 
+					}
+				}
+			}
+
+			// the door is to the right of the player
+			else if(player->getDir().x == 1)
+			{
+				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x + 1] == layout[currentLocation]->specialTiles[special].TileID)
+				{
+					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
+					{
+
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
+						{
+							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
+							{
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x + 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x + 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								break;
+							}
+						}
+					}
+					else
+					{
+						currentInteraction = NO_INTERACTION;
+						break; 
+					}
+				}
+			}
+
+			// the door is to the left of the player
+			else if(player->getDir().x == -1)
+			{
+				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x - 1] == layout[currentLocation]->specialTiles[special].TileID)
+				{
+					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
+					{
+
+						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
+						{
+							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
+							{
+								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x - 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x - 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
+								break;
+							}
+						}
+					}
+					else
+					{
+						currentInteraction = NO_INTERACTION;
+						break; 
+					}
+				}
+			}
+		}*/
 
 		else if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftOpened" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightOpened")
 		{
@@ -2510,16 +2652,26 @@ void SceneGame::UpdateAI(double dt)
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
 	{
+		static bool played = false;
 		Guards* tempGuard = *guard;
 
 		if (tempGuard->GetUpdate())
 		{
-			tempGuard->CheckChase(player->getTargetPos(), TILESIZE);
+			tempGuard->CheckChase(player->getTargetPos(), TILESIZE);	
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+
+			if ((tempGuard->getChase()) && (played==false))
+			{
+				sound.Play("Sound_Alert");
+				played = true;
+			}
+	
 
 			// If the player is caught by the guard
 			if ((tempGuard->getPos() - player->getPos()).Length() < TILESIZE * 0.2f)
 			{
+				played = false;
+				sound.Play("Sound_Caught");
 				player->ResetPos();
 				player->setRoom(layout[CELL_AREA]);
 				currentLocation = CELL_AREA;
@@ -2548,16 +2700,38 @@ void SceneGame::UpdateInteractions(double dt)
 		gameSpeed = 75;
 		UpdateDialog(dt, IM_TIRED);
 		break;
-	case TALK_WITH_PRISONERS:;
-		break;
-	case TALK_WITH_GUARDS:;
-		break;
-	case OPEN_CELL_DOOR:
-		break;
-	case CLOSE_CELL_DOOR:
-		break;
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
+		break;
+	case GAINED_BATON:
+		UpdateDialog(dt,BATON);
+		break;
+	case GAINED_FORK:
+		UpdateDialog(dt,FORK);
+		break;
+	case GAINED_DUMBBELL:
+		UpdateDialog(dt,DUMBBELL);
+		break;
+	case GAINED_TASER:
+		UpdateDialog(dt,TASER);
+		break;
+	case GAINED_GUARD_UNIFORM:
+		UpdateDialog(dt,GUARD_UNIFORM);
+		break;
+	case GAINED_CELLKEY:
+		UpdateDialog(dt,CELLKEY);
+		break;
+	case GAINED_MATCHES:
+		UpdateDialog(dt,MATCHES);
+		break;
+	case GAINED_TORCHLIGHT:
+		UpdateDialog(dt,TORCHLIGHT);
+		break;
+	case GAINED_NOTE:
+		UpdateDialog(dt,NOTE);
+		break;
+	case GAINED_ACCESS_CARD:
+		UpdateDialog(dt,ACCESS_CARD);
 		break;
 	default:;
 		break;
@@ -2599,6 +2773,8 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 			for (unsigned i = dialogString.length(); i <= currentSize; ++i)
 			{
 				dialogString += findDialog(diaName).GetText()[i];
+				sound.Play("Sound_Beep");	
+				 
 			}
 		}
 		startTimer = 0.f;
@@ -2631,7 +2807,7 @@ void SceneGame::changeScene(GAME_STATE nextState)
 	}
 }
 
-void SceneGame::RenderInterface(void)
+void SceneGame::RenderInterface(bool toggle)
 {
 	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 	{
@@ -2643,7 +2819,10 @@ void SceneGame::RenderInterface(void)
 
 		else
 		{
-			Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
+			if (toggle == true)
+			{
+				Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
+			}
 			//Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), gameInterfaces[currentState].buttons[i].getPos(), gameInterfaces[currentState].buttons[i].getRotation());
 		}
 
@@ -2663,7 +2842,7 @@ void SceneGame::RenderObjectives(void)
 	std::ostringstream ss;
 	ss <<"Objectives"<<endl;
 
-	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Blue"), specialFontSize * 0.5f, 0, sceneHeight - specialFontSize - y_Space);
+	RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Blue"), specialFontSize * 0.5f, 0, sceneHeight - specialFontSize - y_Space);
 
 	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
 	{
@@ -2676,13 +2855,13 @@ void SceneGame::RenderObjectives(void)
 				{
 					std::ostringstream ss;
 					ss << objective->getTitle()<<endl;
-					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("DarkGrey"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
+					RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("DarkGrey"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
 				}
 				else if(objective->getObjectiveState() == objective->OBJECTIVE_COMPLETED)
 				{
 					std::ostringstream ss;
 					ss << objective->getTitle()<<endl;
-					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Green"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
+					RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Green"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
 				}
 			}
 		}
@@ -2854,11 +3033,11 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Darkblue"), specialFontSize, 0,sceneHeight - specialFontSize );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Darkblue"), specialFontSize, 0,sceneHeight - specialFontSize );
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day: " << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		
 		if (DEBUG)
@@ -2873,12 +3052,12 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day:" << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
@@ -2928,6 +3107,43 @@ void SceneGame::RenderItemOnMouse(bool pressed)
 				}
 			}
 		}
+	}
+}
+
+void SceneGame::RenderEnergy(void)
+{
+	Render2DMesh(findMesh("GEO_ENERGYBAR"), false, Vector2(energyScale, 65), Vector2(energyTranslate, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_ENERGY"), false, Vector2(110, 80), Vector2(sceneWidth*0.11f, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_PRISONER"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
+}
+void SceneGame::UpdateEnergy(double dt)
+{
+	if(player->getState() == StateMachine::RUN_STATE)
+	{
+		energyScale -= dt * 20 * 0.85;
+		energyTranslate -= dt * 20 / 2.5;
+	}
+
+	else if(player->getState() == StateMachine::WALK_STATE)
+	{
+		energyScale += dt * 8 * 0.85;
+		energyTranslate += dt * 8 / 2.5;
+	}
+	else if(player->getState() == StateMachine::IDLE_STATE)
+	{
+		energyScale += dt * 10 * 0.85;
+		energyTranslate += dt * 10 / 2.5;
+	}
+
+	if (energyScale > 85)
+	{
+		energyScale = 85;
+		energyTranslate = sceneWidth * 0.105f;
+	}
+
+	else if(energyScale < 0)
+	{
+		energyScale = 0;
 	}
 }
 
