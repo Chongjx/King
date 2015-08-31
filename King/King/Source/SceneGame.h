@@ -16,7 +16,7 @@
 #include "Interactions.h"
 #include "Instructions.h"
 #include "Dialogs.h"
-
+#include "Score.h"
 using std::string;
 
 class SceneGame : public Scene2D
@@ -150,6 +150,7 @@ public:
 	void InitObjective(string config);
 	void InitInstruct(string config);
 	void InitItem(string config);
+	void InitScore(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -184,6 +185,7 @@ public:
 	void RenderItemOnMouse(bool pressed);
 	void RenderFOV(void);
 	void RenderDialogs(void);
+	void RenderScore(void);
 
 	void FOV(void);
 	bool doFOV(Vector2 pos);
@@ -213,6 +215,7 @@ private:
 	vector<Interactions> interactionList;
 	vector<Instructions> instructions;
 	vector<Dialogs> dialogs;
+	vector<Score> score;
 
 	GAME_STATE currentState;
 	INTERACTIONS currentInteraction;

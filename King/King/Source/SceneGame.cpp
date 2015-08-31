@@ -151,6 +151,7 @@ void SceneGame::Render(void)
 		}
 	case HIGHSCORE_STATE:
 		{
+			RenderScore();
 			break;
 		}
 	case OPTIONS_STATE:
@@ -448,7 +449,8 @@ void SceneGame::Config(void)
 					InitInstruct(attriValue);
 				}
 			}
-		}else if (branch->branchName == "Dialog")
+		}
+		else if (branch->branchName == "Dialog")
 		{
 			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 			{
@@ -458,6 +460,19 @@ void SceneGame::Config(void)
 				if (attriName == "Directory")
 				{
 					InitInteractions(attriValue);
+				}
+			}
+		}
+		else if (branch->branchName == "Score")
+		{
+			for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+			{
+				Attribute tempAttri = *attri;
+				string attriName = tempAttri.name;
+				string attriValue = tempAttri.value;
+				if (attriName == "Directory")
+				{
+					InitScore(attriValue);
 				}
 			}
 		}
@@ -1382,6 +1397,25 @@ void SceneGame::InitVariables(string config)
 				}
 				day.Initicons(name,size,pos,mesh);
 			}
+		}
+	}
+}
+void SceneGame::InitScore(string config)
+{
+	Branch ScoreBranch = TextTree::FileToRead(config);
+	// Instructions for the game
+	for (vector<Branch>::iterator branch = ScoreBranch.childBranches.begin(); branch != ScoreBranch.childBranches.end(); ++branch)
+	{
+		Score TempScore;
+	int tempScore;
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			string attriName = tempAttri.name;
+			string attriValue = tempAttri.value;
+
+			TempScore.setScore(stoi(attriValue));
+			score.push_back(TempScore);
 		}
 	}
 }
@@ -2817,6 +2851,21 @@ void SceneGame::RenderInterface(bool toggle)
 	glDisable(GL_DEPTH_TEST);
 }
 
+
+void SceneGame::RenderScore(void)
+{
+	float y_Space = specialFontSize * 2;
+	for (vector<Score>::iterator itr = score.begin(); itr != score.end(); ++itr)
+	{
+		y_Space += specialFontSize;
+		std::ostringstream ss2;
+		ss2.precision(1);
+		ss2 << itr->getScore()<<endl;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.5 ,sceneHeight - specialFontSize - y_Space);
+	}
+	y_Space = specialFontSize * 2;
+	glDisable(GL_DEPTH_TEST);
+}
 void SceneGame::RenderObjectives(void)
 {
 	float y_Space = specialFontSize * 2;

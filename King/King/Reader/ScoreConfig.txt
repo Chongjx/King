@@ -1,0 +1,16 @@
+{
+	[NAME] Scores
+	{
+		[NAME] 1
+		[Score] 999
+	}
+	{
+		[NAME] 2
+		[Score] 9999
+	}
+	{
+		[NAME] 3
+		[Score] 99
+	}
+}
+

@@ -115,6 +115,7 @@
     <ClCompile Include="Source\Prisoners_StateMachine.cpp" />
     <ClCompile Include="Source\Scene2D.cpp" />
     <ClCompile Include="Source\SceneGame.cpp" />
+    <ClCompile Include="Source\Score.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Scene2D.h" />
     <ClInclude Include="Source\SceneGame.h" />
+    <ClInclude Include="Source\Score.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\Sound.h" />
     <ClInclude Include="Source\SpriteAnimation.h" />
