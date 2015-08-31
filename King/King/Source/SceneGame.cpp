@@ -2423,7 +2423,7 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 
-			// the door is below the player
+			// the door is above the player
 			else if(player->getDir().y == 1)
 			{
 				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
@@ -2505,7 +2505,7 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		else if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftOpened" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightOpened")
+		if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed")
 		{
 			if(layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 			{
@@ -2518,9 +2518,9 @@ void SceneGame::UpdatePlayer(double dt)
 						int nextRoom = layout[currentLocation]->doors[numDoors].transitionRoom;
 						Vector2 nextRoomDoorPos;
 
-						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[currentLocation]->doors.size(); ++nextRoomDoors)
+						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[nextRoom]->doors.size(); ++nextRoomDoors)
 						{
-							if (layout[nextRoom]->doors[nextRoomDoors].transitionRoom == currentLocation && layout[nextRoom]->doors[numDoors].ID == layout[nextRoom]->doors[nextRoomDoors].ID)
+							if (layout[nextRoom]->doors[nextRoomDoors].transitionRoom == currentLocation && layout[nextRoom]->doors[nextRoomDoors].ID == layout[currentLocation]->doors[numDoors].ID)
 							{
 								nextRoomDoorPos = layout[nextRoom]->doors[nextRoomDoors].pos;
 								break;
@@ -2528,6 +2528,7 @@ void SceneGame::UpdatePlayer(double dt)
 						}
 
 						currentLocation = nextRoom;
+						std::cout << nextRoom << std::endl << nextRoomDoorPos << std::endl;
 						player->setRoom(layout[nextRoom]);
 						// offset the current pos by 1 tile
 						if (player->getDir().x == 1)
@@ -2616,6 +2617,7 @@ void SceneGame::UpdateAI(double dt)
 			{
 				player->ResetPos();
 				player->setRoom(layout[CELL_AREA]);
+				currentLocation = CELL_AREA;
 			}
 		}
 	}
