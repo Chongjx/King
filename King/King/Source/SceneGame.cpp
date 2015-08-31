@@ -2289,6 +2289,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
+						sound.Play("Sound_DoorOpen");
 						currentInteraction = OPEN_CELL_DOOR;
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
@@ -2317,7 +2318,7 @@ void SceneGame::UpdatePlayer(double dt)
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
 						currentInteraction = OPEN_CELL_DOOR;
-
+							sound.Play("Sound_DoorOpen");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
 							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorOpened")
@@ -2348,7 +2349,7 @@ void SceneGame::UpdatePlayer(double dt)
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
 						currentInteraction = CLOSE_CELL_DOOR;
-
+						sound.Play("Sound_DoorClose");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
 							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorClosed")
@@ -2374,7 +2375,7 @@ void SceneGame::UpdatePlayer(double dt)
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
 						currentInteraction = CLOSE_CELL_DOOR;
-
+							sound.Play("Sound_DoorClose");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
 							if (layout[currentLocation]->specialTiles[openDoor].TileName == "CellDoorClosed")
@@ -2604,16 +2605,26 @@ void SceneGame::UpdateAI(double dt)
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
 	{
+		static bool played = false;
 		Guards* tempGuard = *guard;
 
 		if (tempGuard->GetUpdate())
 		{
-			tempGuard->CheckChase(player->getTargetPos(), TILESIZE);
+			tempGuard->CheckChase(player->getTargetPos(), TILESIZE);	
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+
+			if ((tempGuard->getChase()) && (played==false))
+			{
+				sound.Play("Sound_Alert");
+				played = true;
+			}
+	
 
 			// If the player is caught by the guard
 			if ((tempGuard->getPos() - player->getPos()).Length() < TILESIZE * 0.2f)
 			{
+				played = false;
+				sound.Play("Sound_Caught");
 				player->ResetPos();
 				player->setRoom(layout[CELL_AREA]);
 			}
@@ -2692,6 +2703,8 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 			for (unsigned i = dialogString.length(); i <= currentSize; ++i)
 			{
 				dialogString += findDialog(diaName).GetText()[i];
+				sound.Play("Sound_Beep");	
+				 
 			}
 		}
 		startTimer = 0.f;
