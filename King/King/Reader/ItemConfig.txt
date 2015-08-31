@@ -87,7 +87,7 @@
 	{
 		[NAME] AccessCard
 		[ID] 800
-		[Pos] 7, 21
+		[Pos] 16, 21
 		[ItemStatus] Ground
 		[ItemType] Misc
 		[Description] Works like Magic!
