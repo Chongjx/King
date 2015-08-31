@@ -154,7 +154,7 @@ public:
 	void UpdateMap(void);
 	void UpdateInteractions(double dt);
 	void UpdateThreadmill(void);
-	void UpdatePlayerInventory(bool pressed, double mouseX, double mouseY);
+	void UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY);
 	void UpdateDialog(double dt,Dialog_ID diaName);
 	void UpdateFOV(void);
 
@@ -224,6 +224,7 @@ private:
 
 	vector<CItem*> itemList;
 
+	int BaseFOV;
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
 	int indexItem1, indexItem2;
