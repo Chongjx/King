@@ -16,7 +16,7 @@
 #include "Interactions.h"
 #include "Instructions.h"
 #include "Dialogs.h"
-
+#include "Score.h"
 using std::string;
 
 class SceneGame : public Scene2D
@@ -90,31 +90,25 @@ class SceneGame : public Scene2D
 		CHANGE_ROOM,
 		RUNNING_ON_THREADMILL,
 		SLEEP,
-		GAINED_BATON,
 		GAINED_FORK,
 		GAINED_DUMBBELL,
-		GAINED_TASER,
+		GAINED_WATERGUN,
 		GAINED_GUARD_UNIFORM,
-		GAINED_CELLKEY,
 		GAINED_MATCHES,
 		GAINED_TORCHLIGHT,
-		GAINED_NOTE,
 		GAINED_ACCESS_CARD,
 		MAX_INTERACTIONS,
 	};
 
 	enum Dialog_ID
 	{
-		BATON = 1,
-		FORK,
-		DUMBBELL,
-		TASER,
+		DUMBBELL = 1,
+		WATERGUN,
 		GUARD_UNIFORM,
-		CELLKEY,
+		FORK,
 		MATCHES,
-		TORCHLIGHT,
-		NOTE,
 		ACCESS_CARD,
+		TORCHLIGHT,
 		DOOR_LOCKED = 21,
 		NOISES,
 		UNABLE_TO_UNLOCK_DOOR,
@@ -150,6 +144,7 @@ public:
 	void InitObjective(string config);
 	void InitInstruct(string config);
 	void InitItem(string config);
+	void InitScore(string config);
 
 	void UpdateOpengl(void);
 	void UpdateInput(void);
@@ -184,6 +179,7 @@ public:
 	void RenderItemOnMouse(bool pressed);
 	void RenderFOV(void);
 	void RenderDialogs(void);
+	void RenderScore(void);
 
 	void FOV(void);
 	bool doFOV(Vector2 pos);
@@ -192,6 +188,8 @@ public:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation = 0.f);
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size = 1.0f, const float x = 0.0f, const float y = 0.0f, const float rotation = 0.f);
 	void Render2DMesh(Mesh *mesh, const bool enableLight, const Vector2 size, const Vector2 pos, const float rotation = 0.f);
+
+	void save (string);
 
 	Mesh* findMesh(string meshName);
 	Color findColor(string colorName);
@@ -213,6 +211,7 @@ private:
 	vector<Interactions> interactionList;
 	vector<Instructions> instructions;
 	vector<Dialogs> dialogs;
+	vector<Score> score;
 
 	GAME_STATE currentState;
 	INTERACTIONS currentInteraction;
@@ -244,6 +243,8 @@ private:
 	int indexItem1, indexItem2;
 	string dialogString;
 	bool renderInventory;
+	string ScoreDirectory;
+	Score CurrentScore;
 };
 
 #endif

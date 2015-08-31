@@ -51,8 +51,8 @@
 	{
 	# Guard Clothing
 		[NAME] GuardUniform
-		[ID] 5
-		[Pos] 2, 10
+		[ID] 3
+		[Pos] 7, 21
 		[ItemStatus] Ground
 		[ItemType] Clothing
 		[Description] Disguise!
@@ -75,7 +75,7 @@
 	{
 	#Matches
 		[NAME] Matches
-		[ID] 2
+		[ID] 5
 		[Pos] 22, 20
 		[ItemStatus] Ground
 		[ItemType] Misc
@@ -86,8 +86,8 @@
 	#AccessCard
 	{
 		[NAME] AccessCard
-		[ID] 800
-		[Pos] 16, 21
+		[ID] 6
+		[Pos] 7, 21
 		[ItemStatus] Ground
 		[ItemType] Misc
 		[Description] Works like Magic!

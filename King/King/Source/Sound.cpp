@@ -22,7 +22,6 @@ void Sound::Init(std::string soundName, std::string soundFile,float volume,bool 
 	this->volume = volume;
 	this->loop = loop;
 	this->Soundsource=Soundengine->addSoundSourceFromFile(this->soundFile.c_str());
-
 }
 
 void Sound::setSoundName(string soundName)
