@@ -162,10 +162,11 @@ public:
 	void UpdateMap(void);
 	void UpdateInteractions(double dt);
 	void UpdateThreadmill(void);
-	void UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY);
+	void UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY, double dt);
 	void UpdateEnergy(double dt);
 	void UpdateDialog(double dt,Dialog_ID diaName);
 	void UpdateFOV(void);
+	void UpdateObjective(void);
 
 	void changeScene(GAME_STATE nextState);
 
@@ -180,7 +181,7 @@ public:
 	void RenderCursor(void);
 	void RenderItem(void);
 	void RenderEnergy(void);
-	void RenderPlayerInventory(void);
+	void RenderPlayerInventory(bool toggle);
 	void RenderItemOnMouse(bool pressed);
 	void RenderFOV(void);
 	void RenderDialogs(void);
@@ -237,13 +238,14 @@ private:
 	int BaseFOV;
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
+	bool renderInventory;
+	float translateInventoryY;
 
 	float energyTranslate;
 	double energyScale;
 
 	int indexItem1, indexItem2;
 	string dialogString;
-	bool renderInventory;
 };
 
 #endif

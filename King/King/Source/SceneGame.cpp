@@ -135,7 +135,7 @@ void SceneGame::Render(void)
 			}
 			RenderTime();
 			RenderInterface(renderInventory);
-			RenderPlayerInventory();
+			RenderPlayerInventory(renderInventory);
 			RenderObjectives();
 			RenderDialogs();
 			RenderItemOnMouse(getKey("Select"));
@@ -168,7 +168,7 @@ void SceneGame::Render(void)
 			}
 			RenderTime();
 			RenderInterface(renderInventory);
-			RenderPlayerInventory();
+			RenderPlayerInventory(renderInventory);
 			RenderObjectives();
 			RenderDialogs();
 			RenderItemOnMouse(getKey("Select"));
@@ -2007,7 +2007,7 @@ void SceneGame::UpdateEffect(void)
 	}
 }
 
-void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY)
+void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY, double dt)
 {
 	// picking, dropping & switching of items
 	for(vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
@@ -2150,7 +2150,40 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 		}
 	}
 	if (getKey("ToggleInv"))
+	{
 		renderInventory = !renderInventory;
+	}
+	float slidingSpeed = 200.f;
+	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON)
+		{
+			if (renderInventory == true)
+			{
+				if (translateInventoryY < gameInterfaces[currentState].buttons[i].getPos().y)
+				{
+					translateInventoryY += (float)(slidingSpeed * dt);
+				}
+				else
+				{
+					translateInventoryY = (float)gameInterfaces[currentState].buttons[i].getPos().y;
+				}
+				break;
+			}
+			else 
+			{
+				if (translateInventoryY > -gameInterfaces[currentState].buttons[i].getScale().y)
+				{
+					translateInventoryY -= (float)(slidingSpeed * dt);
+				}
+				else 
+				{
+					translateInventoryY = (float)-gameInterfaces[currentState].buttons[i].getScale().y;
+				}
+				break;
+			}
+		}
+	}
 }
 
 void SceneGame::UpdateInGame(double dt)
@@ -2161,7 +2194,8 @@ void SceneGame::UpdateInGame(double dt)
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
 	UpdateFOV();
-	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y);
+	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y, dt);
+	UpdateObjective();
 }
 
 void SceneGame::UpdateFOV(void)
@@ -2774,6 +2808,23 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 	}
 }
 
+void SceneGame::UpdateObjective(void)
+{
+	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
+	{
+		for (vector<Objective>::iterator objective = level->objectives.begin(); objective !=  level->objectives.end(); objective++)
+		{
+			for (unsigned i = 0; i < player->getInventory().getVecOfItems().size(); ++i)
+			{
+				if (player->getInventory().getVecOfItems().at(i)->getItemName() == objective->getkeyItem())
+				{
+					objective->setState(objective->OBJECTIVE_COMPLETED);
+				}
+			}
+		}
+	}
+}
+
 void SceneGame::changeScene(GAME_STATE nextState)
 {
 	this->currentState = nextState;	
@@ -2801,9 +2852,9 @@ void SceneGame::RenderInterface(bool toggle)
 
 		else
 		{
-			if (toggle == true)
+			//if (toggle == true)
 			{
-				Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f), gameInterfaces[currentState].buttons[i].getRotation());
+				Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), Vector2(gameInterfaces[currentState].buttons[i].getPos().x + gameInterfaces[currentState].buttons[i].getScale().x * 0.5f, gameInterfaces[currentState].buttons[i].getPos().y + gameInterfaces[currentState].buttons[i].getScale().y * 0.5f + translateInventoryY), gameInterfaces[currentState].buttons[i].getRotation());
 			}
 			//Render2DMesh(gameInterfaces[currentState].buttons[i].getMesh(), false, gameInterfaces[currentState].buttons[i].getScale(), gameInterfaces[currentState].buttons[i].getPos(), gameInterfaces[currentState].buttons[i].getRotation());
 		}
@@ -3063,12 +3114,25 @@ void SceneGame::RenderItem(void)
 	}
 }
 
-void SceneGame::RenderPlayerInventory(void)
+void SceneGame::RenderPlayerInventory(bool toggle)
 {
+	float firstButton, buttonScaleX, buttonScaleY;
+	//store location to render item
+	for(unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
+	{
+		if (gameInterfaces[currentState].buttons[i].getType() == Buttons::IMAGE_BUTTON && gameInterfaces[currentState].buttons[i].getName() == "0")
+		{
+			firstButton = gameInterfaces[currentState].buttons[i].getPos().x;
+			buttonScaleX = gameInterfaces[currentState].buttons[i].getScale().x;
+			buttonScaleY = gameInterfaces[currentState].buttons[i].getScale().y;
+			break;
+		}
+	}
+
 	for (unsigned int i = 0; i < player->getInventory().getVecOfItems().size(); i++)
 	{
 		if (player->getInventory().getVecOfItems().at(i)->getItemStatus() == CItem::ITEM_ININVENTORY)
-			Render2DMesh(player->getInventory().getVecOfItems().at(i)->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>((372 + 64 * 0.5) + i * 64), static_cast<float>(64 * 0.5));
+			Render2DMesh(player->getInventory().getVecOfItems().at(i)->getMesh(), false, (float)(TILESIZE), (float)((firstButton + buttonScaleX * 0.5) + i * buttonScaleX), (float)(buttonScaleY * 0.5 + translateInventoryY));
 	}
 }
 
