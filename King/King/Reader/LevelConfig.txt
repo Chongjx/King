@@ -30,7 +30,7 @@
 			[DISCRIPTION] Find_Weapon
 			[GET] false
 			[LEVEL] 2				
-			[KEYITEM] Dumbell
+			[KEYITEM] Dumbbell
 			}
 			#{
 			#[DISCRIPTION] Find_Key
@@ -43,7 +43,7 @@
 			[DISCRIPTION] Get_Card_Key
 			[GET] false
 			[LEVEL] 3
-			[KEYITEM] Card Key
+			[KEYITEM] AccessCard
 			}
 			
 			
@@ -51,7 +51,7 @@
 			[DISCRIPTION] Find_Disguise
 			[GET] false
 			[LEVEL] 3
-			[KEYITEM] Guard Uniform
+			[KEYITEM] GuardUniform
 			}
 			
 			{
