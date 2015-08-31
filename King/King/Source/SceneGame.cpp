@@ -38,6 +38,9 @@ SceneGame::SceneGame(void)
 	FOG = false;
 
 	energyScale = 85;
+
+	currentInteraction = NO_INTERACTION;
+
 }
 
 SceneGame::~SceneGame(void)
@@ -2057,6 +2060,35 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			{
 				if (mousePressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
+					if(item->getItemID() == 1)
+					{
+						currentInteraction = GAINED_DUMBBELL;
+					}
+					else if(item->getItemID() == 2)
+					{
+						currentInteraction = GAINED_WATERGUN;
+					}
+					else if(item->getItemID() == 3)
+					{
+						currentInteraction = GAINED_GUARD_UNIFORM;
+					}
+					else if (item->getItemID() == 4)
+					{
+						currentInteraction = GAINED_FORK;
+					}
+					else if(item->getItemID() == 5)
+					{
+						currentInteraction = GAINED_MATCHES;
+					}
+					else if(item->getItemID() == 6)
+					{
+						currentInteraction = GAINED_ACCESS_CARD;
+					}
+					else if(item->getItemID() == 7)
+					{
+						currentInteraction = GAINED_TORCHLIGHT;
+					}
+
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
 					player->setInventory(tempInventory);
@@ -2069,6 +2101,36 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			{
 				if (item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
+					
+					if(item->getItemID() == 1)
+					{
+						currentInteraction = GAINED_DUMBBELL;
+					}
+					else if(item->getItemID() == 2)
+					{
+						currentInteraction = GAINED_WATERGUN;
+					}
+					else if(item->getItemID() == 3)
+					{
+						currentInteraction = GAINED_GUARD_UNIFORM;
+					}
+					else if (item->getItemID() == 4)
+					{
+						currentInteraction = GAINED_FORK;
+					}
+					else if(item->getItemID() == 5)
+					{
+						currentInteraction = GAINED_MATCHES;
+					}
+					else if(item->getItemID() == 6)
+					{
+						currentInteraction = GAINED_ACCESS_CARD;
+					}
+					else if(item->getItemID() == 7)
+					{
+						currentInteraction = GAINED_TORCHLIGHT;
+					}
+
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
 					player->setInventory(tempInventory);
@@ -2192,10 +2254,11 @@ void SceneGame::UpdateInGame(double dt)
 	UpdatePlayer(dt);
 	UpdateAI(dt);
 	UpdateMap();
+	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y);
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
 	UpdateFOV();
-	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y);
+	
 }
 
 void SceneGame::UpdateFOV(void)
@@ -2339,10 +2402,6 @@ void SceneGame::UpdatePlayer(double dt)
 				if(getKey("Enter"))
 				{
 					currentInteraction = SLEEP;
-				}
-				else
-				{
-					currentInteraction = NO_INTERACTION;
 				}
 			}
 			else
@@ -2719,23 +2778,17 @@ void SceneGame::UpdateInteractions(double dt)
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
 		break;
-	case GAINED_BATON:
-		UpdateDialog(dt,BATON);
-		break;
 	case GAINED_FORK:
 		UpdateDialog(dt,FORK);
 		break;
 	case GAINED_DUMBBELL:
 		UpdateDialog(dt,DUMBBELL);
 		break;
-	case GAINED_TASER:
-		UpdateDialog(dt,TASER);
+	case GAINED_WATERGUN:
+		UpdateDialog(dt,WATERGUN);
 		break;
 	case GAINED_GUARD_UNIFORM:
 		UpdateDialog(dt,GUARD_UNIFORM);
-		break;
-	case GAINED_CELLKEY:
-		UpdateDialog(dt,CELLKEY);
 		break;
 	case GAINED_MATCHES:
 		UpdateDialog(dt,MATCHES);
@@ -2743,15 +2796,14 @@ void SceneGame::UpdateInteractions(double dt)
 	case GAINED_TORCHLIGHT:
 		UpdateDialog(dt,TORCHLIGHT);
 		break;
-	case GAINED_NOTE:
-		UpdateDialog(dt,NOTE);
-		break;
 	case GAINED_ACCESS_CARD:
 		UpdateDialog(dt,ACCESS_CARD);
 		break;
 	default:;
 		break;
 	}
+
+	//std::cout << currentInteraction << std::endl;
 }
 
 void SceneGame::UpdateThreadmill(void)
@@ -2777,28 +2829,35 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 	static float timer = 1.f;
 	static float startTimer = 0.f;
 	static float clearTimer = 0.f;
+	static Dialog_ID currentDialogue = MAX_DIALOG;
 
 	startTimer += (float) dt * dialog.GetTextSpeed();
 	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	if (startTimer > timer || clearTimer < timer * dialogString.length())
+	std::cout << diaName << std::endl;
+	//std::cout << currentDialogue << std::endl;
+
+	if(currentDialogue == diaName)
 	{
-		unsigned currentSize = dialogString.length();
-		if(currentSize < findDialog(diaName).GetText().size())
+		if (startTimer > timer || clearTimer < timer * dialogString.length())
 		{
-			for (unsigned i = dialogString.length(); i <= currentSize; ++i)
+			unsigned currentSize = dialogString.length();
+			if(currentSize < findDialog(diaName).GetText().size())
 			{
-				dialogString += findDialog(diaName).GetText()[i];
-				sound.Play("Sound_Beep");	
-				 
+
+				for (unsigned i = dialogString.length(); i <= currentSize; ++i)
+				{
+					dialogString += findDialog(diaName).GetText()[i];
+					sound.Play("Sound_Beep");
+				}
 			}
+			startTimer = 0.f;
 		}
-		startTimer = 0.f;
 	}
 
-	if(clearTimer >= dialog.GetTextSpeed())
+	if((clearTimer >= dialog.GetTextSpeed() || currentDialogue != diaName) && currentDialogue != MAX_DIALOG)
 	{
-		for (unsigned i = 0; i < findDialog(diaName).GetText().size(); i++)
+		for (unsigned i = 0; i < dialogString.size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
@@ -2806,6 +2865,8 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 		startTimer = 0.f;
 		clearTimer = 0.f;
 	}
+
+	currentDialogue = diaName;
 }
 
 void SceneGame::changeScene(GAME_STATE nextState)

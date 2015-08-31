@@ -6,43 +6,31 @@
 		[NAME] WeaDialog
 		{
 			[ID] 1
-			[Text] You_Found_A_Baton
+			[Text] You_Found_A_DUMBBELL
 		}
 		{
 			[ID] 2
-			[Text] You_Found_A_Fork
+			[Text] You_Found_A_WATERGUN
 		}
 		{
 			[ID] 3
-			[Text] You_Found_A_Dumbbell
+			[Text] You_Found_A_Guard_Uniform
 		}
 		{
 			[ID] 4
-			[Text] You_Found_A_Taser
+			[Text] You_Found_A_Fork
 		}
 		{
 			[ID] 5
-			[Text] You_Found_A_Guard_Uniform
-			}
+			[Text] You_Found_A_Matches
+		}
 		{
 			[ID] 6
-			[Text] You_Found_A_CellKey
+			[Text] You_Found_A_Access_Card
 		}
 		{
 			[ID] 7
-			[Text] You_Found_A_Box_Of_Matches
-		}
-		{
-			[ID] 8
 			[Text] You_Found_A_Torchlight
-		}
-		{
-			[ID] 9
-			[Text] You_Found_A_Note
-		}
-		{
-			[ID] 10
-			[Text] You_Found_A_Access_Card
 		}
 	}
 
