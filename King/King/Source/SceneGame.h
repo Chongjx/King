@@ -163,6 +163,7 @@ public:
 	void UpdateInteractions(double dt);
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY);
+	void UpdateEnergy(double dt);
 	void UpdateDialog(double dt,Dialog_ID diaName);
 	void UpdateFOV(void);
 
@@ -178,6 +179,7 @@ public:
 	void RenderInstruct(void);
 	void RenderCursor(void);
 	void RenderItem(void);
+	void RenderEnergy(void);
 	void RenderPlayerInventory(void);
 	void RenderItemOnMouse(bool pressed);
 	void RenderFOV(void);
@@ -235,6 +237,10 @@ private:
 	int BaseFOV;
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
+
+	float energyTranslate;
+	double energyScale;
+
 	int indexItem1, indexItem2;
 	string dialogString;
 };

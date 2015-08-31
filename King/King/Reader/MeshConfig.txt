@@ -20,6 +20,21 @@
 		[Texture] Image\\cursorHighlight.tga
 	}
 	{
+		[NAME] GEO_ENERGY
+		[Type] Quad
+		[Texture] Image\\Energy.tga
+	}
+	{
+		[NAME] GEO_ENERGYBAR
+		[Type] Quad
+		[Texture] Image\\EnergyBar.tga
+	}
+	{
+		[NAME] GEO_PRISONER
+		[Type] Quad
+		[Texture] Image\\prisoner.tga
+	}
+	{
 		[NAME] GEO_PLAYER
 		[Type] SpriteAnimation
 		[SpriteRow] 4

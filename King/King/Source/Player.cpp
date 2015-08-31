@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player() :
-	energy(0)
+	energy(100)
 	, recovering(false)
 	, MAX_ENERGY(100)
 	, ENERGY_TO_RUN(25.0)

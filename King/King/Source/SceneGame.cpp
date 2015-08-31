@@ -36,6 +36,8 @@ SceneGame::SceneGame(void)
 	guardList.clear();
 	prisonerList.clear();
 	FOG = false;
+
+	energyScale = 85;
 }
 
 SceneGame::~SceneGame(void)
@@ -50,6 +52,7 @@ void SceneGame::Init(string config)
 
 	gameBranch = TextTree::FileToRead(config);
 	Config();
+	energyTranslate = sceneWidth * 0.105f;
 }
 
 // Game update
@@ -62,6 +65,7 @@ void SceneGame::Update(double dt)
 	UpdateInput();
 	UpdateMouse();
 	camera.Update(dt);
+	UpdateEnergy(dt);
 	UpdateState();
 	UpdateEffect();
 	// Update buttons
@@ -136,6 +140,8 @@ void SceneGame::Render(void)
 			RenderDialogs();
 			RenderItemOnMouse(getKey("Select"));
 			RenderCursor();
+			RenderEnergy();
+
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -164,6 +170,7 @@ void SceneGame::Render(void)
 			RenderPlayerInventory();
 			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
+			RenderEnergy();
 			break;
 		}
 	case EXIT_STATE:
@@ -3048,6 +3055,43 @@ void SceneGame::RenderItemOnMouse(bool pressed)
 				}
 			}
 		}
+	}
+}
+
+void SceneGame::RenderEnergy(void)
+{
+	Render2DMesh(findMesh("GEO_ENERGYBAR"), false, Vector2(energyScale, 65), Vector2(energyTranslate, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_ENERGY"), false, Vector2(110, 80), Vector2(sceneWidth*0.11f, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_PRISONER"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
+}
+void SceneGame::UpdateEnergy(double dt)
+{
+	if(player->getState() == StateMachine::RUN_STATE)
+	{
+		energyScale -= dt * 20 * 0.85;
+		energyTranslate -= dt * 20 / 2.5;
+	}
+
+	else if(player->getState() == StateMachine::WALK_STATE)
+	{
+		energyScale += dt * 8 * 0.85;
+		energyTranslate += dt * 8 / 2.5;
+	}
+	else if(player->getState() == StateMachine::IDLE_STATE)
+	{
+		energyScale += dt * 10 * 0.85;
+		energyTranslate += dt * 10 / 2.5;
+	}
+
+	if (energyScale > 85)
+	{
+		energyScale = 85;
+		energyTranslate = sceneWidth * 0.105f;
+	}
+
+	else if(energyScale < 0)
+	{
+		energyScale = 0;
 	}
 }
 
