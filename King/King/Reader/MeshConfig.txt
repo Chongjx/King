@@ -10,6 +10,13 @@
 		[Texture] Image\\font.tga
 	}
 	{
+		[NAME] GEO_TEXT_BACKGROUND
+		[Type] Text
+		[TextRow] 16
+		[TextCol] 16
+		[Texture] Image\\font_background.tga
+	}
+	{
 		[NAME] GEO_CURSOR
 		[Type] Quad
 		[Texture] Image\\cursorDefault.tga
@@ -18,6 +25,11 @@
 		[NAME] GEO_CURSOR_HIGHLIGHT
 		[Type] Quad
 		[Texture] Image\\cursorHighlight.tga
+	}
+	{
+		[NAME] GEO_Semi_Quad
+		[Type] Quad
+		[Texture] Image\\SemiSolid_QUAD.tga
 	}
 	{
 		[NAME] GEO_ENERGY

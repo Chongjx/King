@@ -160,17 +160,21 @@ void SceneGame::Render(void)
 	case PAUSE_STATE:
 		{
 			RenderLevel();
-			RenderCharacters();
 			RenderItem();
+			RenderCharacters();
 			if(FOG)
 			{
 				RenderFOV();
 			}
 			RenderTime();
+			RenderInterface();
 			RenderPlayerInventory();
-			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
+			RenderDialogs();
+			RenderItemOnMouse(getKey("Select"));
+			RenderCursor();
 			RenderEnergy();
+			Render2DMesh(findMesh("GEO_Semi_Quad"), false,Vector2(sceneWidth,sceneHeight),Vector2(sceneWidth*0.5,sceneHeight*0.5),0);
 			break;
 		}
 	case EXIT_STATE:
@@ -2021,6 +2025,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
 					player->setInventory(tempInventory);
+					sound.Play("Sound_PickUp");
 					break;
 				}
 			}
@@ -2032,6 +2037,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
 					player->setInventory(tempInventory);
+					sound.Play("Sound_PickUp");
 					break;
 				}
 			}
@@ -2091,7 +2097,9 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 							player->getInventory().swapItem(indexItem1,indexItem2);
 							updateMousePos = true;
 							dropItem = false;
+								sound.Play("Sound_PickUp");
 							break;
+
 						}
 					}
 				}
@@ -2131,6 +2139,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 								}
 								player->getInventory().removeItem(stoi(gameInterfaces[currentState].buttons[i].getName()));
 								updateMousePos = true;
+									sound.Play("Sound_PickUp");
 								break;
 							}
 						}
@@ -2154,15 +2163,34 @@ void SceneGame::UpdateInGame(double dt)
 
 void SceneGame::UpdateFOV(void)
 {
-	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6) 
-	{
-						
+	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
+	{		
+		if (player->GetFOV() >= BaseFOV)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() - day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
 	}
-	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
+	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18) //Day
 	{
-
+		if (player->GetFOV() <= 64)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() + day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
 	}
-
 }
 
 void SceneGame::UpdatePlayer(double dt)
@@ -2790,7 +2818,7 @@ void SceneGame::RenderObjectives(void)
 	std::ostringstream ss;
 	ss <<"Objectives"<<endl;
 
-	RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Blue"), specialFontSize * 0.5f, 0, sceneHeight - specialFontSize - y_Space);
+	RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Blue"), specialFontSize * 0.5f, 0, sceneHeight - specialFontSize - y_Space);
 
 	for (vector<Level>::iterator level = day.levels.begin(); level != day.levels.end(); ++level)
 	{
@@ -2803,13 +2831,13 @@ void SceneGame::RenderObjectives(void)
 				{
 					std::ostringstream ss;
 					ss << objective->getTitle()<<endl;
-					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("DarkGrey"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
+					RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("DarkGrey"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
 				}
 				else if(objective->getObjectiveState() == objective->OBJECTIVE_COMPLETED)
 				{
 					std::ostringstream ss;
 					ss << objective->getTitle()<<endl;
-					RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Green"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
+					RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Green"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
 				}
 			}
 		}
@@ -2981,11 +3009,11 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Darkblue"), specialFontSize, 0,sceneHeight - specialFontSize );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Darkblue"), specialFontSize, 0,sceneHeight - specialFontSize );
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day: " << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		
 		if (DEBUG)
@@ -3000,12 +3028,12 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << day.getCurrentTime().hour << ":" << day.getCurrentTime().min ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Skyblue"), specialFontSize, 0, sceneHeight - specialFontSize);
 
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day:" << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
