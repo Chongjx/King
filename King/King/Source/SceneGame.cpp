@@ -2377,17 +2377,11 @@ void SceneGame::UpdateInGame(double dt)
 {
 	UpdatePlayer(dt);
 	UpdateAI(dt);
-	UpdateMap();
-	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y);
+	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y, dt);
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
 	UpdateFOV();
-<<<<<<< HEAD
-	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y, dt);
 	UpdateObjective();
-=======
-	
->>>>>>> add491561c97adc92e70d0bfd664341f20dfc0d3
 }
 
 void SceneGame::UpdateFOV(void)

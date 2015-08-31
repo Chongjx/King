@@ -245,12 +245,10 @@ private:
 
 	int indexItem1, indexItem2;
 	string dialogString;
-<<<<<<< HEAD
-=======
-	bool renderInventory;
+
 	string ScoreDirectory;
 	Score CurrentScore;
->>>>>>> add491561c97adc92e70d0bfd664341f20dfc0d3
+
 };
 
 #endif
