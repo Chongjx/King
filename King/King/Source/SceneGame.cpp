@@ -2859,7 +2859,7 @@ void SceneGame::UpdateAI(double dt)
 
 		if (tempGuard->GetUpdate())
 		{
-			tempGuard->CheckChase(player->getTargetPos(), TILESIZE);	
+			tempGuard->CheckChase(player->getTargetPos(), TILESIZE, dt);	
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 
 			if (tempGuard->getChase() && played == false)
