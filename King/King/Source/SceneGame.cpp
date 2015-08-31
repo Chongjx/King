@@ -1997,6 +1997,23 @@ void SceneGame::UpdateEffect(void)
 
 void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY)
 {
+	/*for (int numRooms = 0; numRooms < MAX_AREAS; ++numRooms)
+	{
+		for (unsigned numDoors = 0; numDoors < layout[numRooms]->doors.size(); ++numDoors)
+		{
+			for (unsigned special = 0; special < layout[numRooms]->specialTiles.size(); ++special)
+			{
+				if (findItem("AccessCard"))
+				{
+					if (layout[numRooms]->specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[numRooms]->specialTiles[special].TileName == "PrisonDoorRightClosed")
+					{
+						layout[numRooms]->doors
+					}
+				}
+			}
+		}
+	}*/
+
 	// picking, dropping & switching of items
 	for(vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
 	{
@@ -2394,118 +2411,7 @@ void SceneGame::UpdatePlayer(double dt)
 			}
 		}
 
-		else if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed")
-		{
-			// the door is below the player
-			if(player->getDir().y == -1)
-			{
-				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
-				{
-					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
-					{
-						currentInteraction = OPEN_PRISON_DOOR;
-
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
-						{
-							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
-							{
-								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y + 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								break;
-							}
-						}
-					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
-					}
-				}
-			}
-
-			// the door is above the player
-			else if(player->getDir().y == 1)
-			{
-				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
-				{
-					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
-					{
-						currentInteraction = OPEN_PRISON_DOOR;
-
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
-						{
-							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
-							{
-								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y - 1][(int)playerPosToScreen.x] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								break;
-							}
-						}
-					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
-					}
-				}
-			}
-
-			// the door is to the right of the player
-			else if(player->getDir().x == 1)
-			{
-				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x + 1] == layout[currentLocation]->specialTiles[special].TileID)
-				{
-					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
-					{
-						currentInteraction = OPEN_PRISON_DOOR;
-
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
-						{
-							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
-							{
-								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x + 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x + 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								break;
-							}
-						}
-					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
-					}
-				}
-			}
-
-			// the door is to the left of the player
-			else if(player->getDir().x == -1)
-			{
-				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x - 1] == layout[currentLocation]->specialTiles[special].TileID)
-				{
-					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
-					{
-						currentInteraction = OPEN_PRISON_DOOR;
-
-						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
-						{
-							if ((layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorLeftOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed") || (layout[currentLocation]->specialTiles[openDoor].TileName == "PrisonDoorRightOpened" && layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed"))
-							{
-								layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x - 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x - 1] = layout[currentLocation]->specialTiles[openDoor].TileID;
-								break;
-							}
-						}
-					}
-					else
-					{
-						currentInteraction = NO_INTERACTION;
-						break; 
-					}
-				}
-			}
-		}
-
-		if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftClosed" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightClosed")
+		else if (layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorLeftOpened" || layout[currentLocation]->specialTiles[special].TileName == "PrisonDoorRightOpened")
 		{
 			if(layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 			{
@@ -2520,7 +2426,7 @@ void SceneGame::UpdatePlayer(double dt)
 
 						for (unsigned nextRoomDoors = 0; nextRoomDoors < layout[nextRoom]->doors.size(); ++nextRoomDoors)
 						{
-							if (layout[nextRoom]->doors[nextRoomDoors].transitionRoom == currentLocation && layout[nextRoom]->doors[nextRoomDoors].ID == layout[currentLocation]->doors[numDoors].ID)
+							if (layout[nextRoom]->doors[nextRoomDoors].transitionRoom == currentLocation && layout[currentLocation]->doors[numDoors].ID == layout[nextRoom]->doors[nextRoomDoors].ID)
 							{
 								nextRoomDoorPos = layout[nextRoom]->doors[nextRoomDoors].pos;
 								break;
@@ -2528,7 +2434,6 @@ void SceneGame::UpdatePlayer(double dt)
 						}
 
 						currentLocation = nextRoom;
-						std::cout << nextRoom << std::endl << nextRoomDoorPos << std::endl;
 						player->setRoom(layout[nextRoom]);
 						// offset the current pos by 1 tile
 						if (player->getDir().x == 1)
@@ -2637,11 +2542,11 @@ void SceneGame::UpdateInteractions(double dt)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
-		UpdateDialog(dt,NEED_TO_ESCAPE);
+		UpdateDialog(dt, NEED_TO_ESCAPE);
 		break;
 	case SLEEP:
 		gameSpeed = 75;
-		UpdateDialog(dt,IM_TIRED);
+		UpdateDialog(dt, IM_TIRED);
 		break;
 	case TALK_WITH_PRISONERS:;
 		break;
