@@ -84,7 +84,7 @@
 	{
 		[NAME] Setting
 		{
-			[TextSpeed] 30
+			[TextSpeed] 200
 			[Mesh] GEO_BUBBLE
 		}
 	}
