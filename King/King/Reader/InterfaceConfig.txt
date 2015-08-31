@@ -103,9 +103,9 @@
 		[NAME] 0
 		[GameState] Ingame
 		[Type] Image
-		[Pos] 350, 0
+		[Pos] 372, 0
 		[Rotation] 0
-		[Scale] 75, 75
+		[Scale] 64, 64
 		[Mesh] Inventory_Box
 	}
 	{
@@ -113,9 +113,9 @@
 		[NAME] 1
 		[GameState] Ingame
 		[Type] Image
-		[Pos] 425, 0
+		[Pos] 436, 0
 		[Rotation] 0
-		[Scale] 75, 75
+		[Scale] 64, 64
 		[Mesh] Inventory_Box
 	}
 	{
@@ -125,7 +125,7 @@
 		[Type] Image
 		[Pos] 500, 0
 		[Rotation] 0
-		[Scale] 75, 75
+		[Scale] 64, 64
 		[Mesh] Inventory_Box
 	}
 	{
@@ -133,9 +133,9 @@
 		[NAME] 3
 		[GameState] Ingame
 		[Type] Image
-		[Pos] 575, 0
+		[Pos] 564, 0
 		[Rotation] 0
-		[Scale] 75, 75
+		[Scale] 64, 64
 		[Mesh] Inventory_Box
 	}
 	{
@@ -143,9 +143,9 @@
 		[NAME] 4
 		[GameState] Ingame
 		[Type] Image
-		[Pos] 650, 0
+		[Pos] 628, 0
 		[Rotation] 0
-		[Scale] 75, 75
+		[Scale] 64, 64
 		[Mesh] Inventory_Box
 	}
 	# pause interface

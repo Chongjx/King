@@ -123,17 +123,19 @@ void SceneGame::Render(void)
 	case INGAME_STATE:
 		{
 			RenderLevel();
-			RenderCharacters();
 			RenderItem();
+			RenderCharacters();
 			if(FOG)
 			{
 				RenderFOV();
 			}
 			RenderTime();
-			RenderPlayerInventory();
-			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
 			RenderDialogs();
+			RenderInterface();
+			RenderPlayerInventory();
+			RenderItemOnMouse(getKey("Select"));
+			RenderCursor();
 			break;
 		}
 	case INSTRUCTION_STATE:
@@ -159,9 +161,11 @@ void SceneGame::Render(void)
 				RenderFOV();
 			}
 			RenderTime();
+			RenderInterface();
 			RenderPlayerInventory();
-			RenderItemOnMouse(getKey("Select"));
 			RenderObjectives();
+			RenderItemOnMouse(getKey("Select"));
+			RenderCursor();
 			break;
 		}
 	case EXIT_STATE:
@@ -170,8 +174,11 @@ void SceneGame::Render(void)
 		}
 	}
 
-	RenderInterface();
-	RenderCursor();
+	if (currentState != SceneGame::PAUSE_STATE || currentState != SceneGame::INGAME_STATE)
+	{
+		RenderInterface();
+		RenderCursor();
+	}
 
 	/*std::ostringstream ss;
 	ss.precision(5);
@@ -1990,7 +1997,7 @@ void SceneGame::UpdateEffect(void)
 	}
 }
 
-void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY)
+void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY)
 {
 	// picking, dropping & switching of items
 	for(vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
@@ -2004,7 +2011,7 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 				&& mouseY <= item->getItemPos().y + TILESIZE - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY()
 				&& mouseY >= item->getItemPos().y - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY())
 			{
-				if (pressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
+				if (mousePressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
@@ -2012,10 +2019,9 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 					break;
 				}
 			}
-
-			else if (getKey("Enter"))
+			else if (keyboardPressed)
 			{
-				if (CItem::ITEM_ONGROUND)
+				if (item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
 					CInventory tempInventory = player->getInventory();
 					tempInventory.addItem(item);
@@ -2028,7 +2034,7 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 
 	bool dropItem = true;
 	//get mouse position when player clicks
-	if (pressed && updateMousePos == true)
+	if (mousePressed && updateMousePos == true)
 	{
 		//check through all the buttons in the game state
 		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
@@ -2058,7 +2064,7 @@ void SceneGame::UpdatePlayerInventory(bool pressed, double mouseX, double mouseY
 		}
 	}
 	//get mouse position when player releases the click
-	else if (!pressed && updateMousePos == false)
+	else if (!mousePressed && updateMousePos == false)
 	{
 		for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
 		{
@@ -2137,7 +2143,7 @@ void SceneGame::UpdateInGame(double dt)
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
 	UpdateFOV();
-	UpdatePlayerInventory(getKey("Select"), mousePos.x, mousePos.y);
+	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y);
 }
 
 void SceneGame::UpdateFOV(void)
@@ -2909,7 +2915,7 @@ void SceneGame::RenderPlayerInventory(void)
 	for (unsigned int i = 0; i < player->getInventory().getVecOfItems().size(); i++)
 	{
 		if (player->getInventory().getVecOfItems().at(i)->getItemStatus() == CItem::ITEM_ININVENTORY)
-			Render2DMesh(player->getInventory().getVecOfItems().at(i)->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>((350 + 75 * 0.5) + i * 75), static_cast<float>(75 * 0.5));
+			Render2DMesh(player->getInventory().getVecOfItems().at(i)->getMesh(), false, static_cast<float>(TILESIZE), static_cast<float>((372 + 64 * 0.5) + i * 64), static_cast<float>(64 * 0.5));
 	}
 }
 
