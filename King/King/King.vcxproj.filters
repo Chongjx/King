@@ -97,12 +97,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\2D\Character\AI\PathFinding">
-      <UniqueIdentifier>{33c08e37-4d89-4b59-9673-d875e20e8ca4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\2D\Character\AI\PathFinding">
-      <UniqueIdentifier>{97bff9cc-77b6-45c4-97c0-7fe9923c27c3}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Mouse.cpp">
@@ -224,12 +218,6 @@
     </ClCompile>
     <ClCompile Include="Source\Dialogs.cpp">
       <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PathFind.cpp">
-      <Filter>Source Files\2D\Character\AI\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Node.cpp">
-      <Filter>Source Files\2D\Character\AI\PathFinding</Filter>
     </ClCompile>
     <ClCompile Include="Source\Score.cpp">
       <Filter>Source Files\Day System</Filter>
@@ -370,12 +358,6 @@
     </ClInclude>
     <ClInclude Include="Source\SceneGame.h">
       <Filter>Header Files\Main\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PathFind.h">
-      <Filter>Header Files\2D\Character\AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Node.h">
-      <Filter>Header Files\2D\Character\AI\PathFinding</Filter>
     </ClInclude>
     <ClInclude Include="Source\Score.h">
       <Filter>Header Files\Day System</Filter>

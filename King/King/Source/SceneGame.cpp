@@ -35,7 +35,7 @@ SceneGame::SceneGame(void)
 	player = new Player();
 	guardList.clear();
 	prisonerList.clear();
-	FOG = false;
+	FOG = true;
 
 	energyScale = 85;
 
@@ -154,7 +154,7 @@ void SceneGame::Render(void)
 		}
 	case HIGHSCORE_STATE:
 		{
-			save(ScoreDirectory);
+			//save(ScoreDirectory);
 			RenderScore();
 			break;
 		}
@@ -1593,7 +1593,6 @@ void SceneGame::InitAI(string config)
 				guard->changeAni(Guards_StateMachine::IDLE_STATE);
 				guard->setRoom(layout[mapLocation]);
 				guard->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
-				guard->pathFinding.setGameDimension(Vector2((float)layout[mapLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth(), (float)layout[mapLocation]->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight()));
 				guardList.push_back(guard);
 			}
 
@@ -2401,7 +2400,7 @@ void SceneGame::UpdateFOV(void)
 	}
 	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18) //Day
 	{
-		if (player->GetFOV() <= 64)
+		if (player->GetFOV() <= 72)
 		{
 			if(day.getCurrentTime().hour !=0)
 			{
@@ -2964,7 +2963,7 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 	startTimer += (float) dt * dialog.GetTextSpeed();
 	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	std::cout << diaName << std::endl;
+	//std::cout << diaName << std::endl;
 	//std::cout << currentDialogue << std::endl;
 
 	if(currentDialogue == diaName)
@@ -3063,13 +3062,15 @@ void SceneGame::RenderInterface(bool toggle)
 void SceneGame::RenderScore(void)
 {
 	float y_Space = specialFontSize * 2;
+	int place = 1;
 	for (vector<Score>::iterator itr = score.begin(); itr != score.end(); ++itr)
 	{
 		y_Space += specialFontSize;
 		std::ostringstream ss2;
 		ss2.precision(1);
-		ss2 << itr->getScore()<<endl;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.5.f ,sceneHeight - specialFontSize - y_Space);
+		ss2 <<place << ". "<< itr->getScore()<<" Days" <<endl;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.25 ,sceneHeight - specialFontSize - y_Space);
+		place++;
 	}
 	y_Space = specialFontSize * 2;
 	glDisable(GL_DEPTH_TEST);
@@ -3748,22 +3749,39 @@ void SceneGame::stringToBool(string text, bool &boo)
 void SceneGame::save (string file)
 {
 	Branch BScore = TextTree::FileToRead(file);
-	CurrentScore = *score.begin();
+	Score playerScore;
+
+	playerScore.setScore(day.getCurrentTime().day);
+
+	score.push_back(playerScore);
 
 	for (vector<Score>::iterator it = score.begin(); it != score.end(); ++it)
 	{
 		for (vector<Score>::iterator it2 = score.begin(); it2 != score.end(); ++it2)
 		{
-			Score *temp;
+			Score temp;
 			if (it->getScore() < it2->getScore())   
 			{ 
-				*temp = *it2;             
+				temp = *it2;             
 				*it2 = *it;
-				*it = *temp;
+				*it = temp;
 			}
 		}
 	}
 
+	score.pop_back();
+
+		int  currentScore = 0;
+	for (vector<Branch>::iterator branch = BScore.childBranches.begin(); branch != BScore.childBranches.end(); ++branch)
+	{
+		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
+		{
+			Attribute tempAttri = *attri;
+			if (attri->name=="Score")
+			attri->value= to_string((long double)score[currentScore].getScore());
+		}
+		currentScore++;
+	}
 	BScore.printBranch();
-	//TextTree::FileToWrite(file, BScore);
+	TextTree::FileToWrite(file, BScore);
 }

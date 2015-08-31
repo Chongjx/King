@@ -146,11 +146,11 @@ bool Guards::CheckSight(Vector2 playerPos, double dt)
 						currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
 						currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 					{
-						if (po->pos == currentRoom->specialTiles[special].TileID)
+						/*if (po->pos == currentRoom->specialTiles[special].TileID)
 						{
 							po->active = false;
 							return false;
-						}
+						}*/
 					}
 				}
 

@@ -2,7 +2,6 @@
 #define AI_H
 
 #include "Character.h"
-#include "PathFind.h"
 
 class AI: public Character
 {
@@ -33,7 +32,6 @@ public:
 	bool CheckDestination(void);
 	bool checkNextTile(void);
 	virtual void Patrolling(int worldWidth, int worldHeight, int tileSize, double dt);
-	PathFind pathFinding;
 
 protected:
 
