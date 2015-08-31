@@ -167,7 +167,7 @@ void SceneGame::Render(void)
 				RenderFOV();
 			}
 			RenderTime();
-			RenderInterface();
+			RenderInterface(renderInventory);
 			RenderPlayerInventory();
 			RenderObjectives();
 			RenderDialogs();
@@ -1741,6 +1741,7 @@ void SceneGame::InitItem(string config)
 	updateMousePos = true;
 	indexItem1 = 0;
 	indexItem2 = 0;
+	renderInventory = true;
 }
 
 void SceneGame::InitInteractions(string config)
