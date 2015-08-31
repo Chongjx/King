@@ -1,22 +1,34 @@
 {
 	[NAME] Scores
+
 	{
-		[Score] 9
-	}
-	{
-		[Score] 8
-	}
-	{
-		[Score] 7
-	}
-	{
+		[NAME] 
 		[Score] 6
+
 	}
 	{
+		[NAME] 
 		[Score] 5
+
 	}
 	{
+		[NAME] 
 		[Score] 4
+
+	}
+	{
+		[NAME] 
+		[Score] 3
+
+	}
+	{
+		[NAME] 
+		[Score] 2
+
+	}
+	{
+		[NAME] 
+		[Score] 1
+
 	}
 }
-
