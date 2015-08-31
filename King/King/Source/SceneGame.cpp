@@ -130,10 +130,10 @@ void SceneGame::Render(void)
 				RenderFOV();
 			}
 			RenderTime();
-			RenderObjectives();
-			RenderDialogs();
 			RenderInterface();
 			RenderPlayerInventory();
+			RenderObjectives();
+			RenderDialogs();
 			RenderItemOnMouse(getKey("Select"));
 			RenderCursor();
 			break;
@@ -161,11 +161,9 @@ void SceneGame::Render(void)
 				RenderFOV();
 			}
 			RenderTime();
-			RenderInterface();
 			RenderPlayerInventory();
-			RenderObjectives();
 			RenderItemOnMouse(getKey("Select"));
-			RenderCursor();
+			RenderObjectives();
 			break;
 		}
 	case EXIT_STATE:
@@ -174,7 +172,7 @@ void SceneGame::Render(void)
 		}
 	}
 
-	if (currentState != SceneGame::PAUSE_STATE || currentState != SceneGame::INGAME_STATE)
+	if (currentState != SceneGame::INGAME_STATE || currentState != SceneGame::PAUSE_STATE)
 	{
 		RenderInterface();
 		RenderCursor();
@@ -1648,7 +1646,7 @@ void SceneGame::InitPlayer(string config)
 				spriteName = attriValue;
 			}
 		}
-		BaseFOV = tiles;
+
 		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
 		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 		player->setState(StateMachine::IDLE_STATE);
@@ -2019,6 +2017,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 					break;
 				}
 			}
+
 			else if (keyboardPressed)
 			{
 				if (item->getItemStatus() == CItem::ITEM_ONGROUND)
@@ -2148,37 +2147,12 @@ void SceneGame::UpdateInGame(double dt)
 
 void SceneGame::UpdateFOV(void)
 {
-	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
-	{		
-		if (player->GetFOV() >= BaseFOV)
-		{
-			if(day.getCurrentTime().hour !=0)
-			{
-			player->SetFOV(player->GetFOV() - day.getCurrentTime().hour/day.getCurrentTime().hour);	
-			}
-			else
-			{
-			player->SetFOV(player->GetFOV() - 1);	
-			}
-
-		}
-
-
-	}
-	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18) //Day
+	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6) 
 	{
-		if (player->GetFOV() <= 64)
-		{
-			if(day.getCurrentTime().hour !=0)
-			{
-				player->SetFOV(player->GetFOV() + day.getCurrentTime().hour/day.getCurrentTime().hour);	
-			}
-			else
-			{
-			player->SetFOV(player->GetFOV() - 1);	
-			}
-
-		}
+						
+	}
+	else if (day.getCurrentTime().hour >= 6 && day.getCurrentTime().hour <18)
+	{
 
 	}
 

@@ -471,7 +471,7 @@
 	{
 		[NAME] ITEM_ACCESSCARD
 		[Type] Quad
-		[Texture] Image\\Item\\item_accesskey.tga
+		[Texture] Image\\Item\\item_accesscard.tga
 	}
 	{
 		[NAME] ITEM_MATCHES
