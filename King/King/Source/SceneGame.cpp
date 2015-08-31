@@ -2290,7 +2290,6 @@ void SceneGame::UpdatePlayer(double dt)
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
 						sound.Play("Sound_DoorOpen");
-						currentInteraction = OPEN_CELL_DOOR;
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2317,7 +2316,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("Fork"))
 					{
-						currentInteraction = OPEN_CELL_DOOR;
 							sound.Play("Sound_DoorOpen");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2348,7 +2346,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
-						currentInteraction = CLOSE_CELL_DOOR;
 						sound.Play("Sound_DoorClose");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2374,7 +2371,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if(getKey("CloseDoor") || getKey("RSelect") && findItem("Fork"))
 					{
-						currentInteraction = CLOSE_CELL_DOOR;
 							sound.Play("Sound_DoorClose");
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2404,7 +2400,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
 					{
-						currentInteraction = OPEN_PRISON_DOOR;
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2431,7 +2426,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
 					{
-						currentInteraction = OPEN_PRISON_DOOR;
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2458,7 +2452,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
 					{
-						currentInteraction = OPEN_PRISON_DOOR;
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2485,7 +2478,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if((getKey("OpenDoor") || getKey("Select")) && findItem("AccessCard"))
 					{
-						currentInteraction = OPEN_PRISON_DOOR;
 
 						for (unsigned openDoor = 0; openDoor < layout[currentLocation]->specialTiles.size(); ++openDoor)
 						{
@@ -2652,16 +2644,38 @@ void SceneGame::UpdateInteractions(double dt)
 		gameSpeed = 75;
 		UpdateDialog(dt,IM_TIRED);
 		break;
-	case TALK_WITH_PRISONERS:;
-		break;
-	case TALK_WITH_GUARDS:;
-		break;
-	case OPEN_CELL_DOOR:
-		break;
-	case CLOSE_CELL_DOOR:
-		break;
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
+		break;
+	case GAINED_BATON:
+		UpdateDialog(dt,BATON);
+		break;
+	case GAINED_FORK:
+		UpdateDialog(dt,FORK);
+		break;
+	case GAINED_DUMBBELL:
+		UpdateDialog(dt,DUMBBELL);
+		break;
+	case GAINED_TASER:
+		UpdateDialog(dt,TASER);
+		break;
+	case GAINED_GUARD_UNIFORM:
+		UpdateDialog(dt,GUARD_UNIFORM);
+		break;
+	case GAINED_CELLKEY:
+		UpdateDialog(dt,CELLKEY);
+		break;
+	case GAINED_MATCHES:
+		UpdateDialog(dt,MATCHES);
+		break;
+	case GAINED_TORCHLIGHT:
+		UpdateDialog(dt,TORCHLIGHT);
+		break;
+	case GAINED_NOTE:
+		UpdateDialog(dt,NOTE);
+		break;
+	case GAINED_ACCESS_CARD:
+		UpdateDialog(dt,ACCESS_CARD);
 		break;
 	default:;
 		break;
