@@ -164,9 +164,9 @@ bool Guards::CheckSight(Vector2 playerPos, double dt)
 		}
 	}*/
 
-	//Vector2 lineOfSight(playerPos - this->pos);
+	Vector2 lineOfSight(playerPos - this->pos);
 
-	//std::cout << lineOfSight << std::endl;
+	std::cout << lineOfSight << std::endl;
 
 	return false;
 }

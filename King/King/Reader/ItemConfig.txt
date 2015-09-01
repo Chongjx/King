@@ -76,7 +76,7 @@
 	#Matches
 		[NAME] Matches
 		[ID] 5
-		[Pos] 22, 20
+		[Pos] 40, -7
 		[ItemStatus] Ground
 		[ItemType] Misc
 		[Description]
@@ -87,7 +87,7 @@
 	{
 		[NAME] AccessCard
 		[ID] 6
-		[Pos] 16, 21
+		[Pos] 64, -43
 		[ItemStatus] Ground
 		[ItemType] Misc
 		[Description] Works like Magic!

@@ -2804,11 +2804,8 @@ void SceneGame::UpdateThreadmill(void)
 
 void SceneGame::UpdateDialog(Dialog_ID diaName)
 {
-	std::cout << diaName << std::endl;
-	
 	unsigned currentSize = dialogString.length();
 
-	std::cout << currentSize << std::endl;
 	if(currentSize != findDialog(diaName).GetText().size())
 	{
 		dialogString = findDialog(diaName).GetText();
