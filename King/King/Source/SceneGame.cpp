@@ -1696,6 +1696,7 @@ void SceneGame::InitPlayer(string config)
 			}
 		}
 
+		BaseFOV = tiles;
 		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
 		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 		player->setState(StateMachine::IDLE_STATE);
