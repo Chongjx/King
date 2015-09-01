@@ -178,6 +178,11 @@ bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 	Vector2 targetedLocation;
 	targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
+	if ((int)targetedLocation.y / tileSize >= currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight() || (int)targetedLocation.y / tileSize < 0 || (int)targetedLocation.x / tileSize >= currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth() || (int)targetedLocation.x / tileSize < 0)
+	{
+		return false;
+	}
+
 	if (targetPos.x > pos.x)
 	{
 		dir.Set(1,0);

@@ -173,6 +173,7 @@
 		      	[MapLocation] 0
 			[Waypoint] B
 		}
+		
 		# exercise room
 		{
 			[NAME] EXERCISE_GUARD_A

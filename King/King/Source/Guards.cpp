@@ -356,15 +356,11 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 
 	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
 	{
-		pos.x = destination.x;
-		targetPos.x = pos.x;
 		targetPos.Set(targetPos.x, targetPos.y + tileSize);
 	}
 
 	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
 	{
-		pos.x = destination.x;
-		targetPos.x = pos.x;
 		targetPos.Set(targetPos.x, targetPos.y - tileSize);
 	}
 
