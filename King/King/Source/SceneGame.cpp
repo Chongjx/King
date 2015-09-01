@@ -2522,6 +2522,10 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					currentInteraction = SLEEP;
 				}
+				else
+				{
+					currentInteraction = NO_INTERACTION;
+				}
 			}
 		}
 
