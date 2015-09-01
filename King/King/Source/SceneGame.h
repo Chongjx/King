@@ -248,6 +248,8 @@ private:
 
 	string ScoreDirectory;
 	Score CurrentScore;
+
+	bool gUni;
 };
 
 #endif

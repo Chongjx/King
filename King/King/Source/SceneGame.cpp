@@ -141,8 +141,8 @@ void SceneGame::Render(void)
 			RenderPlayerInventory(renderInventory);
 			RenderObjectives();
 			RenderDialogs();
-			RenderItemOnMouse(getKey("Select"));
 			RenderCursor();
+			RenderItemOnMouse(getKey("Select"));
 			RenderEnergy();
 
 			break;
@@ -1781,6 +1781,7 @@ void SceneGame::InitItem(string config)
 	indexItem1 = 0;
 	indexItem2 = 0;
 	renderInventory = true;
+	gUni = false;
 }
 
 void SceneGame::InitInteractions(string config)
@@ -2365,6 +2366,17 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			}
 		}
 	}
+	for (vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+	{
+		CItem* item = *(it);
+		if (item->getItemID() == 3)
+		{
+			if (item->getItemStatus() == CItem::ITEM_ININVENTORY)
+				gUni = true;
+			else
+				gUni = false;
+		}
+	}
 }
 
 void SceneGame::UpdateInGame(double dt)
@@ -2670,9 +2682,20 @@ void SceneGame::UpdatePlayer(double dt)
 						break;
 					}
 				}
-
 				break;
 			}
+		}
+	}
+
+	//end game
+	if (layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getID() == SceneGame::COURTYARD_AREA)
+	{
+		if (player->getPos().y == 768
+			&& player->getPos().x >= 1024
+			&& player->getPos().x <= 1088)
+		{
+			std::cout << "End game" << endl;
+			changeScene(SceneGame::MENU_STATE);
 		}
 	}
 
@@ -2727,7 +2750,10 @@ void SceneGame::UpdateAI(double dt)
 
 		if (tempGuard->GetUpdate())
 		{
-			tempGuard->CheckChase(player->getTargetPos(), TILESIZE, dt);	
+			if (gUni == false)
+			{
+				tempGuard->CheckChase(player->getTargetPos(), TILESIZE, dt);
+			}
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 
 			if (tempGuard->getChase() != firstChase && tempGuard->getChase())
