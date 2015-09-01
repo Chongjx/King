@@ -29,7 +29,7 @@ public:
 
 	void Chasing(int worldWidth, int worldHeight, int tileSize, double dt);
 	void CheckChase(Vector2 playerPos, int tileSize, double dt);
-	bool CheckSight(Vector2 playerPos, double dt);
+	bool CheckSight(Vector2 playerPos, int tileSize, double dt);
 	bool getChase (void);
 
 	GhettoParticle* FetchPO();

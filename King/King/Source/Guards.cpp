@@ -53,7 +53,7 @@ void Guards::CheckChase(Vector2 playerPos, int tileSize, double dt)
 	// if player is close to the guards
 	if (this->CalculateTileBasedDistance(playerPos, tileSize) < this->tiles)
 	{
-		//if (CheckSight(playerPos, dt) == true)
+		if (CheckSight(playerPos, tileSize, dt))
 		{
 			// if player is within the line of sight of the guard
 			if (playerPos.x > this->pos.x && this->dir.x == 1)
@@ -92,8 +92,6 @@ void Guards::CheckChase(Vector2 playerPos, int tileSize, double dt)
 	{
 		this->chase = false;
 	}
-
-	//CheckSight(playerPos, dt);
 }
 
 GhettoParticle* Guards::FetchPO()
@@ -116,59 +114,108 @@ GhettoParticle* Guards::FetchPO()
 	return m_poList[m_poList.size() - 1];
 }
 
-bool Guards::CheckSight(Vector2 playerPos, double dt)
+bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 {	
-	/*checkTimer += dt;
-	if( checkTimer > 0.15 )
-	{
-		GhettoParticle *Spawn = FetchPO(); //create object
-		Spawn->type = GhettoParticle::PO_DETECTOR;
-		Spawn->scale.Set(3, 3);
-		Spawn->vel.Set(this->pos.x - playerPos.x, this->pos.y - playerPos.y);
-		checkTimer = 0.0;
-	}
+	Vector2 lineOfSight(playerPos - this->pos);
 
-	// Checks through game object list
-	for(std::vector<GhettoParticle *>::iterator it = m_poList.begin(); it != m_poList.end(); ++it)
-	{
-		GhettoParticle *po = (GhettoParticle *)*it;
+	int numRows = 0;
+	int numCols = 0;
 
-		if(po->active)
-		{	
-			if(po->type == GhettoParticle::PO_DETECTOR)
+	numCols = (int)lineOfSight.x / tileSize;
+	numRows = (int)lineOfSight.y / tileSize;
+
+	// player above guard
+	if (numRows >= 0)
+	{
+		if (numCols >= 0)
+		{
+			// player is top right
+			for (int i = 0; i <= numRows; ++i)
 			{
-				po->vel += pos - playerPos;
-				po->pos += po->vel * (float)dt;
-				std::cout << "active detector\n";
-				for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
+				for (int j = 0; j <= numCols; ++j)
 				{
-					if (currentRoom->specialTiles[special].TileName == "Wall" ||
-						currentRoom->specialTiles[special].TileName == "CellDoorClosed" ||
-						currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
-						currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
+					for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
 					{
-						/*if (po->pos == currentRoom->specialTiles[special].TileID)
+						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
 						{
-							po->active = false;
-							return false;
-						}*/
-				/*	}
-				}
-
-				if(po->pos == playerPos)
-				{
-					po->active = false;
-					return true;
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							{
+								return false;
+							}
+						}
+					}
 				}
 			}
 		}
-	}*/
 
-	Vector2 lineOfSight(playerPos - this->pos);
+		else
+		{
+			// player is top left
+			for (int i = 0; i <= numRows; ++i)
+			{
+				for (int j = 0; j >= numCols; --j)
+				{
+					for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
+					{
+						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
+						{
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							{
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-	std::cout << lineOfSight << std::endl;
+	else
+	{
+		// bottom right
+		if (numCols >= 0)
+		{
+			for (int i = 0; i >= numRows; --i)
+			{
+				for (int j = 0; j <= numCols; ++j)
+				{
+					for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
+					{
+						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
+						{
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							{
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
 
-	return false;
+		else
+		{
+			// bottom left
+			for (int i = 0; i >= numRows; --i)
+			{
+				for (int j = 0; j >= numCols; --j)
+				{
+					for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
+					{
+						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
+						{
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							{
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return true;
 }
 
 void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)

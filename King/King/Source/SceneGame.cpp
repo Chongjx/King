@@ -1451,8 +1451,8 @@ void SceneGame::InitObjective(string config)
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
 				{
 					string Title;
-					bool Get;
-					int level;
+					bool Get = false;
+					int level = 0;
 					string keyItem; 
 					for (vector<Attribute>::iterator attri = grandchildbranch->attributes.begin(); attri != grandchildbranch->attributes.end(); ++attri)
 					{
@@ -1476,6 +1476,7 @@ void SceneGame::InitObjective(string config)
 							keyItem = attriValue;
 						}
 					}
+
 					Objective tempobjective;
 					tempobjective.initObjctives(Title,Get,level,keyItem);
 					day.levels[level].objectives.push_back(tempobjective);

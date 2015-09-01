@@ -31,12 +31,6 @@
 			[LEVEL] 3				
 			[KEYITEM] Dumbbell
 			}
-			#{
-			#[DISCRIPTION] Find_Key
-			#[GET] false
-			#[LEVEL] 2				
-			#[KEYITEM] Key
-			#}
 			
 			{
 			[DISCRIPTION] Find_Disguise
