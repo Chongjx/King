@@ -3,7 +3,7 @@
 
 	{
 		[NAME] 
-		[Score] 6
+		[Score] 4
 
 	}
 	{
@@ -13,22 +13,17 @@
 	}
 	{
 		[NAME] 
-		[Score] 4
+		[Score] 6
 
 	}
 	{
 		[NAME] 
-		[Score] 3
+		[Score] 7
 
 	}
 	{
 		[NAME] 
-		[Score] 2
-
-	}
-	{
-		[NAME] 
-		[Score] 1
+		[Score] 8
 
 	}
 }

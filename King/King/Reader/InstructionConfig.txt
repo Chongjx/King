@@ -9,8 +9,12 @@
 		[Text] Move_Player
 	}
 	{
-		[NAME] Mouse
+		[NAME] Mouse/Enter
 		[Text] Interact
+	}
+	{
+		[NAME] N/M
+		[Text] Open/Close Door
 	}
 	
 }

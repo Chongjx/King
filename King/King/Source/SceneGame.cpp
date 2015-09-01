@@ -1451,8 +1451,8 @@ void SceneGame::InitObjective(string config)
 				for (vector<Branch>::iterator grandchildbranch = childbranch->childBranches.begin(); grandchildbranch != childbranch->childBranches.end(); ++grandchildbranch)
 				{
 					string Title;
-					bool Get;
-					int level;
+					bool Get = false;
+					int level = 0;
 					string keyItem; 
 					for (vector<Attribute>::iterator attri = grandchildbranch->attributes.begin(); attri != grandchildbranch->attributes.end(); ++attri)
 					{
@@ -1476,6 +1476,7 @@ void SceneGame::InitObjective(string config)
 							keyItem = attriValue;
 						}
 					}
+
 					Objective tempobjective;
 					tempobjective.initObjctives(Title,Get,level,keyItem);
 					day.levels[level].objectives.push_back(tempobjective);
@@ -1650,6 +1651,12 @@ void SceneGame::InitAI(string config)
 			}
 		}
 	}
+
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuard = *guard;
+		tempGuard->ResetPos();
+	}
 }
 
 void SceneGame::InitPlayer(string config)
@@ -1696,7 +1703,7 @@ void SceneGame::InitPlayer(string config)
 			}
 		}
 
-		BaseFOV = tiles;
+		BaseFOV=TargetFOV = tiles;
 		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
 		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 		player->setState(StateMachine::IDLE_STATE);
@@ -2146,31 +2153,31 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			{
 				if (mousePressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
-					if(item->getItemID() == 1)
+					if(item->getItemName() == "Dumbbell")
 					{
 						UpdateDialog(DUMBBELL);
 					}
-					else if(item->getItemID() == 2)
+					else if(item->getItemName() == "WaterGun")
 					{
 						UpdateDialog(WATERGUN);
 					}
-					else if(item->getItemID() == 3)
+					else if(item->getItemName() == "GuardUniform")
 					{
 						UpdateDialog(GUARD_UNIFORM);
 					}
-					else if (item->getItemID() == 4)
+					else if (item->getItemName() == "Fork")
 					{
 						UpdateDialog(FORK);
 					}
-					else if(item->getItemID() == 5)
+					else if(item->getItemName() == "Matches")
 					{
 						UpdateDialog(MATCHES);
 					}
-					else if(item->getItemID() == 6)
+					else if(item->getItemName() == "AccessCard")
 					{
 						UpdateDialog(ACCESS_CARD);
 					}
-					else if(item->getItemID() == 7)
+					else if(item->getItemName() == "TorchLight")
 					{
 						UpdateDialog(TORCHLIGHT);
 					}
@@ -2188,31 +2195,31 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 				if (item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
 					
-					if(item->getItemID() == 1)
+					if(item->getItemName() == "Dumbbell")
 					{
 						UpdateDialog(DUMBBELL);
 					}
-					else if(item->getItemID() == 2)
+					else if(item->getItemName() == "WaterGun")
 					{
 						UpdateDialog(WATERGUN);
 					}
-					else if(item->getItemID() == 3)
+					else if(item->getItemName() == "GuardUniform")
 					{
 						UpdateDialog(GUARD_UNIFORM);
 					}
-					else if (item->getItemID() == 4)
+					else if (item->getItemName() == "Fork")
 					{
 						UpdateDialog(FORK);
 					}
-					else if(item->getItemID() == 5)
+					else if(item->getItemName() == "Matches")
 					{
 						UpdateDialog(MATCHES);
 					}
-					else if(item->getItemID() == 6)
+					else if(item->getItemName() == "AccessCard")
 					{
 						UpdateDialog(ACCESS_CARD);
 					}
-					else if(item->getItemID() == 7)
+					else if(item->getItemName() == "TorchLight")
 					{
 						UpdateDialog(TORCHLIGHT);
 					}
@@ -2393,12 +2400,38 @@ void SceneGame::UpdateInGame(double dt)
 void SceneGame::UpdateFOV(void)
 {
 	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
-	{		
-		if (player->GetFOV() >= BaseFOV)
+	{
+		if (findItem("Matches"))
+		{
+			TargetFOV = 5;
+		}
+
+		else if (findItem("Matches"))
+		{
+			TargetFOV =7;
+		}
+
+		else
+		{
+			TargetFOV=BaseFOV;
+		}
+
+		if (player->GetFOV() > TargetFOV)
 		{
 			if(day.getCurrentTime().hour !=0)
 			{
 				player->SetFOV(player->GetFOV() - day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
+		else if (player->GetFOV() < TargetFOV)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() + day.getCurrentTime().hour/day.getCurrentTime().hour);	
 			}
 			else
 			{
@@ -2527,6 +2560,10 @@ void SceneGame::UpdatePlayer(double dt)
 				if(getKey("Enter"))
 				{
 					currentInteraction = SLEEP;
+				}
+				else
+				{
+					currentInteraction = NO_INTERACTION;
 				}
 			}
 		}
@@ -2721,7 +2758,7 @@ void SceneGame::UpdateAI(double dt)
 		}
 		//tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-		tempPrisoner->Update(dt);
+		tempPrisoner->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	}
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
@@ -2765,6 +2802,7 @@ void SceneGame::UpdateAI(double dt)
 			if ((tempGuard->getPos() - player->getPos()).Length() < TILESIZE * 0.2f)
 			{
 				sound.Play("Sound_Caught");
+				day.incrementDay();
 				player->ResetPos();
 				player->setRoom(layout[CELL_AREA]);
 				currentLocation = CELL_AREA;
@@ -2787,7 +2825,7 @@ void SceneGame::UpdateInteractions(double dt)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
-		UpdateDialog(NEED_TO_ESCAPE);
+		//UpdateDialog(NEED_TO_ESCAPE);
 		break;
 	case SLEEP:
 		gameSpeed = 75;
@@ -2823,27 +2861,21 @@ void SceneGame::UpdateThreadmill(void)
 
 void SceneGame::UpdateDialog(Dialog_ID diaName)
 {
-	//startTimer += (float) dt * dialog.GetTextSpeed();
-	//clearTimer += (float) dt * dialog.GetTextSpeed();
-
-	//std::cout << diaName << std::endl;
-	//std::cout << currentDialogue << std::endl;
-	
 	unsigned currentSize = dialogString.length();
-	if(currentSize < findDialog(diaName).GetText().size())
+
+	if(currentSize != findDialog(diaName).GetText().size())
 	{
 		dialogString = findDialog(diaName).GetText();
 		sound.Play("Sound_Beep");
 	}
 
-	/*if(clearTimer >= dialog.GetTextSpeed())
+	if(findDialog(diaName).GetText().length() > dialogString.length())
 	{
 		for (unsigned i = 0; i < dialogString.size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
-		dialogString.resize(0);
-	}*/
+	}
 }
 
 void SceneGame::UpdateObjective(void)
@@ -2923,13 +2955,17 @@ void SceneGame::RenderScore(void)
 {
 	float y_Space = specialFontSize * 2;
 	int place = 1;
+	std::ostringstream ss;
+	ss <<"HighScore"<<endl;
+	RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("White"), specialFontSize, sceneWidth * 0.25f ,sceneHeight -sceneHeight * 0.125f - y_Space);
+
 	for (vector<Score>::iterator itr = score.begin(); itr != score.end(); ++itr)
 	{
 		y_Space += specialFontSize;
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2 <<place << ". "<< itr->getScore()<<" Days" <<endl;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.25f ,sceneHeight - specialFontSize - y_Space);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth * 0.25f ,sceneHeight - sceneHeight * 0.125f- specialFontSize - y_Space);
 		place++;
 	}
 	y_Space = specialFontSize * 2;
@@ -3006,12 +3042,12 @@ void SceneGame::RenderFOV(void)
 				//{
 				//	if(layout[currentLocation]->specialTiles[special].TileName == "Wall")
 				//	{
-				if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV()*0.5f)// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
+				if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (n + 1) * (float)TILESIZE), TILESIZE) <= player->GetFOV() * 0.5f)// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
 				{
 					Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
 				}
 
-				else if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
+				else if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
 				{
 					Render2DMesh(findMesh("GEO_FOV_SEMI"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
 				}
@@ -3137,7 +3173,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day: " << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Darkblue"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		
 		if (DEBUG)
@@ -3157,7 +3193,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day:" << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Skyblue"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
@@ -3227,7 +3263,7 @@ void SceneGame::RenderEnergy(void)
 {
 	Render2DMesh(findMesh("GEO_ENERGY"), false, Vector2(110, 80), Vector2(sceneWidth*0.11f, sceneHeight*0.045f));
 	Render2DMesh(findMesh("GEO_ENERGYBAR"), false, Vector2((float)energyScale, 65), Vector2(energyTranslate, sceneHeight*0.045f));
-	Render2DMesh(findMesh("GEO_PRISONER"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_PORTRAIT"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
 }
 void SceneGame::UpdateEnergy(double dt)
 {
@@ -3269,7 +3305,7 @@ void SceneGame::RenderInstruct(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0,sceneHeight -y_Space );
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0, sceneHeight-sceneHeight * 0.25f - y_Space );
 		//16, 736 original position
 	}
 	y_Space = specialFontSize;
@@ -3280,7 +3316,7 @@ void SceneGame::RenderInstruct(void)
 void SceneGame::RenderDialogs(void)
 {
 	Render2DMesh(findMesh("GEO_BUBBLE"), false, Vector2(375, 64), Vector2(sceneWidth*0.8f, sceneHeight*0.85f));
-	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.4f, sceneWidth * 0.65f,sceneHeight*0.85f);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.3f, sceneWidth * 0.65f,sceneHeight*0.85f);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
