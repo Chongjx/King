@@ -12,17 +12,15 @@ public:
 	~Dialogs(void);
 
 	void InitDialogs(int ID, string text);
-	void InitSetting(int textSpeed, string mesh);
+	void InitSetting(string mesh);
 
 	int GetID(void);
 	string GetText(void);
-	int GetTextSpeed(void);
 	string getMesh(void);
 
 private:
 	int ID;
 	string Text;
-	int textSpeed;
 	string mesh;
 };
 #endif

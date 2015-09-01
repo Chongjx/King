@@ -159,7 +159,7 @@ public:
 	void UpdateThreadmill(void);
 	void UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY, double dt);
 	void UpdateEnergy(double dt);
-	void UpdateDialog(double dt,Dialog_ID diaName);
+	void UpdateDialog(Dialog_ID diaName);
 	void UpdateFOV(void);
 	void UpdateObjective(void);
 
