@@ -3146,7 +3146,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day: " << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Darkblue"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		
 		if (DEBUG)
@@ -3166,7 +3166,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day:" << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Skyblue"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
