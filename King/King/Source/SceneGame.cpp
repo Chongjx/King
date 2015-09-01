@@ -2145,31 +2145,31 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			{
 				if (mousePressed && item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
-					if(item->getItemID() == 1)
+					if(item->getItemName() == "Dumbbell")
 					{
 						UpdateDialog(DUMBBELL);
 					}
-					else if(item->getItemID() == 2)
+					else if(item->getItemName() == "WaterGun")
 					{
 						UpdateDialog(WATERGUN);
 					}
-					else if(item->getItemID() == 3)
+					else if(item->getItemName() == "GuardUniform")
 					{
 						UpdateDialog(GUARD_UNIFORM);
 					}
-					else if (item->getItemID() == 4)
+					else if (item->getItemName() == "Fork")
 					{
 						UpdateDialog(FORK);
 					}
-					else if(item->getItemID() == 5)
+					else if(item->getItemName() == "Matches")
 					{
 						UpdateDialog(MATCHES);
 					}
-					else if(item->getItemID() == 6)
+					else if(item->getItemName() == "AccessCard")
 					{
 						UpdateDialog(ACCESS_CARD);
 					}
-					else if(item->getItemID() == 7)
+					else if(item->getItemName() == "TorchLight")
 					{
 						UpdateDialog(TORCHLIGHT);
 					}
@@ -2187,31 +2187,31 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 				if (item->getItemStatus() == CItem::ITEM_ONGROUND)
 				{
 					
-					if(item->getItemID() == 1)
+					if(item->getItemName() == "Dumbbell")
 					{
 						UpdateDialog(DUMBBELL);
 					}
-					else if(item->getItemID() == 2)
+					else if(item->getItemName() == "WaterGun")
 					{
 						UpdateDialog(WATERGUN);
 					}
-					else if(item->getItemID() == 3)
+					else if(item->getItemName() == "GuardUniform")
 					{
 						UpdateDialog(GUARD_UNIFORM);
 					}
-					else if (item->getItemID() == 4)
+					else if (item->getItemName() == "Fork")
 					{
 						UpdateDialog(FORK);
 					}
-					else if(item->getItemID() == 5)
+					else if(item->getItemName() == "Matches")
 					{
 						UpdateDialog(MATCHES);
 					}
-					else if(item->getItemID() == 6)
+					else if(item->getItemName() == "AccessCard")
 					{
 						UpdateDialog(ACCESS_CARD);
 					}
-					else if(item->getItemID() == 7)
+					else if(item->getItemName() == "TorchLight")
 					{
 						UpdateDialog(TORCHLIGHT);
 					}
@@ -2761,7 +2761,7 @@ void SceneGame::UpdateInteractions(double dt)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
-		UpdateDialog(NEED_TO_ESCAPE);
+		//UpdateDialog(NEED_TO_ESCAPE);
 		break;
 	case SLEEP:
 		gameSpeed = 75;
@@ -2797,27 +2797,24 @@ void SceneGame::UpdateThreadmill(void)
 
 void SceneGame::UpdateDialog(Dialog_ID diaName)
 {
-	//startTimer += (float) dt * dialog.GetTextSpeed();
-	//clearTimer += (float) dt * dialog.GetTextSpeed();
-
-	//std::cout << diaName << std::endl;
-	//std::cout << currentDialogue << std::endl;
+	std::cout << diaName << std::endl;
 	
 	unsigned currentSize = dialogString.length();
-	if(currentSize < findDialog(diaName).GetText().size())
+
+	std::cout << currentSize << std::endl;
+	if(currentSize != findDialog(diaName).GetText().size())
 	{
 		dialogString = findDialog(diaName).GetText();
 		sound.Play("Sound_Beep");
 	}
 
-	/*if(clearTimer >= dialog.GetTextSpeed())
+	if(findDialog(diaName).GetText().length() > dialogString.length())
 	{
 		for (unsigned i = 0; i < dialogString.size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
-		dialogString.resize(0);
-	}*/
+	}
 }
 
 void SceneGame::UpdateObjective(void)
