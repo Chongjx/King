@@ -165,6 +165,8 @@ bool Guards::CheckSight(Vector2 playerPos, double dt)
 
 void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 {
+	this->tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
+
 	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
 	{
 		pos.y = destination.y;
@@ -218,8 +220,6 @@ void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 		changeAni(Guards_StateMachine::IDLE_STATE);
 		Character::changeAni(StateMachine::IDLE_STATE);
 	}
-
-	this->tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
 }
 
 void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt)
@@ -235,7 +235,7 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 		while (CheckDestination() == false);
 	}
 
-	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
+	/*if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
 	{
 		pos.y = destination.y;
 		targetPos.y = pos.y;
@@ -245,7 +245,7 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 	{
 		pos.x = destination.x;
 		targetPos.x = pos.x;
-	}
+	}*/
 
 	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
 	{
@@ -539,8 +539,6 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
 				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				
-
 				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)

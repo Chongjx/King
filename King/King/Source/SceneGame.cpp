@@ -2417,7 +2417,7 @@ void SceneGame::UpdateFOV(void)
 
 void SceneGame::UpdatePlayer(double dt)
 {
-	if (player->getState() == StateMachine::IDLE_STATE && currentInteraction != SLEEP)
+	if (player->getState() == StateMachine::IDLE_STATE)
 	{
 		if (getKey("Up"))
 		{
@@ -2837,7 +2837,7 @@ void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
 	startTimer += (float) dt * dialog.GetTextSpeed();
 	clearTimer += (float) dt * dialog.GetTextSpeed();
 
-	std::cout << diaName << std::endl;
+	//std::cout << diaName << std::endl;
 	//std::cout << currentDialogue << std::endl;
 
 	if(currentDialogue == diaName)
