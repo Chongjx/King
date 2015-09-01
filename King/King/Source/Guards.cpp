@@ -523,8 +523,6 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 	Vector2 targetedLocation;
 	targetedLocation.Set(targetPos.x, worldHeight - targetPos.y - tileSize);
 
-	std::cout << targetedLocation << std::endl;
-
 	if ((int)targetedLocation.y / tileSize >= currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapHeight() || (int)targetedLocation.y / tileSize < 0 || (int)targetedLocation.x / tileSize >= currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesMapWidth() || (int)targetedLocation.x / tileSize < 0)
 	{
 		return false;
