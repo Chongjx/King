@@ -1844,22 +1844,17 @@ void SceneGame::InitInteractions(string config)
 			{
 				Dialogs tempDialogs;
 				string tempMesh;
-				int tempSpeed;
 				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
 				{
 					Attribute tempAttri = *attri;
 					string attriName = tempAttri.name;
 					string attriValue = tempAttri.value;
-					if(attriName == "TextSpeed")
-					{
-						tempSpeed = stoi(attriValue);
-					}
-					else if (attriName == "Mesh")
+					if (attriName == "Mesh")
 					{
 						tempMesh = attriValue;
 					}
 				}
-				dialog.InitSetting(tempSpeed,tempMesh);
+				dialog.InitSetting(tempMesh);
 			}
 		}
 	}
@@ -2152,31 +2147,31 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 				{
 					if(item->getItemID() == 1)
 					{
-						currentInteraction = GAINED_DUMBBELL;
+						UpdateDialog(DUMBBELL);
 					}
 					else if(item->getItemID() == 2)
 					{
-						currentInteraction = GAINED_WATERGUN;
+						UpdateDialog(WATERGUN);
 					}
 					else if(item->getItemID() == 3)
 					{
-						currentInteraction = GAINED_GUARD_UNIFORM;
+						UpdateDialog(GUARD_UNIFORM);
 					}
 					else if (item->getItemID() == 4)
 					{
-						currentInteraction = GAINED_FORK;
+						UpdateDialog(FORK);
 					}
 					else if(item->getItemID() == 5)
 					{
-						currentInteraction = GAINED_MATCHES;
+						UpdateDialog(MATCHES);
 					}
 					else if(item->getItemID() == 6)
 					{
-						currentInteraction = GAINED_ACCESS_CARD;
+						UpdateDialog(ACCESS_CARD);
 					}
 					else if(item->getItemID() == 7)
 					{
-						currentInteraction = GAINED_TORCHLIGHT;
+						UpdateDialog(TORCHLIGHT);
 					}
 
 					CInventory tempInventory = player->getInventory();
@@ -2194,31 +2189,31 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 					
 					if(item->getItemID() == 1)
 					{
-						currentInteraction = GAINED_DUMBBELL;
+						UpdateDialog(DUMBBELL);
 					}
 					else if(item->getItemID() == 2)
 					{
-						currentInteraction = GAINED_WATERGUN;
+						UpdateDialog(WATERGUN);
 					}
 					else if(item->getItemID() == 3)
 					{
-						currentInteraction = GAINED_GUARD_UNIFORM;
+						UpdateDialog(GUARD_UNIFORM);
 					}
 					else if (item->getItemID() == 4)
 					{
-						currentInteraction = GAINED_FORK;
+						UpdateDialog(FORK);
 					}
 					else if(item->getItemID() == 5)
 					{
-						currentInteraction = GAINED_MATCHES;
+						UpdateDialog(MATCHES);
 					}
 					else if(item->getItemID() == 6)
 					{
-						currentInteraction = GAINED_ACCESS_CARD;
+						UpdateDialog(ACCESS_CARD);
 					}
 					else if(item->getItemID() == 7)
 					{
-						currentInteraction = GAINED_TORCHLIGHT;
+						UpdateDialog(TORCHLIGHT);
 					}
 
 					CInventory tempInventory = player->getInventory();
@@ -2511,10 +2506,6 @@ void SceneGame::UpdatePlayer(double dt)
 			{
 				currentInteraction = RUNNING_ON_THREADMILL;
 			}
-			else
-			{
-				currentInteraction = NO_INTERACTION;
-			}
 		}
 		// bed - fast forward time
 		else if (layout[currentLocation]->specialTiles[special].TileName == "Bed")
@@ -2525,10 +2516,6 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					currentInteraction = SLEEP;
 				}
-			}
-			else
-			{
-				currentInteraction = NO_INTERACTION;
 			}
 		}
 
@@ -2774,35 +2761,16 @@ void SceneGame::UpdateInteractions(double dt)
 	{
 	case NO_INTERACTION:
 		gameSpeed = 10;
-		UpdateDialog(dt, NEED_TO_ESCAPE);
+		UpdateDialog(NEED_TO_ESCAPE);
 		break;
 	case SLEEP:
 		gameSpeed = 75;
-		UpdateDialog(dt, IM_TIRED);
+		UpdateDialog(IM_TIRED);
 		break;
 	case RUNNING_ON_THREADMILL:
 		UpdateThreadmill();
 		break;
-	case GAINED_FORK:
-		UpdateDialog(dt,FORK);
-		break;
-	case GAINED_DUMBBELL:
-		UpdateDialog(dt,DUMBBELL);
-		break;
-	case GAINED_WATERGUN:
-		UpdateDialog(dt,WATERGUN);
-		break;
-	case GAINED_GUARD_UNIFORM:
-		UpdateDialog(dt,GUARD_UNIFORM);
-		break;
-	case GAINED_MATCHES:
-		UpdateDialog(dt,MATCHES);
-		break;
-	case GAINED_TORCHLIGHT:
-		UpdateDialog(dt,TORCHLIGHT);
-		break;
-	case GAINED_ACCESS_CARD:
-		UpdateDialog(dt,ACCESS_CARD);
+	default:;
 		break;
 	}
 
@@ -2827,45 +2795,27 @@ void SceneGame::UpdateThreadmill(void)
 	}
 }
 
-void SceneGame::UpdateDialog(double dt, Dialog_ID diaName)
+void SceneGame::UpdateDialog(Dialog_ID diaName)
 {
-	static float timer = 1.f;
-	static float startTimer = 0.f;
-	static float clearTimer = 0.f;
-	static Dialog_ID currentDialogue = MAX_DIALOG;
-
-	startTimer += (float) dt * dialog.GetTextSpeed();
-	clearTimer += (float) dt * dialog.GetTextSpeed();
 
 	//std::cout << diaName << std::endl;
 	//std::cout << currentDialogue << std::endl;
-
-	if(currentDialogue == diaName)
+	
+	unsigned currentSize = dialogString.length();
+	if(currentSize < findDialog(diaName).GetText().size())
 	{
-		if (startTimer > timer || clearTimer < timer * dialogString.length())
-		{
-			unsigned currentSize = dialogString.length();
-			if(currentSize < findDialog(diaName).GetText().size())
-			{
-				dialogString += findDialog(diaName).GetText();
-				sound.Play("Sound_Beep");
-			}
-			startTimer = 0.f;
-		}
+		dialogString = findDialog(diaName).GetText();
+		sound.Play("Sound_Beep");
 	}
 
-	if((clearTimer >= dialog.GetTextSpeed() || currentDialogue != diaName) && currentDialogue != MAX_DIALOG)
+	/*if(clearTimer >= dialog.GetTextSpeed())
 	{
 		for (unsigned i = 0; i < dialogString.size(); i++)
 		{
 			dialogString[i]=NULL;
 		}
 		dialogString.resize(0);
-		startTimer = 0.f;
-		clearTimer = 0.f;
-	}
-
-	currentDialogue = diaName;
+	}*/
 }
 
 void SceneGame::UpdateObjective(void)
