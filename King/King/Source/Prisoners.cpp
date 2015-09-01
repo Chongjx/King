@@ -64,11 +64,11 @@ void Prisoners::Patrolling(int tileSize, double dt)
 
 			if(faceWhere == 0)
 			{
-				dir.Set(Math::RandIntMinMax(-1,1),0);
+				dir.Set((float)Math::RandIntMinMax(-1, 1), 0);
 			}
 			else
 			{
-				dir.Set(0,Math::RandIntMinMax(-1,1));
+				dir.Set(0, (float)Math::RandIntMinMax(-1, 1));
 			}
 		}
 	}

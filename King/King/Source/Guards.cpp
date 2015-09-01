@@ -159,7 +159,7 @@ bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 					{
 						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
 						{
-							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
 							{
 								return false;
 							}
@@ -204,7 +204,7 @@ bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 					{
 						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
 						{
-							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
 							{
 								return false;
 							}

@@ -35,7 +35,7 @@
 			{
 			[DISCRIPTION] Find_Disguise
 			[GET] false
-			LEVEL] 4
+			[LEVEL] 4
 			[KEYITEM] GuardUniform
 			}
 			

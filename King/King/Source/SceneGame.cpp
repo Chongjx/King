@@ -2931,7 +2931,7 @@ void SceneGame::RenderScore(void)
 	int place = 1;
 	std::ostringstream ss;
 	ss <<"HighScore"<<endl;
-	RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("White"), specialFontSize, sceneWidth*0.25f ,sceneHeight -sceneHeight*0.125 - y_Space);
+	RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("White"), specialFontSize, sceneWidth * 0.25f ,sceneHeight -sceneHeight * 0.125f - y_Space);
 
 	for (vector<Score>::iterator itr = score.begin(); itr != score.end(); ++itr)
 	{
@@ -2939,7 +2939,7 @@ void SceneGame::RenderScore(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2 <<place << ". "<< itr->getScore()<<" Days" <<endl;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.25f ,sceneHeight -sceneHeight*0.125- specialFontSize - y_Space);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth * 0.25f ,sceneHeight - sceneHeight * 0.125f- specialFontSize - y_Space);
 		place++;
 	}
 	y_Space = specialFontSize * 2;
@@ -3016,12 +3016,12 @@ void SceneGame::RenderFOV(void)
 				//{
 				//	if(layout[currentLocation]->specialTiles[special].TileName == "Wall")
 				//	{
-				if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV()*0.5f)// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
+				if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (n + 1) * (float)TILESIZE), TILESIZE) <= player->GetFOV() * 0.5f)// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
 				{
 					Render2DMesh(findMesh("GEO_FOV_CLEAR"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
 				}
 
-				else if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), (float)TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
+				else if(player->CalculateDistance(Vector2 (m * (float)TILESIZE, layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getScreenHeight() - (n + 1) * (float)TILESIZE), TILESIZE) <= player->GetFOV())// && (tilesheet->m_currentTile != layout[currentLocation]->specialTiles[special].TileID))
 				{
 					Render2DMesh(findMesh("GEO_FOV_SEMI"), false, (float)layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() , (k + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetX(), layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getScreenHeight() - (float)(i + 0.5f) * layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getTileSize() - layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].getMapFineOffsetY());
 				}
@@ -3279,7 +3279,7 @@ void SceneGame::RenderInstruct(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0,sceneHeight-sceneHeight*0.25 -y_Space );
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0, sceneHeight-sceneHeight * 0.25f - y_Space );
 		//16, 736 original position
 	}
 	y_Space = specialFontSize;
