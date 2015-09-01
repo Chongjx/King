@@ -7,14 +7,14 @@
 			{
 			[DISCRIPTION] Explore
 			[GET] false
-			[LEVEL] 1
+			[LEVEL] 3
 			[KEYITEM] Nil
 			}	
 
 			{
 			[DISCRIPTION] Get_Sharp_Item
 			[GET] false
-			[LEVEL] 0
+			[LEVEL] 1
 			[KEYITEM] Fork
 			}
 			
@@ -42,17 +42,17 @@
 			{
 			[DISCRIPTION] Get_Card_Key
 			[GET] false
-			[LEVEL] 0
+			[LEVEL] 2
 			[KEYITEM] AccessCard
 			}
 			
 			
-			{
-			[DISCRIPTION] Find_Disguise
-			[GET] false
-			[LEVEL] 3
-			[KEYITEM] GuardUniform
-			}
+			#{
+			#[DISCRIPTION] Find_Disguise
+			#[GET] false
+			#[LEVEL] 3
+			#[KEYITEM] GuardUniform
+			#}
 			
 			{
 			[DISCRIPTION] ESCAPE

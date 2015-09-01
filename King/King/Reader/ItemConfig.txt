@@ -28,7 +28,7 @@
 	#Dumbbell
 		[NAME] Dumbbell
 		[ID] 1
-		[Pos] 39, 10
+		[Pos] 39, 5
 		[ItemStatus] Ground
 		[ItemType] Weapon
 		[Description] Work Them Muscles!

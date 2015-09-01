@@ -6,31 +6,31 @@
 		[NAME] WeaDialog
 		{
 			[ID] 1
-			[Text] You_Found_A_DUMBBELL
+			[Text] DUMBBELL_AQUIRED
 		}
 		{
 			[ID] 2
-			[Text] You_Found_A_WATERGUN
+			[Text] WATERGUN_ACQUIRED
 		}
 		{
 			[ID] 3
-			[Text] You_Found_A_Guard_Uniform
+			[Text] Guard_Uniform_ACQUIRED
 		}
 		{
 			[ID] 4
-			[Text] You_Found_A_Fork
+			[Text] Fork_ACQUIRED
 		}
 		{
 			[ID] 5
-			[Text] You_Found_A_Matches
+			[Text] Matches_ACQUIRED
 		}
 		{
 			[ID] 6
-			[Text] You_Found_A_Access_Card
+			[Text] Access_Card_ACQUIRED
 		}
 		{
 			[ID] 7
-			[Text] You_Found_A_Torchlight
+			[Text] Torchlight_ACQUIRED
 		}
 	}
 
