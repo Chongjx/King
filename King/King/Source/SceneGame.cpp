@@ -1696,6 +1696,7 @@ void SceneGame::InitPlayer(string config)
 			}
 		}
 
+		BaseFOV= tiles;
 		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
 		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 		player->setState(StateMachine::IDLE_STATE);
@@ -2964,7 +2965,7 @@ void SceneGame::RenderObjectives(void)
 				{
 					std::ostringstream ss;
 					ss << objective->getTitle()<<endl;
-					RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("DarkGrey"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
+					RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("Blue"), specialFontSize * 0.5f, 0 ,sceneHeight - specialFontSize - y_Space);
 				}
 				else if(objective->getObjectiveState() == objective->OBJECTIVE_COMPLETED)
 				{
