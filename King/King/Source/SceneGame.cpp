@@ -2387,7 +2387,7 @@ void SceneGame::UpdateInGame(double dt)
 void SceneGame::UpdateFOV(void)
 {
 	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
-	{		
+	{
 		if (player->GetFOV() >= BaseFOV)
 		{
 			if(day.getCurrentTime().hour !=0)
@@ -2684,6 +2684,21 @@ void SceneGame::UpdatePlayer(double dt)
 				break;
 			}
 		}
+	}
+
+	if (findItem("Matches"))
+	{
+		player->SetFOV(5);
+	}
+
+	else if (findItem("Torch"))
+	{
+		player->SetFOV(7);
+	}
+
+	else
+	{
+		player->SetFOV(3);
 	}
 
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
