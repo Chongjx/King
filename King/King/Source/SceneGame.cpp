@@ -3260,7 +3260,7 @@ void SceneGame::RenderInstruct(void)
 void SceneGame::RenderDialogs(void)
 {
 	Render2DMesh(findMesh("GEO_BUBBLE"), false, Vector2(375, 64), Vector2(sceneWidth*0.8f, sceneHeight*0.85f));
-	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.4f, sceneWidth * 0.65f,sceneHeight*0.85f);
+	RenderTextOnScreen(findMesh("GEO_TEXT"), dialogString, findColor("Darkblue"), specialFontSize*0.3f, sceneWidth * 0.65f,sceneHeight*0.85f);
 }
 
 void SceneGame::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float rotation)
