@@ -2,28 +2,100 @@
 # Init default AIproperties outside of source codes 
 {
 	[NAME] AI
-	#{
-		#[NAME] Prisoner
+	{
+		[NAME] Prisoner
 	
-		#{
-			#[NAME] John
-			#[Pos] 10, -10
-		        #[Dir] 0, -1
-		        #[Mesh] GEO_PRISONER
-		        #[Tiles] 1
-		        #[MapLocation] 0
-			#[Waypoint] A			
-		#}
-		#{
-			#[NAME] James
-			#[Pos] 10, 20
-		        #[Dir] 0, -1
-		        #[Mesh] GEO_PRISONER
-		        #[Tiles] 1
-		        #[MapLocation] 0
-			#[Waypoint] A			
-		#}
-	#}
+		{
+			[NAME] John
+			[Pos] 9, 18
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] James2
+			[Pos] 31, 18
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] James3
+			[Pos] 42, 18
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] James4
+			[Pos] 53, 18
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] dada
+			[Pos] 9, 4
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] dada
+			[Pos] 31, 4
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] dada
+			[Pos] 20, -9
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] dada
+			[Pos] 20, -22
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] dada
+			[Pos] 42, -35
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+		{
+			[NAME] dada
+			[Pos] 53, -35
+		        [Dir] 0, -1
+		        [Mesh] GEO_PRISONER
+		        [Tiles] 1
+		        [MapLocation] 0
+			[Waypoint] A			
+		}
+	}
 	{
 		[NAME] Guard
 

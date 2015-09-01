@@ -1,6 +1,7 @@
 #include "Prisoners.h"
 
 Prisoners::Prisoners(void)
+	: randTimer(0.0)
 {
 
 }
@@ -22,11 +23,66 @@ void Prisoners::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, R
 	AI::Init();
 }
 
-void Prisoners::Update(double dt)
+void Prisoners::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 {
 	if(GetUpdate() == true)
 	{
 		AI::Update(dt);
+		Patrolling(tileSize, dt);
+	}
+}
+
+void Prisoners::Patrolling(int tileSize, double dt)
+{
+	randTimer += dt;
+
+	if (randTimer > Math::RandFloatMinMax(1.f,4.f))
+	{
+		randTimer = 0.0;
+
+		int lepak = rand() % 5;
+
+		if(lepak == 0)
+		{
+			targetPos.Set(targetPos.x, targetPos.y - tileSize);
+		}
+		else if(lepak == 1)
+		{
+			targetPos.Set(targetPos.x, targetPos.y + tileSize);
+		}
+		else if(lepak == 2)
+		{
+			targetPos.Set(targetPos.x - tileSize, targetPos.y);
+		}
+		else if(lepak == 3)
+		{
+			targetPos.Set(targetPos.x + tileSize, targetPos.y);
+		}
+		else if(lepak == 4)
+		{
+			int faceWhere = rand() % 2;
+
+			if(faceWhere == 0)
+			{
+				dir.Set(Math::RandIntMinMax(-1,1),0);
+			}
+			else
+			{
+				dir.Set(0,Math::RandIntMinMax(-1,1));
+			}
+		}
+	}
+
+	if (targetPos != pos)
+	{
+		changeAni(Prisoners_StateMachine::WALK_STATE);
+		Character::changeAni(StateMachine::WALK_STATE);
+	}
+
+	else
+	{
+		changeAni(Prisoners_StateMachine::IDLE_STATE);
+		Character::changeAni(StateMachine::IDLE_STATE);
 	}
 }
 

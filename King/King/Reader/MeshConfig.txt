@@ -42,7 +42,7 @@
 		[Texture] Image\\EnergyBar.tga
 	}
 	{
-		[NAME] GEO_PRISONER
+		[NAME] GEO_PORTRAIT
 		[Type] Quad
 		[Texture] Image\\prisoner.tga
 	}

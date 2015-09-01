@@ -2734,7 +2734,7 @@ void SceneGame::UpdateAI(double dt)
 		}
 		//tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-		tempPrisoner->Update(dt);
+		tempPrisoner->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	}
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
@@ -3236,7 +3236,7 @@ void SceneGame::RenderEnergy(void)
 {
 	Render2DMesh(findMesh("GEO_ENERGY"), false, Vector2(110, 80), Vector2(sceneWidth*0.11f, sceneHeight*0.045f));
 	Render2DMesh(findMesh("GEO_ENERGYBAR"), false, Vector2((float)energyScale, 65), Vector2(energyTranslate, sceneHeight*0.045f));
-	Render2DMesh(findMesh("GEO_PRISONER"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_PORTRAIT"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
 }
 void SceneGame::UpdateEnergy(double dt)
 {
