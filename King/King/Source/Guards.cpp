@@ -165,9 +165,7 @@ bool Guards::CheckSight(Vector2 playerPos, double dt)
 
 void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 {
-	this->tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
-
-	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
+	/*if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
 	{
 		pos.y = destination.y;
 		targetPos.y = pos.y;
@@ -177,7 +175,7 @@ void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 	{
 		pos.x = destination.x;
 		targetPos.x = pos.x;
-	}
+	}*/
 
 	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
 	{
@@ -187,26 +185,26 @@ void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 
 	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
-		targetPos.Set(targetPos.x + tileSize, targetPos.y);
+		targetPos.Set(pos.x + tileSize, pos.y);
 	}
 
 	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
-		targetPos.Set(targetPos.x - tileSize, targetPos.y);
+		targetPos.Set(pos.x - tileSize, pos.y);
 	}
 
 	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
 	{
 		pos.x = destination.x;
 		targetPos.x = pos.x;
-		targetPos.Set(targetPos.x, targetPos.y + tileSize);
+		targetPos.Set(pos.x, pos.y + tileSize);
 	}
 
 	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
 	{
 		pos.x = destination.x;
 		targetPos.x = pos.x;
-		targetPos.Set(targetPos.x, targetPos.y - tileSize);
+		targetPos.Set(pos.x, pos.y - tileSize);
 	}
 
 	if (destination != pos)
@@ -220,6 +218,8 @@ void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 		changeAni(Guards_StateMachine::IDLE_STATE);
 		Character::changeAni(StateMachine::IDLE_STATE);
 	}
+
+	this->tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
 }
 
 void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt)
@@ -255,7 +255,7 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 
 	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
-		/*if (checkNextTile(Vector2(targetPos.x + tileSize, targetPos.y)))
+		if (checkNextTile(Vector2(pos.x + tileSize, pos.y)))
 		{
 			targetPos.Set(targetPos.x + tileSize, targetPos.y);
 		}
@@ -270,13 +270,27 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 			{
 				targetPos.Set(targetPos.x, targetPos.y - tileSize);
 			}
-		}*/
-		targetPos.Set(targetPos.x + tileSize, targetPos.y);
+		}
 	}
 
 	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
-		targetPos.Set(targetPos.x - tileSize, targetPos.y);
+		if (checkNextTile(Vector2(pos.x - tileSize, pos.y)))
+		{
+			targetPos.Set(targetPos.x - tileSize, targetPos.y);
+		}
+		else
+		{
+			if(destination.y > pos.y)
+			{
+				targetPos.Set(targetPos.x, targetPos.y + tileSize);
+			}
+
+			else
+			{
+				targetPos.Set(targetPos.x, targetPos.y - tileSize);
+			}
+		}
 	}
 
 	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)

@@ -43,7 +43,7 @@
 			[Pos] 4, -15
 			[Dir] 1, 0
 		     	[Mesh] GEO_GUARD
-		        [Tiles] 5
+			[Tiles] 5
 		      	[MapLocation] 0	
 			[Waypoint] A
 		}
@@ -52,7 +52,7 @@
 			[Pos] 4, -41
 		      	[Dir] 1, 0
 			[Mesh] GEO_GUARD
-		        [Tiles] 5
+			[Tiles] 5
 			[MapLocation] 0
 			[Waypoint] A
 		}
