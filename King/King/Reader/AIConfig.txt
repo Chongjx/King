@@ -291,7 +291,7 @@
 			[Pos] 56, -27
 		      	[Dir] 1, 0
 		        [Mesh] GEO_GUARD
-		        [Tiles] 1
+		        [Tiles] 5
 		      	[MapLocation] 10
 			[Waypoint] A
 		}

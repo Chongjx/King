@@ -1650,6 +1650,12 @@ void SceneGame::InitAI(string config)
 			}
 		}
 	}
+
+	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+	{
+		Guards* tempGuard = *guard;
+		tempGuard->ResetPos();
+	}
 }
 
 void SceneGame::InitPlayer(string config)

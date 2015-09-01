@@ -352,12 +352,12 @@ bool Character::tileBasedMovement(int worldWidth, int worldHeight, int tileSize,
 
 void Character::tileBasedOffset(void)
 {
-	if (Math::FAbs(targetPos.x - pos.x) < size.x * 0.2f)
+	if (Math::FAbs(targetPos.x - pos.x) < size.x * 0.25f)
 	{
 		pos.x = targetPos.x;
 	}
 
-	if (Math::FAbs(targetPos.y - pos.y) < size.y * 0.2f)
+	if (Math::FAbs(targetPos.y - pos.y) < size.y * 0.25f)
 	{
 		pos.y = targetPos.y;
 	}
