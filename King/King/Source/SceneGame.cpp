@@ -1702,7 +1702,7 @@ void SceneGame::InitPlayer(string config)
 			}
 		}
 
-		BaseFOV = tiles;
+		BaseFOV=TargetFOV = tiles;
 		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
 		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 		player->setState(StateMachine::IDLE_STATE);
@@ -2390,24 +2390,35 @@ void SceneGame::UpdateFOV(void)
 	{
 		if (findItem("Matches"))
 		{
-			player->SetFOV(5);
+			TargetFOV = 5;
 		}
 
 		else if (findItem("Matches"))
 		{
-			player->SetFOV(7);
+			TargetFOV =7;
 		}
 
 		else
 		{
-			player->SetFOV(3);
+			TargetFOV=BaseFOV;
 		}
 
-		if (player->GetFOV() >= BaseFOV)
+		if (player->GetFOV() > TargetFOV)
 		{
 			if(day.getCurrentTime().hour !=0)
 			{
 				player->SetFOV(player->GetFOV() - day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
+		else if (player->GetFOV() < TargetFOV)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() + day.getCurrentTime().hour/day.getCurrentTime().hour);	
 			}
 			else
 			{
