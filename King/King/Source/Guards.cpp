@@ -41,8 +41,6 @@ void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 		}
 		else
 		{
-			//	changeAni(Guards_StateMachine::IDLE_STATE);
-			//	Character::changeAni(StateMachine::IDLE_STATE);
 			Chasing(worldWidth, worldHeight, tileSize, dt);
 		}
 
@@ -55,7 +53,7 @@ void Guards::CheckChase(Vector2 playerPos, int tileSize, double dt)
 	// if player is close to the guards
 	if (this->CalculateTileBasedDistance(playerPos, tileSize) < this->tiles)
 	{
-		if (CheckSight(playerPos, dt) == true)
+		//if (CheckSight(playerPos, dt) == true)
 		{
 			// if player is within the line of sight of the guard
 			if (playerPos.x > this->pos.x && this->dir.x == 1)
@@ -83,15 +81,16 @@ void Guards::CheckChase(Vector2 playerPos, int tileSize, double dt)
 				this->chase = false;
 			}
 		}
-		else
-		{
-			this->chase = false;
-		}
 
 		if (chase)
 		{
 			destination = playerPos;
 		}
+	}
+
+	else
+	{
+		this->chase = false;
 	}
 }
 
@@ -137,7 +136,7 @@ bool Guards::CheckSight(Vector2 playerPos, double dt)
 			if(po->type == GhettoParticle::PO_DETECTOR)
 			{
 				po->vel += pos - playerPos;
-				po->pos += po->vel * dt;
+				po->pos += po->vel * (float)dt;
 				std::cout << "active detector\n";
 				for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
 				{
@@ -256,6 +255,22 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 
 	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
+		/*if (checkNextTile(Vector2(targetPos.x + tileSize, targetPos.y)))
+		{
+			targetPos.Set(targetPos.x + tileSize, targetPos.y);
+		}
+		else
+		{
+			if(destination.y > pos.y)
+			{
+				targetPos.Set(targetPos.x, targetPos.y + tileSize);
+			}
+
+			else
+			{
+				targetPos.Set(targetPos.x, targetPos.y - tileSize);
+			}
+		}*/
 		targetPos.Set(targetPos.x + tileSize, targetPos.y);
 	}
 
@@ -519,16 +534,9 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
 				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = 0;
+				
 
-				if (targetedLocation.x - (int)(targetedLocation.x / tileSize) * tileSize > tileSize * 0.1f)
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize + 1];
-				}
-				else
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-				}
+				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
@@ -674,14 +682,7 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 			{
 				int nextTile = 0;
 
-				if (targetedLocation.y - (int)(targetedLocation.y / tileSize) * tileSize > tileSize * 0.1f)
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize + 1][(int)targetedLocation.x / tileSize];
-				}
-				else
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-				}
+				nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
