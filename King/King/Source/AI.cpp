@@ -63,24 +63,12 @@ bool AI::checkNextTile(Vector2 nextTile)
 	{
 		if (currentRoom->specialTiles[i].TileName == "Wall" || currentRoom->specialTiles[i].TileName == "CellDoorClosed")
 		{
-			if (nextTile.y >= 0)
+			if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - nextTile.y / currentRoom->roomLayout[TileMap::TYPE_COLLISION].getTileSize()][nextTile.x / currentRoom->roomLayout[TileMap::TYPE_COLLISION].getTileSize()] == currentRoom->specialTiles[i].TileID)
 			{
-				if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[nextTile.y / currentRoom->roomLayout[TileMap::TYPE_COLLISION].getTileSize()][nextTile.x / currentRoom->roomLayout[TileMap::TYPE_COLLISION].getTileSize()] == currentRoom->specialTiles[i].TileID)
-				{
-					return false;
-				}
-			}
-
-			else
-			{
-				if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - nextTile.y / currentRoom->roomLayout[TileMap::TYPE_COLLISION].getTileSize()][nextTile.x / currentRoom->roomLayout[TileMap::TYPE_COLLISION].getTileSize()] == currentRoom->specialTiles[i].TileID)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 	}
-
 	return true;
 }
 
