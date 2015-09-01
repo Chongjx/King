@@ -72,10 +72,6 @@ bool AI::checkNextTile(Vector2 nextTile)
 	return true;
 }
 
-void AI::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt)
-{
-}
-
 void AI::changeAni(StateMachine::STATE unitState)
 {
 }

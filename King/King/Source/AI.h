@@ -31,7 +31,6 @@ public:
 	// Function for AI path finding
 	bool CheckDestination(void);
 	bool checkNextTile(Vector2 nextTile);
-	virtual void Patrolling(int worldWidth, int worldHeight, int tileSize, double dt);
 
 protected:
 

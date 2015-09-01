@@ -1703,7 +1703,7 @@ void SceneGame::InitPlayer(string config)
 			}
 		}
 
-		BaseFOV = tiles;
+		BaseFOV=TargetFOV = tiles;
 		player->Init(pos * TILESIZE, dir, dynamic_cast<SpriteAnimation*>(findMesh(spriteName)), tiles, layout[mapLocation]);
 		player->setSize(Vector2((float)TILESIZE, (float)TILESIZE));
 		player->setState(StateMachine::IDLE_STATE);
@@ -2391,24 +2391,35 @@ void SceneGame::UpdateFOV(void)
 	{
 		if (findItem("Matches"))
 		{
-			player->SetFOV(5);
+			TargetFOV = 5;
 		}
 
 		else if (findItem("Matches"))
 		{
-			player->SetFOV(7);
+			TargetFOV =7;
 		}
 
 		else
 		{
-			player->SetFOV(3);
+			TargetFOV=BaseFOV;
 		}
 
-		if (player->GetFOV() >= BaseFOV)
+		if (player->GetFOV() > TargetFOV)
 		{
 			if(day.getCurrentTime().hour !=0)
 			{
 				player->SetFOV(player->GetFOV() - day.getCurrentTime().hour/day.getCurrentTime().hour);	
+			}
+			else
+			{
+				player->SetFOV(player->GetFOV() - 1);	
+			}
+		}
+		else if (player->GetFOV() < TargetFOV)
+		{
+			if(day.getCurrentTime().hour !=0)
+			{
+				player->SetFOV(player->GetFOV() + day.getCurrentTime().hour/day.getCurrentTime().hour);	
 			}
 			else
 			{
@@ -2724,7 +2735,7 @@ void SceneGame::UpdateAI(double dt)
 		}
 		//tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-		tempPrisoner->Update(dt);
+		tempPrisoner->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	}
 
 	for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
@@ -3136,7 +3147,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day: " << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Darkblue"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 		Render2DMesh(findMesh(day.moon.mesh),false, day.moon.size, day.moon.pos);
 		
 		if (DEBUG)
@@ -3156,7 +3167,7 @@ void SceneGame::RenderTime(void)
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2<< "Day:" << day.getCurrentTime().day;
-		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Red"), specialFontSize,0, sceneHeight - specialFontSize*2 );
+		RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss2.str(), findColor("Skyblue"), specialFontSize,0, sceneHeight - specialFontSize*2 );
 
 		Render2DMesh(findMesh(day.sun.mesh),false, day.sun.size, day.sun.pos);
 
@@ -3226,7 +3237,7 @@ void SceneGame::RenderEnergy(void)
 {
 	Render2DMesh(findMesh("GEO_ENERGY"), false, Vector2(110, 80), Vector2(sceneWidth*0.11f, sceneHeight*0.045f));
 	Render2DMesh(findMesh("GEO_ENERGYBAR"), false, Vector2((float)energyScale, 65), Vector2(energyTranslate, sceneHeight*0.045f));
-	Render2DMesh(findMesh("GEO_PRISONER"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
+	Render2DMesh(findMesh("GEO_PORTRAIT"), false, Vector2(50, 75), Vector2(sceneWidth*0.03f, sceneHeight*0.045f));
 }
 void SceneGame::UpdateEnergy(double dt)
 {

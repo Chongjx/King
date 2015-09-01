@@ -16,7 +16,9 @@ public:
 	// Initialise this class instance
 	void Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room* room, string waypoint);
 	// Update the character
-	void Update(double dt);
+	void Update(int worldWidth, int worldHeight, int tileSize, double dt);
+
+	void Patrolling(int tileSize, double dt);
 
 	void changeAni(Prisoners_StateMachine::PRISONER_STATE unitState);
 
@@ -24,6 +26,7 @@ private:
 
 	//StateMachine object
 	Prisoners_StateMachine prisonerStateMachine;
+	double randTimer;
 
 };
 

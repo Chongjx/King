@@ -235,6 +235,7 @@ private:
 	vector<CItem*> itemList;
 
 	int BaseFOV;
+	int TargetFOV;
 	bool updateMousePos;
 	double tempMouseX, tempMouseY;
 	bool renderInventory;
