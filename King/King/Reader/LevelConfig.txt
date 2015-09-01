@@ -7,21 +7,21 @@
 			{
 			[DISCRIPTION] Explore
 			[GET] false
-			[LEVEL] 0
+			[LEVEL] 1
 			[KEYITEM] Nil
 			}	
 
 			{
 			[DISCRIPTION] Get_Sharp_Item
 			[GET] false
-			[LEVEL] 1
+			[LEVEL] 0
 			[KEYITEM] Fork
 			}
 			
 			{
 			[DISCRIPTION] Find_Light_Source
 			[GET] false
-			[LEVEL] 1
+			[LEVEL] 0
 			[KEYITEM] Matches
 			}
 	
@@ -29,20 +29,20 @@
 			{
 			[DISCRIPTION] Find_Weapon
 			[GET] false
-			[LEVEL] 2				
+			[LEVEL] 1				
 			[KEYITEM] Dumbbell
 			}
 			#{
 			#[DISCRIPTION] Find_Key
 			#[GET] false
-			#[LEVEL] 2				
+			#[LEVEL] 1				
 			#[KEYITEM] Key
 			#}
 			
 			{
 			[DISCRIPTION] Get_Card_Key
 			[GET] false
-			[LEVEL] 3
+			[LEVEL] 0
 			[KEYITEM] AccessCard
 			}
 			
