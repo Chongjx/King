@@ -80,3 +80,8 @@ void Day::UpdateLevel(void)
 		currentLevel++;
 	}
 }
+
+void Day::incrementDay (void)
+{
+	currentTime.day +=1;
+}

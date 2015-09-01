@@ -37,6 +37,8 @@ public:
 	void setdifficulty(float );
 	void setCurrentLevel(int level);
 
+	void incrementDay (void);
+
 	vector<Level> levels;
 
 	void CheckObjectives(void);

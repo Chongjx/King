@@ -2739,6 +2739,7 @@ void SceneGame::UpdateAI(double dt)
 			if ((tempGuard->getPos() - player->getPos()).Length() < TILESIZE * 0.2f)
 			{
 				sound.Play("Sound_Caught");
+				day.incrementDay();
 				player->ResetPos();
 				player->setRoom(layout[CELL_AREA]);
 				currentLocation = CELL_AREA;
@@ -2894,13 +2895,17 @@ void SceneGame::RenderScore(void)
 {
 	float y_Space = specialFontSize * 2;
 	int place = 1;
+	std::ostringstream ss;
+	ss <<"HighScore"<<endl;
+	RenderTextOnScreen(findMesh("GEO_TEXT_BACKGROUND"), ss.str(), findColor("White"), specialFontSize, sceneWidth*0.25f ,sceneHeight -sceneHeight*0.125 - y_Space);
+
 	for (vector<Score>::iterator itr = score.begin(); itr != score.end(); ++itr)
 	{
 		y_Space += specialFontSize;
 		std::ostringstream ss2;
 		ss2.precision(1);
 		ss2 <<place << ". "<< itr->getScore()<<" Days" <<endl;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.25f ,sceneHeight - specialFontSize - y_Space);
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth*0.25f ,sceneHeight -sceneHeight*0.125- specialFontSize - y_Space);
 		place++;
 	}
 	y_Space = specialFontSize * 2;
@@ -3240,7 +3245,7 @@ void SceneGame::RenderInstruct(void)
 		std::ostringstream ss;
 		ss.precision(2);
 		ss << Instruct->GetHeader() <<":"<< Instruct->GetText() ;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0,sceneHeight -y_Space );
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss.str(), findColor("White"), specialFontSize, 0,sceneHeight-sceneHeight*0.25 -y_Space );
 		//16, 736 original position
 	}
 	y_Space = specialFontSize;
