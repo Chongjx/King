@@ -88,9 +88,9 @@ void Sound::VolumeUp (void)
 	for (vector<Sound>::iterator itr =sounds.begin(); itr != sounds.end(); ++itr)
 	{	
 		Soundengine->setSoundVolume(itr->volume + 0.1f);
-
 	}
 }
+
 void Sound::VolumeDown (void)
 {
 	for (vector<Sound>::iterator itr =sounds.begin(); itr != sounds.end(); ++itr)

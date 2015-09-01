@@ -2,6 +2,7 @@
 
 Guards::Guards(void)
 	: chase(false)
+	, checkTimer(0.0)
 {
 }
 
@@ -21,6 +22,13 @@ void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room
 	this->destination = pos;
 	this->changeAni(Guards_StateMachine::IDLE_STATE);
 	AI::Init();
+
+	for (int i = 0; i < 100; ++i)
+	{
+		GhettoParticle *po = new GhettoParticle(GhettoParticle::PO_DETECTOR);
+		m_poList.push_back(po);
+	}
+
 }
 
 void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
@@ -33,8 +41,6 @@ void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 		}
 		else
 		{
-		//	changeAni(Guards_StateMachine::IDLE_STATE);
-		//	Character::changeAni(StateMachine::IDLE_STATE);
 			Chasing(worldWidth, worldHeight, tileSize, dt);
 		}
 
@@ -42,45 +48,118 @@ void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 	}
 }
 
-void Guards::CheckChase(Vector2 playerPos, int tileSize)
+void Guards::CheckChase(Vector2 playerPos, int tileSize, double dt)
 {
 	// if player is close to the guards
 	if (this->CalculateTileBasedDistance(playerPos, tileSize) < this->tiles)
 	{
-		// if player is within the line of sight of the guard
-		if (playerPos.x > this->pos.x && this->dir.x == 1)
+		//if (CheckSight(playerPos, dt) == true)
 		{
-			this->chase = true;
+			// if player is within the line of sight of the guard
+			if (playerPos.x > this->pos.x && this->dir.x == 1)
+			{
+				this->chase = true;
+			}
+
+			else if (playerPos.x < this->pos.x && this->dir.x == -1)
+			{
+				this->chase = true;
+			}
+
+			else if (playerPos.y > this->pos.y && this->dir.y == 1)
+			{
+				this->chase = true;
+			}
+
+			else if (playerPos.y < this->pos.y && this->dir.y == -1)
+			{
+				this->chase = true;
+			}
+
+			else
+			{
+				this->chase = false;
+			}
 		}
 
-		else if (playerPos.x < this->pos.x && this->dir.x == -1)
+		if (chase)
 		{
-			this->chase = true;
-		}
-
-		else if (playerPos.y > this->pos.y && this->dir.y == 1)
-		{
-			this->chase = true;
-		}
-
-		else if (playerPos.y < this->pos.y && this->dir.y == -1)
-		{
-			this->chase = true;
-		}
-		
-		else
-		{
-			this->chase = false;
+			destination = playerPos;
 		}
 	}
+
 	else
 	{
 		this->chase = false;
 	}
+}
 
-	if (chase)
+GhettoParticle* Guards::FetchPO()
+{
+	for (std::vector<GhettoParticle *>::iterator it = m_poList.begin(); it != m_poList.end(); ++it)
 	{
-		destination = playerPos;
+		GhettoParticle *po = (GhettoParticle *) * it;
+		if (po->active == false)
+		{
+			po->active = true;
+			return po;
+		}
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		GhettoParticle *po = new GhettoParticle(GhettoParticle::PO_DETECTOR);
+		m_poList.push_back(po);
+	}
+	return m_poList[m_poList.size() - 1];
+}
+
+bool Guards::CheckSight(Vector2 playerPos, double dt)
+{	
+	checkTimer += dt;
+	if( checkTimer > 0.15 )
+	{
+		GhettoParticle *Spawn = FetchPO(); //create object
+		Spawn->type = GhettoParticle::PO_DETECTOR;
+		Spawn->scale.Set(3, 3);
+		Spawn->vel.Set(this->pos.x - playerPos.x, this->pos.y - playerPos.y);
+		checkTimer = 0.0;
+	}
+
+	// Checks through game object list
+	for(std::vector<GhettoParticle *>::iterator it = m_poList.begin(); it != m_poList.end(); ++it)
+	{
+		GhettoParticle *po = (GhettoParticle *)*it;
+
+		if(po->active)
+		{	
+			if(po->type == GhettoParticle::PO_DETECTOR)
+			{
+				po->vel += pos - playerPos;
+				po->pos += po->vel * (float)dt;
+				std::cout << "active detector\n";
+				for (unsigned special = 0; special < currentRoom->specialTiles.size(); ++special)
+				{
+					if (currentRoom->specialTiles[special].TileName == "Wall" ||
+						currentRoom->specialTiles[special].TileName == "CellDoorClosed" ||
+						currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
+						currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
+					{
+						/*if (po->pos == currentRoom->specialTiles[special].TileID)
+						{
+							po->active = false;
+							return false;
+						}*/
+					}
+				}
+
+				if(po->pos == playerPos)
+				{
+					po->active = false;
+					return true;
+				}
+			}
+		}
 	}
 }
 
@@ -176,6 +255,22 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 
 	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
 	{
+		/*if (checkNextTile(Vector2(targetPos.x + tileSize, targetPos.y)))
+		{
+			targetPos.Set(targetPos.x + tileSize, targetPos.y);
+		}
+		else
+		{
+			if(destination.y > pos.y)
+			{
+				targetPos.Set(targetPos.x, targetPos.y + tileSize);
+			}
+
+			else
+			{
+				targetPos.Set(targetPos.x, targetPos.y - tileSize);
+			}
+		}*/
 		targetPos.Set(targetPos.x + tileSize, targetPos.y);
 	}
 
@@ -342,7 +437,7 @@ void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 				break;
 			}
 
-			case Guards_StateMachine::CHASE_STATE:
+		case Guards_StateMachine::CHASE_STATE:
 			{
 				if (this->dir.x == 1)
 				{
@@ -366,7 +461,7 @@ void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 				break;
 			}
 
-			case Guards_StateMachine::PATROL_STATE:
+		case Guards_StateMachine::PATROL_STATE:
 			{
 				if (this->dir.x == 1)
 				{
@@ -390,7 +485,7 @@ void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)
 				break;
 			}
 
-			case Guards_StateMachine::RETURN_STATE:
+		case Guards_StateMachine::RETURN_STATE:
 			{
 				if (this->dir.x == 1)
 				{
@@ -439,16 +534,9 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 				currentRoom->specialTiles[special].TileName == "PrisonDoorLeftClosed" ||
 				currentRoom->specialTiles[special].TileName == "PrisonDoorRightClosed")
 			{
-				int nextTile = 0;
+				
 
-				if (targetedLocation.x - (int)(targetedLocation.x / tileSize) * tileSize > tileSize * 0.1f)
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize + 1];
-				}
-				else
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-				}
+				int nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
@@ -500,7 +588,7 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 				{
 					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 				}
-				
+
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
 					movable = false;
@@ -594,14 +682,7 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 			{
 				int nextTile = 0;
 
-				if (targetedLocation.y - (int)(targetedLocation.y / tileSize) * tileSize > tileSize * 0.1f)
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize + 1][(int)targetedLocation.x / tileSize];
-				}
-				else
-				{
-					nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
-				}
+				nextTile = currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)targetedLocation.y / tileSize][(int)targetedLocation.x / tileSize];
 
 				if (nextTile == currentRoom->specialTiles[special].TileID)
 				{
@@ -634,14 +715,6 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 	tileBasedOffset();
 
 	return movable;
-}
-
-void Guards::checkNextTile(void)
-{
-	if (this->dir.x == 1)
-	{
-
-	}
 }
 
 bool Guards::getChase (void)

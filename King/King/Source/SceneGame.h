@@ -248,7 +248,6 @@ private:
 
 	string ScoreDirectory;
 	Score CurrentScore;
-
 };
 
 #endif

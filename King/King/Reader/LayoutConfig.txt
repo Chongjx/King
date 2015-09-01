@@ -36,8 +36,8 @@
 				[Wall] 678
 				[CellDoorClosed] 266
 				[CellDoorOpened] 307
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[Bed] 264
@@ -125,8 +125,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[Threadmill] 184
@@ -186,8 +186,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
@@ -261,8 +261,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[A] 36
@@ -320,8 +320,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
@@ -455,8 +455,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
@@ -513,8 +513,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
@@ -571,8 +571,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
@@ -629,8 +629,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[LeftChair] 343
@@ -687,8 +687,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[SwitchOn] 439
@@ -747,8 +747,8 @@
 			{
 				[NAME] SpecialTiles
 				[Wall] 678
-				[PrisonDoorLeftClosed] 478
-				[PrisonDoorRightClosed] 479
+				[PrisonDoorLeftClosed] 476
+				[PrisonDoorRightClosed] 477
 				[PrisonDoorLeftOpened] 474
 				[PrisonDoorRightOpened] 475
 				[Exit] 0

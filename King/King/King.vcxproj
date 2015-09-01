@@ -88,6 +88,7 @@
     <ClCompile Include="Source\Day.cpp" />
     <ClCompile Include="Source\Dialogs.cpp" />
     <ClCompile Include="Source\GameObject2D.cpp" />
+    <ClCompile Include="Source\GhettoParticle.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
     <ClCompile Include="Source\Guards_StateMachine.cpp" />
     <ClCompile Include="Source\Instructions.cpp" />
@@ -107,9 +108,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
-    <ClCompile Include="Source\Node.cpp" />
     <ClCompile Include="Source\Objective.cpp" />
-    <ClCompile Include="Source\PathFind.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Prisoners.cpp" />
     <ClCompile Include="Source\Prisoners_StateMachine.cpp" />
@@ -133,6 +132,7 @@
     <ClInclude Include="Source\Day.h" />
     <ClInclude Include="Source\Dialogs.h" />
     <ClInclude Include="Source\GameObject2D.h" />
+    <ClInclude Include="Source\GhettoParticle.h" />
     <ClInclude Include="Source\Guards.h" />
     <ClInclude Include="Source\Guards_StateMachine.h" />
     <ClInclude Include="Source\Instructions.h" />
@@ -153,9 +153,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Mouse.h" />
-    <ClInclude Include="Source\Node.h" />
     <ClInclude Include="Source\Objective.h" />
-    <ClInclude Include="Source\PathFind.h" />
     <ClInclude Include="Source\Prisoners_StateMachine.h" />
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\Player.h" />

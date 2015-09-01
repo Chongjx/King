@@ -4,6 +4,7 @@
 #include "AI.h"
 #include "Guards_StateMachine.h"
 #include "Player.h"
+#include "GhettoParticle.h"
 
 class Guards: public AI
 {
@@ -27,17 +28,21 @@ public:
 	bool tileBasedMovement(int worldWidth, int worldHeight, int tileSize, double dt);
 
 	void Chasing(int worldWidth, int worldHeight, int tileSize, double dt);
-	void CheckChase(Vector2 playerPos, int tileSize);
-	void checkNextTile(void);
-
+	void CheckChase(Vector2 playerPos, int tileSize, double dt);
+	bool CheckSight(Vector2 playerPos, double dt);
 	bool getChase (void);
+
+	GhettoParticle* FetchPO();
 
 private:
 
 	// StateMachine object
 	Guards_StateMachine guardStateMachine;
 
+	std::vector<GhettoParticle *> m_poList;
+
 	bool chase;
+	double checkTimer;
 };
 
 #endif
