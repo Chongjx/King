@@ -52,6 +52,12 @@
 		[DefaultVol] 0.5f	
 	}
 	{
+		[SoundName] Sound_Stun
+		[SoundFile] Sound\\Stun.mp3
+		[Loop] false
+		[DefaultVol] 0.7f	
+	}
+	{
 		[SoundName] Sound_Background
 		[SoundFile] Sound\\SlowSteady.mp3
 		[Loop] true

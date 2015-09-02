@@ -16,6 +16,9 @@ public:
 	// Update the character
 	void Update(double dt);
 
+	void SetAttack(bool attack);
+	bool GetAttack(void);
+
 	// Get the player's energy
 	double GetEnergy(void);
 	// Updates the player's energy
@@ -31,8 +34,8 @@ public:
 private:
 	// Energy data
 	double energy;
-	bool recovering;
-	const double MAX_ENERGY, ENERGY_TO_RUN, DEGENERATE_RUN, REGENERATE_WALK, REGENERATE_IDLE; 
+	bool recovering, attack;
+	const double MAX_ENERGY, ENERGY_TO_RUN, DEGENERATE_RUN, REGENERATE_WALK, REGENERATE_IDLE, DEGENERATE_ATTACK; 
 
 };
 

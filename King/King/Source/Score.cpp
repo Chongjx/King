@@ -1,8 +1,9 @@
 #include "Score.h"
 
 Score::Score(void):
-score(0),
-place(0)
+scoreD(0),
+	scoreH(0),
+	scoreM(0)
 {
 
 }
@@ -10,20 +11,39 @@ place(0)
 Score::~Score(void)
 {
 }
-void Score::setScore (int score)
+
+void Score::setScore(int scoreD,int scoreH,int scoreM)
 {
-	this->score=score;
+	this->scoreD=scoreD;
+	this->scoreH=scoreH;
+	this->scoreM = scoreM;
 }
-void Score::setplace (int place)
+void Score::setScoreD (int scoreD)
 {
-	this->place=place;
+	this->scoreD=scoreD;
 }
 
-int Score::getScore (void)
+int Score::getScoreD (void)
 {
-	return score;
+	return scoreD;
 }
-int Score::getplace (void)
+
+void Score::setScoreH (int scoreH)
 {
-	return place;
+	this->scoreH=scoreH;
+}
+
+int Score::getScoreH (void)
+{
+	return scoreH;
+}
+
+void Score::setScoreM (int scoreM)
+{
+	this->scoreM = scoreM;
+}
+
+int Score::getScoreM (void)
+{
+	return scoreM;
 }

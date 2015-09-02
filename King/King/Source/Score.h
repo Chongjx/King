@@ -8,14 +8,21 @@ public:
 	Score(void);
 	~Score(void);
 
-	void setScore (int);
-	void setplace (int);
+	void setScore(int,int,int);
+	void setScoreD (int);
+	void setScoreH (int);
+	void setScoreM (int);
 
-	int getScore (void);
-	int getplace (void);
+
+	int getScoreD (void);
+	int getScoreH (void);
+	int getScoreM (void);
+
 
 private:
-	int score;
+	int scoreD;
+	int scoreH;
+	int scoreM;
 	int place;
 };
 

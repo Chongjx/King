@@ -99,10 +99,7 @@ void SceneGame::Update(double dt)
 		{
 			break;
 		}
-	case OPTIONS_STATE:
-		{
-			break;
-		}
+
 	case PAUSE_STATE:
 		{
 			break;
@@ -156,11 +153,6 @@ void SceneGame::Render(void)
 		{
 			//save(ScoreDirectory);
 			RenderScore();
-			break;
-		}
-	case OPTIONS_STATE:
-		{
-		
 			break;
 		}
 	case PAUSE_STATE:
@@ -1038,7 +1030,6 @@ void SceneGame::InitInterface(string config)
 			"Ingame",
 			"Instruction",
 			"HighScore",
-			"Options",
 			"Pause",
 			"GameOver",
 		};
@@ -1413,15 +1404,30 @@ void SceneGame::InitScore(string config)
 	for (vector<Branch>::iterator branch = ScoreBranch.childBranches.begin(); branch != ScoreBranch.childBranches.end(); ++branch)
 	{
 		Score TempScore;
+		int day =0;
+		int hrs = 0;
+		int min = 0;
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 		{
 			Attribute tempAttri = *attri;
 			string attriName = tempAttri.name;
 			string attriValue = tempAttri.value;
-
-			TempScore.setScore(stoi(attriValue));
-			score.push_back(TempScore);
+			if (attriName == "ScoreD")
+					{
+						day=(stoi(attriValue));
+					}
+					else if (attriName == "ScoreH")
+					{
+							hrs=(stoi(attriValue));
+					}
+					else if (attriName == "ScoreM")
+					{
+							min=(stoi(attriValue));
+					}
 		}
+							
+			TempScore.setScore(day,hrs,min);
+			score.push_back(TempScore);
 	}
 }
 
@@ -1960,12 +1966,6 @@ void SceneGame::UpdateState(void)
 					{
 						changeScene(HIGHSCORE_STATE);
 					}
-
-					else if (gameInterfaces[currentState].buttons[i].getName() == "Options")
-					{
-						changeScene(OPTIONS_STATE);
-					}
-
 					else if (gameInterfaces[currentState].buttons[i].getName() == "Exit")
 					{
 						changeScene(EXIT_STATE);
@@ -1994,14 +1994,6 @@ void SceneGame::UpdateState(void)
 					break;
 				}
 			case HIGHSCORE_STATE:
-				{
-					if (gameInterfaces[currentState].buttons[i].getName() == "Return")
-					{
-						changeScene(MENU_STATE);
-					}
-					break;
-				}
-			case OPTIONS_STATE:
 				{
 					if (gameInterfaces[currentState].buttons[i].getName() == "Return")
 					{
@@ -2849,7 +2841,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2) && tempGuard->getPos().x >= player->getPos().x)
 						{
-							tempGuard->setStun(true);
+							if(player->GetEnergy() > 10)
+							{
+								sound.Play("Sound_Stun");
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -2858,7 +2857,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2) && tempGuard->getPos().x <= player->getPos().x)
 						{
-							tempGuard->setStun(true);
+							if(player->GetEnergy() > 10)
+							{
+								sound.Play("Sound_Stun");
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -2867,7 +2873,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2) && tempGuard->getPos().y >= player->getPos().y)
 						{
-							tempGuard->setStun(true);
+							if(player->GetEnergy() > 10)
+							{
+								sound.Play("Sound_Stun");
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -2876,7 +2889,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if (((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2)) && tempGuard->getPos().y <= player->getPos().y)
 						{
-							tempGuard->setStun(true);
+							if(player->GetEnergy() > 10)
+							{
+								sound.Play("Sound_Stun");
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -3123,8 +3143,8 @@ void SceneGame::RenderScore(void)
 		y_Space += specialFontSize;
 		std::ostringstream ss2;
 		ss2.precision(1);
-		ss2 <<place << ". "<< itr->getScore()<<" Days" <<endl;
-		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, sceneWidth * 0.25f ,sceneHeight - sceneHeight * 0.125f- specialFontSize - y_Space);
+		ss2 <<place << ". "<< itr->getScoreD()<<"Days " << itr->getScoreH()<<"Hrs " << itr->getScoreM()<<"Min" <<endl;
+		RenderTextOnScreen(findMesh("GEO_TEXT"), ss2.str(), findColor("White"), specialFontSize, 0 ,sceneHeight - sceneHeight * 0.125f- specialFontSize - y_Space);
 		place++;
 	}
 	y_Space = specialFontSize * 2;
@@ -3453,6 +3473,12 @@ void SceneGame::UpdateEnergy(double dt)
 	else if(energyScale < 0)
 	{
 		energyScale = 0;
+	}
+
+	if (player->GetAttack() == true)
+	{
+		energyScale -= 10 * 0.85f;
+		energyTranslate -= 10 / 2.5f;
 	}
 }
 
@@ -3807,7 +3833,9 @@ void SceneGame::save (string file)
 	Branch BScore = TextTree::FileToRead(file);
 	Score playerScore;
 
-	playerScore.setScore(day.getCurrentTime().day);
+	playerScore.setScoreD(day.getCurrentTime().day);
+	playerScore.setScoreH(day.getCurrentTime().hour);
+	playerScore.setScoreM(day.getCurrentTime().min);
 
 	score.push_back(playerScore);
 
@@ -3816,25 +3844,48 @@ void SceneGame::save (string file)
 		for (vector<Score>::iterator it2 = score.begin(); it2 != score.end(); ++it2)
 		{
 			Score temp;
-			if (it->getScore() < it2->getScore())   
+			if (it->getScoreD() < it2->getScoreD())   
 			{ 
 				temp = *it2;             
 				*it2 = *it;
 				*it = temp;
+			}
+			else if (it->getScoreD() == it2->getScoreD())   
+			{
+				if (it->getScoreH() < it2->getScoreH())   
+				{ 
+					temp = *it2;             
+					*it2 = *it;
+					*it = temp;
+				}
+				else if (it->getScoreH() == it2->getScoreH())   
+				{ 
+					if (it->getScoreM() < it2->getScoreM())   
+					{ 
+						temp = *it2;             
+						*it2 = *it;
+						*it = temp;
+					}
+				}
+
 			}
 		}
 	}
 
 	score.pop_back();
 
-		int  currentScore = 0;
+	int  currentScore = 0;
 	for (vector<Branch>::iterator branch = BScore.childBranches.begin(); branch != BScore.childBranches.end(); ++branch)
 	{
 		for (vector<Attribute>::iterator attri = branch->attributes.begin(); attri != branch->attributes.end(); ++attri)
 		{
 			Attribute tempAttri = *attri;
-			if (attri->name=="Score")
-			attri->value= to_string((long double)score[currentScore].getScore());
+			if (attri->name=="ScoreD")
+				attri->value= to_string((long double)score[currentScore].getScoreD());
+			if (attri->name=="ScoreH")
+				attri->value= to_string((long double)score[currentScore].getScoreH());
+			if (attri->name=="ScoreM")
+				attri->value= to_string((long double)score[currentScore].getScoreM());
 		}
 		currentScore++;
 	}

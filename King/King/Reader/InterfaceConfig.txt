@@ -35,21 +35,11 @@
 		[Mesh] GEO_TEXT
 	}
 	{
-		[NAME] Options
-		[GameState] Menu
-		[Type] Text
-		[Text] Options
-		[Pos] 300, 250
-		[Rotation] 0
-		[Scale] 500, 55
-		[Mesh] GEO_TEXT
-	}
-	{
 		[NAME] Exit
 		[GameState] Menu
 		[Type] Text
 		[Text] Exit
-		[Pos] 400, 150
+		[Pos] 400, 250
 		[Rotation] 0
 		[Scale] 270, 55
 		[Mesh] GEO_TEXT
@@ -69,17 +59,6 @@
 	{
 		[NAME] Return
 		[GameState] HighScore
-		[Type] Text
-		[Text] Back
-		[Pos] 0, 0
-		[Rotation] 0
-		[Scale] 270, 55
-		[Mesh] GEO_TEXT
-	}
-	# options interface
-	{
-		[NAME] Return
-		[GameState] Options
 		[Type] Text
 		[Text] Back
 		[Pos] 0, 0
