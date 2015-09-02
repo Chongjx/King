@@ -2835,9 +2835,15 @@ void SceneGame::UpdatePlayer(double dt)
 					if (player->getDir().x == 1)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
-						{
-							sound.Play("Sound_Stun");
-							tempGuard->setStun(true);
+						{	
+							if(player->GetEnergy() > 10)
+							{
+								sound.Play("Sound_Stun");
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -2846,8 +2852,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
 						{
+							if(player->GetEnergy() > 10)
+							{
 								sound.Play("Sound_Stun");
-							tempGuard->setStun(true);
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -2856,8 +2868,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE))
 						{
+							if(player->GetEnergy() > 10)
+							{
 								sound.Play("Sound_Stun");
-							tempGuard->setStun(true);
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -2866,8 +2884,14 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE * 2))
 						{
+							if(player->GetEnergy() > 10)
+							{
 								sound.Play("Sound_Stun");
-							tempGuard->setStun(true);
+								player->SetAttack(true);
+								tempGuard->setStun(true);
+								energyScale -= 5 * 0.85f;
+								energyTranslate -= 5 / 2.5f;
+							}
 							break;
 						}
 					}
@@ -3444,6 +3468,12 @@ void SceneGame::UpdateEnergy(double dt)
 	else if(energyScale < 0)
 	{
 		energyScale = 0;
+	}
+
+	if (player->GetAttack() == true)
+	{
+		energyScale -= 10 * 0.85f;
+		energyTranslate -= 10 / 2.5f;
 	}
 }
 

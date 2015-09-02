@@ -3,9 +3,11 @@
 Player::Player() :
 	energy(100)
 	, recovering(false)
+	, attack(false)
 	, MAX_ENERGY(100)
 	, ENERGY_TO_RUN(25.0)
 	, DEGENERATE_RUN(20)
+	, DEGENERATE_ATTACK(5)
 	, REGENERATE_WALK(8)
 	, REGENERATE_IDLE(10) 
 {
@@ -84,6 +86,12 @@ void Player::UpdateEnergy(double dt)
 		}
 	}
 
+	if (attack == true)
+	{
+		energy -= DEGENERATE_ATTACK;
+		attack = false;
+	}
+
 	if ( recovering == true )
 	{
 		if(energy > ENERGY_TO_RUN)
@@ -102,6 +110,16 @@ void Player::Recovering()
 bool Player::GetRecovering(void)
 {
 	return recovering;
+}
+
+void Player::SetAttack(bool attack)
+{
+	this->attack = attack;
+}
+
+bool Player::GetAttack(void)
+{
+	return attack;
 }
 
 void Player::ConstrainPlayer(double dt) /* parameters to be added */
