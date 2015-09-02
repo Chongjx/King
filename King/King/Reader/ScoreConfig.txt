@@ -3,37 +3,37 @@
 
 	{
 		[NAME] 
-		[ScoreD] 2
-		[ScoreH] 16
-		[ScoreM] 16
+		[ScoreD] 10
+		[ScoreH] 0
+		[ScoreM] 0
 
 	}
 	{
 		[NAME] 
-		[ScoreD] 2
-		[ScoreH] 18
-		[ScoreM] 11
+		[ScoreD] 10
+		[ScoreH] 0
+		[ScoreM] 0
 
 	}
 	{
 		[NAME] 
-		[ScoreD] 2
-		[ScoreH] 18
-		[ScoreM] 14
+		[ScoreD] 10
+		[ScoreH] 0
+		[ScoreM] 0
 
 	}
 	{
 		[NAME] 
-		[ScoreD] 2
-		[ScoreH] 19
-		[ScoreM] 41
+		[ScoreD] 10
+		[ScoreH] 0
+		[ScoreM] 0
 
 	}
 	{
 		[NAME] 
-		[ScoreD] 2
-		[ScoreH] 20
-		[ScoreM] 18
+		[ScoreD] 10
+		[ScoreH] 0
+		[ScoreM] 0
 
 	}
 }
