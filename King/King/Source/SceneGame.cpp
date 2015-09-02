@@ -2871,6 +2871,7 @@ void SceneGame::UpdateAI(double dt)
 					if (tempGuardII->getRoom() == layout[currentLocation])
 					{
 						tempGuardII->ResetPos();
+						tempGuardII->setChase("false");
 					}
 				}
 

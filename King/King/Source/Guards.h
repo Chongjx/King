@@ -30,6 +30,7 @@ public:
 	void CheckChase(Vector2 playerPos, int tileSize, double dt);
 	bool CheckSight(Vector2 playerPos, int tileSize, double dt);
 	bool getChase (void);
+	void setChase(bool);
 
 	void setStun(bool stun);
 	bool getStun(void);

@@ -773,6 +773,11 @@ bool Guards::getChase (void)
 	return chase;
 }
 
+void Guards::setChase (bool chase)
+{
+	this->chase = chase;
+}
+
 void Guards::setStun(bool stun)
 {
 	this->stun = stun;
