@@ -2836,6 +2836,7 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
 						{
+							sound.Play("Sound_Stun");
 							tempGuard->setStun(true);
 							break;
 						}
@@ -2845,6 +2846,7 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
 						{
+								sound.Play("Sound_Stun");
 							tempGuard->setStun(true);
 							break;
 						}
@@ -2854,6 +2856,7 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE))
 						{
+								sound.Play("Sound_Stun");
 							tempGuard->setStun(true);
 							break;
 						}
@@ -2863,6 +2866,7 @@ void SceneGame::UpdatePlayer(double dt)
 					{
 						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE * 2))
 						{
+								sound.Play("Sound_Stun");
 							tempGuard->setStun(true);
 							break;
 						}
