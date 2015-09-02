@@ -2815,6 +2815,16 @@ void SceneGame::UpdateAI(double dt)
 				day.incrementDay();
 				player->ResetPos();
 				player->setRoom(layout[CELL_AREA]);
+
+				for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+				{
+					Guards* tempGuardII = *guard;
+					if (tempGuardII->getRoom() == layout[currentLocation])
+					{
+						tempGuardII->ResetPos();
+					}
+				}
+
 				currentLocation = CELL_AREA;
 			}
 		}
