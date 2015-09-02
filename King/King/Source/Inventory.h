@@ -17,6 +17,7 @@ public:
 	bool addItem(CItem* itemToAdd);
 	void removeItem(int indexToRemove);
 	void swapItem(int item1Index, int item2Index);
+	void clear(void);
 
 	vector<CItem*> getVecOfItems(void);
 };

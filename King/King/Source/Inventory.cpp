@@ -35,6 +35,11 @@ void CInventory::swapItem(int item1Index, int item2Index)
 	std::iter_swap(myInventory.at(item1Index), myInventory.at(item2Index));
 }
 
+void CInventory::clear(void)
+{
+	myInventory.clear();
+}
+
 vector<CItem*> CInventory::getVecOfItems(void)
 {
 	return this->myInventory;

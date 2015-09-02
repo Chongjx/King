@@ -37,6 +37,11 @@ void Player::Update(double dt)
 	UpdateEnergy(dt);
 }
 
+void Player::setEnergy(double energy)
+{
+	this->energy = energy;
+}
+
 double Player::GetEnergy()
 {
 	return energy;

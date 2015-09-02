@@ -75,6 +75,7 @@ class SceneGame : public Scene2D
 		INSTRUCTION_STATE,
 		HIGHSCORE_STATE,
 		PAUSE_STATE,
+		ENDGAME_STATE,
 		EXIT_STATE,
 		MAX_STATE,
 	};
@@ -142,6 +143,7 @@ public:
 	void Update(double dt);
 	void Render(void);
 	void Exit(void);
+	void ReInit(void);
 
 	void Config(void);
 	void InitShaders(void);
@@ -195,6 +197,7 @@ public:
 	void RenderFOV(void);
 	void RenderDialogs(void);
 	void RenderScore(void);
+	void RenderGameOver(void);
 
 	void FOV(void);
 	bool doFOV(Vector2 pos);
@@ -265,6 +268,8 @@ private:
 	Score CurrentScore;
 
 	bool gUni;
+	int inventorySize;
+	int tempInvSize;
 };
 
 #endif
