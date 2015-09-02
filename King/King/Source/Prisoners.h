@@ -18,7 +18,12 @@ public:
 	// Update the character
 	void Update(int worldWidth, int worldHeight, int tileSize, double dt);
 
+	void SetTalking(bool talking);
+	bool GetTalking(void);
+
 	void Patrolling(int tileSize, double dt);
+	void Talking(int tileSize, double dt);
+
 
 	void changeAni(Prisoners_StateMachine::PRISONER_STATE unitState);
 
@@ -27,6 +32,7 @@ private:
 	//StateMachine object
 	Prisoners_StateMachine prisonerStateMachine;
 	double randTimer;
+	bool talking;
 
 };
 

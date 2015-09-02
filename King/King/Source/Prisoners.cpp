@@ -2,6 +2,7 @@
 
 Prisoners::Prisoners(void)
 	: randTimer(0.0)
+	, talking(false)
 {
 
 }
@@ -28,8 +29,20 @@ void Prisoners::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 	if(GetUpdate() == true)
 	{
 		AI::Update(dt);
+		tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
+		
 		Patrolling(tileSize, dt);
 	}
+}
+
+void Prisoners::SetTalking(bool talking)
+{
+	this->talking = talking;
+}
+
+bool Prisoners::GetTalking(void)
+{
+	return talking;
 }
 
 void Prisoners::Patrolling(int tileSize, double dt)

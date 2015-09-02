@@ -1848,6 +1848,29 @@ void SceneGame::InitInteractions(string config)
 				tempDialogs.InitDialogs(tempID,tempText);
 				dialogs.push_back(tempDialogs);
 			}
+			else if (branch->branchName == "PrisonerDialog")
+			{
+				Dialogs tempDialogs;
+				int tempID;
+				string tempText;
+				for (vector<Attribute>::iterator attri = childbranch->attributes.begin(); attri != childbranch->attributes.end(); ++attri)
+				{
+					Attribute tempAttri = *attri;
+					string attriName = tempAttri.name;
+					string attriValue = tempAttri.value;
+
+					if (attriName == "ID")
+					{
+						tempID = stoi(attriValue);
+					}
+					else if(attriName == "Text")
+					{
+						tempText = attriValue;
+					}
+				}
+				tempDialogs.InitDialogs(tempID,tempText);
+				dialogs.push_back(tempDialogs);
+			}
 			else if (branch->branchName == "Setting")
 			{
 				Dialogs tempDialogs;
@@ -2536,6 +2559,68 @@ void SceneGame::UpdatePlayer(double dt)
 				}
 			}
 		}
+		if (getKey("Select") || getKey("Enter"))
+		{
+			bool talk = false;
+
+			for (vector<Prisoners*>::iterator prisoner = prisonerList.begin(); prisoner != prisonerList.end(); ++prisoner)
+			{
+				Prisoners* tempPrisoner = *prisoner;
+
+				Vector2 nextTile;
+
+				if (player->getDir().x == 1)
+				{
+					nextTile.Set(player->getPos().x + TILESIZE, player->getPos().y);
+
+					if(nextTile == tempPrisoner->getTargetPos())
+					{
+						tempPrisoner->setDir(Vector2(-1,0));
+						talk = true;
+						break;
+					}
+				}
+				else if (player->getDir().x == -1)
+				{
+					nextTile.Set(player->getPos().x - TILESIZE, player->getPos().y);
+
+					if(nextTile == tempPrisoner->getTargetPos())
+					{
+						tempPrisoner->setDir(Vector2(1,0));
+						talk = true;
+						break;
+					}
+				}
+				else if (player->getDir().y == 1)
+				{
+					nextTile.Set(player->getPos().x, player->getPos().y + TILESIZE);
+
+					if(nextTile == tempPrisoner->getTargetPos())
+					{
+						tempPrisoner->setDir(Vector2(0,-1));
+						talk = true;
+						break;
+					}
+				}
+				else if (player->getDir().y == -1)
+				{
+					nextTile.Set(player->getPos().x, player->getPos().y - TILESIZE);
+
+					if(nextTile == tempPrisoner->getTargetPos())
+					{
+						tempPrisoner->setDir(Vector2(0,1));
+						talk = true;
+						break;
+					}
+				}
+			}
+
+			if(talk == true)
+			{
+				Dialog_ID temp = (Dialog_ID)Math::RandIntMinMax(51,62);
+				UpdateDialog(temp);
+			}
+		}
 	}
 
 	// convert player from world pos to screen pos
@@ -2815,8 +2900,7 @@ void SceneGame::UpdateAI(double dt)
 		{
 			tempPrisoner->setRender(false);
 		}
-		//tempPrisoner->PathFinding((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
-		tempPrisoner->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
+
 		tempPrisoner->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	}
 

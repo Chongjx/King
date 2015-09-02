@@ -6,11 +6,11 @@
 		[NAME] WeaDialog
 		{
 			[ID] 1
-			[Text] DUMBBELL_AQUIRED
+			[Text] Dumbbell_AQUIRED
 		}
 		{
 			[ID] 2
-			[Text] WATERGUN_ACQUIRED
+			[Text] Watergun_ACQUIRED
 		}
 		{
 			[ID] 3
@@ -46,7 +46,7 @@
 		}
 		{
 			[ID] 23
-			[Text] I_Need_A_CellKey_To_Unlock_This_Door
+			[Text] I_Need_A_Key
 		}
 		{
 			[ID] 24
@@ -67,6 +67,57 @@
 		{
 			[ID] 28
 			[Text] I'm_Out_Of_This_Place!
+		}
+	}
+	{
+		[NAME] PrisonerDialog
+		{
+			[ID] 51
+			[Text] You_See_My_Matches?
+		}
+		{
+			[ID] 52
+			[Text] Gonna_Execise_Soon...
+		}
+		{
+			[ID] 53
+			[Text] Guard_Lost_Card_Here.
+		}
+		{
+			[ID] 54
+			[Text] CCTV_Is_Watching_You.
+		}
+		{
+			[ID] 55
+			[Text] Here_Got_5_Main_Area.
+		}
+		{
+			[ID] 56
+			[Text] Squirtle_Use_Water_Gun.
+		}
+		{
+			[ID] 57
+			[Text] I_Once_Stunned_A_Guard.
+		}
+		{
+			[ID] 58
+			[Text] I_More_Thug_Than_You.
+		}
+		{
+			[ID] 59
+			[Text] What_You_Doing_Here_Boy.
+		}
+		{
+			[ID] 60
+			[Text] Got_Any_Weed_Bruh?
+		}
+		{
+			[ID] 61
+			[Text] BANANA!?!?!?
+		}
+		{
+			[ID] 62
+			[Text] Be_Careful_At_Night.
 		}
 	}
 	{
