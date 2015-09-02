@@ -3,27 +3,37 @@
 
 	{
 		[NAME] 
-		[Score] 4
+		[ScoreD] 4
+		[ScoreH] 4
+		[ScoreM] 0
 
 	}
 	{
 		[NAME] 
-		[Score] 5
+		[ScoreD] 4
+		[ScoreH] 4
+		[ScoreM] 1
 
 	}
 	{
 		[NAME] 
-		[Score] 6
+		[ScoreD] 4
+		[ScoreH] 4
+		[ScoreM] 2
 
 	}
 	{
 		[NAME] 
-		[Score] 7
+		[ScoreD] 4
+		[ScoreH] 4
+		[ScoreM] 3
 
 	}
 	{
 		[NAME] 
-		[Score] 8
+		[ScoreD] 4
+		[ScoreH] 4
+		[ScoreM] 4
 
 	}
 }
