@@ -2401,16 +2401,17 @@ void SceneGame::UpdateFOV(void)
 {
 	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
 	{
-		if (findItem("Matches"))
-		{
-			TargetFOV = 5;
-		}
-
-		else if (findItem("Matches"))
+		if (findItem("Torchlight"))
 		{
 			TargetFOV =7;
 		}
 
+		else  if (findItem("Matches"))
+		{
+			TargetFOV = 5;
+		}
+
+		
 		else
 		{
 			TargetFOV=BaseFOV;
@@ -2435,7 +2436,7 @@ void SceneGame::UpdateFOV(void)
 			}
 			else
 			{
-				player->SetFOV(player->GetFOV() - 1);	
+				player->SetFOV(player->GetFOV() - 1);
 			}
 		}
 	}
@@ -2734,6 +2735,15 @@ void SceneGame::UpdatePlayer(double dt)
 			std::cout << "End game" << endl;
 			changeScene(SceneGame::MENU_STATE);
 		}
+	}
+
+	if(findItem("GuardUniform"))
+	{
+		player->setSprite(dynamic_cast <SpriteAnimation*> (findMesh("GEO_GUARD")));
+	}
+	else
+	{
+		player->setSprite( dynamic_cast <SpriteAnimation*> (findMesh("GEO_PLAYER")));
 	}
 
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
@@ -3121,7 +3131,8 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
-	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+
+			Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 	/*std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
