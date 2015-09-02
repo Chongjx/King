@@ -80,12 +80,10 @@ void SceneGame::ReInit(void)
 				{
 					if(layout[CELL_AREA]->roomLayout[TileMap::TYPE_COLLISION].screenMap[i][k] == layout[CELL_AREA]->specialTiles[special].TileID)
 					{
-						std::cout << "open door" << std::endl;
 						for (unsigned numDoors = 0; numDoors < layout[CELL_AREA]->specialTiles.size(); ++numDoors)
 						{
 							if (layout[CELL_AREA]->specialTiles[numDoors].TileName == "CellDoorClosed")
 							{
-								std::cout << "close door" << std::endl;
 								layout[CELL_AREA]->roomLayout[TileMap::TYPE_COLLISION].screenMap[i][k] = layout[CELL_AREA]->specialTiles[numDoors].TileID;
 								layout[CELL_AREA]->roomLayout[TileMap::TYPE_VISUAL].screenMap[i][k] = layout[CELL_AREA]->specialTiles[numDoors].TileID;
 							}
@@ -211,11 +209,25 @@ void SceneGame::Update(double dt)
 	UpdateState();
 	UpdateEffect();
 	// Update buttons
-	for (unsigned i = 0; i < gameInterfaces[currentState].buttons.size(); ++i)
-	{
-		gameInterfaces[currentState].buttons[i].Update(getKey("Select"), mousePos.x, mousePos.y);
-	}
 
+	for (unsigned gameState = 0; gameState < MAX_STATE; ++gameState)
+	{
+		if (gameState == currentState)
+		{
+			for (unsigned i = 0; i < gameInterfaces[gameState].buttons.size(); ++i)
+			{
+				gameInterfaces[gameState].buttons[i].Update(getKey("Select"), mousePos.x, mousePos.y);
+			}
+		}
+
+		else
+		{
+			for (unsigned i = 0; i < gameInterfaces[gameState].buttons.size(); ++i)
+			{
+				gameInterfaces[gameState].buttons[i].setStatus(Buttons::BUTTON_IDLE);
+			}
+		}
+	}
 	switch(currentState)
 	{
 	case MENU_STATE:
@@ -2104,9 +2116,7 @@ void SceneGame::UpdateState(void)
 				{
 					if (gameInterfaces[currentState].buttons[i].getName() == "Play")
 					{
-						
 						ReInit();
-
 						changeScene(INGAME_STATE);
 					}
 
@@ -2173,6 +2183,7 @@ void SceneGame::UpdateState(void)
 					{
 						changeScene(HIGHSCORE_STATE);
 					}
+					break;
 				}
 			case EXIT_STATE:
 				{
@@ -2226,7 +2237,6 @@ void SceneGame::UpdateEffect(void)
 
 void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, double mouseX, double mouseY, double dt)
 {
-	cout << player->getInventory().getVecOfItems().size() << endl;
 	if (findItem("AccessCard"))
 	{
 		for (int numRooms = 0; numRooms < MAX_AREAS; ++numRooms)
@@ -2565,7 +2575,7 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 void SceneGame::UpdateInGame(double dt)
 {
 	UpdatePlayer(dt);
-	UpdateAI(dt);
+	//UpdateAI(dt);
 	UpdatePlayerInventory(getKey("Select"), getKey("Enter"), mousePos.x, mousePos.y, dt);
 	UpdateInteractions(dt);
 	day.UpdateDay(dt,gameSpeed);
@@ -2974,22 +2984,26 @@ void SceneGame::UpdatePlayer(double dt)
 			{
 				if(layout[currentLocation]->roomLayout[TileMap::TYPE_COLLISION].screenMap[(int)playerPosToScreen.y][(int)playerPosToScreen.x] == layout[currentLocation]->specialTiles[special].TileID)
 				{
+					save(ScoreDirectory);
 					changeScene(SceneGame::ENDGAME_STATE);
 				}
 			}
 		}
 	}
 
-	if(findItem("GuardUniform"))
+	static bool uniform = false;
+
+	if(findItem("GuardUniform") && !uniform)
 	{
 		player->setSprite(dynamic_cast <SpriteAnimation*> (findMesh("GEO_GUARD")));
+		uniform = true;
 	}
-	else
+	else if (!findItem("GuardUniform") && uniform)
 	{
 		player->setSprite( dynamic_cast <SpriteAnimation*> (findMesh("GEO_PLAYER")));
 	}
 
-	if (getKey("Select"))
+	if (getKey("Select") || getKey("Enter"))
 	{
 		if (findItem("Dumbbell") || findItem("WaterGun"))
 		{
@@ -3463,7 +3477,7 @@ void SceneGame::RenderLevel(void)
 void SceneGame::RenderCharacters(void)
 {
 
-			Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 	/*std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
@@ -3670,7 +3684,7 @@ void SceneGame::RenderDialogs(void)
 void SceneGame::RenderGameOver(void)
 {
 	std::ostringstream currentScore;
-	currentScore << day.getCurrentTime().day << "DAY(S), " << day.getCurrentTime().hour << "HOUR(S), " << day.getCurrentTime().min << "MIN(S)";
+	currentScore << day.getCurrentTime().day << "DAY(S), " << day.getCurrentTime().hour << "HOUR(S), " << (int)day.getCurrentTime().min << "MIN(S)";
 
 	string gameOverText = "SUCCESSFULLY ESCAPED!";
 	RenderTextOnScreen(findMesh("GEO_TEXT"), gameOverText, findColor("White"), specialFontSize, 0, sceneHeight * 0.8f);
@@ -4062,6 +4076,6 @@ void SceneGame::save (string file)
 		}
 		currentScore++;
 	}
-	BScore.printBranch();
+	//BScore.printBranch();
 	TextTree::FileToWrite(file, BScore);
 }
