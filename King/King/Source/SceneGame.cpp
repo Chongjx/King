@@ -141,8 +141,8 @@ void SceneGame::Render(void)
 			RenderPlayerInventory(renderInventory);
 			RenderObjectives();
 			RenderDialogs();
-			RenderItemOnMouse(getKey("Select"));
 			RenderCursor();
+			RenderItemOnMouse(getKey("Select"));
 			RenderEnergy();
 
 			break;
@@ -1788,6 +1788,7 @@ void SceneGame::InitItem(string config)
 	indexItem1 = 0;
 	indexItem2 = 0;
 	renderInventory = true;
+	gUni = false;
 }
 
 void SceneGame::InitInteractions(string config)
@@ -2372,6 +2373,17 @@ void SceneGame::UpdatePlayerInventory(bool mousePressed, bool keyboardPressed, d
 			}
 		}
 	}
+	for (vector<CItem*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+	{
+		CItem* item = *(it);
+		if (item->getItemID() == 3)
+		{
+			if (item->getItemStatus() == CItem::ITEM_ININVENTORY)
+				gUni = true;
+			else
+				gUni = false;
+		}
+	}
 }
 
 void SceneGame::UpdateInGame(double dt)
@@ -2389,16 +2401,17 @@ void SceneGame::UpdateFOV(void)
 {
 	if(day.getCurrentTime().hour >= 18 || day.getCurrentTime().hour >= 0 && day.getCurrentTime().hour <6)	//Night
 	{
-		if (findItem("Matches"))
-		{
-			TargetFOV = 5;
-		}
-
-		else if (findItem("Matches"))
+		if (findItem("Torchlight"))
 		{
 			TargetFOV =7;
 		}
 
+		else  if (findItem("Matches"))
+		{
+			TargetFOV = 5;
+		}
+
+		
 		else
 		{
 			TargetFOV=BaseFOV;
@@ -2423,7 +2436,7 @@ void SceneGame::UpdateFOV(void)
 			}
 			else
 			{
-				player->SetFOV(player->GetFOV() - 1);	
+				player->SetFOV(player->GetFOV() - 1);
 			}
 		}
 	}
@@ -2707,10 +2720,30 @@ void SceneGame::UpdatePlayer(double dt)
 						break;
 					}
 				}
-
 				break;
 			}
 		}
+	}
+
+	//end game
+	if (layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getID() == SceneGame::COURTYARD_AREA)
+	{
+		if (player->getPos().y == 768
+			&& player->getPos().x >= 1024
+			&& player->getPos().x <= 1088)
+		{
+			std::cout << "End game" << endl;
+			changeScene(SceneGame::MENU_STATE);
+		}
+	}
+
+	if(findItem("GuardUniform"))
+	{
+		player->setSprite(dynamic_cast <SpriteAnimation*> (findMesh("GEO_GUARD")));
+	}
+	else
+	{
+		player->setSprite( dynamic_cast <SpriteAnimation*> (findMesh("GEO_PLAYER")));
 	}
 
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
@@ -2764,7 +2797,10 @@ void SceneGame::UpdateAI(double dt)
 
 		if (tempGuard->GetUpdate())
 		{
-			tempGuard->CheckChase(player->getTargetPos(), TILESIZE, dt);	
+			if (gUni == false)
+			{
+				tempGuard->CheckChase(player->getTargetPos(), TILESIZE, dt);
+			}
 			tempGuard->Update((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 
 			if (tempGuard->getChase() != firstChase && tempGuard->getChase())
@@ -3095,7 +3131,8 @@ void SceneGame::RenderLevel(void)
 
 void SceneGame::RenderCharacters(void)
 {
-	Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
+
+			Render2DMesh(player->getSprite(), false, (float)TILESIZE * 1.5f, player->getPos().x + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX(), player->getPos().y + TILESIZE * 0.5f - layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY());
 
 	/*std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapOffsetY() << std::endl;
 	std::cout << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetX() << ", " << layout[currentLocation]->roomLayout[TileMap::TYPE_VISUAL].getMapFineOffsetY() << std::endl;*/
