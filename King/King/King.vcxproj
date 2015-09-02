@@ -88,7 +88,6 @@
     <ClCompile Include="Source\Day.cpp" />
     <ClCompile Include="Source\Dialogs.cpp" />
     <ClCompile Include="Source\GameObject2D.cpp" />
-    <ClCompile Include="Source\GhettoParticle.cpp" />
     <ClCompile Include="Source\Guards.cpp" />
     <ClCompile Include="Source\Guards_StateMachine.cpp" />
     <ClCompile Include="Source\Instructions.cpp" />
@@ -132,7 +131,6 @@
     <ClInclude Include="Source\Day.h" />
     <ClInclude Include="Source\Dialogs.h" />
     <ClInclude Include="Source\GameObject2D.h" />
-    <ClInclude Include="Source\GhettoParticle.h" />
     <ClInclude Include="Source\Guards.h" />
     <ClInclude Include="Source\Guards_StateMachine.h" />
     <ClInclude Include="Source\Instructions.h" />

@@ -3,6 +3,8 @@
 Guards::Guards(void)
 	: chase(false)
 	, checkTimer(0.0)
+	, stunTimer(1.0)
+	, stun(false)
 {
 }
 
@@ -22,26 +24,63 @@ void Guards::Init(Vector2 pos, Vector2 dir, SpriteAnimation* sa, int tiles, Room
 	this->destination = pos;
 	this->changeAni(Guards_StateMachine::IDLE_STATE);
 	AI::Init();
-
-	for (int i = 0; i < 100; ++i)
-	{
-		GhettoParticle *po = new GhettoParticle(GhettoParticle::PO_DETECTOR);
-		m_poList.push_back(po);
-	}
-
 }
 
 void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 {
 	if(GetUpdate() == true)
 	{
-		if (chase == false)
+		if (stun && checkTimer < stunTimer)
 		{
-			Patrolling(worldWidth, worldHeight, tileSize, dt);
+			std::cout << checkTimer << std::endl;
+			checkTimer += dt;
+
+			Character::changeAni(StateMachine::IDLE_STATE);
+			this->changeAni(Guards_StateMachine::IDLE_STATE);
+			
+			int dir = Math::RandIntMinMax(1, 4);
+
+			switch (dir)
+			{
+			case 1:
+				{
+					this->dir.Set(1, 0);
+					break;
+				}
+			case 2:
+				{
+					this->dir.Set(-1, 0);
+					break;
+				}
+			case 3:
+				{
+					this->dir.Set(0, 1);
+					break;
+				}
+			case 4:
+				{
+					this->dir.Set(0, -1);
+					break;
+				}
+			}
+
+			if (checkTimer >= stunTimer)
+			{
+				stun = false;
+				checkTimer = 0;
+			}
 		}
+
 		else
 		{
-			Chasing(worldWidth, worldHeight, tileSize, dt);
+			if (chase == false)
+			{
+				Patrolling(worldWidth, worldHeight, tileSize, dt);
+			}
+			else
+			{
+				Chasing(worldWidth, worldHeight, tileSize, dt);
+			}
 		}
 
 		AI::Update(dt);
@@ -92,26 +131,6 @@ void Guards::CheckChase(Vector2 playerPos, int tileSize, double dt)
 	{
 		this->chase = false;
 	}
-}
-
-GhettoParticle* Guards::FetchPO()
-{
-	for (std::vector<GhettoParticle *>::iterator it = m_poList.begin(); it != m_poList.end(); ++it)
-	{
-		GhettoParticle *po = (GhettoParticle *) * it;
-		if (po->active == false)
-		{
-			po->active = true;
-			return po;
-		}
-	}
-
-	for (int i = 0; i < 10; i++)
-	{
-		GhettoParticle *po = new GhettoParticle(GhettoParticle::PO_DETECTOR);
-		m_poList.push_back(po);
-	}
-	return m_poList[m_poList.size() - 1];
 }
 
 bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
@@ -752,4 +771,14 @@ bool Guards::tileBasedMovement(int worldWidth, int worldHeight, int tileSize, do
 bool Guards::getChase (void)
 {
 	return chase;
+}
+
+void Guards::setStun(bool stun)
+{
+	this->stun = stun;
+}
+
+bool Guards::getStun(void)
+{
+	return stun;
 }

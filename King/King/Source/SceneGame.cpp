@@ -2746,6 +2746,55 @@ void SceneGame::UpdatePlayer(double dt)
 		player->setSprite( dynamic_cast <SpriteAnimation*> (findMesh("GEO_PLAYER")));
 	}
 
+	if (getKey("Select"))
+	{
+		if (findItem("Dumbbell") || findItem("WaterGun"))
+		{
+			for (vector<Guards*>::iterator guard = guardList.begin(); guard != guardList.end(); ++guard)
+			{
+				Guards* tempGuard = *guard;
+				if (tempGuard->getRoom() == layout[currentLocation])
+				{
+					if (player->getDir().x == 1)
+					{
+						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
+						{
+							tempGuard->setStun(true);
+							break;
+						}
+					}
+
+					else if (player->getDir().x == -1)
+					{
+						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
+						{
+							tempGuard->setStun(true);
+							break;
+						}
+					}
+
+					else if (player->getDir().y == 1)
+					{
+						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE))
+						{
+							tempGuard->setStun(true);
+							break;
+						}
+					}
+
+					else if (player->getDir().y == -1)
+					{
+						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE * 2))
+						{
+							tempGuard->setStun(true);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	player->tileBasedMovement((int)sceneWidth, (int)sceneHeight, TILESIZE, dt);
 	player->ConstrainPlayer(dt);
 	player->Update(dt);

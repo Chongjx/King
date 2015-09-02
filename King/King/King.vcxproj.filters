@@ -93,7 +93,7 @@
     <Filter Include="Source Files\2D\StateMachine">
       <UniqueIdentifier>{90168942-ce88-438c-a097-2956f3845d2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Misc\Resource Files">
+    <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
@@ -221,9 +221,6 @@
     </ClCompile>
     <ClCompile Include="Source\Score.cpp">
       <Filter>Source Files\Day System</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GhettoParticle.cpp">
-      <Filter>Source Files\2D\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,9 +358,6 @@
     </ClInclude>
     <ClInclude Include="Source\Score.h">
       <Filter>Header Files\Day System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GhettoParticle.h">
-      <Filter>Header Files\2D\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
