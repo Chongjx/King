@@ -183,7 +183,7 @@ bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 					{
 						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
 						{
-							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize + i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
 							{
 								return false;
 							}
@@ -204,7 +204,7 @@ bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 					{
 						if (currentRoom->specialTiles[special].TileName == "Wall" || currentRoom->specialTiles[special].TileName == "CellDoorClosed")
 						{
-							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize - i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
+							if (currentRoom->roomLayout[TileMap::TYPE_COLLISION].screenMap[currentRoom->roomLayout[TileMap::TYPE_COLLISION].getNumTilesHeight() - (int)pos.y / tileSize + i][(int) pos.x / tileSize + j] == currentRoom->specialTiles[special].TileID)
 							{
 								return false;
 							}
@@ -220,64 +220,42 @@ bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 
 void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 {
+	if (Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
+	{
+		pos.x = destination.x;
+		targetPos.x = pos.x;
+	}
+
+	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
+	{
+		pos.y = destination.y;
+		targetPos.y = pos.y;
+	}
+
 	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
 	{
 		pos = destination;
 		targetPos = pos;
 	}
 
-	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f && Math::FAbs(targetPos.x - pos.x) < tileSize * 0.2f)
 	{
-		if (checkNextTile(Vector2(pos.x + tileSize, pos.y)))
-		{
-			targetPos.Set(targetPos.x + tileSize, targetPos.y);
-		}
-		else
-		{
-			if(destination.y >= pos.y)
-			{
-				targetPos.Set(targetPos.x, targetPos.y + tileSize);
-			}
-
-			else
-			{
-				targetPos.Set(targetPos.x, targetPos.y - tileSize);
-			}
-		}
+		targetPos.Set(targetPos.x + tileSize, targetPos.y);
 	}
 
-	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f && Math::FAbs(targetPos.x - pos.x) < tileSize * 0.2f)
 	{
-		if (checkNextTile(Vector2(pos.x - tileSize, pos.y)))
-		{
-			targetPos.Set(targetPos.x - tileSize, targetPos.y);
-		}
-		else
-		{
-			if(destination.y >= pos.y)
-			{
-				targetPos.Set(targetPos.x, targetPos.y + tileSize);
-			}
-
-			else
-			{
-				targetPos.Set(targetPos.x, targetPos.y - tileSize);
-			}
-		}
+		targetPos.Set(targetPos.x - tileSize, targetPos.y);
 	}
 
-	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f && Math::FAbs(targetPos.y - pos.y) < tileSize * 0.2f)
 	{
-		pos.x = destination.x;
-		targetPos.x = pos.x;
-		targetPos.Set(pos.x, pos.y + tileSize);
+		targetPos.Set(targetPos.x, targetPos.y + tileSize);
 	}
 
-	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f && Math::FAbs(targetPos.y - pos.y) < tileSize * 0.2f)
 	{
-		pos.x = destination.x;
-		targetPos.x = pos.x;
-		targetPos.Set(pos.x, pos.y - tileSize);
+		targetPos.Set(targetPos.x, targetPos.y - tileSize);
 	}
 
 	if (destination != pos)
@@ -308,58 +286,40 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 		while (CheckDestination() == false);
 	}
 
+	if (Math::FAbs(destination.x - pos.x) < size.x * 0.25f)
+	{
+		pos.x = destination.x;
+		targetPos.x = pos.x;
+	}
+
+	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f)
+	{
+		pos.y = destination.y;
+		targetPos.y = pos.y;
+	}
+
 	if (Math::FAbs(destination.y - pos.y) < size.y * 0.2f && Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
 	{
 		pos = destination;
 		targetPos = pos;
 	}
 
-	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f && Math::FAbs(targetPos.x - pos.x) < tileSize * 0.2f)
 	{
-		if (checkNextTile(Vector2(pos.x + tileSize, pos.y)))
-		{
-			targetPos.Set(targetPos.x + tileSize, targetPos.y);
-		}
-		else
-		{
-			if(destination.y > pos.y)
-			{
-				targetPos.Set(targetPos.x, targetPos.y + tileSize);
-			}
-
-			else
-			{
-				targetPos.Set(targetPos.x, targetPos.y - tileSize);
-			}
-		}
+		targetPos.Set(targetPos.x + tileSize, targetPos.y);
 	}
 
-	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f)
+	else if (destination.x < pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f && Math::FAbs(targetPos.x - pos.x) < tileSize * 0.2f)
 	{
-		if (checkNextTile(Vector2(pos.x - tileSize, pos.y)))
-		{
-			targetPos.Set(targetPos.x - tileSize, targetPos.y);
-		}
-		else
-		{
-			if(destination.y > pos.y)
-			{
-				targetPos.Set(targetPos.x, targetPos.y + tileSize);
-			}
-
-			else
-			{
-				targetPos.Set(targetPos.x, targetPos.y - tileSize);
-			}
-		}
+		targetPos.Set(targetPos.x - tileSize, targetPos.y);
 	}
 
-	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f && Math::FAbs(targetPos.y - pos.y) < tileSize * 0.2f)
 	{
 		targetPos.Set(targetPos.x, targetPos.y + tileSize);
 	}
 
-	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f)
+	else if (destination.y < pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f && Math::FAbs(targetPos.y - pos.y) < tileSize * 0.2f)
 	{
 		targetPos.Set(targetPos.x, targetPos.y - tileSize);
 	}
@@ -375,8 +335,6 @@ void Guards::Patrolling(int worldWidth, int worldHeight, int tileSize, double dt
 		changeAni(Guards_StateMachine::IDLE_STATE);
 		Character::changeAni(StateMachine::IDLE_STATE);
 	}
-
-	//this->tileBasedMovement(worldWidth, worldHeight, tileSize, dt);
 }
 
 void Guards::changeAni(Guards_StateMachine::GUARD_STATE unitState)

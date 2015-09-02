@@ -4,7 +4,7 @@
 	[NAME] AppConfig
 	{
 		[NAME] SetUp
-		[WindowTitle] King
+		[WindowTitle] Prison_Break
 		# Screen resolution 1024 800 1920 1080
 		[WindowWidth] 1024
 		[WindowHeight] 800
