@@ -404,5 +404,23 @@
 		      	[MapLocation] 10
 			[Waypoint] E
 		}
+		{
+			[NAME] COURT_GUARD_F
+			[Pos] 38, 3
+		     	[Dir] 1, 0
+			[Mesh] GEO_GUARD
+		        [Tiles] 5
+		      	[MapLocation] 10
+			[Waypoint] F
+		}
+		{
+			[NAME] COURT_GUARD_G
+			[Pos] 18, -15
+		     	[Dir] 1, 0
+			[Mesh] GEO_GUARD
+		        [Tiles] 5
+		      	[MapLocation] 10
+			[Waypoint] G
+		}
 	}
 }

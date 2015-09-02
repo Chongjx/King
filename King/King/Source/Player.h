@@ -20,6 +20,7 @@ public:
 	bool GetAttack(void);
 
 	// Get the player's energy
+	void setEnergy(double energy);
 	double GetEnergy(void);
 	// Updates the player's energy
 	void UpdateEnergy(double dt);

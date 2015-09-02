@@ -148,4 +148,15 @@
 		[Scale] 275, 55
 		[Mesh] GEO_TEXT
 	}
+	# end game interface
+	{
+		[NAME] Back
+		[GameState] GameOver
+		[Type] Text
+		[Text] Back
+		[Pos] 0, 0
+		[Rotation] 0
+		[Scale] 270, 55
+		[Mesh] GEO_TEXT
+	}
 }
