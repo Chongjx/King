@@ -2822,16 +2822,21 @@ void SceneGame::UpdatePlayer(double dt)
 		}
 	}
 
-	if(findItem("GuardUniform"))
+	static bool uniform;
+	uniform = false;
+
+	if(findItem("GuardUniform") && !uniform)
 	{
+		uniform = true;
 		player->setSprite(dynamic_cast <SpriteAnimation*> (findMesh("GEO_GUARD")));
 	}
-	else
+	else if (uniform && !findItem("GuardUniform"))
 	{
+		uniform = false;
 		player->setSprite( dynamic_cast <SpriteAnimation*> (findMesh("GEO_PLAYER")));
 	}
 
-	if (getKey("Select"))
+	if (getKey("Select") || getKey("Enter"))
 	{
 		if (findItem("Dumbbell") || findItem("WaterGun"))
 		{
@@ -2842,7 +2847,7 @@ void SceneGame::UpdatePlayer(double dt)
 				{
 					if (player->getDir().x == 1)
 					{
-						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
+						if ((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2) && tempGuard->getPos().x >= player->getPos().x)
 						{
 							tempGuard->setStun(true);
 							break;
@@ -2851,7 +2856,7 @@ void SceneGame::UpdatePlayer(double dt)
 
 					else if (player->getDir().x == -1)
 					{
-						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().x - player->getPos().x) < TILESIZE * 2))
+						if ((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2) && tempGuard->getPos().x <= player->getPos().x)
 						{
 							tempGuard->setStun(true);
 							break;
@@ -2860,7 +2865,7 @@ void SceneGame::UpdatePlayer(double dt)
 
 					else if (player->getDir().y == 1)
 					{
-						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE))
+						if ((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2) && tempGuard->getPos().y >= player->getPos().y)
 						{
 							tempGuard->setStun(true);
 							break;
@@ -2869,7 +2874,7 @@ void SceneGame::UpdatePlayer(double dt)
 
 					else if (player->getDir().y == -1)
 					{
-						if ((findItem("Dumbbell") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE) || (findItem("WaterGun") && Math::FAbs(tempGuard->getPos().y - player->getPos().y) < TILESIZE * 2))
+						if (((findItem("Dumbbell") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 1) || (findItem("WaterGun") && player->CalculateTileBasedDistance(tempGuard->getPos(), TILESIZE) < 2)) && tempGuard->getPos().y <= player->getPos().y)
 						{
 							tempGuard->setStun(true);
 							break;

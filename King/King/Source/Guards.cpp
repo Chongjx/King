@@ -32,7 +32,6 @@ void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 	{
 		if (stun && checkTimer < stunTimer)
 		{
-			std::cout << checkTimer << std::endl;
 			checkTimer += dt;
 
 			Character::changeAni(StateMachine::IDLE_STATE);

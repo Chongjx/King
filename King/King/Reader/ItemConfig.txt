@@ -88,11 +88,7 @@
 	{
 		[NAME] AccessCard
 		[ID] 6
-<<<<<<< HEAD
-		[Pos] 38, -24
-=======
 		[Pos] 64, -43
->>>>>>> 32a06a79ee2e81aaa8544a2d1348abb031240225
 		[ItemStatus] Ground
 		[ItemType] Misc
 		[Description] Works like Magic!
