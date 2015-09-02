@@ -67,6 +67,7 @@ void Guards::Update(int worldWidth, int worldHeight, int tileSize, double dt)
 			if (checkTimer >= stunTimer)
 			{
 				stun = false;
+				chase = false;
 				checkTimer = 0;
 			}
 		}
