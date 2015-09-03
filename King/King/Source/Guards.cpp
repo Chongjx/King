@@ -239,7 +239,7 @@ bool Guards::CheckSight(Vector2 playerPos, int tileSize, double dt)
 
 void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 {
-	if (Math::FAbs(destination.x - pos.x) < size.x * 0.2f)
+	if (Math::FAbs(destination.x - pos.x) < size.x * 0.25f)
 	{
 		pos.x = destination.x;
 		targetPos.x = pos.x;
@@ -257,7 +257,7 @@ void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 		targetPos = pos;
 	}
 
-	if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f && Math::FAbs(targetPos.x - pos.x) < tileSize * 0.2f)
+	else if (destination.x > pos.x && Math::FAbs(destination.x - pos.x) > size.x * 0.2f && Math::FAbs(targetPos.x - pos.x) < tileSize * 0.2f)
 	{
 		targetPos.Set(targetPos.x + tileSize, targetPos.y);
 	}
@@ -267,7 +267,7 @@ void Guards::Chasing(int worldWidth, int worldHeight, int tileSize, double dt)
 		targetPos.Set(targetPos.x - tileSize, targetPos.y);
 	}
 
-	if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f && Math::FAbs(targetPos.y - pos.y) < tileSize * 0.2f)
+	else if (destination.y > pos.y && Math::FAbs(destination.y - pos.y) > size.y * 0.2f && Math::FAbs(targetPos.y - pos.y) < tileSize * 0.2f)
 	{
 		targetPos.Set(targetPos.x, targetPos.y + tileSize);
 	}

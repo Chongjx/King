@@ -17,6 +17,7 @@ public:
 	void Update(double dt);
 
 	// Set destination for AI
+	void setDestination (Vector2 destination);
 	void SetDestination(void);
 	// Get destination for AI
 	Vector2 GetDestination(void);

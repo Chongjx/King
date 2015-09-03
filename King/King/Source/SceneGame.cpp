@@ -3159,10 +3159,10 @@ void SceneGame::UpdateAI(double dt)
 					if (tempGuardII->getRoom() == layout[currentLocation])
 					{
 						tempGuardII->ResetPos();
-						tempGuardII->setChase("false");
+						tempGuardII->setChase(false);
+						tempGuardII->setDestination(tempGuardII->getPos());
 					}
 				}
-
 				currentLocation = CELL_AREA;
 			}
 		}

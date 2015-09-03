@@ -30,6 +30,11 @@ bool AI::GetUpdate(void)
 	return updating;
 }
 
+void AI::setDestination(Vector2 destination)
+{
+	this->destination = destination;
+}
+
 void AI::SetDestination(void)
 {
 	destination.x = (float)Math::RandIntMinMax(0, currentRoom->roomLayout[TileMap::TYPE_WAYPOINT].getNumTilesMapWidth() - 1) * currentRoom->roomLayout[TileMap::TYPE_WAYPOINT].getTileSize();
